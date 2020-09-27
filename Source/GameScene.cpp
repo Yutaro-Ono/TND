@@ -90,7 +90,7 @@ void GameScene::Initialize()
 	// プレイヤーの生成
 	PlayerCar* player = new PlayerCar();
 	player->SetPosition(Vector3(300.0f, 1400.0f, 80.0f));
-	player->SetScale(0.5f);
+	player->SetScale(0.8f);
 
 	// ロード画面処理
 	Loading();
