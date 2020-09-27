@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Actor.cpp" />
+    <ClCompile Include="Source\AngelStatue.cpp" />
+    <ClCompile Include="Source\Animation.cpp" />
+    <ClCompile Include="Source\AudioManager.cpp" />
+    <ClCompile Include="Source\BoneTransform.cpp" />
+    <ClCompile Include="Source\BoxCollider.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\CameraComponent.cpp" />
+    <ClCompile Include="Source\CarBody.cpp" />
+    <ClCompile Include="Source\CarDoor.cpp" />
+    <ClCompile Include="Source\CarHandle.cpp" />
+    <ClCompile Include="Source\CarWheel.cpp" />
+    <ClCompile Include="Source\ChainUI.cpp" />
+    <ClCompile Include="Source\Collision.cpp" />
+    <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\CountDownUI.cpp" />
+    <ClCompile Include="Source\DebugBox.cpp" />
+    <ClCompile Include="Source\FlameActor.cpp" />
+    <ClCompile Include="Source\FlameManager.cpp" />
+    <ClCompile Include="Source\FlameSpark.cpp" />
+    <ClCompile Include="Source\FlameStatue.cpp" />
+    <ClCompile Include="Source\FollowCamera.cpp" />
+    <ClCompile Include="Source\Font.cpp" />
+    <ClCompile Include="Source\GameMain.cpp" />
+    <ClCompile Include="Source\GameScene.cpp" />
+    <ClCompile Include="Source\GetEffect.cpp" />
+    <ClCompile Include="Source\Grid.cpp" />
+    <ClCompile Include="Source\HUD.cpp" />
+    <ClCompile Include="Source\Input.cpp" />
+    <ClCompile Include="Source\InputController.cpp" />
+    <ClCompile Include="Source\LevelBlock.cpp" />
+    <ClCompile Include="Source\LevelManager.cpp" />
+    <ClCompile Include="Source\LevelObject.cpp" />
+    <ClCompile Include="Source\LoadScreen.cpp" />
+    <ClCompile Include="Source\LookDownCamera.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Math.cpp" />
+    <ClCompile Include="Source\Mesh.cpp" />
+    <ClCompile Include="Source\MeshComponent.cpp" />
+    <ClCompile Include="Source\MeshGpmesh.cpp" />
+    <ClCompile Include="Source\MeshObj.cpp" />
+    <ClCompile Include="Source\MoveComponent.cpp" />
+    <ClCompile Include="Source\MoveComponentCar.cpp" />
+    <ClCompile Include="Source\MoveComponentHuman.cpp" />
+    <ClCompile Include="Source\Music.cpp" />
+    <ClCompile Include="Source\Particle.cpp" />
+    <ClCompile Include="Source\ParticleManager.cpp" />
+    <ClCompile Include="Source\ParticleTestScene.cpp" />
+    <ClCompile Include="Source\PauseScreen.cpp" />
+    <ClCompile Include="Source\PhysicsWorld.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\PlayerCamera.cpp" />
+    <ClCompile Include="Source\PlayerCar.cpp" />
+    <ClCompile Include="Source\PlayerManager.cpp" />
+    <ClCompile Include="Source\RapidJsonHelper.cpp" />
+    <ClCompile Include="Source\RecordScore.cpp" />
+    <ClCompile Include="Source\Renderer.cpp" />
+    <ClCompile Include="Source\ResultScene.cpp" />
+    <ClCompile Include="Source\ResultScreen.cpp" />
+    <ClCompile Include="Source\RuleScore.cpp" />
+    <ClCompile Include="Source\RuleTime.cpp" />
+    <ClCompile Include="Source\SandSmoke.cpp" />
+    <ClCompile Include="Source\ScoreUI.cpp" />
+    <ClCompile Include="Source\Shader.cpp" />
+    <ClCompile Include="Source\SkeletalMeshComponent.cpp" />
+    <ClCompile Include="Source\Skeleton.cpp" />
+    <ClCompile Include="Source\Skydome.cpp" />
+    <ClCompile Include="Source\Sound.cpp" />
+    <ClCompile Include="Source\SpeedMeterUI.cpp" />
+    <ClCompile Include="Source\SpriteComponent.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\tiny_obj_loader.cc" />
+    <ClCompile Include="Source\TitleScene.cpp" />
+    <ClCompile Include="Source\TitleScreen.cpp" />
+    <ClCompile Include="Source\TutorialUI.cpp" />
+    <ClCompile Include="Source\UIScreen.cpp" />
+    <ClCompile Include="Source\VertexArray.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Actor.h" />
+    <ClInclude Include="Source\AngelStatue.h" />
+    <ClInclude Include="Source\Animation.h" />
+    <ClInclude Include="Source\AudioManager.h" />
+    <ClInclude Include="Source\BoneTransform.h" />
+    <ClInclude Include="Source\BoxCollider.h" />
+    <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\CameraComponent.h" />
+    <ClInclude Include="Source\CarBody.h" />
+    <ClInclude Include="Source\CarDoor.h" />
+    <ClInclude Include="Source\CarHandle.h" />
+    <ClInclude Include="Source\CarWheel.h" />
+    <ClInclude Include="Source\ChainUI.h" />
+    <ClInclude Include="Source\Collision.h" />
+    <ClInclude Include="Source\Common.h" />
+    <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\CountDownUI.h" />
+    <ClInclude Include="Source\DebugBox.h" />
+    <ClInclude Include="Source\FlameActor.h" />
+    <ClInclude Include="Source\FlameManager.h" />
+    <ClInclude Include="Source\FlameSpark.h" />
+    <ClInclude Include="Source\FlameStatue.h" />
+    <ClInclude Include="Source\FollowCamera.h" />
+    <ClInclude Include="Source\Font.h" />
+    <ClInclude Include="Source\GameMain.h" />
+    <ClInclude Include="Source\GameScene.h" />
+    <ClInclude Include="Source\GetEffect.h" />
+    <ClInclude Include="Source\Grid.h" />
+    <ClInclude Include="Source\HUD.h" />
+    <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\InputController.h" />
+    <ClInclude Include="Source\LevelBlock.h" />
+    <ClInclude Include="Source\LevelManager.h" />
+    <ClInclude Include="Source\LevelObject.h" />
+    <ClInclude Include="Source\LoadScreen.h" />
+    <ClInclude Include="Source\LookDownCamera.h" />
+    <ClInclude Include="Source\Math.h" />
+    <ClInclude Include="Source\MatrixPalette.h" />
+    <ClInclude Include="Source\Mesh.h" />
+    <ClInclude Include="Source\MeshComponent.h" />
+    <ClInclude Include="Source\MeshGpmesh.h" />
+    <ClInclude Include="Source\MeshObj.h" />
+    <ClInclude Include="Source\MoveComponent.h" />
+    <ClInclude Include="Source\MoveComponentCar.h" />
+    <ClInclude Include="Source\MoveComponentHuman.h" />
+    <ClInclude Include="Source\Music.h" />
+    <ClInclude Include="Source\Particle.h" />
+    <ClInclude Include="Source\ParticleManager.h" />
+    <ClInclude Include="Source\ParticleTestScene.h" />
+    <ClInclude Include="Source\PauseScreen.h" />
+    <ClInclude Include="Source\PhysicsWorld.h" />
+    <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\PlayerCamera.h" />
+    <ClInclude Include="Source\PlayerCar.h" />
+    <ClInclude Include="Source\PlayerManager.h" />
+    <ClInclude Include="Source\RapidJsonHelper.h" />
+    <ClInclude Include="Source\RecordScore.h" />
+    <ClInclude Include="Source\Renderer.h" />
+    <ClInclude Include="Source\ResultScene.h" />
+    <ClInclude Include="Source\ResultScreen.h" />
+    <ClInclude Include="Source\RuleScore.h" />
+    <ClInclude Include="Source\RuleTime.h" />
+    <ClInclude Include="Source\SandSmoke.h" />
+    <ClInclude Include="Source\SceneBase.h" />
+    <ClInclude Include="Source\ScoreUI.h" />
+    <ClInclude Include="Source\Shader.h" />
+    <ClInclude Include="Source\SkeletalMeshComponent.h" />
+    <ClInclude Include="Source\Skeleton.h" />
+    <ClInclude Include="Source\Skydome.h" />
+    <ClInclude Include="Source\Sound.h" />
+    <ClInclude Include="Source\SpeedMeterUI.h" />
+    <ClInclude Include="Source\SpriteComponent.h" />
+    <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\tiny_obj_loader.h" />
+    <ClInclude Include="Source\TitleScene.h" />
+    <ClInclude Include="Source\TitleScreen.h" />
+    <ClInclude Include="Source\TutorialUI.h" />
+    <ClInclude Include="Source\UIScreen.h" />
+    <ClInclude Include="Source\VertexArray.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Shaders\BasicMesh.frag" />
+    <None Include="Source\Shaders\BasicMesh.vert" />
+    <None Include="Source\Shaders\DirectLine.vert" />
+    <None Include="Source\Shaders\Line.frag" />
+    <None Include="Source\Shaders\Line.vert" />
+    <None Include="Source\Shaders\NormalMap.frag" />
+    <None Include="Source\Shaders\NormalMap.vert" />
+    <None Include="Source\Shaders\Particle.frag" />
+    <None Include="Source\Shaders\Phong.frag" />
+    <None Include="Source\Shaders\Phong.vert" />
+    <None Include="Source\Shaders\Skinned.vert" />
+    <None Include="Source\Shaders\Sprite.frag" />
+    <None Include="Source\Shaders\Sprite.vert" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{A97DEA5D-4093-46E9-AA4C-CD78A4BEDFE0}</ProjectGuid>
+    <RootNamespace>TheNightDriver</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <ReferencePath>$(VC_ReferencesPath_x86);</ReferencePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <ReferencePath>$(VC_ReferencesPath_x86);</ReferencePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir).\Library\GLEW\include\;$(SolutionDir).\Library\SDL\include\;$(SolutionDir).\Library\rapidjson\include\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir).\Library\SDL\lib\win\x86\;$(SolutionDir).\Library\GLEW\lib\win\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)\library\SDL\lib\win\x86\*.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)\library\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir).\Library\GLEW\include\;$(SolutionDir).\Library\SDL\include\;$(SolutionDir).\Library\rapidjson\include\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir).\Library\SDL\lib\win\x86\;$(SolutionDir).\Library\GLEW\lib\win\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir).\Library\GLEW\include\;$(SolutionDir).\Library\SDL\include\;$(SolutionDir).\Library\rapidjson\include\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir).\Library\SDL\lib\win\x86\;$(SolutionDir).\Library\GLEW\lib\win\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)\library\SDL\lib\win\x86\*.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)\library\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir).\Library\GLEW\include\;$(SolutionDir).\Library\SDL\include\;$(SolutionDir).\Library\rapidjson\include\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir).\Library\SDL\lib\win\x86\;$(SolutionDir).\Library\GLEW\lib\win\x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
