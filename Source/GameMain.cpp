@@ -27,9 +27,9 @@
 
 #include <algorithm>
 #include <utility>
-#include <SDL/SDL.h>
-#include <SDL/SDL_ttf.h>
-#include <SDL/SDL_mixer.h>
+#include <SDL.h>
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <typeinfo>
 #include <iostream>
 #include <fstream>
@@ -85,6 +85,10 @@ bool GameMain::Initialize(int in_screenW, int in_screenH, bool in_full)
 		delete m_renderer;
 		return false;
 	}
+
+
+
+
 
 	//--------------------------------------------------------------------+
 	// フォント(TTF)レンダリングシステム初期化
@@ -189,6 +193,11 @@ void GameMain::Delete()
 	delete m_debugBox;
 
 	CONTROLLER_INSTANCE.Delete();
+
+	// Imguiの削除
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
 
 	// SDLウィンドウの破棄(デバッグ用)
 	SDL_DestroyWindow(m_debugWindow);
@@ -405,6 +414,8 @@ void GameMain::Input()
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
+		ImGui_ImplSDL2_ProcessEvent(&event);
+
 		switch (event.type)
 		{
 		case SDL_QUIT:
@@ -685,12 +696,18 @@ void GameMain::ShowActor()
 
 void GameMain::Draw()
 {
+
+
 	if (!m_nowScene)
 	{
 		return;
 	}
 
-	m_nowScene->Draw();;
+
+	m_nowScene->Draw();
+
+	
+
 }
 
 // ゲームループ制御用のヘルパー関数

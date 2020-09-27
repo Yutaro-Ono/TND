@@ -12,20 +12,22 @@ const std::string PlayerCar::CAR_HANDLE_MESH_PATH = "Data/Meshes/TND/Actors/Car/
 
 // コンストラクタ
 PlayerCar::PlayerCar()
-	:m_isActive(false)
+	:m_isActive(true)
 {
 	// 車両操作用のMoveComponentを生成
 	m_moveComp = new MoveComponentCar(this);
 
 	// 各パーツごとのクラスを作成
 	m_body = new CarBody(this, CAR_BODY_MESH_PATH);
-	m_door[0] = new CarDoor(this, CAR_DOOR_LEFT_MESH_PATH);
-	m_door[1] = new CarDoor(this, CAR_DOOR_RIGHT_MESH_PATH);
+	m_door[0] = new CarDoor(this, CAR_DOOR_LEFT_MESH_PATH, true);
+	m_door[1] = new CarDoor(this, CAR_DOOR_RIGHT_MESH_PATH, false);
 	m_handle = new CarHandle(this, CAR_HANDLE_MESH_PATH);
 	for (int i = 0; i < 4; i++)
 	{
 		m_wheel[i] = new CarWheel(this, CAR_WHEEL_MESH_PATH);
 	}
+
+
 }
 
 PlayerCar::~PlayerCar()
@@ -75,11 +77,14 @@ void PlayerCar::CreateAABB(Mesh* in_mesh)
 {
 	// 当たり判定セット
 	AABB playerBox = in_mesh->GetCollisionBox();
+	// ※車のメッシュからは座標が取れないため、手動でセット
+	playerBox.SetMinVector(Vector3(-50.0f, -50.0f, -50.0f));
+	playerBox.SetMaxVector(Vector3(50.0f, 50.0f, 50.0f));
 	m_hitBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER);
-	playerBox.m_min.x *= 0.6f;
-	playerBox.m_min.y *= 0.6f;
-	playerBox.m_max.x *= 0.6f;
-	playerBox.m_max.y *= 0.6f;
+	playerBox.m_min.x *= 1.0f;
+	playerBox.m_min.y *= 1.0f;
+	playerBox.m_max.x *= 1.0f;
+	playerBox.m_max.y *= 1.0f;
 	m_hitBox->SetObjectBox(playerBox);
 }
 

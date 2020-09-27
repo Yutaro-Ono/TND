@@ -9,10 +9,15 @@
 #include <unordered_map>
 #include <string>
 #include <vector>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_types.h>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_types.h>
+#include "GL/glew.h"
 #include "Math.h"
+#include "imgui/imconfig.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_sdl.h"
 
 class SceneBase;
 class TestScene;

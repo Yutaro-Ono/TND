@@ -7,7 +7,7 @@
 // ----------------------------------------------------------------
 
 // GLSL 3.3 ÇóvãÅ
-#version 330
+#version 330 core
 
 uniform vec3 uColor;
 out vec4 outColor;

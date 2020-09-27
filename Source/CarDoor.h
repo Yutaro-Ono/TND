@@ -7,7 +7,7 @@ class CarDoor : public Actor
 {
 public:
 
-	CarDoor(class PlayerCar* in_owner, const std::string& in_meshPath);
+	CarDoor(class PlayerCar* in_owner, const std::string& in_meshPath, bool in_leftRight);
 	~CarDoor();
 
 	void UpdateActor(float in_deltaTime) override;
@@ -21,7 +21,6 @@ private:
 
 	class MeshComponent* m_meshComp;
 
-	
-
-	static const Vector3 ADJUST_DOOR_POSITION;     // ドアの位置を補正する位置ベクトル
+	Vector3 m_adjustPos;                    // ドアの位置を補正する位置ベクトル
+  
 };

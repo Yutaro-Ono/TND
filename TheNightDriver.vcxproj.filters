@@ -222,6 +222,12 @@
     <Filter Include="ソース ファイル\Actor\Player\Car\Handle">
       <UniqueIdentifier>{9a053f92-7946-4c69-ade0-23857d6d4ed2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="リソース ファイル\ImGui">
+      <UniqueIdentifier>{1f6a1a00-3fdb-47cb-9db5-b35606304886}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\gl3w">
+      <UniqueIdentifier>{9b867aa8-775b-4412-90a1-236dc0f1f1d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -454,6 +460,24 @@
     </ClCompile>
     <ClCompile Include="Source\CarHandle.cpp">
       <Filter>ソース ファイル\Actor\Player\Car\Handle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui.cpp">
+      <Filter>リソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui_demo.cpp">
+      <Filter>リソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui_draw.cpp">
+      <Filter>リソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui_impl_opengl3.cpp">
+      <Filter>リソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui_impl_sdl.cpp">
+      <Filter>リソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\imgui\imgui_widgets.cpp">
+      <Filter>リソース ファイル\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -693,6 +717,21 @@
     </ClInclude>
     <ClInclude Include="Source\CarHandle.h">
       <Filter>ソース ファイル\Actor\Player\Car\Handle</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\imconfig.h">
+      <Filter>リソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\imgui.h">
+      <Filter>リソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\imgui_impl_opengl3.h">
+      <Filter>リソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\imgui_impl_sdl.h">
+      <Filter>リソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\imgui\imgui_internal.h">
+      <Filter>リソース ファイル\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

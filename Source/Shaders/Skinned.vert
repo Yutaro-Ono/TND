@@ -7,7 +7,7 @@
 // ----------------------------------------------------------------
 
 // Request GLSL 3.3
-#version 330
+#version 330 core
 
 // Uniforms for world transform and view-proj
 uniform mat4 uWorldTransform;

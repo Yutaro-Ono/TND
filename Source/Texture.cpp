@@ -10,8 +10,8 @@
 #include "GameMain.h"
 #include "Renderer.h"
 #include <GL/glew.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
 
 
 // コンストラクタ

@@ -6,8 +6,8 @@
 //-----------------------------------------------------------------------+
 #include "Renderer.h"
 #include "GameMain.h"
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
+#include "SDL.h"
+#include "SDL_image.h"
 #include "Texture.h"
 #include "SpriteComponent.h"
 #include "Mesh.h"
@@ -100,6 +100,7 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
     //----------------------------------------------------------------+
     // OpenGLコンテキストを生成
 	m_context = SDL_GL_CreateContext(m_window);
+	SDL_GL_MakeCurrent(m_window, m_context);
 
 	//----------------------------------------------------------------+
     // GLEW初期化
@@ -130,6 +131,18 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	}
 	printf("SDLImageInitPNG : Success\n");
 
+	//--------------------------------------------------------------------+
+    // Imgui初期化
+    //--------------------------------------------------------------------+
+	// imguiコンテキスト生成
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	// imguiスタイル設定 (黒テーマ)
+	ImGui::StyleColorsDark();
+	// 使用しているプラットフォームにバインド
+	ImGui_ImplSDL2_InitForOpenGL(m_window, m_context);
+	ImGui_ImplOpenGL3_Init("#version 330");
 
 
 
@@ -219,6 +232,11 @@ void Renderer::Delete()
 // 描画処理
 void Renderer::Draw()
 {
+	// ImGuiフレームを開始
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame(m_window);
+	ImGui::NewFrame();
+
 	// Set the clear color to light grey
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	// Clear the color buffer
@@ -287,16 +305,24 @@ void Renderer::Draw()
 
 
 
-	// Draw any UI screens
+	// 全てのUIを更新
 	for (auto ui : GAME_INSTANCE.GetUIStack())
 	{
 		ui->Draw(m_spriteShader);
 	}
 
+	// ImGui更新
+	ImGui::Begin("Hello");
+	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+	ImGui::End();
+	ImGui::Render();
+	glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
+	//glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	// Swap the buffers
 	SDL_GL_SwapWindow(m_window);
-
 
 }
 

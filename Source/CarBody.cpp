@@ -5,9 +5,10 @@
 CarBody::CarBody(PlayerCar* in_owner, const std::string& in_meshPath)
 	:m_owner(in_owner)
 {
-	// オーナーの座標をセット
+	// オーナーの拡大率・座標・回転行列に合わせておく
+	m_scale = m_owner->GetScale();
 	m_position = m_owner->GetPosition();
-
+	m_rotation = m_owner->GetRotation();
 	// メッシュのセット
 	Mesh* mesh = GAME_INSTANCE.GetRenderer()->GetMesh(in_meshPath);
 	m_meshComp = new MeshComponent(this);
@@ -24,6 +25,11 @@ CarBody::~CarBody()
 
 void CarBody::UpdateActor(float in_deltaTime)
 {
+	// オーナーの拡大率・座標・回転行列に合わせておく
+	m_scale = m_owner->GetScale();
+	m_position = m_owner->GetPosition();
+	m_rotation = m_owner->GetRotation();
+
 	// オーナーに合わせるためワールド座標を取得し続ける
 	m_worldTransform = m_owner->GetWorldTransform();
 }

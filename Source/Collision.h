@@ -54,7 +54,11 @@ typedef struct AABB
 	float        MinDistSq(const Vector3& in_point) const;                                  // 点との最小距離を求める
 
 	void         Rotate(const Quaternion& in_quaternion);                                   // 回転
-	void         SetArrowRotate(bool in_value) { m_isRotatable = in_value; }                // 回転を許可するか
+	void         SetAllowRotate(bool in_value) { m_isRotatable = in_value; }                // 回転を許可するか
+
+	// 直接頂点座標をセット
+	void         SetMinVector(const Vector3& in_minVec) { m_min = in_minVec; }
+	void         SetMaxVector(const Vector3& in_maxVec) { m_max = in_maxVec; }
 
 	Vector3      m_min;                                                                     // 最小値
 	Vector3      m_max;                                                                     // 最大値

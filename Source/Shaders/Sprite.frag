@@ -7,7 +7,7 @@
 // ----------------------------------------------------------------
 
 // Request GLSL 3.3
-#version 330
+#version 330 core
 
 // Tex coord input from vertex shader
 in vec2 fragTexCoord;

@@ -8,7 +8,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 
-#include <SDL/SDL_log.h>
+#include <SDL_log.h>
 #include "Math.h"
 
 
