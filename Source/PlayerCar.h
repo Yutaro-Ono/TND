@@ -25,7 +25,9 @@ public:
 
 	void CollisionFix(class BoxCollider* in_hitPlayerBox, class BoxCollider* in_hitBox);
 
-
+	//--------------------------------------------+
+    // Getter / Setter
+    //--------------------------------------------+
 	void SetActive(bool in_active) { m_isActive = in_active; }
 
 private:
@@ -40,6 +42,9 @@ private:
 
 	// MoveComponent(車用)
 	class MoveComponentCar* m_moveComp;
+
+	// CameraComponent
+	class OrbitCamera* m_cameraComp;
 
 	// 当たり判定ボックス
 	class BoxCollider* m_hitBox;

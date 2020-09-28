@@ -90,7 +90,7 @@ void GameScene::Initialize()
 	// プレイヤーの生成
 	PlayerCar* player = new PlayerCar();
 	player->SetPosition(Vector3(300.0f, 1400.0f, 0.0f));
-	//player->SetScale(0.5f);
+	player->SetScale(0.5f);
 
 	// ロード画面処理
 	Loading();
@@ -137,11 +137,11 @@ void GameScene::Initialize()
 	Loading();
 
 	// カメラ
-	//m_camera = new PlayerCamera(m_player);
-	m_camera = new PlayerCamera(player);
-	m_camera->SetHorizonDist(m_camera->GetPosition().x * 0.2f);
-	m_camera->SetVerticalDist(50.0f);
-	m_camera->SetBestCameraDist();
+	// m_camera = new PlayerCamera(m_player);
+	//m_camera = new PlayerCamera(player);
+	//m_camera->SetHorizonDist(m_camera->GetPosition().x * 0.2f);
+	//m_camera->SetVerticalDist(50.0f);
+	//m_camera->SetBestCameraDist();
 
 	// ウェイト
 	Wait(300);
@@ -215,20 +215,20 @@ SceneBase * GameScene::Update()
 			// チェインUI
 			//ChainUI* chainUI = new ChainUI(ruleScore);
 			// 制限時間のセット
-			m_time->SetStartTime();
+			//m_time->SetStartTime();
 
 			// カメラ位置初期化
-			m_camera->SetBestCameraDist();
+			//m_camera->SetBestCameraDist();
 
 
 			// UI順序の反転
-			GAME_INSTANCE.SwapPauseUI();
+			//GAME_INSTANCE.SwapPauseUI();
 
 			// BGM再生
-			AUDIO->PlayMusic(m_sound["BGM"]);
+			//AUDIO->PlayMusic(m_sound["BGM"]);
 
 			// カウントダウンへ
-			m_state = STATE_START;
+			//m_state = STATE_START;
 		}
 
 		break;
@@ -243,12 +243,12 @@ SceneBase * GameScene::Update()
 		// カメラをプレイヤーに寄せる
 		if (m_time->GetNowCount() < 3)
 		{
-			m_camera->SetBestCameraDist();
+			//m_camera->SetBestCameraDist();
 		}
 		else
 		{
-			m_cameraMove -= 3.0f;
-			m_camera->SetHorizonDist(m_cameraMove);
+			//m_cameraMove -= 3.0f;
+			//m_camera->SetHorizonDist(m_cameraMove);
 		}
 
 		// カウント終了でアクティブに
@@ -330,8 +330,8 @@ SceneBase * GameScene::Update()
 	{
 		m_player->SetState(m_player->STATE_PAUSED);
 
-		m_camera->SetHorizonDist(m_camera->GetPosition().x * 0.2f);
-		m_camera->SetVerticalDist(500.0f);
+		//m_camera->SetHorizonDist(m_camera->GetPosition().x * 0.2f);
+		//m_camera->SetVerticalDist(500.0f);
 	}
 
 

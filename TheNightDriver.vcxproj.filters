@@ -228,6 +228,12 @@
     <Filter Include="リソース ファイル\gl3w">
       <UniqueIdentifier>{9b867aa8-775b-4412-90a1-236dc0f1f1d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Camera\Orbit">
+      <UniqueIdentifier>{da71f9e0-c479-48da-9c2c-92b1eef2cd5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Camera\CarCamera">
+      <UniqueIdentifier>{66fdc3aa-262b-4d85-909d-ac7fe65291ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -478,6 +484,15 @@
     </ClCompile>
     <ClCompile Include="Source\imgui\imgui_widgets.cpp">
       <Filter>リソース ファイル\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\OrbitCamera.cpp">
+      <Filter>ソース ファイル\Camera\Orbit</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mouse.cpp">
+      <Filter>ソース ファイル\System\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ThirdPersonCarCamera.cpp">
+      <Filter>ソース ファイル\Camera\CarCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -732,6 +747,15 @@
     </ClInclude>
     <ClInclude Include="Source\imgui\imgui_internal.h">
       <Filter>リソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\OrbitCamera.h">
+      <Filter>ソース ファイル\Camera\Orbit</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mouse.h">
+      <Filter>ソース ファイル\System\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ThirdPersonCarCamera.h">
+      <Filter>ソース ファイル\Camera\CarCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

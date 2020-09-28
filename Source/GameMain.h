@@ -70,7 +70,10 @@ public:
 	SDL_Renderer* GetSDLRenderer();                                                  // 2D用SDLレンダラーの取得
 	// カメラ
 	void SetCamera(class Camera* in_camera);                                         // カメラをシステムに登録
+	void SetCamera(class CameraComponent* in_camera);                                         // カメラをシステムに登録
+
 	void InActiveCamera(class Camera* in_activeCam);                                 // カメラの登録を解除
+	void InActiveCamera(class CameraComponent* in_activeCam);                        // カメラの登録を解除
 	// 行列取得
 	const Matrix4& GetViewMatrix() { return m_viewMatrix; };                         // ビュー行列のゲッター
 	const Vector3& GetViewVector();                                                  // ビュー座標のゲッター
@@ -129,7 +132,9 @@ private:
 
 	class Renderer* m_renderer;                                              // レンダリングクラス
 	class SceneBase*   m_nowScene;                                           // 現在のシーンのインスタンス
-	class Camera* m_activeCamera;                                            // アクティブなカメラ (システムが描画に用いる)
+	//class Camera* m_activeCamera;                                            // アクティブなカメラ (システムが描画に用いる)
+	class CameraComponent* m_activeCamera;                                            // アクティブなカメラ (システムが描画に用いる)
+
 	class PhysicsWorld* m_physicsWorld;                                      // 当たり判定システム
 	class DebugBox* m_debugBox;                                              // デバッグ用ボックス
 	class AudioManager* m_audio;                                             // オーディオ管理

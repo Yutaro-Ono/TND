@@ -26,7 +26,7 @@ MoveComponentCar::~MoveComponentCar()
 
 void MoveComponentCar::Update(float in_deltaTime)
 {
-	if (m_padIsActive)
+	if (!m_padIsActive)
 	{
 		MovementByController(in_deltaTime);
 	}
@@ -213,8 +213,10 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	// 現在のスピードを保存
 	m_forwardSpeed = speed * in_deltaTime;
 
-	// Z軸Rotation回転
+	// Z軸の回転を更新
 	Quaternion rotation = Quaternion::Quaternion(Vector3::UnitZ, radian);
+	m_owner->SetRotation(rotation);
+	rotation = m_owner->GetRotation();
 
 	// Rotationから前進ベクトルを更新し、結果の座標を算出
 	charaForwardVec = Vector3::Transform(charaForwardVec, rotation);

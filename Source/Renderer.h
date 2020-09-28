@@ -57,9 +57,9 @@ public:
 	void SetParticleVertex();
 	void SetDirectionalLight(const DirectionalLight& in_dirLight);
 
-	//--------------------------------------------//
+	//--------------------------------------------+
 	// Getter / Setter
-	//-------------------------------------------//
+	//--------------------------------------------+
 	SDL_Renderer* GetSDLRenderer() { return m_SDLRenderer; }                // SDL刑の描画に用いるSDLRendererのゲッター
 	SDL_Window* GetSDLWindow() { return m_window; }                         // SDL Windowのゲッター
 	SDL_GLContext GetSDLGLContext() { return m_context; }                   // SDL_GLコンテキストのゲッター

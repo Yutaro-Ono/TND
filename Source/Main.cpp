@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 
 	// ゲームの初期化処理(画面の横幅, 画面の縦幅, フルスクリーン:true false)
 	// 初期化に失敗したらfalseを返す
-	GAME_INSTANCE.Initialize(1280, 720, false);
+	GAME_INSTANCE.Initialize(1920, 1080, false);
 
 	// 最初のシーンのセット
 	GAME_INSTANCE.SetFirstScene(new TitleScene);

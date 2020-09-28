@@ -1,14 +1,17 @@
 #include "PlayerCar.h"
 #include "MoveComponentCar.h"
+#include "OrbitCamera.h"
+#include "Input.h"
+#include "InputController.h"
 #include "Collision.h"
 #include "BoxCollider.h"
 #include "PhysicsWorld.h"
 
-const std::string PlayerCar::CAR_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/SM_suv_parts_LOD0_body_Internal.OBJ";
-const std::string PlayerCar::CAR_DOOR_LEFT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/SM_suv_parts_LOD0_left_door_Internal.OBJ";
-const std::string PlayerCar::CAR_DOOR_RIGHT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/SM_suv_parts_LOD0_right_door_Internal.OBJ";
-const std::string PlayerCar::CAR_WHEEL_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Wheel/SM_suv_parts_LOD0_wheel_Internal.OBJ";
-const std::string PlayerCar::CAR_HANDLE_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Handle/SM_suv_steering_wheel_lod0_Internal.OBJ";
+const std::string PlayerCar::CAR_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/SM_suv_parts_LOD1_body_Internal.OBJ";
+const std::string PlayerCar::CAR_DOOR_LEFT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/SM_suv_parts_LOD1_left_door_Internal.OBJ";
+const std::string PlayerCar::CAR_DOOR_RIGHT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/SM_suv_parts_LOD1_right_door_Internal.OBJ";
+const std::string PlayerCar::CAR_WHEEL_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Wheel/SM_suv_parts_LOD1_wheel_Internal.OBJ";
+const std::string PlayerCar::CAR_HANDLE_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Handle/SM_suv_steering_wheel_lod1_Internal.OBJ";
 
 // コンストラクタ
 PlayerCar::PlayerCar()
@@ -16,6 +19,8 @@ PlayerCar::PlayerCar()
 {
 	// 車両操作用のMoveComponentを生成
 	m_moveComp = new MoveComponentCar(this);
+	// カメラコンポーネントを生成
+	m_cameraComp = new OrbitCamera(this);
 
 	// 各パーツごとのクラスを作成
 	m_body = new CarBody(this, CAR_BODY_MESH_PATH);
@@ -37,12 +42,6 @@ PlayerCar::~PlayerCar()
 void PlayerCar::UpdateActor(float in_deltaTime)
 {
 
-	bool u = true;
-
-	if (!u)
-	{
-		int a = 0;
-	}
 
 	// ディアクティベートされたら
 	if (!m_isActive)

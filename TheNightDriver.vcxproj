@@ -66,10 +66,12 @@
     <ClCompile Include="Source\MeshComponent.cpp" />
     <ClCompile Include="Source\MeshGpmesh.cpp" />
     <ClCompile Include="Source\MeshObj.cpp" />
+    <ClCompile Include="Source\Mouse.cpp" />
     <ClCompile Include="Source\MoveComponent.cpp" />
     <ClCompile Include="Source\MoveComponentCar.cpp" />
     <ClCompile Include="Source\MoveComponentHuman.cpp" />
     <ClCompile Include="Source\Music.cpp" />
+    <ClCompile Include="Source\OrbitCamera.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\ParticleManager.cpp" />
     <ClCompile Include="Source\ParticleTestScene.cpp" />
@@ -96,6 +98,7 @@
     <ClCompile Include="Source\SpeedMeterUI.cpp" />
     <ClCompile Include="Source\SpriteComponent.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\ThirdPersonCarCamera.cpp" />
     <ClCompile Include="Source\tiny_obj_loader.cc" />
     <ClCompile Include="Source\TitleScene.cpp" />
     <ClCompile Include="Source\TitleScreen.cpp" />
@@ -151,10 +154,12 @@
     <ClInclude Include="Source\MeshComponent.h" />
     <ClInclude Include="Source\MeshGpmesh.h" />
     <ClInclude Include="Source\MeshObj.h" />
+    <ClInclude Include="Source\Mouse.h" />
     <ClInclude Include="Source\MoveComponent.h" />
     <ClInclude Include="Source\MoveComponentCar.h" />
     <ClInclude Include="Source\MoveComponentHuman.h" />
     <ClInclude Include="Source\Music.h" />
+    <ClInclude Include="Source\OrbitCamera.h" />
     <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\ParticleManager.h" />
     <ClInclude Include="Source\ParticleTestScene.h" />
@@ -182,6 +187,7 @@
     <ClInclude Include="Source\SpeedMeterUI.h" />
     <ClInclude Include="Source\SpriteComponent.h" />
     <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\ThirdPersonCarCamera.h" />
     <ClInclude Include="Source\tiny_obj_loader.h" />
     <ClInclude Include="Source\TitleScene.h" />
     <ClInclude Include="Source\TitleScreen.h" />

@@ -14,6 +14,7 @@
 #include "Camera.h"
 #include "Actor.h"
 #include "Camera.h"
+#include "CameraComponent.h"
 #include "PhysicsWorld.h"
 #include "Collision.h"
 #include "DebugBox.h"
@@ -283,8 +284,8 @@ int GameMain::UpdateGame()
 		// カメラ行列計算
 		m_activeCamera->Update(m_deltaTime);
 		// アクティブカメラのビュー行列を持ってくる
-		m_viewMatrix = m_activeCamera->GetViewMatrix();
-		m_renderer->SetViewMatrix(m_viewMatrix);
+		//m_viewMatrix = m_activeCamera->GetViewMatrix();
+		//m_renderer->SetViewMatrix(m_viewMatrix);
 	}
 
 	// パーティクル更新
@@ -645,13 +646,33 @@ const std::string & GameMain::GetText(const std::string & in_key)
 void GameMain::SetCamera(Camera * in_camera)
 {
 
+	//printf("SetCamera [%p]\n", in_camera);
+	//m_activeCamera = in_camera;
+
+}
+
+void GameMain::SetCamera(CameraComponent* in_camera)
+{
 	printf("SetCamera [%p]\n", in_camera);
 	m_activeCamera = in_camera;
-
 }
 
 // アクティブなカメラ
 void GameMain::InActiveCamera(Camera * in_activeCam)
+{
+	//if (in_activeCam == m_activeCamera)
+	//{
+	//	printf("Camera is inActive, change to default view.\n");
+	//	m_activeCamera = nullptr;
+	//}
+
+	//m_viewMatrix = 
+	//	Matrix4::CreateLookAt(Vector3(0, 0, 100),
+	//	Vector3(0, 0, 0),
+	//	Vector3(0, 0, 1));
+}
+
+void GameMain::InActiveCamera(CameraComponent* in_activeCam)
 {
 	if (in_activeCam == m_activeCamera)
 	{
@@ -659,19 +680,20 @@ void GameMain::InActiveCamera(Camera * in_activeCam)
 		m_activeCamera = nullptr;
 	}
 
-	m_viewMatrix = 
+	m_viewMatrix =
 		Matrix4::CreateLookAt(Vector3(0, 0, 100),
-		Vector3(0, 0, 0),
-		Vector3(0, 0, 1));
+			Vector3(0, 0, 0),
+			Vector3(0, 0, 1));
 }
 
 const Vector3 & GameMain::GetViewVector()
 {
-	if (m_activeCamera == nullptr)
-	{
-		printf("Camera is inActive. return IllegalVec\n");
-	}
-	return m_activeCamera->GetViewVector();
+	//if (m_activeCamera == nullptr)
+	//{
+	//	printf("Camera is inActive. return IllegalVec\n");
+	//}
+	//return m_activeCamera->GetViewVector();
+	return Vector3::Zero;
 }
 
 
