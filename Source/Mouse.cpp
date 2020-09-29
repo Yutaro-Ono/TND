@@ -3,33 +3,33 @@
 
 Mouse::Mouse()
 {
-	mMousePos = Vector2(0, 0);
-	mCurrentButtons = 0;
-	mPrevButtons = 0;
-	mIsRelative = false;
+	m_mousePos = Vector2(0, 0);
+	m_currentButtons = 0;
+	m_prevButtons = 0;
+	m_isRelative = false;
 }
 
 void Mouse::SetRelativeMouseMode(bool value)
 {
 	SDL_bool set = value ? SDL_TRUE : SDL_FALSE;
 	SDL_SetRelativeMouseMode(set);
-	mIsRelative = value;
+	m_isRelative = value;
 }
 
 bool Mouse::GetButtonValue(int button) const
 {
-	return button & mCurrentButtons;
+	return button & m_currentButtons;
 }
 
 Mouse::MouseButtonState Mouse::GetButtonState(int button) const
 {
 
-	if (button & mCurrentButtons)
+	if (button & m_currentButtons)
 	{
-		return (button & mPrevButtons) ? MOUSE_BUTTON_PRESSED : MOUSE_BUTTON_PUSHDOWN;
+		return (button & m_prevButtons) ? MOUSE_BUTTON_PRESSED : MOUSE_BUTTON_PUSHDOWN;
 	}
 
-	return (button & mPrevButtons) ? MOUSE_BUTTON_PULLUP : MOUSE_BUTTON_OFF;
+	return (button & m_prevButtons) ? MOUSE_BUTTON_PULLUP : MOUSE_BUTTON_OFF;
 }
 
 void Mouse::OnMouseWheelEvent(SDL_Event& event)
@@ -37,7 +37,7 @@ void Mouse::OnMouseWheelEvent(SDL_Event& event)
 	switch (event.type)
 	{
 	case SDL_MOUSEWHEEL:
-		mMouseWheel = Vector2(
+		m_mouseWheel = Vector2(
 			static_cast<float>(event.wheel.x),
 			static_cast<float>(event.wheel.y)
 		);
@@ -51,19 +51,40 @@ void Mouse::OnMouseWheelEvent(SDL_Event& event)
 // 入力処理の更新。レンダリングループの先頭で1回だけ呼ぶようにする
 void Mouse::Update()
 {
-	mPrevButtons = mCurrentButtons;
+	m_prevButtons = m_currentButtons;
 
 	int x = 0, y = 0;
-	if (mIsRelative)
+	if (m_isRelative)
 	{
-		mCurrentButtons = SDL_GetRelativeMouseState(&x, &y);
+		m_currentButtons = SDL_GetRelativeMouseState(&x, &y);
 	}
 	else
 	{
-		mCurrentButtons = SDL_GetMouseState(&x, &y);
+		m_currentButtons = SDL_GetMouseState(&x, &y);
 	}
-	mMousePos.x = static_cast<float>(x);
-	mMousePos.y = static_cast<float>(y);
+	m_mousePos.x = static_cast<float>(x);
+	m_mousePos.y = static_cast<float>(y);
 
-	mMouseWheel = Vector2::Zero;
+
+	m_mouseWheel = Vector2::Zero;
+}
+
+void Mouse::DebugImGui()
+{
+	// ImGuiフレームを開始
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame(GAME_INSTANCE.GetRenderer()->GetSDLWindow());
+	ImGui::NewFrame();
+
+	// ImGui更新
+	ImGui::Begin("Debug Console : Mouse Input");
+	ImGui::SliderFloat("Mouse Position : x", &m_mousePos.x, 0.0f, 1.0f);
+	ImGui::SliderFloat("Mouse Position : y", &m_mousePos.y, 0.0f, 1.0f);
+
+	ImGui::End();
+	ImGui::Render();
+	glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
+	//glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

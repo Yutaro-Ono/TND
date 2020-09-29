@@ -234,6 +234,9 @@
     <Filter Include="ソース ファイル\Camera\CarCamera">
       <UniqueIdentifier>{66fdc3aa-262b-4d85-909d-ac7fe65291ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\System\Config">
+      <UniqueIdentifier>{d7f0f87e-d144-4e90-99dd-18c55903e560}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -493,6 +496,9 @@
     </ClCompile>
     <ClCompile Include="Source\ThirdPersonCarCamera.cpp">
       <Filter>ソース ファイル\Camera\CarCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameConfig.cpp">
+      <Filter>ソース ファイル\System\Config</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -756,6 +762,9 @@
     </ClInclude>
     <ClInclude Include="Source\ThirdPersonCarCamera.h">
       <Filter>ソース ファイル\Camera\CarCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameConfig.h">
+      <Filter>ソース ファイル\System\Config</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

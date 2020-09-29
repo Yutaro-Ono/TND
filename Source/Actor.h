@@ -30,7 +30,7 @@ public:
 	void Update(float in_deltaTime);                  // 更新処理(総合)
 	void UpdateComponents(float in_deltaTime);        // 更新処理 (コンポーネント)
 	virtual void UpdateActor(float in_deltaTime);     // 更新処理 (アクター固有処理:オーバーライド可能)
-	void ProcessInput();                              // 入力処理
+	void ProcessInput(float in_deltaTime);            // 入力処理
 
 	//-----------------------------------------------------------------------------------+
 	// Getter / Setter

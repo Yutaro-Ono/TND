@@ -18,7 +18,7 @@ public:
 
 	virtual void Update(float in_deltaTime);                        // デルタタイムによるコンポーネントの更新(オーバーライド可)
 
-	virtual void ProcessInput() {}                                  // コンポーネントの入力処理(オーバーライド可)
+	virtual void ProcessInput(float in_deltaTime) {}                                  // コンポーネントの入力処理(オーバーライド可)
 
 	virtual void OnUpdateWorldTransform() {}                        // ワールド変換が必要なときに呼ばれる関数
 

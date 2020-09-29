@@ -26,7 +26,7 @@ MoveComponentCar::~MoveComponentCar()
 
 void MoveComponentCar::Update(float in_deltaTime)
 {
-	if (!m_padIsActive)
+	if (m_padIsActive)
 	{
 		MovementByController(in_deltaTime);
 	}
@@ -214,9 +214,12 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	m_forwardSpeed = speed * in_deltaTime;
 
 	// Z軸の回転を更新
+	//Quaternion pRotation = m_owner->GetRotation();
 	Quaternion rotation = Quaternion::Quaternion(Vector3::UnitZ, radian);
+	//rotation = Quaternion::Lerp(pRotation, rotation, 0.1f);
 	m_owner->SetRotation(rotation);
 	rotation = m_owner->GetRotation();
+
 
 	// Rotationから前進ベクトルを更新し、結果の座標を算出
 	charaForwardVec = Vector3::Transform(charaForwardVec, rotation);
@@ -231,7 +234,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 {
 
 	//キャラ入力
-	const float speed = 8.0f;
+	const float speed = 5.0f;
 	Vector3 forwardVec = Vector3(60.0f, 0.0f, 0.0f);
 	Vector3 rightVec = Vector3(0.0f, 1.0f, 0.0f);
 	Vector3 charaForwardVec = m_owner->GetForward();

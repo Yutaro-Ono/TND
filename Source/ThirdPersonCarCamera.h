@@ -1,6 +1,7 @@
 #pragma once
 #include "CameraComponent.h"
 
+
 class ThirdPersonCarCamera : public CameraComponent
 {
 
@@ -13,7 +14,7 @@ public:
 
 	void Update(float in_deltaTime) override;
 
-	void ProcessInput() override;
+	void ProcessInput(float in_deltaTime) override;
 
 	//--------------------------------------------+
 	// Getter / Setter
@@ -38,4 +39,9 @@ private:
 	// ヨー速度(/秒)
 	float m_yaw;
 
+	// マウス
+	Vector2 m_mousePos;                    // マウスの座標
+	Vector2 m_frameMousePos;               // マウスの前フレームの座標
+
+	static const float CAMERA_SENSITIVITY;
 };

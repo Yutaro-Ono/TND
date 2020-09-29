@@ -42,6 +42,7 @@
     <ClCompile Include="Source\FlameStatue.cpp" />
     <ClCompile Include="Source\FollowCamera.cpp" />
     <ClCompile Include="Source\Font.cpp" />
+    <ClCompile Include="Source\GameConfig.cpp" />
     <ClCompile Include="Source\GameMain.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GetEffect.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Source\FlameStatue.h" />
     <ClInclude Include="Source\FollowCamera.h" />
     <ClInclude Include="Source\Font.h" />
+    <ClInclude Include="Source\GameConfig.h" />
     <ClInclude Include="Source\GameMain.h" />
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GetEffect.h" />

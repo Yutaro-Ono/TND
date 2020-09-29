@@ -7,9 +7,6 @@
 
 // インクルードファイル
 #include "GameMain.h"
-#include "Input.h"
-#include "InputController.h"
-#include "Renderer.h"
 #include "SceneBase.h"
 #include "Camera.h"
 #include "Actor.h"
@@ -62,7 +59,7 @@ GameMain::~GameMain()
 
 // 各種初期化処理(SDL, Renderer)
 // in_full -> フルスクリーンかどうか
-bool GameMain::Initialize(int in_screenW, int in_screenH, bool in_full)
+bool GameMain::Initialize()
 {
 	//--------------------------------------------------------------------+
 	// SDL
@@ -75,21 +72,24 @@ bool GameMain::Initialize(int in_screenW, int in_screenH, bool in_full)
 	}
 
 	//--------------------------------------------------------------------+
+    // コンフィグ
+    //--------------------------------------------------------------------+
+    // コンフィグの生成・ロード
+	m_config = new GameConfig();
+	m_config->LoadConfig();
+
+	//--------------------------------------------------------------------+
 	// レンダラー
 	//--------------------------------------------------------------------+
 	// レンダラーの生成
 	m_renderer = new Renderer();
 	// レンダラーの初期化
-	if (!m_renderer->Initialize(in_screenW, in_screenH, in_full))
+	if (!m_renderer->Initialize(GetConfig()->GetScreenWidth(), GetConfig()->GetScreenHeight(), GetConfig()->GetFullScreen()))
 	{
 		SDL_Log("Renderer Initialize Failed : %s\n", SDL_GetError());
 		delete m_renderer;
 		return false;
 	}
-
-
-
-
 
 	//--------------------------------------------------------------------+
 	// フォント(TTF)レンダリングシステム初期化
@@ -213,11 +213,6 @@ void GameMain::Delete()
 // メインループ
 void GameMain::RunLoop()
 {
-	// レンダラーが初期化されていなかったら初期化
-	if (!m_renderer)
-	{
-		Initialize(1024, 768, false);
-	}
 	// 開始シーンが定義されていなかったら終了
 	if (!m_nowScene)
 	{
@@ -434,6 +429,9 @@ void GameMain::Input()
 
 	// コントローラー入力更新
 	CONTROLLER_INSTANCE.Update();
+
+	// マウス入力更新
+	MOUSE_INSTANCE.Update();
 
 	// ESCが押されたら終了
 	if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_ESCAPE))

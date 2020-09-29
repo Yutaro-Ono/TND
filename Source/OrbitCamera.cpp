@@ -19,7 +19,7 @@ OrbitCamera::~OrbitCamera()
 
 void OrbitCamera::Update(float in_deltaTime)
 {
-	ProcessInput();
+	ProcessInput(in_deltaTime);
 
 	// ヨーのクォータニオンをワールド変換行列の上方ベクトルから生成
 	Quaternion yaw(Vector3::UnitZ, m_yaw * in_deltaTime);
@@ -55,7 +55,7 @@ void OrbitCamera::Update(float in_deltaTime)
 }
 
 // カメラ入力処理
-void OrbitCamera::ProcessInput()
+void OrbitCamera::ProcessInput(float in_deltaTime)
 {
 	// コントローラ接続時と未接続時で処理を分岐
 	if (CONTROLLER_INSTANCE.IsAvailable())

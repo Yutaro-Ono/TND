@@ -78,14 +78,14 @@ void Actor::UpdateActor(float in_deltaTime)
 }
 
 // 入力処理
-void Actor::ProcessInput()
+void Actor::ProcessInput(float in_deltaTime)
 {
 	if (m_state == STATE_ACTIVE)
 	{
 		// 入力処理を受け取るコンポーネントを優先して実行
 		for (auto comp : m_components)
 		{
-			comp->ProcessInput();
+			comp->ProcessInput(in_deltaTime);
 		}
 	}
 }

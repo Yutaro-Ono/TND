@@ -232,10 +232,6 @@ void Renderer::Delete()
 // 描画処理
 void Renderer::Draw()
 {
-	// ImGuiフレームを開始
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_window);
-	ImGui::NewFrame();
 
 	// Set the clear color to light grey
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -311,15 +307,8 @@ void Renderer::Draw()
 		ui->Draw(m_spriteShader);
 	}
 
-	// ImGui更新
-	ImGui::Begin("Hello");
-	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-	ImGui::End();
-	ImGui::Render();
-	glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
-	//glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
-	//glClear(GL_COLOR_BUFFER_BIT);
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	// デバッグコンソール描画
+	MOUSE_INSTANCE.DebugImGui();
 
 	// Swap the buffers
 	SDL_GL_SwapWindow(m_window);

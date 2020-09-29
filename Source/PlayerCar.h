@@ -44,7 +44,7 @@ private:
 	class MoveComponentCar* m_moveComp;
 
 	// CameraComponent
-	class OrbitCamera* m_cameraComp;
+	class ThirdPersonCarCamera* m_cameraComp;
 
 	// 当たり判定ボックス
 	class BoxCollider* m_hitBox;

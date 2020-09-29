@@ -14,6 +14,12 @@
 #include <SDL_types.h>
 #include "GL/glew.h"
 #include "Math.h"
+#include "Input.h"
+#include "InputController.h"
+#include "Mouse.h"
+#include "GameConfig.h"
+#include "Renderer.h"
+#include "Mouse.h"
 #include "imgui/imconfig.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
@@ -45,7 +51,7 @@ public:
 
 	~GameMain();                                                                    // デストラクタ
 
-	bool   Initialize(int in_screenW, int in_screenH, bool in_full);                // 各種初期化処理
+	bool   Initialize();                // 各種初期化処理
 	void   Delete();                                                                // 各種解放処理
 
 	void   RunLoop();                                                               // ゲームのメインループ
@@ -66,6 +72,8 @@ public:
     //--------------------------------------------------------------------//
 	// Getter/Setter
 	//-------------------------------------------------------------------//
+	class GameConfig* GetConfig() const { return m_config; }
+
 	class Renderer* GetRenderer() const { return m_renderer; }                       // レンダラー取得
 	SDL_Renderer* GetSDLRenderer();                                                  // 2D用SDLレンダラーの取得
 	// カメラ
@@ -130,6 +138,7 @@ private:
 	Uint32       m_ticksCount;                                               // ミリ秒単位の経過時間
 	Matrix4      m_viewMatrix;
 
+	class GameConfig* m_config;
 	class Renderer* m_renderer;                                              // レンダリングクラス
 	class SceneBase*   m_nowScene;                                           // 現在のシーンのインスタンス
 	//class Camera* m_activeCamera;                                            // アクティブなカメラ (システムが描画に用いる)
@@ -156,7 +165,9 @@ private:
 
 };
 
-// シングルトンのゲッター
+// ゲッター
 #define GAME_INSTANCE GameMain::GetInstance()
+// 各クラスポインタのゲッターdefine化
 #define RENDERER GameMain::GetInstance().GetRenderer()
+#define GAME_CONFIG GameMain::GetInstance().GetConfig()
 #define AUDIO GameMain::GetInstance().GetAudio()

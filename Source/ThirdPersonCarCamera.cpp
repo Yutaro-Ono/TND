@@ -3,6 +3,9 @@
 #include "PlayerCar.h"
 #include "Input.h"
 #include "InputController.h"
+#include "Mouse.h"
+
+const float ThirdPersonCarCamera::CAMERA_SENSITIVITY = 50.0f;
 
 ThirdPersonCarCamera::ThirdPersonCarCamera(PlayerCar* in_target)
 	:CameraComponent(in_target)
@@ -10,6 +13,8 @@ ThirdPersonCarCamera::ThirdPersonCarCamera(PlayerCar* in_target)
 	, m_upVec(Vector3::UnitZ)
 	, m_pitch(0.0f)
 	, m_yaw(0.0f)
+	,m_mousePos(MOUSE_INSTANCE.GetPosition())
+	,m_frameMousePos(MOUSE_INSTANCE.GetPosition())
 {
 
 }
@@ -20,7 +25,7 @@ ThirdPersonCarCamera::~ThirdPersonCarCamera()
 
 void ThirdPersonCarCamera::Update(float in_deltaTime)
 {
-	ProcessInput();
+	ProcessInput(in_deltaTime);
 
 	// ヨーのクォータニオンをワールド変換行列の上方ベクトルから生成
 	Quaternion yaw(Vector3::UnitZ, m_yaw * in_deltaTime);
@@ -56,8 +61,11 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 }
 
 // カメラ入力処理
-void ThirdPersonCarCamera::ProcessInput()
+void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 {
+
+	const float maxOrbitSpeed = Math::Pi * 8;
+
 	// コントローラ接続時と未接続時で処理を分岐
 	if (CONTROLLER_INSTANCE.IsAvailable())
 	{
@@ -65,20 +73,18 @@ void ThirdPersonCarCamera::ProcessInput()
 		Vector2 axisR;
 		axisR = CONTROLLER_INSTANCE.GetRAxisVec();
 
-		const int maxCameraSpeed = 50;
-		const float maxOrbitSpeed = Math::Pi * 8;
 
 		// ヨー速度、ピッチ速度
 		float yawSpeed, pitchSpeed;
 		yawSpeed = pitchSpeed = 0.0f;
 		// ヨー計算
-		yawSpeed = axisR.x / maxCameraSpeed;
+		yawSpeed = axisR.x / CAMERA_SENSITIVITY * in_deltaTime;
 		yawSpeed *= maxOrbitSpeed;
 		// メンバにセット
 		SetYaw(yawSpeed);
 
 		// ピッチ計算
-		pitchSpeed = axisR.y / maxCameraSpeed;
+		pitchSpeed = axisR.y / CAMERA_SENSITIVITY;
 		pitchSpeed *= maxOrbitSpeed;
 		// メンバにセット
 		SetPitch(pitchSpeed);
@@ -88,8 +94,50 @@ void ThirdPersonCarCamera::ProcessInput()
 	else
 	{
 
+		// マウスの位置からカメラのヨーとピッチを取得
+		m_mousePos = MOUSE_INSTANCE.GetPosition();
+		//float xoffset = (m_frameMousePos.x - m_mousePos.x) / CAMERA_SENSITIVITY;
+		float yoffset = (m_frameMousePos.y - m_mousePos.y) / CAMERA_SENSITIVITY;
+
+		// x座標のオフセット
+		float xoffset = 0.0f;
+		// マウスのx座標が前フレームのx座標と比べて値が異なる場合、ヨーを更新
+		// 画面中央
+		if (m_mousePos.x > m_frameMousePos.x || m_mousePos.x > m_frameMousePos.x && (m_mousePos.x - GAME_CONFIG->GetScreenWidth()) > 0.0f)
+		{
+			xoffset = -1.0f * in_deltaTime;
+			xoffset *= maxOrbitSpeed;
+		}
+		else if (m_mousePos.x < m_frameMousePos.x || m_mousePos.x < m_frameMousePos.x && m_mousePos.x < GAME_CONFIG->GetScreenWidth())
+		{
+			xoffset = 1.0f * in_deltaTime;
+			xoffset *= maxOrbitSpeed;
+		}
 
 
+		// ヨー速度、ピッチ速度
+		float yawSpeed, pitchSpeed;
+		yawSpeed = pitchSpeed = 0.0f;
 
+		// ヨー計算
+		yawSpeed -= xoffset;
+		//yawSpeed *= maxOrbitSpeed;
+		// メンバにセット
+		SetYaw(yawSpeed);
+
+		// ピッチ計算
+		pitchSpeed -= yoffset;
+		//pitchSpeed *= maxOrbitSpeed;
+		// メンバにセット
+		SetPitch(pitchSpeed);
+
+		if (m_mousePos.x != 1919.0f && m_mousePos.x > 0.0f)
+		{
+			m_frameMousePos.x = MOUSE_INSTANCE.GetPositionX();
+		}
+		if (m_mousePos.y != 1079.0f && m_mousePos.y != 0.0f)
+		{
+			m_frameMousePos.y = MOUSE_INSTANCE.GetPositionY();
+		}
 	}
 }

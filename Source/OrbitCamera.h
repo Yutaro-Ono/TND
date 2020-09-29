@@ -12,7 +12,7 @@ public:
 
 	void Update(float in_deltaTime) override;
 
-	void ProcessInput() override;
+	void ProcessInput(float in_deltaTime) override;
 
 	//--------------------------------------------+
     // Getter / Setter

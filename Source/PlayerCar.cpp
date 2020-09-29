@@ -1,6 +1,6 @@
 #include "PlayerCar.h"
 #include "MoveComponentCar.h"
-#include "OrbitCamera.h"
+#include "ThirdPersonCarCamera.h"
 #include "Input.h"
 #include "InputController.h"
 #include "Collision.h"
@@ -20,7 +20,7 @@ PlayerCar::PlayerCar()
 	// 車両操作用のMoveComponentを生成
 	m_moveComp = new MoveComponentCar(this);
 	// カメラコンポーネントを生成
-	m_cameraComp = new OrbitCamera(this);
+	m_cameraComp = new ThirdPersonCarCamera(this);
 
 	// 各パーツごとのクラスを作成
 	m_body = new CarBody(this, CAR_BODY_MESH_PATH);

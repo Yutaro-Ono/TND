@@ -12,7 +12,7 @@ public:
 
 	void Update(float in_deltaTime) override {}                          // コンポーネントの更新
 
-	void ProcessInput() override {}                                    // コンポーネントの入力処理
+	void ProcessInput(float in_deltaTime) override {}                                    // コンポーネントの入力処理
 
 	void OnUpdateWorldTransform() override {}                      // ワールド座標変換用
 
