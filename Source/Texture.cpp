@@ -63,7 +63,7 @@ bool Texture::Load(const std::string & in_fileName)
 	{
 		format = GL_RGBA;
 	}
-
+	
 	// テクスチャオブジェクトの生成
 	// 2次元としてバインド
 	glGenTextures(1, &m_textureID);

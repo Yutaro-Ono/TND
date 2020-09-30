@@ -14,7 +14,7 @@
 #include "Math.h"
 #include "TitleScene.h"
 #include <sstream>
-
+#include <SDL.h>
 
 // コンストラクタ
 TitleScreen::TitleScreen(class TitleScene* in_target)

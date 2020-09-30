@@ -234,7 +234,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 {
 
 	//ƒLƒƒƒ‰“ü—Í
-	const float speed = 5.0f;
+	const float speed = 8.0f;
 	Vector3 forwardVec = Vector3(60.0f, 0.0f, 0.0f);
 	Vector3 rightVec = Vector3(0.0f, 1.0f, 0.0f);
 	Vector3 charaForwardVec = m_owner->GetForward();
