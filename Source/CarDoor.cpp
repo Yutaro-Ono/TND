@@ -11,11 +11,11 @@ CarDoor::CarDoor(PlayerCar* in_owner, const std::string& in_meshPath, bool in_le
 
 	if (in_leftRight)
 	{
-		m_adjustPos = Vector3(20.0f, -100.0f, 100.0f);
+		m_adjustPos = Vector3(80.0f, -100.0f, 96.8f);
 	}
 	else
 	{
-		m_adjustPos = Vector3(20.0f, 100.0f, 100.0f);
+		m_adjustPos = Vector3(80.0f, 100.0f, 96.8f);
 	}
 
 	//// 拡大率もオーナーに合わせる

@@ -15,6 +15,13 @@ class PlayerCar : public Actor
 {
 public:
 
+	enum DRIVE_STATE
+	{
+		DRIVE_IDLE,
+		DRIVE_ACCEL,
+		DRIVE_BRAKE
+	};
+
 	PlayerCar();
 	~PlayerCar();
 
@@ -30,7 +37,13 @@ public:
     //--------------------------------------------+
 	void SetActive(bool in_active) { m_isActive = in_active; }
 
+	// 車の運転状態
+	void SetDriveState(DRIVE_STATE in_state) { m_driveState = in_state; }          // 車の運転状態セット
+	DRIVE_STATE GetDriveState() { return m_driveState; }                           // 車の運転状態取得
+
 private:
+
+	DRIVE_STATE m_driveState;             // 車の運転状態
 
 	bool m_isActive;      // 車両操作がアクティブの時、更新処理をする
 	

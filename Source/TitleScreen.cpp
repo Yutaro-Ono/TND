@@ -33,7 +33,8 @@ TitleScreen::TitleScreen(class TitleScene* in_target)
 	m_targetScene = in_target;
 
 	// タイトルロゴの読み込み
-	m_logo = RENDERER->GetTexture("Data/Interface/Title/Title_LogoScreen.png");
+	//m_logo = RENDERER->GetTexture("Data/Interface/Title/Title_LogoScreen.png");
+	m_logo = m_font->RenderText("Title Screen", Vector3(1.0f, 1.0f, 1.0f), 45);
 
 	// 選択項目関連のフォント
 	m_anyKey = m_font->RenderText("PRESS ANY KEY", Vector3(1.0f, 1.0f, 1.0f), 40);

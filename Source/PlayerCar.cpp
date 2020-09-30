@@ -10,7 +10,7 @@
 const std::string PlayerCar::CAR_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/SM_suv_parts_LOD1_body_Internal.OBJ";
 const std::string PlayerCar::CAR_DOOR_LEFT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/SM_suv_parts_LOD1_left_door_Internal.OBJ";
 const std::string PlayerCar::CAR_DOOR_RIGHT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/SM_suv_parts_LOD1_right_door_Internal.OBJ";
-const std::string PlayerCar::CAR_WHEEL_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Wheel/SM_suv_parts_LOD1_wheel_Internal.OBJ";
+const std::string PlayerCar::CAR_WHEEL_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Wheel/SM_suv_parts_LOD0_wheel_Internal.OBJ";
 const std::string PlayerCar::CAR_HANDLE_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Handle/SM_suv_steering_wheel_lod1_Internal.OBJ";
 
 // コンストラクタ
@@ -27,11 +27,11 @@ PlayerCar::PlayerCar()
 	m_door[0] = new CarDoor(this, CAR_DOOR_LEFT_MESH_PATH, true);
 	m_door[1] = new CarDoor(this, CAR_DOOR_RIGHT_MESH_PATH, false);
 	m_handle = new CarHandle(this, CAR_HANDLE_MESH_PATH);
-	for (int i = 0; i < 4; i++)
-	{
-		m_wheel[i] = new CarWheel(this, CAR_WHEEL_MESH_PATH);
-	}
-
+	// タイヤ
+	m_wheel[0] = new CarWheel(this, CAR_WHEEL_MESH_PATH, CarWheel::WHEEL_POSITION::FRONT_LEFT);
+	m_wheel[1] = new CarWheel(this, CAR_WHEEL_MESH_PATH, CarWheel::WHEEL_POSITION::FRONT_RIGHT);
+	m_wheel[2] = new CarWheel(this, CAR_WHEEL_MESH_PATH, CarWheel::WHEEL_POSITION::BACK_LEFT);
+	m_wheel[3] = new CarWheel(this, CAR_WHEEL_MESH_PATH, CarWheel::WHEEL_POSITION::BACK_RIGHT);
 
 }
 

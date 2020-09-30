@@ -2,22 +2,22 @@
 #include "InputController.h"
 #include "Input.h"
 #include "Actor.h"
-#include "Player.h"
+#include "PlayerCar.h"
 
 const float MoveComponentCar::HAND_BRAKE_VALUE = 8.0f;                 // ハンドブレーキ操作時のブレーキ値
 const float MoveComponentCar::ACCEL_LIMIT = 100.0f;                // 最大速度の上限値(現在の基準：150km/h)
 const float MoveComponentCar::BRAKE_LIMIT = 35.0f;
 
 
-MoveComponentCar::MoveComponentCar(Actor* in_owner)
+MoveComponentCar::MoveComponentCar(PlayerCar* in_owner)
 	:MoveComponent(in_owner)
-	,m_driveState(DRIVE_STATE::DRIVE_IDLE)
 	,m_accelValue(0.0f)
 	,m_brakeValue(0.0f)
 	,m_handBrake(0.0f)
 	,m_accelLimit(ACCEL_LIMIT)
 	,m_brakeLimit(BRAKE_LIMIT)
 {
+	m_playerCar = in_owner;
 }
 
 MoveComponentCar::~MoveComponentCar()
@@ -74,7 +74,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	if (triggerR != 0.0f)
 	{
 		// アクセル状態にする
-		SetDriveState(DRIVE_STATE::DRIVE_ACCEL);
+		m_playerCar->SetDriveState(PlayerCar::DRIVE_STATE::DRIVE_ACCEL);
 
 		// アクセルの最大値を上回っていなければ更新し、上回っていたら最大値を正規化
 		if (m_accelValue < m_accelLimit)
@@ -97,7 +97,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	if (triggerL != 0.0f)
 	{
 		// 移動状態をブレーキにする
-		SetDriveState(DRIVE_STATE::DRIVE_BRAKE);
+		m_playerCar->SetDriveState(PlayerCar::DRIVE_STATE::DRIVE_BRAKE);
 
 		// ブレーキの最大値を上回っていなければ更新し、上回っていれば最大値を正規化
 		if (m_brakeValue < m_brakeLimit)
@@ -129,7 +129,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	// アクセル・ブレーキ両方とも0ならIDLE状態に
 	if (m_accelValue == 0.0f && m_brakeValue == 0.0f)
 	{
-		SetDriveState(DRIVE_STATE::DRIVE_IDLE);
+		m_playerCar->SetDriveState(PlayerCar::DRIVE_STATE::DRIVE_IDLE);
 	}
 
 	//----------------------------------------------------------------------------------+
@@ -144,7 +144,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 		}
 		else
 		{
-			SetDriveState(DRIVE_STATE::DRIVE_IDLE);
+			m_playerCar->SetDriveState(PlayerCar::DRIVE_STATE::DRIVE_IDLE);
 			m_accelValue = m_brakeValue;
 		}
 	}
@@ -170,7 +170,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	if (m_accelValue != 0.0f || m_brakeValue != 0.0f)
 	{
 		// アクセル時
-		if (m_driveState == DRIVE_STATE::DRIVE_ACCEL)
+		if (m_playerCar->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_ACCEL)
 		{
 			// 左右回転
 			DirVec.y += rightVec.y * axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 5.0f) * in_deltaTime;
@@ -178,7 +178,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 			radian += axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 60.0f) * in_deltaTime;
 		}
 		// バック時
-		if (m_driveState == DRIVE_STATE::DRIVE_BRAKE)
+		if (m_playerCar->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_BRAKE)
 		{
 			// 左右回転
 			DirVec.y += rightVec.y * axisL.x * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;
@@ -296,7 +296,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 	if (triggerR != 0.0f)
 	{
 		// アクセル状態にする
-		SetDriveState(DRIVE_STATE::DRIVE_ACCEL);
+		m_playerCar->SetDriveState(PlayerCar::DRIVE_STATE::DRIVE_ACCEL);
 
 		// アクセルの最大値を上回っていなければ更新し、上回っていたら最大値を正規化
 		if (m_accelValue < m_accelLimit)
@@ -320,7 +320,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 	if (triggerL != 0.0f)
 	{
 		// アクセル状態にする
-		SetDriveState(DRIVE_STATE::DRIVE_BRAKE);
+		m_playerCar->SetDriveState(PlayerCar::DRIVE_STATE::DRIVE_BRAKE);
 
 		// ブレーキの最大値を上回っていなければ更新し、上回っていれば最大値を正規化
 		if (m_brakeValue < m_brakeLimit)
@@ -354,7 +354,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 	// アクセル・ブレーキ両方とも0ならIDLE状態に
 	if (m_accelValue == 0.0f && m_brakeValue == 0.0f)
 	{
-		SetDriveState(DRIVE_STATE::DRIVE_IDLE);
+		m_playerCar->SetDriveState(PlayerCar::DRIVE_STATE::DRIVE_IDLE);
 	}
 
 	//----------------------------------------------------------------------------------+
@@ -369,7 +369,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 		}
 		else
 		{
-			SetDriveState(DRIVE_STATE::DRIVE_IDLE);
+			m_playerCar->SetDriveState(PlayerCar::DRIVE_STATE::DRIVE_IDLE);
 			m_accelValue = m_brakeValue;
 		}
 	}
@@ -385,7 +385,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 	if (m_accelValue != 0.0f || m_brakeValue != 0.0f)
 	{
 		// アクセル時
-		if (m_driveState == DRIVE_STATE::DRIVE_ACCEL)
+		if (m_playerCar->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_ACCEL)
 		{
 			// 左右回転
 			DirVec.y += rightVec.y * vertAxis * (m_accelValue / m_accelLimit) * (m_accelLimit / 5.0f) * in_deltaTime;
@@ -393,7 +393,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 			radian += vertAxis * (m_accelValue / m_accelLimit) * (m_accelLimit / 60.0f) * in_deltaTime;
 		}
 		// バック時
-		if (m_driveState == DRIVE_STATE::DRIVE_BRAKE)
+		if (m_playerCar->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_BRAKE)
 		{
 			// 左右回転
 			DirVec.y += rightVec.y * vertAxis * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;

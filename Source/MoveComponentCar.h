@@ -6,14 +6,9 @@ class MoveComponentCar : public MoveComponent
 
 public:
 
-	enum DRIVE_STATE
-	{
-		DRIVE_IDLE,
-		DRIVE_ACCEL,
-		DRIVE_BRAKE
-	};
 
-	MoveComponentCar(class Actor* in_owner);
+
+	MoveComponentCar(class PlayerCar* in_owner);
 	~MoveComponentCar();
 
 	void Update(float in_deltaTime) override;                      // コンポーネントの更新
@@ -30,12 +25,12 @@ public:
 	const float GetAccelValue() const { return m_accelValue; }
 	void SetAccel(const float in_accel) { m_accelValue = in_accel; }
 
-	void SetDriveState(DRIVE_STATE in_state) { m_driveState = in_state; }
+
 
 protected:
 
 
-	DRIVE_STATE m_driveState;
+	class PlayerCar* m_playerCar;       // オーナーであるPlayerCarクラスへのポインタ
 
 	bool m_padIsActive;                 // コントローラがアクティブかどうか
 

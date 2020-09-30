@@ -57,7 +57,7 @@ Player::Player(bool in_isTitle)
 
 	if (m_isTitle == false)
 	{
-		MoveComponentCar* moveComp = new MoveComponentCar(this);
+		//MoveComponentCar* moveComp = new MoveComponentCar(this);
 	}
 
 

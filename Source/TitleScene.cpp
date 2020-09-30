@@ -14,7 +14,7 @@
 #include "TitleScreen.h"
 #include "Font.h"
 #include "GameScene.h"
-#include "Player.h"
+#include "PlayerCar.h"
 #include "PlayerCamera.h"
 #include "Skydome.h"
 #include "AudioManager.h"
@@ -68,9 +68,10 @@ void TitleScene::Initialize()
 	m_skydome->SetScale(1.0f);
 
 	// プレイヤー
-	m_player = new Player(true);
+	m_player = new PlayerCar();
 	m_player->SetPosition(Vector3::Zero);
-	m_player->SetTitlePlayer();
+	m_player->SetScale(0.5f);
+	m_player->SetState(Actor::STATE_PAUSED);
 
 	// カメラ
 	Camera* camera = new Camera(m_player);
@@ -235,7 +236,7 @@ SceneBase * TitleScene::Update()
 			AUDIO->FadeOutMusic(1.0f);
 
 			// プレイヤーのサウンドを停止
-			m_player->AllStopSound();
+			//m_player->AllStopSound();
 
 
 			// 全てのUIをCloseに設定
