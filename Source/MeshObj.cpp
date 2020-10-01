@@ -102,6 +102,23 @@ bool MeshObj::Load(const std::string& in_filePath, Renderer* in_renderer)
 				vertexVec[idx.vertex_index * attribStride + 6] = attrib.texcoords[2 * idx.texcoord_index + 1];
 				vertexVec[idx.vertex_index * attribStride + 7] = 1.0f - attrib.texcoords[2 * idx.texcoord_index + 0];
 
+
+				//-------------------------------------------------------------------------------------------------+
+				// 当たり判定計算
+				//-------------------------------------------------------------------------------------------------+
+				// 頂点位置から　バウンディングスフィアの半径を計算する（原点からの距離が最大のものを半径とする）
+				Vector3 pos(vertexVec[idx.vertex_index * attribStride + 0],
+					vertexVec[idx.vertex_index * attribStride + 1],
+					vertexVec[idx.vertex_index * attribStride + 2]);
+				m_radius = Math::Max(m_radius, pos.LengthSq());
+				// バウンディングボックスも計算
+				if (idx.vertex_index * attribStride + 0 == 0)
+				{
+					m_box.InitMinMax(pos);
+				}
+				m_box.UpdateMinMax(pos);
+
+
 				// ポリゴンを構成する頂点座標を一時保存
 				destPos.push_back(Vector3(vertexVec[idx.vertex_index * attribStride + 0],
 					vertexVec[idx.vertex_index * attribStride + 1],
@@ -110,6 +127,8 @@ bool MeshObj::Load(const std::string& in_filePath, Renderer* in_renderer)
 				uvPos.push_back(Vector2(vertexVec[idx.vertex_index * attribStride + 6],
 					vertexVec[idx.vertex_index * attribStride + 7]));
 			}
+
+
 
 			// タンジェント計算
 			calcTangent(tangent, destPos[0], destPos[2], destPos[1], uvPos[0], uvPos[2], uvPos[1]);

@@ -18,6 +18,7 @@
 // ディレクショナルライト構造体(平行ライト:シーン全体に降り注ぐ光)
 typedef struct DirectionalLight
 {
+	Vector3 m_position;
 	Vector3 m_direction;
 	Vector3 m_diffuseColor;
 	Vector3 m_specColor;
