@@ -16,6 +16,8 @@ MoveComponentCar::MoveComponentCar(PlayerCar* in_owner)
 	,m_handBrake(0.0f)
 	,m_accelLimit(ACCEL_LIMIT)
 	,m_brakeLimit(BRAKE_LIMIT)
+	,m_radian(0.0f)
+	,m_pastRadian(m_radian)
 {
 	m_playerCar = in_owner;
 }
@@ -44,8 +46,6 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	Vector3 forwardVec = Vector3(60.0f, 0.0f, 0.0f);
 	Vector3 rightVec = Vector3(0.0f, 1.0f, 0.0f);
 	Vector3 charaForwardVec = m_owner->GetForward();
-
-	static float radian = 0.0f;
 
 	// キャラクター移動
 	Vector3 DirVec(0.0f, 0.0f, 0.0f);
@@ -175,15 +175,15 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 			// 左右回転
 			DirVec.y += rightVec.y * axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 5.0f) * in_deltaTime;
 			// Z軸回転
-			radian += axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 60.0f) * in_deltaTime;
+			m_radian += axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 60.0f) * in_deltaTime;
 		}
 		// バック時
 		if (m_playerCar->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_BRAKE)
 		{
 			// 左右回転
-			DirVec.y += rightVec.y * axisL.x * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;
+			DirVec.y += rightVec.y * -axisL.x * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;
 			// Z軸回転
-			radian += axisL.x * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;
+			m_radian += axisL.x * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;
 		}
 
 		// 相殺時
@@ -192,7 +192,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 			// 左右回転
 			DirVec.y += rightVec.y * axisL.x * 0.5f * in_deltaTime;
 			// Z軸回転
-			radian += axisL.x * 0.5f * in_deltaTime;
+			m_radian += axisL.x * 0.5f * in_deltaTime;
 		}
 
 	}
@@ -210,12 +210,29 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 		charaForwardVec = Vector3(0, 0, 0);
 	}
 
+	// 前フレームのラジアンと現在のラジアンを比較し、プレイヤーがどちらに旋回しようとしているかを更新
+	if (m_radian < m_pastRadian)
+	{
+		m_playerCar->SetTurnState(PlayerCar::TURNING_STATE::TURN_LEFT);
+	}
+	if (m_radian > m_pastRadian)
+	{
+		m_playerCar->SetTurnState(PlayerCar::TURNING_STATE::TURN_RIGHT);
+	}
+	if (m_radian == m_pastRadian)
+	{
+		m_playerCar->SetTurnState(PlayerCar::TURNING_STATE::TURN_IDLE);
+	}
+	// ラジアンを更新
+	m_pastRadian = m_radian;
+
+
 	// 現在のスピードを保存
 	m_forwardSpeed = speed * in_deltaTime;
 
 	// Z軸の回転を更新
 	//Quaternion pRotation = m_owner->GetRotation();
-	Quaternion rotation = Quaternion::Quaternion(Vector3::UnitZ, radian);
+	Quaternion rotation = Quaternion::Quaternion(Vector3::UnitZ, m_radian);
 	//rotation = Quaternion::Lerp(pRotation, rotation, 0.1f);
 	m_owner->SetRotation(rotation);
 	rotation = m_owner->GetRotation();
@@ -238,8 +255,6 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 	Vector3 forwardVec = Vector3(60.0f, 0.0f, 0.0f);
 	Vector3 rightVec = Vector3(0.0f, 1.0f, 0.0f);
 	Vector3 charaForwardVec = m_owner->GetForward();
-
-	static float radian = 0.0f;
 
 	// キャラクター移動
 	Vector3 DirVec(0.0f, 0.0f, 0.0f);
@@ -390,7 +405,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 			// 左右回転
 			DirVec.y += rightVec.y * vertAxis * (m_accelValue / m_accelLimit) * (m_accelLimit / 5.0f) * in_deltaTime;
 			// Z軸回転
-			radian += vertAxis * (m_accelValue / m_accelLimit) * (m_accelLimit / 60.0f) * in_deltaTime;
+			m_radian += vertAxis * (m_accelValue / m_accelLimit) * (m_accelLimit / 60.0f) * in_deltaTime;
 		}
 		// バック時
 		if (m_playerCar->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_BRAKE)
@@ -398,7 +413,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 			// 左右回転
 			DirVec.y += rightVec.y * vertAxis * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;
 			// Z軸回転
-			radian += vertAxis * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;
+			m_radian += vertAxis * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;
 		}
 
 		// 相殺時
@@ -407,12 +422,27 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 			// 左右回転
 			DirVec.y += rightVec.y * vertAxis * 0.5f * in_deltaTime;
 			// Z軸回転
-			radian += vertAxis * 0.5f * in_deltaTime;
+			m_radian += vertAxis * 0.5f * in_deltaTime;
 		}
 
 	}
 
-	
+	// 前フレームのラジアンと現在のラジアンを比較し、プレイヤーがどちらに旋回しようとしているかを更新
+	if (m_radian < m_pastRadian)
+	{
+		m_playerCar->SetTurnState(PlayerCar::TURNING_STATE::TURN_LEFT);
+	}
+	if (m_radian > m_pastRadian)
+	{
+		m_playerCar->SetTurnState(PlayerCar::TURNING_STATE::TURN_RIGHT);
+	}
+	if (m_radian == m_pastRadian)
+	{
+		m_playerCar->SetTurnState(PlayerCar::TURNING_STATE::TURN_IDLE);
+	}
+	// ラジアンを更新
+	m_pastRadian = m_radian;
+
 
 	// 前進または後退時のみ前進ベクトルを更新
 	if (DirVec.x > 0.5f || DirVec.x < -0.5f)
@@ -431,7 +461,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 	m_forwardSpeed = speed * in_deltaTime;
 
 	// Z軸の回転を更新
-	Quaternion rotation = Quaternion::Quaternion(Vector3::UnitZ, radian);
+	Quaternion rotation = Quaternion::Quaternion(Vector3::UnitZ, m_radian);
 	m_owner->SetRotation(rotation);
 	rotation = m_owner->GetRotation();
 

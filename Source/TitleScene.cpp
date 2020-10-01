@@ -44,7 +44,7 @@ TitleScene::~TitleScene()
 	// プレイヤーを削除
 	m_player->SetState(Actor::STATE_DEAD);
 	// スカイドームを削除
-	m_skydome->SetState(Actor::STATE_DEAD);
+	//m_skydome->SetState(Actor::STATE_DEAD);
 
 }
 
@@ -62,10 +62,10 @@ void TitleScene::Initialize()
 	// タイトル用UI
 	TitleScreen* hud = new TitleScreen(this);
 
-	m_skydome = new Skydome();
-	m_skydome->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Skydome/Skydome_Sunny.gpmesh"));
-	m_skydome->SetPosition(Vector3::Zero);
-	m_skydome->SetScale(1.0f);
+	//m_skydome = new Skydome();
+	//m_skydome->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Skydome/Skydome_Sunny.gpmesh"));
+	//m_skydome->SetPosition(Vector3::Zero);
+	//m_skydome->SetScale(1.0f);
 
 	// プレイヤー
 	m_player = new PlayerCar();
@@ -87,8 +87,8 @@ void TitleScene::Initialize()
 	AUDIO->GetSound(m_sound["Enter"]);                                       // 決定音
 
 	// BGM
-	AUDIO->GetMusic(m_sound["BGM"]);
-	AUDIO->PlayMusic(m_sound["BGM"]);
+	//AUDIO->GetMusic(m_sound["BGM"]);
+	//AUDIO->PlayMusic(m_sound["BGM"]);
 
 
 	// ロード画面の無効化

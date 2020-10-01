@@ -308,7 +308,7 @@ void Renderer::Draw()
 	}
 
 	// デバッグコンソール描画
-	MOUSE_INSTANCE.DebugImGui();
+	//MOUSE_INSTANCE.DebugImGui();
 
 	// Swap the buffers
 	SDL_GL_SwapWindow(m_window);

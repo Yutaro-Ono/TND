@@ -89,17 +89,17 @@ void GameScene::Initialize()
     //---------------------------------------------------------------------------------------------+
 	// プレイヤーの生成
 	PlayerCar* player = new PlayerCar();
-	player->SetPosition(Vector3(300.0f, 1400.0f, 0.0f));
-	player->SetScale(0.5f);
+	player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
+	player->SetScale(0.3f);
 
 	// ロード画面処理
 	Loading();
 
 	// 天使の像
-	AngelStatue* angel = new AngelStatue();
-	angel->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Objects/Angel_Statue/Statue_Ruins.gpmesh"));
-	angel->SetPosition(Vector3(5000.0f, 3080.0f, 200.0f));
-	angel->SetScale(3.0f);
+	//AngelStatue* angel = new AngelStatue();
+	//angel->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Objects/Angel_Statue/Statue_Ruins.gpmesh"));
+	//angel->SetPosition(Vector3(5000.0f, 3080.0f, 200.0f));
+	//angel->SetScale(3.0f);
 
 	// ウェイト
 	Wait(300);
@@ -110,7 +110,7 @@ void GameScene::Initialize()
 	Skydome* skydome = new Skydome();
 	skydome->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Skydome/Skydome_Sunny.gpmesh"));
 	skydome->SetPosition(Vector3(5000.0f, 5000.0f, 0.0f));
-	skydome->SetScale(10.0f);
+	skydome->SetScale(50.0f);
 	skydome->SetSpin();           // ゲーム中では回転させる
 
 	// ウェイト
@@ -187,7 +187,7 @@ void GameScene::Initialize()
 	// タイムルール
 	RuleTime* ruleTime = new RuleTime(this);
 	m_time = ruleTime;
-	//CountDownUI* countUI = new CountDownUI(ruleTime);
+	CountDownUI* countUI = new CountDownUI(ruleTime);
 
 	// チュートリアルUI
 	//TutorialUI* tutorialUI = new TutorialUI();
@@ -215,7 +215,7 @@ SceneBase * GameScene::Update()
 			// チェインUI
 			//ChainUI* chainUI = new ChainUI(ruleScore);
 			// 制限時間のセット
-			//m_time->SetStartTime();
+			m_time->SetStartTime();
 
 			// カメラ位置初期化
 			//m_camera->SetBestCameraDist();
@@ -228,7 +228,7 @@ SceneBase * GameScene::Update()
 			//AUDIO->PlayMusic(m_sound["BGM"]);
 
 			// カウントダウンへ
-			//m_state = STATE_START;
+			m_state = STATE_START;
 		}
 
 		break;
@@ -238,7 +238,7 @@ SceneBase * GameScene::Update()
 
 
 		// プレイヤーをポーズする
-		m_player->SetState(m_player->STATE_PAUSED);
+		//m_player->SetState(m_player->STATE_PAUSED);
 
 		// カメラをプレイヤーに寄せる
 		if (m_time->GetNowCount() < 3)
@@ -254,7 +254,7 @@ SceneBase * GameScene::Update()
 		// カウント終了でアクティブに
 		if (m_time->GetNowCount() < 0)
 		{
-			m_player->SetState(m_player->STATE_ACTIVE);
+			//m_player->SetState(m_player->STATE_ACTIVE);
 
 			// 制限時間のセット
 			m_time->SetLimitTime();
@@ -268,25 +268,25 @@ SceneBase * GameScene::Update()
 	case STATE_IN_GAME:
 
 		// 現在のスコアを記録
-		m_nowScore = m_score->GetScore();
-		
-		// スコアが変動したらカウントアップ
-		if (m_nowScore != m_prevScore)
-		{
-			m_time->AddCount(1.0f);
-			m_prevScore = m_nowScore;
-		}
+		//m_nowScore = m_score->GetScore();
+		//
+		//// スコアが変動したらカウントアップ
+		//if (m_nowScore != m_prevScore)
+		//{
+		//	m_time->AddCount(1.0f);
+		//	m_prevScore = m_nowScore;
+		//}
 
 		// プレイヤーの速度を監視し、最高速度を更新したら記録を書き換え
-		if (m_bestSpeed < m_player->GetAccel())
-		{
-			m_bestSpeed = m_player->GetAccel();
-		}
+		//if (m_bestSpeed < m_player->GetAccel())
+		//{
+		//	m_bestSpeed = m_player->GetAccel();
+		//}
 
 		// ステート変更
 		if (m_time->GetCountState() == m_time->STATE_FINISH)
 		{
-			m_state = STATE_FINISH;
+			//m_state = STATE_FINISH;
 		}
 
 		break;

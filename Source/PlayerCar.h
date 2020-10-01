@@ -22,6 +22,13 @@ public:
 		DRIVE_BRAKE
 	};
 
+	enum TURNING_STATE
+	{
+		TURN_IDLE,
+		TURN_LEFT,
+		TURN_RIGHT
+	};
+
 	PlayerCar();
 	~PlayerCar();
 
@@ -40,10 +47,19 @@ public:
 	// 車の運転状態
 	void SetDriveState(DRIVE_STATE in_state) { m_driveState = in_state; }          // 車の運転状態セット
 	DRIVE_STATE GetDriveState() { return m_driveState; }                           // 車の運転状態取得
+	// 車の旋回状態
+	void SetTurnState(TURNING_STATE in_state) { m_turnState = in_state; }          // 車の旋回状態セット
+	TURNING_STATE GetTurnState() { return m_turnState; }                           // 車の運転状態取得
+
+
+	class MoveComponentCar* GetMoveComponent() const { return m_moveComp; }
+	const float GetRadian() { return m_moveComp->GetRadian(); }                    // 弧度ゲッター (MoveComponentCar)
 
 private:
 
 	DRIVE_STATE m_driveState;             // 車の運転状態
+
+	TURNING_STATE m_turnState;            // 車の旋回状態(どちらの向きに曲がろうとしているか)
 
 	bool m_isActive;      // 車両操作がアクティブの時、更新処理をする
 	

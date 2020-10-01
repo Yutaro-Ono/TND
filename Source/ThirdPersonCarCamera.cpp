@@ -51,7 +51,7 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 	// カメラの情報ベクトルもピッチから更新
 	m_upVec = Vector3::Transform(m_upVec, pitch);
 
-	// 実際のワールド座標をターゲットの座標とオフセットから算出
+	// ワールド座標をターゲットの座標とオフセットから算出
 	Vector3 targetPos = m_owner->GetPosition();
 	Vector3 cameraPos = targetPos + m_offset;
 
@@ -78,7 +78,7 @@ void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 		float yawSpeed, pitchSpeed;
 		yawSpeed = pitchSpeed = 0.0f;
 		// ヨー計算
-		yawSpeed = axisR.x / CAMERA_SENSITIVITY * in_deltaTime;
+		yawSpeed = axisR.x / CAMERA_SENSITIVITY;
 		yawSpeed *= maxOrbitSpeed;
 		// メンバにセット
 		SetYaw(yawSpeed);

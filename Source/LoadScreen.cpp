@@ -29,10 +29,10 @@ LoadScreen::LoadScreen()
 	}
 
 	// 背景
-	m_bgTexture = RENDERER->GetTexture("Data/Interface/System/Load/LoadScreen_bg.png");
+	m_bgTexture = RENDERER->GetTexture("Data/Interface/System/Load/LoadScreen_BackGround.png");
 
 	// チュートリアルメッセージ
-	m_tutorialMsg = RENDERER->GetTexture("Data/Interface/System/Load/LoadScreen_tuto_1.png");
+	// m_tutorialMsg = RENDERER->GetTexture("Data/Interface/System/Load/LoadScreen_tuto_1.png");
 
 	// 座標
 	m_loadingPos = Vector2(0.0f, -RENDERER->GetScreenHeight() / 2 + m_loading->GetHeight() + 180.0f);
@@ -75,7 +75,7 @@ void LoadScreen::Draw(Shader * in_shader)
 
 		if (m_loading)
 		{
-			// DrawTexture(in_shader, m_loading, m_loadingPos, 1.0f);
+			DrawTexture(in_shader, m_loading, m_loadingPos, 1.0f);
 		}
 
 		// ロードゲージの描画

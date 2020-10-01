@@ -13,10 +13,11 @@
 #include "FlameStatue.h"
 #include "AngelStatue.h"
 #include "Skydome.h"
-
 #include <vector>
 #include <string>
 #include <sstream>
+
+const int LevelManager::MAP_INDEX_GROUND = 16;
 
 
 // コンストラクタ
@@ -30,36 +31,68 @@ LevelManager::LevelManager(int in_stageNum)
 
 	// ステージメッシュ読み込み
 	// m_blockMeshes.push_back(&emptySpace);
-	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Block_Wall/mapBlock1.gpmesh"));
-	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Block_Wall/mapBlock1.gpmesh"));
-	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Block_Floor/BLOCK_FLOOR.gpmesh"));
-	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Pillar/PILLAR.gpmesh"));
-	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Rock/Object_Rock.gpmesh"));
+	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Block_Wall/mapBlock1.gpmesh"));
+	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Block_Wall/mapBlock1.gpmesh"));
+	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Block_Floor/BLOCK_FLOOR.gpmesh"));
+	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Pillar/PILLAR.gpmesh"));
+	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Rock/Object_Rock.gpmesh"));
+	//// オブジェクト用の配列にメッシュを格納
+	//m_objectMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Pillar/PILLAR.gpmesh"));
+	//m_objectMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Rock/Object_Rock.gpmesh"));
+	//m_objectMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Angel_Statue/Statue_Ruins.gpmesh"));
+	//m_objectMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Skydome/Skydome_Sunny.gpmesh"));
 
-	// オブジェクト用の配列にメッシュを格納
-	m_objectMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Pillar/PILLAR.gpmesh"));
-	m_objectMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Rock/Object_Rock.gpmesh"));
-	m_objectMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Objects/Angel_Statue/Statue_Ruins.gpmesh"));
-	m_objectMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/FC/Skydome/Skydome_Sunny.gpmesh"));
-
-
+	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/GroundBase/Ground.OBJ"));
+	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Street/Street.OBJ"));
+	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Building/Building.OBJ"));
 
 	//-----------------------------------------------------------------------------------------+
 	// ステージデータ読み込み
 	//-----------------------------------------------------------------------------------------+
 	// 地面
+	//std::vector<std::vector<int>> groundData;
+	//if (!ReadTiledJson(groundData, mapPath.c_str(), "layer_0"))
+	//{
+	//	printf("<Level> Map Data Load : Failed\n");
+	//	GAME_INSTANCE.SetShutDown();
+	//	return;
+	//}
+	//// オブジェクト
+	//std::vector<std::vector<int>> objData;
+	//if (!ReadTiledJson(objData, mapPath.c_str(), "layer_1"))
+	//{
+	//	printf("<Level> Map Data Load : Failed\n");
+	//	GAME_INSTANCE.SetShutDown();
+	//	return;
+	//}
+
+
+	//-----------------------------------------------------------------------------------------+
+    // ステージデータ読み込み
+    //-----------------------------------------------------------------------------------------+
+    // 地面
 	std::vector<std::vector<int>> groundData;
-	if (!ReadTiledJson(groundData, mapPath.c_str(), "layer_0"))
+	if (!ReadTiledJson(groundData, mapPath.c_str(), "layer_1"))
 	{
 		printf("<Level> Map Data Load : Failed\n");
 		GAME_INSTANCE.SetShutDown();
 		return;
 	}
-	// オブジェクト
-	std::vector<std::vector<int>> objData;
-	if (!ReadTiledJson(objData, mapPath.c_str(), "layer_1"))
+
+	// 道路
+	std::vector<std::vector<int>> streetData;
+	if (!ReadTiledJson(streetData, mapPath.c_str(), "layer_2"))
 	{
-		printf("<Level> Map Data Load : Failed\n");
+		printf("<Level> Street Data Load : Failed\n");
+		GAME_INSTANCE.SetShutDown();
+		return;
+	}
+
+	// 壁
+	std::vector<std::vector<int>> wallData;
+	if (!ReadTiledJson(wallData, mapPath.c_str(), "layer_8"))
+	{
+		printf("<Level> Street Data Load : Failed\n");
 		GAME_INSTANCE.SetShutDown();
 		return;
 	}
@@ -67,71 +100,124 @@ LevelManager::LevelManager(int in_stageNum)
 
 	LevelBlock* block;
 	const float blockSize = 200.0f;
+	const float floorZoffset = -20.0f;
 
 	int sizeX, sizeY;
 	sizeX = groundData[0].size();
 	sizeY = groundData.size();
 	float offsetY = sizeY * blockSize;
-
 	// マップブロックを登録(地形)
 	for (int iy = 0; iy < sizeY; iy++)
 	{
 		for (int ix = 0; ix < sizeX; ix++)
 		{
-			if (groundData[iy][ix] == 0)
-			{
-				continue;
-			}
-
-			if (groundData[iy][ix] < 5)
+			// 地面オブジェクトはTiled上で16で登録されている
+			if (groundData[iy][ix] == MAP_INDEX_GROUND)
 			{
 				block = new LevelBlock();
-				block->SetMesh(m_blockMeshes[groundData[iy][ix]]);
-				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, -100.0f));
+				block->SetMesh(m_blockMeshes[0]);
+				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset));
 			}
 
 		}
 	}
+	groundData.clear();
 
-	// マップブロックを登録(オブジェクト)
+	
+	// マップブロックを登録(道路)
 	for (int iy = 0; iy < sizeY; iy++)
 	{
 		for (int ix = 0; ix < sizeX; ix++)
 		{
-			if (objData[iy][ix] == 0)
-			{
-				continue;
-			}
-
-			// 柱オブジェクト
-			if (objData[iy][ix] == 3)
+			// 道路オブジェクトはTiled上で1～11で登録されている
+			if (streetData[iy][ix] >= 1 && streetData[iy][ix] <= 11)
 			{
 				block = new LevelBlock();
-				block->SetMesh(m_blockMeshes[objData[iy][ix]]);
-				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, 0.0f));
-
-				continue;
+				block->SetMesh(m_blockMeshes[1]);
+				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
 			}
 
-			// 岩オブジェクト
-			if (objData[iy][ix] == 4)
-			{
-				block = new LevelBlock();
-				block->SetMesh(m_blockMeshes[objData[iy][ix]]);
-				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, -50.0f));
-
-				continue;
-			}
-
-			// 壁ブロック
-			if (objData[iy][ix] < 5)
-			{
-				block = new LevelBlock();
-				block->SetMesh(m_blockMeshes[objData[iy][ix]]);
-				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, 100.0f));
-			}
 		}
 	}
+	streetData.clear();
+
+	// マップブロックを登録(壁)
+	for (int iy = 0; iy < sizeY; iy++)
+	{
+		for (int ix = 0; ix < sizeX; ix++)
+		{
+			// オブジェクトはTiled上で18で登録されている
+			if (wallData[iy][ix] == 19)
+			{
+				block = new LevelBlock();
+				block->SetMesh(m_blockMeshes[2]);
+				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
+			}
+
+		}
+	}
+
+
+
+	//// マップブロックを登録(地形)
+	//for (int iy = 0; iy < sizeY; iy++)
+	//{
+	//	for (int ix = 0; ix < sizeX; ix++)
+	//	{
+	//		if (groundData[iy][ix] == 0)
+	//		{
+	//			continue;
+	//		}
+
+	//		if (groundData[iy][ix] == 2)
+	//		{
+	//			block = new LevelBlock();
+	//			block->SetMesh(m_blockMeshes[groundData[iy][ix]]);
+	//			block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset));
+	//		}
+
+	//	}
+	//}
+
+	//// マップブロックを登録(オブジェクト)
+	//for (int iy = 0; iy < sizeY; iy++)
+	//{
+	//	for (int ix = 0; ix < sizeX; ix++)
+	//	{
+	//		if (objData[iy][ix] == 0)
+	//		{
+	//			continue;
+	//		}
+
+	//		// 柱オブジェクト
+	//		if (objData[iy][ix] == 3)
+	//		{
+	//			block = new LevelBlock();
+	//			block->SetMesh(m_blockMeshes[objData[iy][ix]]);
+	//			block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, 0.0f));
+
+	//			continue;
+	//		}
+
+	//		// 岩オブジェクト
+	//		if (objData[iy][ix] == 4)
+	//		{
+	//			block = new LevelBlock();
+	//			block->SetMesh(m_blockMeshes[objData[iy][ix]]);
+	//			block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, -50.0f));
+
+	//			continue;
+	//		}
+
+	//		// 壁ブロック
+	//		if (objData[iy][ix] < 5)
+	//		{
+	//			block = new LevelBlock();
+	//			block->SetMesh(m_blockMeshes[objData[iy][ix]]);
+	//			block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, 100.0f));
+	//		}
+	//	}
+	//}
 
 }
 

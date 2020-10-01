@@ -26,7 +26,7 @@ UIScreen::UIScreen()
 	GAME_INSTANCE.AddUI(this);
 
 	// フォントのロード
-	m_font = GAME_INSTANCE.GetFont("Data/Fonts/ipaexm.ttf");
+	m_font = GAME_INSTANCE.GetFont("Data/Fonts/The 2K12.ttf");
 
 }
 

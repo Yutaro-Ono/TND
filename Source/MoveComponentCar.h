@@ -23,16 +23,15 @@ public:
 
 
 	const float GetAccelValue() const { return m_accelValue; }
+	const float GetBrakeValue() const { return m_brakeValue; }
 	void SetAccel(const float in_accel) { m_accelValue = in_accel; }
 
-
+	const float GetRadian() const { return m_radian; }                 // 弧度ゲッター
 
 protected:
 
 
 	class PlayerCar* m_playerCar;       // オーナーであるPlayerCarクラスへのポインタ
-
-	bool m_padIsActive;                 // コントローラがアクティブかどうか
 
 	// アクセル・ブレーキ加速度
 	float m_accelValue;
@@ -42,6 +41,10 @@ protected:
 	// アクセル・ブレーキ限界値
 	float m_accelLimit;
 	float m_brakeLimit;
+
+	// 弧度
+	float m_radian;
+	float m_pastRadian;              // 前フレームの弧度
 
 	static const float HAND_BRAKE_VALUE;                                                     // ハンドブレーキによる減速量
     static const float ACCEL_LIMIT;

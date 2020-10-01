@@ -49,4 +49,7 @@ private:
 	float m_blockSize;
 
 
+	// Tiledエディタ上におけるオブジェクトの番号
+	static const int MAP_INDEX_GROUND;
+	static const int MAP_INDEX_BUILDING;
 };

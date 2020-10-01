@@ -38,9 +38,10 @@ ParticleTestScene::ParticleTestScene()
 	//	block->SetPosition(Vector3(i * blockSize - 400, 0, -100));
 	//}
 
-	//ライティング
+	// ディレクショナルライトの設定
 	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.2f, 0.2f, 0.2f));
 	DirectionalLight dir;
+	dir.m_position = Vector3(0.0f, 0.0f, 1200.0f);
 	dir.m_direction = Vector3(0.2f, -0.4f, -0.7f);
 	dir.m_direction.Normalize();
 	dir.m_diffuseColor = Vector3(0.78f, 0.88f, 1.0f);

@@ -38,6 +38,7 @@ private:
 
 	class MeshComponent* m_meshComp;         // メッシュコンポーネント
 
+	float m_playerRadian;                    // プレイヤーの弧度監視用
 
 	Vector3 m_adjustPos;                     // タイヤ用位置調整ベクトル
 };

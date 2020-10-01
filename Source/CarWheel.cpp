@@ -1,8 +1,10 @@
 #include "CarWheel.h"
 
+
 CarWheel::CarWheel(PlayerCar* in_owner, const std::string& in_meshPath, WHEEL_POSITION in_enumPos)
 	:m_owner(in_owner)
 	,m_wheelPosition(in_enumPos)
+	,m_playerRadian(m_owner->GetRadian())
 {
 
 	m_position = m_owner->GetPosition();
@@ -61,22 +63,41 @@ void CarWheel::UpdateActor(float in_deltaTime)
 
 	// 回転値
 	static float spin = 0.0f;
+	static float dir = -0.0f;
+
+	// タイヤのZ軸回転処理
+	if (m_owner->GetTurnState() == PlayerCar::TURN_LEFT)
+	{
+		dir = -0.25f;
+	}
+	if (m_owner->GetTurnState() == PlayerCar::TURN_RIGHT)
+	{
+		dir = 0.25f;
+	}
 
 	// オーナーであるPlayerCarクラスの運転状態がアクセル状態であれば
 	// タイヤを前方に回す
 	if (m_owner->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_ACCEL)
 	{
-		spin += 30.0f * in_deltaTime;
-		m_rotation = Quaternion::Quaternion(Vector3::UnitY, spin);
+		spin += m_owner->GetMoveComponent()->GetAccelValue() * in_deltaTime;
 	}
 	// ブレーキ状態なら後ろに回す
 	if (m_owner->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_BRAKE)
 	{
-		spin -= 30.0f * in_deltaTime;
-		m_rotation = Quaternion::Quaternion(Vector3::UnitY, spin);
+		spin -= m_owner->GetMoveComponent()->GetBrakeValue() * in_deltaTime;
+	}
+	
+	// オーナーに合わせるためワールド座標を取得し続ける (前方のタイヤはZ軸にも回転させる)
+	if (m_wheelPosition == WHEEL_POSITION::FRONT_LEFT || m_wheelPosition == WHEEL_POSITION::FRONT_RIGHT)
+	{
+		m_worldTransform = Matrix4::CreateRotationY(spin) * Matrix4::CreateRotationZ(dir) * Matrix4::CreateTranslation(m_adjustPos) * m_owner->GetWorldTransform();
+	}
+	// オーナーに合わせるためワールド座標を取得し続ける
+	else
+	{
+		m_worldTransform = Matrix4::CreateRotationY(spin) * Matrix4::CreateTranslation(m_adjustPos) * m_owner->GetWorldTransform();
+
 	}
 
-	// オーナーに合わせるためワールド座標を取得し続ける
-	m_worldTransform = Matrix4::CreateTranslation(m_adjustPos) * m_owner->GetWorldTransform();
-
+	m_playerRadian = m_owner->GetMoveComponent()->GetRadian();
 }
