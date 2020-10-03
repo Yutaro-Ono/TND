@@ -10,7 +10,7 @@
 #include "SceneBase.h"
 #include <string>
 #include <unordered_map>
-
+#include "AudioManager.h"
 
 class TitleScene : public SceneBase
 {

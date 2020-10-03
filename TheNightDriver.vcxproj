@@ -51,11 +51,14 @@
     <ClCompile Include="Source\imgui\imgui.cpp" />
     <ClCompile Include="Source\imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Source\imgui\imgui_impl_opengl2.cpp" />
     <ClCompile Include="Source\imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Source\imgui\imgui_impl_sdl.cpp" />
+    <ClCompile Include="Source\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="Source\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\InputController.cpp" />
+    <ClCompile Include="Source\InputSteeringWheel.cpp" />
     <ClCompile Include="Source\LevelBlock.cpp" />
     <ClCompile Include="Source\LevelManager.cpp" />
     <ClCompile Include="Source\LevelObject.cpp" />
@@ -140,11 +143,18 @@
     <ClInclude Include="Source\HUD.h" />
     <ClInclude Include="Source\imgui\imconfig.h" />
     <ClInclude Include="Source\imgui\imgui.h" />
+    <ClInclude Include="Source\imgui\imgui_impl_opengl2.h" />
     <ClInclude Include="Source\imgui\imgui_impl_opengl3.h" />
     <ClInclude Include="Source\imgui\imgui_impl_sdl.h" />
+    <ClInclude Include="Source\imgui\imgui_impl_win32.h" />
     <ClInclude Include="Source\imgui\imgui_internal.h" />
+    <ClInclude Include="Source\imgui\imgui_single_file.h" />
+    <ClInclude Include="Source\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Source\imgui\imstb_textedit.h" />
+    <ClInclude Include="Source\imgui\imstb_truetype.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\InputController.h" />
+    <ClInclude Include="Source\InputSteeringWheel.h" />
     <ClInclude Include="Source\LevelBlock.h" />
     <ClInclude Include="Source\LevelManager.h" />
     <ClInclude Include="Source\LevelObject.h" />
@@ -294,16 +304,17 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir).\Library\GLEW\include\;$(SolutionDir).\Library\SDL\include\;$(SolutionDir).\Library\rapidjson\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Library\GLEW\include;$(SolutionDir)Library\SDL\include;$(SolutionDir)Library\rapidjson\include;$(SolutionDir)Library\LOGI\include;$(SolutionDir)Library\dinput\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir).\Library\SDL\lib\win\x86\;$(SolutionDir).\Library\GLEW\lib\win\x86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Library\SDL\lib\win\x86\;$(SolutionDir)Library\GLEW\lib\win\x86\;$(SolutionDir)Library\LOGI\lib\x86\;$(SolutionDir)Library\dinput\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LogitechSteeringWheelLib.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;dinput8.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "$(ProjectDir)\library\SDL\lib\win\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "$(ProjectDir)\library\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</Command>
+      <Command>xcopy "$(ProjectDir)Library\SDL\lib\win\x86\*.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)Library\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y
+xcopy "$(ProjectDir)Library\LOGI\lib\x86\*.dll" "$(OutDir)" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -337,8 +348,9 @@ xcopy "$(ProjectDir)\library\GLEW\lib\win\x86\*.dll" "$(OutDir)" /i /s /y</Comma
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir).\Library\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;LogitechSteeringWheelLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>

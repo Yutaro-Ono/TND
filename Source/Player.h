@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <unordered_map>
-
+#include "AudioManager.h"
 
 class Player : public Actor
 {

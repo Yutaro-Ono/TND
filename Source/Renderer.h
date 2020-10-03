@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------+
 #pragma once
 #include <string>
+#include <Windows.h>
 #include <unordered_map>
 #include <SDL.h>
 #include <GL/glew.h>
@@ -64,6 +65,7 @@ public:
 	SDL_Renderer* GetSDLRenderer() { return m_SDLRenderer; }                // SDL刑の描画に用いるSDLRendererのゲッター
 	SDL_Window* GetSDLWindow() { return m_window; }                         // SDL Windowのゲッター
 	SDL_GLContext GetSDLGLContext() { return m_context; }                   // SDL_GLコンテキストのゲッター
+	HWND GetHWND() { return m_hwnd; }                                       // HWNDのゲッター (ハンドルコントローラの初期化に使用)
 	class Texture* GetTexture(const std::string& in_fileName);              // 指定したファイル名のテクスチャを返す
 	class Mesh* GetMesh(const  std::string& in_fileName);                   // 指定したファイル名のメッシュを返す
 	// スクリーンサイズ
@@ -135,5 +137,6 @@ private:
 	SDL_Window* m_window;                                                   // SDLのウィンドウハンドル
 	SDL_Renderer* m_SDLRenderer;                                            // SDLのレンダリングハンドル
 	SDL_GLContext m_context;                                                // OpenGLコンテキスト (内部状態管理)
+	HWND m_hwnd;                                                            // ウィンドウハンドル  
 
 };

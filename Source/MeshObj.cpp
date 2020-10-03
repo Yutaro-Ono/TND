@@ -88,7 +88,7 @@ bool MeshObj::Load(const std::string& in_filePath, Renderer* in_renderer)
 				//vertexVec[idx.vertex_index * attribStride + 6] = attrib.texcoords[2 * idx.texcoord_index + 0];
 				//vertexVec[idx.vertex_index * attribStride + 7] = 1.0f - attrib.texcoords[2 * idx.texcoord_index + 1];
 
-								// 頂点座標を頂点配列にコピー
+				// 頂点座標を頂点配列にコピー
 				vertexVec[idx.vertex_index * attribStride + 0] = attrib.vertices[3 * idx.vertex_index + 0];
 				vertexVec[idx.vertex_index * attribStride + 1] = attrib.vertices[3 * idx.vertex_index + 2];
 				vertexVec[idx.vertex_index * attribStride + 2] = attrib.vertices[3 * idx.vertex_index + 1];

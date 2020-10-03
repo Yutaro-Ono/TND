@@ -56,10 +56,11 @@ GameScene::GameScene(int in_stageNum)
 	// ライティング
 	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.3f, 0.36f, 0.4f));
 	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
+	dir.m_position = Vector3(0.0f, 0.0f, 1000.0f);
 	dir.m_direction = Vector3(0.0f, 0.0f, 1.0f);
 	dir.m_direction.Normalize();
-	dir.m_diffuseColor = Vector3(1.0f, 1.0f, 1.0f);
-	dir.m_specColor = Vector3(0.8f, 0.8f, 0.8f);
+	dir.m_diffuseColor = Vector3(0.0f, 1.0f, 0.6f);
+	dir.m_specColor = Vector3(0.0f, 1.0f, 0.0f);
 }
 
 

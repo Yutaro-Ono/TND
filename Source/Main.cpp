@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	// 最初のシーンのセット
 	GAME_INSTANCE.SetFirstScene(new TitleScene);
 	// 
-	GAME_INSTANCE.GetRenderer()->SetWindowTitle("FLAME CARRIER");
+	GAME_INSTANCE.GetRenderer()->SetWindowTitle("TND");
 	GAME_INSTANCE.RunLoop();
 	// ゲームの終了処理
 	GAME_INSTANCE.CloseGame();

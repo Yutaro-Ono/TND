@@ -40,7 +40,7 @@ public:
 	void             OnMouseWheelEvent(SDL_Event& event);
 	void             Update();
 
-	void             DebugImGui();
+	void             RenderDebugImGui();
 
 private:
 	Mouse(); //ƒVƒ“ƒOƒ‹ƒgƒ“

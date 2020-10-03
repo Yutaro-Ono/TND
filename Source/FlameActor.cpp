@@ -16,7 +16,7 @@
 #include "BoxCollider.h"
 #include "Player.h"
 #include "GetEffect.h"
-#include "AudioManager.h"
+
 
 FlameActor::FlameActor()
 	:m_velocity(Vector3(1.0f, 1.0f, 1.0f))
@@ -108,7 +108,7 @@ void FlameActor::CollisionCheck(Player* in_player)
 	if (m_state != State::STATE_DEAD && m_hitSphere != nullptr && m_hitSphere->Contains(in_player->GetPosition()))
 	{
 		// 効果音
-		AUDIO->PlaySound("Data/Music/SE/FC/Actors/Player/GetFlame/small_explosion2.wav");
+		AUDIO->PlaySoundTND("Data/Music/SE/FC/Actors/Player/GetFlame/small_explosion2.wav");
 
 		// プレイヤーのチェイン数を更新
 		in_player->AddFlameChain();

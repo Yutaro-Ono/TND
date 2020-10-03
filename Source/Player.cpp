@@ -19,7 +19,6 @@
 #include "FlameActor.h"
 #include "SandSmoke.h"
 #include "FlameSpark.h"
-#include "AudioManager.h"
 
 
 const int Player::CHAIN_LIMIT = 100;                         // チェインのリミッター(99まで)
@@ -181,7 +180,7 @@ void Player::UpdateActor(float in_deltaTime)
 		{
 			if ((m_accel >= 5.0f || m_brake >= 3.0f) && AUDIO->IsPlayingSound(m_sound["Accel_Low"]) == false)
 			{
-				AUDIO->PlaySound(m_sound["Accel_Low"]);
+				AUDIO->PlaySoundTND(m_sound["Accel_Low"]);
 			}
 			else if (m_accel < 5.0f && m_brake < 3.0f)
 			{
@@ -194,7 +193,7 @@ void Player::UpdateActor(float in_deltaTime)
 		{
 			if ((m_accel >= 5.0f || m_brake >= 3.0f) && AUDIO->IsPlayingSound(m_sound["Accel_Medium"]) == false)
 			{
-				AUDIO->PlaySound(m_sound["Accel_Medium"]);
+				AUDIO->PlaySoundTND(m_sound["Accel_Medium"]);
 			}
 			else if (m_accel < 5.0f && m_brake < 3.0f)
 			{
@@ -211,7 +210,7 @@ void Player::UpdateActor(float in_deltaTime)
 		{
 			if ((m_accel >= 5.0f || m_brake >= 3.0f) && AUDIO->IsPlayingSound(m_sound["Accel_High"]) == false)
 			{
-				AUDIO->PlaySound(m_sound["Accel_High"]);
+				AUDIO->PlaySoundTND(m_sound["Accel_High"]);
 			}
 			else if (m_accel < 5.0f && m_brake < 3.0f)
 			{
@@ -228,19 +227,19 @@ void Player::UpdateActor(float in_deltaTime)
 		// 炎SE再生
 		if (m_maxSpeedRank >= 1 && AUDIO->IsPlayingSound(m_sound["Flame"]) == false)
 		{
-			AUDIO->PlaySound(m_sound["Flame"]);
+			AUDIO->PlaySoundTND(m_sound["Flame"]);
 		}
 	}
 	else
 	{
 		if (AUDIO->IsPlayingSound(m_sound["Accel_Low"]) == false)
 		{
-			AUDIO->PlaySound(m_sound["Accel_Low"]);
+			AUDIO->PlaySoundTND(m_sound["Accel_Low"]);
 		}
 
 		if (AUDIO->IsPlayingSound(m_sound["Flame"]) == false)
 		{
-			AUDIO->PlaySound(m_sound["Flame"]);
+			AUDIO->PlaySoundTND(m_sound["Flame"]);
 		}
 	}
 
@@ -303,7 +302,7 @@ void Player::AddFlameChain()
 	// SE再生
 	if (m_flameChain >= 2)
 	{
-		AUDIO->PlaySound(m_sound["Add_Chain"]);
+		AUDIO->PlaySoundTND(m_sound["Add_Chain"]);
 	}
 
 
@@ -437,7 +436,7 @@ void Player::CollisionFix(BoxCollider * in_hitPlayerBox, BoxCollider * in_hitBox
 	if (fix.x > 5.0f || fix.x < -5.0f || fix.y > 5.0f || fix.y < -5.0f)
 	{
 		// 効果音再生
-		AUDIO->PlaySound(m_sound["HitWall"]);
+		AUDIO->PlaySoundTND(m_sound["HitWall"]);
 
 		// チェインの終了
 		// RemoveFlameChain();

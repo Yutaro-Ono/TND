@@ -16,6 +16,7 @@
 #include "Math.h"
 #include "Input.h"
 #include "InputController.h"
+#include "InputSteeringWheel.h"
 #include "Mouse.h"
 #include "GameConfig.h"
 #include "Renderer.h"
@@ -24,6 +25,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "imgui/imgui_impl_sdl.h"
+
 
 class SceneBase;
 class TestScene;
@@ -129,7 +131,7 @@ private:
 	void DebugRenderer();
 
 	GameState    m_state;                                                    // ゲームの状態(プレイ中かポーズ中か終了か)
-
+	
 	bool m_isRunning;                                                        // ゲームループを回し続ける(続行する)かどうか
 	bool m_isPauseMode;                                                      // ポーズモード
 
@@ -141,8 +143,8 @@ private:
 	class GameConfig* m_config;
 	class Renderer* m_renderer;                                              // レンダリングクラス
 	class SceneBase*   m_nowScene;                                           // 現在のシーンのインスタンス
-	//class Camera* m_activeCamera;                                            // アクティブなカメラ (システムが描画に用いる)
-	class CameraComponent* m_activeCamera;                                            // アクティブなカメラ (システムが描画に用いる)
+
+	class CameraComponent* m_activeCamera;                                   // アクティブなカメラ (システムが描画に用いる)
 
 	class PhysicsWorld* m_physicsWorld;                                      // 当たり判定システム
 	class DebugBox* m_debugBox;                                              // デバッグ用ボックス

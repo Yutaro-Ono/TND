@@ -69,7 +69,7 @@ void Mouse::Update()
 	m_mouseWheel = Vector2::Zero;
 }
 
-void Mouse::DebugImGui()
+void Mouse::RenderDebugImGui()
 {
 	// ImGuiフレームを開始
 	ImGui_ImplOpenGL3_NewFrame();

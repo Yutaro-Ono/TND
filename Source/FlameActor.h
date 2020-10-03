@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------+
 #pragma once
 #include "Actor.h"
+#include "AudioManager.h"
 
 class Player;
 

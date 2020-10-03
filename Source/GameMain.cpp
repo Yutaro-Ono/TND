@@ -139,7 +139,16 @@ bool GameMain::Initialize()
 	m_debugBox = new DebugBox;
 
 	// 入力システム(コントローラー)初期化
-	CONTROLLER_INSTANCE.Initialize();
+	if (!CONTROLLER_INSTANCE.Initialize())
+	{
+		return false;
+	}
+
+	// 入力システム(ステアリング)初期化
+	if (!STEERING_CONTROLLER_INSTANCE.Initialize())
+	{
+		return false;
+	}
 
 	// フレーム初期化
 	m_frame = 0;
@@ -193,7 +202,9 @@ void GameMain::Delete()
 	delete m_physicsWorld;
 	delete m_debugBox;
 
+	// 入力関連の削除
 	CONTROLLER_INSTANCE.Delete();
+	STEERING_CONTROLLER_INSTANCE.Delete();
 
 	// Imguiの削除
 	ImGui_ImplOpenGL3_Shutdown();
@@ -427,8 +438,11 @@ void GameMain::Input()
 	// キーボード入力更新
 	INPUT_INSTANCE.Update();
 
-	// コントローラー入力更新
+	// コントローラ入力更新
 	CONTROLLER_INSTANCE.Update();
+
+	// ステアリングコントローラ入力更新
+	STEERING_CONTROLLER_INSTANCE.Update();
 
 	// マウス入力更新
 	MOUSE_INSTANCE.Update();

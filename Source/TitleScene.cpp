@@ -17,7 +17,6 @@
 #include "PlayerCar.h"
 #include "PlayerCamera.h"
 #include "Skydome.h"
-#include "AudioManager.h"
 #include "LoadScreen.h"
 
 const int TitleScene::STAGE_ALL_NUM = 1;
@@ -31,10 +30,11 @@ TitleScene::TitleScene()
 	//ライティング
 	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.5f, 0.56f, 0.6f));
 	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
+	dir.m_position = Vector3(0.0f, 0.0f, 1000.0f);
 	dir.m_direction = Vector3(0.0f, 0.0f, 1.0f);
 	dir.m_direction.Normalize();
-	dir.m_diffuseColor = Vector3(1.0f, 1.0f, 1.0f);
-	dir.m_specColor = Vector3(0.8f, 0.8f, 0.8f);
+	dir.m_diffuseColor = Vector3(0.0f, 1.0f, 0.6f);
+	dir.m_specColor = Vector3(0.0f, 1.0f, 0.0f);
 }
 
 
@@ -118,7 +118,7 @@ SceneBase * TitleScene::Update()
 			|| CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_START))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 			m_state = GAME_START;
 		}
 
@@ -136,7 +136,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_TAB) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_B))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			m_state = PRESS_ANY_KEY;
 			break;
@@ -147,7 +147,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_DOWN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			m_state = GAME_QUIT;
 		}
@@ -157,7 +157,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_SPACE) || INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RETURN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_A))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			// ステージセレクトへ
 			m_state = STAGE_SELECT;
@@ -180,7 +180,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_TAB) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_B))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			// "GAME_START"へ
 			m_state = GAME_START;
@@ -197,7 +197,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_UP) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_UP))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			// ステージ1でなければ選択中のステージをカウントダウン
 			if (m_selectedStage != 0)
@@ -212,7 +212,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_DOWN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			// ステージ数の上限でなければ選択中のステージ番号をカウントアップ
 			if (m_selectedStage < STAGE_ALL_NUM - 1)
@@ -231,7 +231,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_SPACE) || INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RETURN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_A))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 			// 音楽をフェードアウト
 			AUDIO->FadeOutMusic(1.0f);
 
@@ -270,7 +270,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_SPACE) || INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RETURN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_A))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			GAME_INSTANCE.SetShutDown();
 			break;
@@ -280,7 +280,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_TAB) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_B))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			m_state = PRESS_ANY_KEY;
 			break;
@@ -291,7 +291,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_UP) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_UP))
 		{
 			// 決定音
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			m_state = GAME_START;
 		}

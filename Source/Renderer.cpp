@@ -8,6 +8,7 @@
 #include "GameMain.h"
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_syswm.h"
 #include "Texture.h"
 #include "SpriteComponent.h"
 #include "Mesh.h"
@@ -95,6 +96,12 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	}
 	glViewport(0, 0, m_screenWidth, m_screenHeight);
 
+	// wminfo構造体
+	SDL_SysWMinfo wminfo;
+	SDL_VERSION(&wminfo.version);
+	SDL_GetWindowWMInfo(m_window, &wminfo);
+	m_hwnd = wminfo.info.win.window;
+	
     //----------------------------------------------------------------+
     // OpenGLコンテキスト設定
     //----------------------------------------------------------------+
@@ -308,7 +315,8 @@ void Renderer::Draw()
 	}
 
 	// デバッグコンソール描画
-	//MOUSE_INSTANCE.DebugImGui();
+	//MOUSE_INSTANCE.ImGuiDebugRendering();
+	STEERING_CONTROLLER_INSTANCE.RenderDebugImGui();
 
 	// Swap the buffers
 	SDL_GL_SwapWindow(m_window);

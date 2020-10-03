@@ -819,28 +819,30 @@ public:
 		return Matrix4(temp);
 	}
 
-	static Matrix4 CreateOrtho(float width, float height, float near, float far)
+	static Matrix4 CreateOrtho(float in_width, float in_height, float in_near, float in_far)
 	{
+
+
 		float temp[4][4] =
 		{
-			{ 2.0f / width, 0.0f, 0.0f, 0.0f },
-			{ 0.0f, 2.0f / height, 0.0f, 0.0f },
-			{ 0.0f, 0.0f, 1.0f / (far - near), 0.0f },
-			{ 0.0f, 0.0f, near / (near - far), 1.0f }
+			{ 2.0f / in_width, 0.0f, 0.0f, 0.0f },
+			{ 0.0f, 2.0f / in_height, 0.0f, 0.0f },
+			{ 0.0f, 0.0f, 1.0f / (in_far - in_near), 0.0f },
+			{ 0.0f, 0.0f, in_near / (in_near - in_far), 1.0f }
 		};
 		return Matrix4(temp);
 	}
 
-	static Matrix4 CreatePerspectiveFOV(float fovY, float width, float height, float near, float far)
+	static Matrix4 CreatePerspectiveFOV(float in_fovY, float in_width, float in_height, float in_near, float in_far)
 	{
-		float yScale = Math::Cot(fovY / 2.0f);
-		float xScale = yScale * height / width;
+		float yScale = Math::Cot(in_fovY / 2.0f);
+		float xScale = yScale * in_height / in_width;
 		float temp[4][4] =
 		{
 			{ xScale, 0.0f, 0.0f, 0.0f },
 			{ 0.0f, yScale, 0.0f, 0.0f },
-			{ 0.0f, 0.0f, far / (far - near), 1.0f },
-			{ 0.0f, 0.0f, -near * far / (far - near), 0.0f }
+			{ 0.0f, 0.0f, in_far / (in_far - in_near), 1.0f },
+			{ 0.0f, 0.0f, -in_near * in_far / (in_far - in_near), 0.0f }
 		};
 		return Matrix4(temp);
 	}

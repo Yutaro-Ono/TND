@@ -53,13 +53,13 @@ void AudioManager::RemoveSound(const std::string & in_fileName)
 	}
 }
 
-void AudioManager::PlaySound(const std::string & in_fileName)
+void AudioManager::PlaySoundTND(const std::string& in_fileName)
 {
-	// ƒTƒEƒ“ƒh‚ð–Â‚ç‚·
 	m_sounds[in_fileName]->Play();
 }
 
-void AudioManager::StopSound(const std::string & in_fileName)
+
+void AudioManager::StopSound(const std::string& in_fileName)
 {
 	m_sounds[in_fileName]->Stop();
 }

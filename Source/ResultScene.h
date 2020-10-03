@@ -9,7 +9,7 @@
 // インクルードファイル
 #include "SceneBase.h"
 #include <unordered_map>
-
+#include "AudioManager.h"
 
 class ResultScene : public SceneBase
 {

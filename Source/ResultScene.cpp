@@ -19,7 +19,6 @@
 #include "FlameActor.h"
 #include "Camera.h"
 #include "ResultScreen.h"
-#include "AudioManager.h"
 #include "LoadScreen.h"
 #include "RecordScore.h"
 
@@ -240,7 +239,7 @@ SceneBase * ResultScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RIGHT) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_RIGHT))
 		{
 			// Œˆ’è‰¹Ä¶
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			m_state = STATE_GAME_QUIT;
 		}
@@ -249,7 +248,7 @@ SceneBase * ResultScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_SPACE) || INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RETURN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_A))
 		{
 			// Œˆ’è‰¹Ä¶
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			// ‘S‚Ä‚ÌUI‚ðClose‚ÉÝ’è
 			for (auto iter : GAME_INSTANCE.GetUIStack())
@@ -280,7 +279,7 @@ SceneBase * ResultScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_LEFT) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_LEFT))
 		{
 			// Œˆ’è‰¹Ä¶
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			m_state = STATE_ONE_MORE;
 		}
@@ -289,7 +288,7 @@ SceneBase * ResultScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_SPACE) || INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RETURN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_A))
 		{
 			// Œˆ’è‰¹Ä¶
-			AUDIO->PlaySound(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			GAME_INSTANCE.SetShutDown();
 			break;
