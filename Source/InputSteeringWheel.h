@@ -5,9 +5,8 @@
 // copyright (C) 2019 Yutaro Ono. all rights reserved.
 //-----------------------------------------------------------------------+
 #pragma once
-#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
+//#pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup")
+//#define INITGUID
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 #include <map>
@@ -48,6 +47,7 @@ public:
 	void Delete();                         // 削除処理
 
 	void Update();                         // 更新処理
+
 
 	// 指定したコントローラ部位の入力値を取得
 	long GetControlValue(int in_device, int in_control);

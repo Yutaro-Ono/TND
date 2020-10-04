@@ -304,11 +304,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Library\GLEW\include;$(SolutionDir)Library\SDL\include;$(SolutionDir)Library\rapidjson\include;$(SolutionDir)Library\LOGI\include;$(SolutionDir)Library\dinput\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Library\GLEW\include;$(SolutionDir)Library\SDL\include;$(SolutionDir)Library\rapidjson\include;$(SolutionDir)Library\LOGI\include;$(SolutionDir)Library\DirectX\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)Library\SDL\lib\win\x86\;$(SolutionDir)Library\GLEW\lib\win\x86\;$(SolutionDir)Library\LOGI\lib\x86\;$(SolutionDir)Library\dinput\lib\</AdditionalLibraryDirectories>
-      <AdditionalDependencies>LogitechSteeringWheelLib.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;dinput8.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Library\SDL\lib\win\x86\;$(SolutionDir)Library\GLEW\lib\win\x86\;$(SolutionDir)Library\LOGI\lib\x86\;$(SolutionDir)Library\DirectX\lib\</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LogitechSteeringWheelLib.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;dinput8.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>

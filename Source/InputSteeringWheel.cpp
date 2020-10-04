@@ -3,7 +3,39 @@
 #include <dinput.h>
 
 
+static LPDIRECTINPUT8 dinput;                              // DirectInput
+static LPDIRECTINPUTDEVICE8 dinputDevice;                  // dinputデバイス
 
+static DIDEVCAPS devCaps;                                  // 接続デバイスの機能
+
+// ジョイスティック列挙関数
+BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE* p_didInstance, void* p_Context)
+{
+	// 列挙されたジョイスティックへのインターフェースを取得
+	HRESULT hresult = dinput->CreateDevice(p_didInstance->guidInstance, &dinputDevice, NULL);
+	if (FAILED(hresult))
+	{
+		return DIENUM_CONTINUE;
+	}
+
+	// ジョイスティックの機能を調べる
+	devCaps.dwSize = sizeof(DIDEVCAPS);
+	hresult = dinputDevice->GetCapabilities(&devCaps);
+	if (FAILED(hresult))
+	{
+		printf("ジョイスティック機能の取得に失敗\n");
+		return DIENUM_CONTINUE;
+	}
+
+
+	return DIENUM_STOP;
+}
+
+// ジョイスティックの軸列挙関数
+BOOL CALLBACK EnumAxesCallBack(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef)
+{
+
+}
 
 InputSteeringWheel::InputSteeringWheel()
 	:m_dinput(NULL)
@@ -25,7 +57,24 @@ bool InputSteeringWheel::Initialize()
 	// インスタンスハンドルを取得
 	m_hInstance = GetModuleHandle(NULL);
 	// DirectInput作成
-	HRESULT hresult = DirectInput8Create(m_hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (LPVOID*)m_dinput, NULL);
+	HRESULT hresult = DirectInput8Create(m_hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&m_dinput, NULL);
+
+	if (FAILED(hresult))
+	{
+		printf("DirectInput8オブジェクトの作成に失敗\n");
+		return false;
+	}
+
+	// デバイスからオブジェクトを作成
+	hresult = m_dinput->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, NULL, DIEDFL_ATTACHEDONLY);
+	if (FAILED(hresult) || m_dinputDevice == NULL)
+	{
+		printf("DirectInputDevice8オブジェクトの作成に失敗\n");
+		return false;
+	}
+
+	// データ形式を設定
+	hresult = m_dinputDevice->EnumObjects()
 
 	return true;
 }
@@ -40,134 +89,15 @@ void InputSteeringWheel::Update()
 	// 更新に用いる変数群
 	int index = 0;             // 認識しているコントローラの数
 
-	// 更新処理
-	LogiUpdate();
 
-	//m_isWheelActive = LogiIsDeviceConnected(0, LOGI_DEVICE_TYPE_WHEEL);
-	m_isWheelActive = LogiIsModelConnected(0, MODEL_NAME);
-	printf("Steering Wheel Connet : %d\n", m_isWheelActive);
-
-	if (!m_isWheelActive)
-	{
-		// 入力状態を取得
-		m_DIJoyState = LogiGetState(index);
-
-		// ロジクール製コントローラ用プロパティ生成
-		LogiControllerPropertiesData propertiesData;
-		ZeroMemory(&propertiesData, sizeof(propertiesData));     // 初期化
-		// 接続された番号(index)のコントローラのプロパティを取得
-		LogiGetCurrentControllerProperties(index, propertiesData);
-
-		// ペダルの入力値を取得(long型なのでfloatへ変換する)
-		if (propertiesData.combinePedals)
-		{
-			m_accelParam = max(((-(float)(GetControlValue(index, ACCELERATOR))) / 32767), 0);
-			m_brakeParam = max(((-(float)(GetControlValue(index, BRAKE))) / 32767), 0);
-		}
-
-	}
 
 }
+
 
 // 操作状態毎の値を返す
 long InputSteeringWheel::GetControlValue(int in_device, int in_control)
 {
-	if (in_control == WHEEL)
-	{
-		switch (m_controlMap[in_control])
-		{
-		case X_AXIS:
-			return m_DIJoyState->lX;
-		case Y_AXIS:
-			return m_DIJoyState->lY;
-		case Z_AXIS:
-			return m_DIJoyState->lZ;
-		case SLIDER_0:
-			return m_DIJoyState->rglSlider[0];
-		case SLIDER_1:
-			return m_DIJoyState->rglSlider[1];
-		case X_ROT:
-			return m_DIJoyState->lRx;
-		case Y_ROT:
-			return m_DIJoyState->lRy;
-		case Z_ROT:
-			return m_DIJoyState->lRz;
-		default:
-			return m_DIJoyState->lX;
-		}
-	}
-	if (in_control == ACCELERATOR)
-	{
-		switch (m_controlMap[in_control])
-		{
-		case X_AXIS:
-			return m_DIJoyState->lX;
-		case Y_AXIS:
-			return m_DIJoyState->lY;
-		case Z_AXIS:
-			return m_DIJoyState->lZ;
-		case SLIDER_0:
-			return m_DIJoyState->rglSlider[0];
-		case SLIDER_1:
-			return m_DIJoyState->rglSlider[1];
-		case X_ROT:
-			return m_DIJoyState->lRx;
-		case Y_ROT:
-			return m_DIJoyState->lRy;
-		case Z_ROT:
-			return m_DIJoyState->lRz;
-		default:
-			return m_DIJoyState->lY;
-		}
-	}
-	if (in_control == BRAKE)
-	{
-		switch (m_controlMap[in_control])
-		{
-		case X_AXIS:
-			return m_DIJoyState->lX;
-		case Y_AXIS:
-			return m_DIJoyState->lY;
-		case Z_AXIS:
-			return m_DIJoyState->lZ;
-		case SLIDER_0:
-			return m_DIJoyState->rglSlider[0];
-		case SLIDER_1:
-			return m_DIJoyState->rglSlider[1];
-		case X_ROT:
-			return m_DIJoyState->lRx;
-		case Y_ROT:
-			return m_DIJoyState->lRy;
-		case Z_ROT:
-			return m_DIJoyState->lRz;
-		default:
-			return m_DIJoyState->lRz;
-		}
-	}
-	if (in_control == CLUTCH)
-	{
-		switch (m_controlMap[in_control])
-		{
-		case X_AXIS:
-			return m_DIJoyState->lX;
-		case Y_AXIS:
-			return m_DIJoyState->lY;
-		case Z_AXIS:
-			return m_DIJoyState->lZ;
-		case SLIDER_0:
-			return m_DIJoyState->rglSlider[0];
-		case SLIDER_1:
-			return m_DIJoyState->rglSlider[1];
-		case X_ROT:
-			return m_DIJoyState->lRx;
-		case Y_ROT:
-			return m_DIJoyState->lRy;
-		case Z_ROT:
-			return m_DIJoyState->lRz;
-		default:
-			return m_DIJoyState->rglSlider[0];
-		}
-	}
+
 
 	return 0;
 }
