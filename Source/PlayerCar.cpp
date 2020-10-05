@@ -21,6 +21,7 @@ PlayerCar::PlayerCar()
 {
 	// 車両操作用のMoveComponentを生成
 	m_moveComp = new MoveComponentCar(this);
+	m_moveComp->SetActive(false);
 	// カメラコンポーネントを生成
 	m_cameraComp = new ThirdPersonCarCamera(this);
 
@@ -48,27 +49,29 @@ void PlayerCar::UpdateActor(float in_deltaTime)
 	// ディアクティベートされたら
 	if (!m_isActive)
 	{
+		m_moveComp->SetActive(false);
 		// メッシュの表示を切らせるよう命令
-		m_body->GetMeshComponent()->SetVisible(false);
-		m_door[0]->GetMeshComponent()->SetVisible(false);
-		m_door[1]->GetMeshComponent()->SetVisible(false);
-		m_handle->GetMeshComponent()->SetVisible(false);
-		for (int i = 0; i < 4; i++)
-		{
-			m_wheel[i]->GetMeshComponent()->SetVisible(false);
-		}
+		//m_body->GetMeshComponent()->SetVisible(false);
+		//m_door[0]->GetMeshComponent()->SetVisible(false);
+		//m_door[1]->GetMeshComponent()->SetVisible(false);
+		//m_handle->GetMeshComponent()->SetVisible(false);
+		//for (int i = 0; i < 4; i++)
+		//{
+		//	m_wheel[i]->GetMeshComponent()->SetVisible(false);
+		//}
 
 	}
 	else
 	{
-		m_body->GetMeshComponent()->SetVisible(true);
-		m_door[0]->GetMeshComponent()->SetVisible(true);
-		m_door[1]->GetMeshComponent()->SetVisible(true);
-		m_handle->GetMeshComponent()->SetVisible(true);
-		for (int i = 0; i < 4; i++)
-		{
-			m_wheel[i]->GetMeshComponent()->SetVisible(true);
-		}
+		m_moveComp->SetActive(true);
+		//m_body->GetMeshComponent()->SetVisible(true);
+		//m_door[0]->GetMeshComponent()->SetVisible(true);
+		//m_door[1]->GetMeshComponent()->SetVisible(true);
+		//m_handle->GetMeshComponent()->SetVisible(true);
+		//for (int i = 0; i < 4; i++)
+		//{
+		//	m_wheel[i]->GetMeshComponent()->SetVisible(true);
+		//}
 	}
 
 }

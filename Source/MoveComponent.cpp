@@ -5,6 +5,7 @@
 
 MoveComponent::MoveComponent(Actor * in_owner, int in_updateOrder)
 	:Component(in_owner, in_updateOrder)
+	,m_isActive(true)
 	,m_padIsActive(CONTROLLER_INSTANCE.IsAvailable())
 	,m_angularSpeed(0.0f)
 	,m_forwardSpeed(0.0f)

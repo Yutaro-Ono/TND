@@ -246,6 +246,9 @@
     <Filter Include="リソース ファイル\ImGui">
       <UniqueIdentifier>{ee2a74b0-f6ee-4f0b-8efa-c20c11334023}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Camera\HumanCamera">
+      <UniqueIdentifier>{2be2cf55-170e-440b-8b9e-2f89bd3ef926}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -517,6 +520,12 @@
     </ClCompile>
     <ClCompile Include="Source\InputSteeringWheel.cpp">
       <Filter>ソース ファイル\System\Input\SteeringWheel</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerHuman.cpp">
+      <Filter>ソース ファイル\Actor\Player\Human</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HumanCamera.cpp">
+      <Filter>ソース ファイル\Camera\HumanCamera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -804,6 +813,12 @@
     </ClInclude>
     <ClInclude Include="Source\imgui\imstb_truetype.h">
       <Filter>リソース ファイル\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerHuman.h">
+      <Filter>ソース ファイル\Actor\Player\Human</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HumanCamera.h">
+      <Filter>ソース ファイル\Camera\HumanCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

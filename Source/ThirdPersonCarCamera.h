@@ -1,3 +1,5 @@
+// 車操作用カメラ
+
 #pragma once
 #include "CameraComponent.h"
 
@@ -16,6 +18,7 @@ public:
 
 	void ProcessInput(float in_deltaTime) override;
 
+
 	//--------------------------------------------+
 	// Getter / Setter
 	//--------------------------------------------+
@@ -29,9 +32,19 @@ public:
 
 private:
 
+
+	const Vector3& ComputeCameraPos() const;
+
+	class PlayerCar* m_playerCar;      // プレイヤーへのポインタ
+
+	Vector3 m_position;       // カメラの座標
+
 	Vector3 m_offset;          // ターゲットからの距離オフセット
 
 	Vector3 m_upVec;           // カメラの上方ベクトル
+
+	// カメラ加速度
+	Vector3 m_velocity;
 
 	// ピッチ速度(/秒)
 	float m_pitch;
@@ -39,9 +52,15 @@ private:
 	// ヨー速度(/秒)
 	float m_yaw;
 
+	// ターゲットまでの距離
+	float m_distance;
+
 	// マウス
 	Vector2 m_mousePos;                    // マウスの座標
 	Vector2 m_frameMousePos;               // マウスの前フレームの座標
 
 	static const float CAMERA_SENSITIVITY;
+	static const Vector3 DEFAULT_DISTANCE_OFFSET;
+	static const float MIN_TARGET_DISTANCE;        // ターゲットまでの最短距離
+	static const float MAX_TARGET_DISTANCE;        // ターゲットまでの最大距離
 };

@@ -28,5 +28,11 @@ private:
 
 	PLAYER_MODE m_playerMode;
 
+	// プレイヤーの人間・車クラス
+	class PlayerHuman* m_playerHuman;
+	class PlayerCar* m_playerCar;
+
+
+
 
 };

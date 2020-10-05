@@ -34,7 +34,7 @@ BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE* p_didInstance, void*
 // ジョイスティックの軸列挙関数
 BOOL CALLBACK EnumAxesCallBack(LPCDIDEVICEOBJECTINSTANCE lpddoi, LPVOID pvRef)
 {
-
+	return DIENUM_STOP;
 }
 
 InputSteeringWheel::InputSteeringWheel()
@@ -54,27 +54,27 @@ InputSteeringWheel::~InputSteeringWheel()
 
 bool InputSteeringWheel::Initialize()
 {
-	// インスタンスハンドルを取得
-	m_hInstance = GetModuleHandle(NULL);
-	// DirectInput作成
-	HRESULT hresult = DirectInput8Create(m_hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&m_dinput, NULL);
+	//// インスタンスハンドルを取得
+	//m_hInstance = GetModuleHandle(NULL);
+	//// DirectInput作成
+	//HRESULT hresult = DirectInput8Create(m_hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&m_dinput, NULL);
 
-	if (FAILED(hresult))
-	{
-		printf("DirectInput8オブジェクトの作成に失敗\n");
-		return false;
-	}
+	//if (FAILED(hresult))
+	//{
+	//	printf("DirectInput8オブジェクトの作成に失敗\n");
+	//	return false;
+	//}
 
-	// デバイスからオブジェクトを作成
-	hresult = m_dinput->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, NULL, DIEDFL_ATTACHEDONLY);
-	if (FAILED(hresult) || m_dinputDevice == NULL)
-	{
-		printf("DirectInputDevice8オブジェクトの作成に失敗\n");
-		return false;
-	}
+	//// デバイスからオブジェクトを作成
+	//hresult = m_dinput->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, NULL, DIEDFL_ATTACHEDONLY);
+	//if (FAILED(hresult) || m_dinputDevice == NULL)
+	//{
+	//	printf("DirectInputDevice8オブジェクトの作成に失敗\n");
+	//	return false;
+	//}
 
 	// データ形式を設定
-	hresult = m_dinputDevice->EnumObjects()
+	//hresult = m_dinputDevice->EnumObjects()
 
 	return true;
 }

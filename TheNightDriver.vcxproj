@@ -48,6 +48,7 @@
     <ClCompile Include="Source\GetEffect.cpp" />
     <ClCompile Include="Source\Grid.cpp" />
     <ClCompile Include="Source\HUD.cpp" />
+    <ClCompile Include="Source\HumanCamera.cpp" />
     <ClCompile Include="Source\imgui\imgui.cpp" />
     <ClCompile Include="Source\imgui\imgui_demo.cpp" />
     <ClCompile Include="Source\imgui\imgui_draw.cpp" />
@@ -84,6 +85,7 @@
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayerCamera.cpp" />
     <ClCompile Include="Source\PlayerCar.cpp" />
+    <ClCompile Include="Source\PlayerHuman.cpp" />
     <ClCompile Include="Source\PlayerManager.cpp" />
     <ClCompile Include="Source\RapidJsonHelper.cpp" />
     <ClCompile Include="Source\RecordScore.cpp" />
@@ -141,6 +143,7 @@
     <ClInclude Include="Source\GetEffect.h" />
     <ClInclude Include="Source\Grid.h" />
     <ClInclude Include="Source\HUD.h" />
+    <ClInclude Include="Source\HumanCamera.h" />
     <ClInclude Include="Source\imgui\imconfig.h" />
     <ClInclude Include="Source\imgui\imgui.h" />
     <ClInclude Include="Source\imgui\imgui_impl_opengl2.h" />
@@ -180,6 +183,7 @@
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\PlayerCamera.h" />
     <ClInclude Include="Source\PlayerCar.h" />
+    <ClInclude Include="Source\PlayerHuman.h" />
     <ClInclude Include="Source\PlayerManager.h" />
     <ClInclude Include="Source\RapidJsonHelper.h" />
     <ClInclude Include="Source\RecordScore.h" />

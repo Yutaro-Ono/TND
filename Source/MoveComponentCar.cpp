@@ -28,14 +28,18 @@ MoveComponentCar::~MoveComponentCar()
 
 void MoveComponentCar::Update(float in_deltaTime)
 {
-	if (m_padIsActive)
+	if (m_isActive)
 	{
-		MovementByController(in_deltaTime);
+		if (m_padIsActive)
+		{
+			MovementByController(in_deltaTime);
+		}
+		else
+		{
+			MovementByKeyboard(in_deltaTime);
+		}
 	}
-	else
-	{
-		MovementByKeyboard(in_deltaTime);
-	}
+
 }
 
 

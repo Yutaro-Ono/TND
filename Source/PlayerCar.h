@@ -15,6 +15,7 @@ class PlayerCar : public Actor
 {
 public:
 
+	// ‰^“]‚Ìó‘Ô
 	enum DRIVE_STATE
 	{
 		DRIVE_IDLE,
@@ -22,6 +23,7 @@ public:
 		DRIVE_BRAKE
 	};
 
+	// ‚Ç‚¿‚ç‚Ö‹È‚ª‚Á‚Ä‚¢‚é‚©‚Ìó‘Ô
 	enum TURNING_STATE
 	{
 		TURN_IDLE,

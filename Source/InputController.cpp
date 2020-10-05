@@ -31,7 +31,7 @@ InputController::~InputController()
 bool InputController::Initialize()
 {
 	// パッドの設定ファイル gamecontrollerdb.txt の読み込みと問題が無いかのチェック
-// 様々なコントローラーの入力タイプに対応
+    // 様々なコントローラーの入力タイプに対応
 	int iNumOfControllers = SDL_GameControllerAddMappingsFromFile("Data/Strings/gamecontrollerdb.txt");
 	if (iNumOfControllers == -1)
 	{
@@ -41,6 +41,7 @@ bool InputController::Initialize()
 
 	// コントローラ開く
 	m_gameController = SDL_GameControllerOpen(0);
+
 	if (SDL_IsGameController(0) && m_gameController)
 	{
 		std::cout << SDL_GameControllerMapping(m_gameController) << std::endl;
