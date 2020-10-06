@@ -8,7 +8,11 @@
 PlayerManager::PlayerManager()
 	:m_playerMode(PLAYER_MODE::MODE_HUMAN)
 {
-	
+	m_playerHuman = new PlayerHuman(this);
+	m_playerHuman->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
+
+	m_playerCar = new PlayerCar();
+	m_playerCar->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
 }
 
 PlayerManager::~PlayerManager()

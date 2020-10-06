@@ -9,7 +9,7 @@ class CarWheel : public Actor
 public:
 
 	// ŽÔ‘Ì‚É‚¨‚¯‚éƒ^ƒCƒ„‚ÌˆÊ’u
-	enum WHEEL_POSITION
+	typedef enum WHEEL_POSITION
 	{
 		FRONT_LEFT = 0,
 		FRONT_RIGHT,

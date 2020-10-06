@@ -66,9 +66,12 @@ public:
 	SDL_Window* GetSDLWindow() { return m_window; }                         // SDL Windowのゲッター
 	SDL_GLContext GetSDLGLContext() { return m_context; }                   // SDL_GLコンテキストのゲッター
 	HWND GetHWND() { return m_hwnd; }                                       // HWNDのゲッター (ハンドルコントローラの初期化に使用)
+	
 	class Texture* GetTexture(const std::string& in_fileName);              // 指定したファイル名のテクスチャを返す
 	class Mesh* GetMesh(const  std::string& in_fileName);                   // 指定したファイル名のメッシュを返す
-	// スクリーンサイズ
+	const class Skeleton* GetSkeleton(const char* in_fileName);             // 指定したファイル名のスケルタルメッシュの取得
+	const class Animation* GetAnimation(const char* in_fileName, bool in_loop);
+																			// スクリーンサイズ
 	float GetScreenWidth() { return static_cast<float>(m_screenWidth); }
 	float GetScreenHeight() { return static_cast<float>(m_screenHeight); }
 	// ディレクショナルライト
@@ -97,8 +100,13 @@ private:
 	std::unordered_map<std::string, class Texture*> m_textures;            // テクスチャ登録配列
 	std::unordered_map<std::string, class Mesh*> m_meshes;                 // メッシュ登録配列
 	
+	// スケルトン・アニメーションの登録用配列(スケルタルメッシュのみ)
+	std::unordered_map<std::string, class Skeleton*> m_skeletons;
+	std::unordered_map<std::string, class Animation*> m_animations;
+
 	std::vector<class SpriteComponent*> m_spriteComponents;
 	std::vector<class MeshComponent*> m_meshComponents;                    // メッシュコンポーネント
+	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;
 
 	//--------------------------------------------//
 	// ライティング関連

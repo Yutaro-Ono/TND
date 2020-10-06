@@ -38,7 +38,59 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 
 	// 入力に関する処理
 	ProcessInput(in_deltaTime);
-	
+
+	// オーナーアクタの座標を取得
+	Vector3 targetPos = m_owner->GetPosition();
+
+	// プレイヤーの車が走っていない時のみ、軌道カメラ操作を行う
+	if (m_playerCar->GetMoveComponent()->GetAccelValue() >= 10.0f || CONTROLLER_INSTANCE.GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) >= 0.1f ||
+		INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_W))
+	{
+		// ばね定数
+		const float springConstant = 128.0f;
+
+		// ばね定数から減衰を計算
+		float dampening = 3.0f * Math::Sqrt(springConstant);
+
+		// 理想の位置を計算
+		Vector3 idealPos = ComputeCameraPos();
+
+		// 現在地と理想の差を計算
+		Vector3 diff = m_position - idealPos;
+
+
+		// ばねによる加速度
+		Vector3 accel = -springConstant * diff - dampening * m_velocity;
+
+		// 速度の更新
+		m_velocity += accel * in_deltaTime;
+		// 実際のカメラ位置を更新
+		m_position += m_velocity * in_deltaTime;
+
+		m_offset = idealPos - m_owner->GetPosition();
+		m_upVec = Vector3::UnitZ;
+		m_yaw = m_pitch = 0.0f;
+
+
+		view = Matrix4::CreateLookAt(m_position, targetPos, m_upVec);
+
+		// 右スティック押し込み時は後ろを見る
+		if (CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_RIGHTSTICK))
+		{
+
+			//targetPos = m_owner->GetPosition() + m_owner->GetForward() * DEFAULT_DISTANCE_OFFSET.x;
+			//m_offset = m_position - m_owner->GetPosition();
+			m_position = m_owner->GetPosition() - m_owner->GetForward() * DEFAULT_DISTANCE_OFFSET.x;
+			view = Matrix4::CreateLookAt(m_position, targetPos, Vector3::UnitZ);
+			printf("%f %f %f\n", targetPos.x - m_position.x, targetPos.y - m_position.y, targetPos.z - m_position.z);
+
+		}
+
+		//printf("%f %f %f\n", m_offset.x, m_offset.y, m_offset.z);
+	}
+	else
+	{
+
 		// ヨーのクォータニオンをワールド変換行列の上方ベクトルから生成
 		Quaternion yaw(Vector3::UnitZ, m_yaw * in_deltaTime);
 
@@ -55,6 +107,7 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 		Vector3 rightVec = Vector3::Cross(m_upVec, forwardVec);
 		rightVec.Normalize();
 
+
 		// カメラの右方向ベクトルからピッチのクォータニオンを生成
 		Quaternion pitch(rightVec, m_pitch * in_deltaTime);
 
@@ -63,47 +116,45 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 		// カメラの情報ベクトルもピッチから更新
 		m_upVec = Vector3::Transform(m_upVec, pitch);
 
-		// 距離ベクトル
-		Vector3 dist = Vector3(0.0f, 0.0f, m_distance);
-
 		// ワールド座標をターゲットの座標とオフセットから算出
-		Vector3 targetPos = m_owner->GetPosition();
 		m_position = targetPos + m_offset;
-
 
 		// ビュー行列を更新
 		view = Matrix4::CreateLookAt(m_position, targetPos, m_upVec);
+
+		// 距離ベクトル
+		Vector3 dist = Vector3(0.0f, 0.0f, m_distance);
 		// 距離分を加算
 		view = view * Matrix4::CreateTranslation(dist);
 
-	// プレイヤーの車が走っていない時のみ、軌道カメラ操作を行う
-	if (CONTROLLER_INSTANCE.GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT)  < 0.1f && 
-		CONTROLLER_INSTANCE.GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) > 0.1f ||
-		INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_W))
-	{
-		// ばね定数
-		const float springConstant = 8.0f;
+		//printf("%f %f %f\n", m_offset.x, m_offset.y, m_offset.z);
+		//printf("%f %f %f\n", m_position.x, m_position.y, m_position.z);
+		//printf("%f %f %f\n", targetPos.x - m_position.x, targetPos.y - m_position.y, targetPos.z - m_position.z);
 
-		// ばね定数から減衰を計算
-		float dampening = 3.0f * Math::Sqrt(springConstant);
+			// 右スティック押し込み時は後ろを見る
+		if (CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_RIGHTSTICK))
+		{
 
-		// 理想の位置を計算
-		Vector3 idealPos = ComputeCameraPos();
+			//targetPos = m_owner->GetPosition() + m_owner->GetForward() * DEFAULT_DISTANCE_OFFSET.x;
+			//m_offset = m_position - m_owner->GetPosition();
+			
+			// カメラの右方向ベクトルからピッチのクォータニオンを生成
+			m_pitch = 0.0f;
+			Quaternion pitch(rightVec, m_pitch * in_deltaTime);
 
-		// 実際と理想の差を計算
-		Vector3 diff = m_position - idealPos;
-		// ばねによる加速度
-		Vector3 accel = -springConstant * diff - dampening * m_velocity;
+			// オフセットにピッチの値を入れて更新
+			m_offset = Vector3::Transform(m_offset, pitch);
+			// カメラの情報ベクトルもピッチから更新
+			m_upVec = Vector3::Transform(m_upVec, pitch);
+			m_position = targetPos - m_offset;
+			view = Matrix4::CreateLookAt(m_position, targetPos, m_upVec);
+			printf("%f %f %f\n", targetPos.x - m_position.x, targetPos.y - m_position.y, targetPos.z - m_position.z);
 
-		// 速度の更新
-		m_velocity += accel * in_deltaTime;
-		// 実際のカメラ位置を更新
-		m_position += m_velocity * in_deltaTime;
-
-		Vector3 viewTarget = m_playerCar->GetPosition() + m_playerCar->GetForward() * DEFAULT_DISTANCE_OFFSET.x;
-		view = Matrix4::CreateLookAt(m_position, viewTarget, Vector3::UnitZ);
+		}
 
 	}
+
+
 
 	// ビュー行列のセット
 	SetViewMatrix(view);
@@ -168,7 +219,7 @@ void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 			// ピッチをメンバにセット
 			SetPitch(pitchSpeed);
 
-			printf("distance = %f\n", m_offset.x);
+			//printf("distance = %f\n", m_offset.x);
 
 
 
@@ -235,7 +286,7 @@ const Vector3& ThirdPersonCarCamera::ComputeCameraPos() const
 	Vector3 forwardVec = m_playerCar->GetForward();
 
 	// 前進ベクトルの反対側に、一定の距離・高さを保った状態に更新
-	forwardVec = DEFAULT_DISTANCE_OFFSET * forwardVec;
+	forwardVec = DEFAULT_DISTANCE_OFFSET.x * forwardVec;
 	forwardVec.z = DEFAULT_DISTANCE_OFFSET.z;
 
 	// 座標の更新

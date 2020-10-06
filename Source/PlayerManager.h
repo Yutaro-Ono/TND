@@ -24,6 +24,17 @@ public:
 	void UpdateActor(float in_deltaTime) override;
 
 
+	//----------------------------------------------------+
+	// Getter/Setter
+	//----------------------------------------------------+
+	// プレイヤー(人間)の座標セッター
+	void SetPlayerHumanPos(const Vector3& in_pos) { m_playerHuman->SetPosition(in_pos); }
+	// プレイヤー(車)の座標セッター
+	void SetPlayerCarPos(const Vector3& in_pos) { m_playerCar->SetPosition(in_pos); }
+
+	// モードの取得
+	PLAYER_MODE GetPlayerMode() { return m_playerMode; }
+
 private:
 
 	PLAYER_MODE m_playerMode;

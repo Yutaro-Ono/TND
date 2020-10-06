@@ -15,6 +15,9 @@
 #include "MeshGpmesh.h"
 #include "MeshObj.h"
 #include "MeshComponent.h"
+#include "Skeleton.h"
+#include "SkeletalMeshComponent.h"
+#include "Animation.h"
 #include "Shader.h"
 #include "VertexArray.h"
 #include "ParticleManager.h"
@@ -222,6 +225,17 @@ void Renderer::Delete()
 	}
 	m_meshes.clear();
 
+	// スケルトンの破棄
+	for (auto sk : m_skeletons)
+	{
+		delete sk.second;
+	}
+	// アニメーションの破棄
+	for (auto anim : m_animations)
+	{
+		delete anim.second;
+	}
+
 	// シェーダーの解放
 	m_meshShader->Delete();
 
@@ -265,35 +279,34 @@ void Renderer::Draw()
 		}
 	}
 
-	// Draw any skinned meshes now
-	// m_skinnedShader->SetActive();
+	// ボーン入りメッシュの描画
+	m_skinnedShader->SetActive();
 	// Update view-projection matrix
-	// m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+	m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
 	// Update lighting uniforms
-	// SetLightUniforms(m_skinnedShader);
+	SetLightUniforms(m_skinnedShader);
 
-	//for (auto sk : m_skeletalMeshes)
-	//{
-	//	if (sk->GetVisible())
-	//	{
-	//		sk->Draw(m_skinnedShader);
-	//	}
-	//}
+	for (auto sk : m_skeletalMeshComponents)
+	{
+		if (sk->GetVisible())
+		{
+			sk->Draw(m_skinnedShader);
+		}
+	}
 
 
 	// パーティクル描画
 	m_particleManager->Draw();
 
 	// Spriteの描画
-	// Draw all sprite components
-	// Disable depth buffering
+	// 深度テストの停止
 	glDisable(GL_DEPTH_TEST);
-	// Enable alpha blending on the color buffer
+	// ブレンドのアクティブ化
 	glEnable(GL_BLEND);
 	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 
-	// Set shader/vao as active
+	// spriteシェーダーのアクティブ化
 	m_spriteShader->SetActive();
 	m_spriteVerts->SetActive();
 
@@ -304,9 +317,6 @@ void Renderer::Draw()
 			sprite->Draw(m_spriteShader);
 		}
 	}
-
-
-
 
 	// 全てのUIを更新
 	for (auto ui : GAME_INSTANCE.GetUIStack())
@@ -514,6 +524,69 @@ Mesh * Renderer::GetMesh(const std::string & in_fileName)
 	printf("Mesh Load Success : %s\n", in_fileName.c_str());
 
 	return mesh;
+}
+
+//-------------------------------------------------------------------------------------+
+// スケルタル情報の取得
+// in  : スケルタル情報 .gpskelファイル名
+// out : Skeleton情報へのポインタ
+// Desc: gpskelファイル名より、スケルタル情報を返す。ない場合はそのファイル名で
+//       読み込みを行う。読み込みを行ってもファイルが存在しない場合 nullptrを返す
+//       内部でgpskelファイル名をキーとするスケルタル情報のmapが作成される
+//-------------------------------------------------------------------------------------+
+const Skeleton* Renderer::GetSkeleton(const char* in_fileName)
+{
+	std::string file(in_fileName);
+	auto iter = m_skeletons.find(file);
+	if (iter != m_skeletons.end())
+	{
+		return iter->second;
+	}
+	else
+	{
+		Skeleton* sk = new Skeleton();
+		if (sk->Load(file))
+		{
+			m_skeletons.emplace(file, sk);
+		}
+		else
+		{
+			delete sk;
+			sk = nullptr;
+		}
+		return sk;
+	}
+}
+
+//-------------------------------------------------------------------------------------------+
+// アニメーション情報の取得
+// in  : アニメーションデータが格納されている .gpanimファイル名
+// out : アニメーション情報へのポインタ
+// Desc: gpanimファイル名よりアニメーションデータを返す。ない場合はそのファイル名で
+//       読み込みを行う。読み込みを行ってもファイルが存在しない場合 nullptrを返す
+//       内部でgpanimファイル名をキーとするアニメーション情報のmapが作成される
+//-------------------------------------------------------------------------------------------+
+const Animation* Renderer::GetAnimation(const char* in_fileName, bool in_loop)
+{
+	auto iter = m_animations.find(in_fileName);
+	if (iter != m_animations.end())
+	{
+		return iter->second;
+	}
+	else
+	{
+		Animation* anim = new Animation();
+		if (anim->Load(in_fileName, in_loop))
+		{
+			m_animations.emplace(in_fileName, anim);
+		}
+		else
+		{
+			delete anim;
+			anim = nullptr;
+		}
+		return anim;
+	}
 }
 
 // パーティクルマネージャー取得
