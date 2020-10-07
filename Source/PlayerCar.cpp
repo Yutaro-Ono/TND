@@ -51,27 +51,27 @@ void PlayerCar::UpdateActor(float in_deltaTime)
 	{
 		m_moveComp->SetActive(false);
 		// ƒƒbƒVƒ…‚Ì•\Ž¦‚ðØ‚ç‚¹‚é‚æ‚¤–½—ß
-		//m_body->GetMeshComponent()->SetVisible(false);
-		//m_door[0]->GetMeshComponent()->SetVisible(false);
-		//m_door[1]->GetMeshComponent()->SetVisible(false);
-		//m_handle->GetMeshComponent()->SetVisible(false);
-		//for (int i = 0; i < 4; i++)
-		//{
-		//	m_wheel[i]->GetMeshComponent()->SetVisible(false);
-		//}
+		m_body->GetMeshComponent()->SetVisible(false);
+		m_door[0]->GetMeshComponent()->SetVisible(false);
+		m_door[1]->GetMeshComponent()->SetVisible(false);
+		m_handle->GetMeshComponent()->SetVisible(false);
+		for (int i = 0; i < 4; i++)
+		{
+			m_wheel[i]->GetMeshComponent()->SetVisible(false);
+		}
 
 	}
 	else
 	{
 		m_moveComp->SetActive(true);
-		//m_body->GetMeshComponent()->SetVisible(true);
-		//m_door[0]->GetMeshComponent()->SetVisible(true);
-		//m_door[1]->GetMeshComponent()->SetVisible(true);
-		//m_handle->GetMeshComponent()->SetVisible(true);
-		//for (int i = 0; i < 4; i++)
-		//{
-		//	m_wheel[i]->GetMeshComponent()->SetVisible(true);
-		//}
+		m_body->GetMeshComponent()->SetVisible(true);
+		m_door[0]->GetMeshComponent()->SetVisible(true);
+		m_door[1]->GetMeshComponent()->SetVisible(true);
+		m_handle->GetMeshComponent()->SetVisible(true);
+		for (int i = 0; i < 4; i++)
+		{
+			m_wheel[i]->GetMeshComponent()->SetVisible(true);
+		}
 	}
 
 }

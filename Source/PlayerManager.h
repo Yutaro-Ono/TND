@@ -6,6 +6,8 @@
 //-----------------------------------------------------------------------+
 #pragma once
 #include "Actor.h"
+#include "PlayerHuman.h"
+#include "PlayerCar.h"
 
 class PlayerManager : public Actor
 {

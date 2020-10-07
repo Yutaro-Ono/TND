@@ -32,7 +32,7 @@ public:
 
 	void ChangeState();                                // ステートの変更処理
 
-	void FixCollision(class BoxCollider* in_hitPlayerBox, class BoxCollider* in_hitBox);
+	void CollisionFix(class BoxCollider* in_hitPlayerBox, class BoxCollider* in_hitBox);
 
 
 	//-------------------------------------------+

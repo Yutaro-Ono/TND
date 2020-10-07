@@ -4,6 +4,7 @@
 #include "Actor.h"
 #include "Player.h"
 #include "PlayerCar.h"
+#include "PlayerHuman.h"
 #include "Collision.h"
 #include "BoxCollider.h"
 
@@ -98,6 +99,7 @@ void PhysicsWorld::PlayerAndBGTest()
 			{
 				//ƒvƒŒ[ƒ„[‚Ì•Ç‚ß‚è‚İC³ˆ—‚Ö
 				dynamic_cast<PlayerCar *>(player->GetOwner())->CollisionFix(player, box);
+				//dynamic_cast<PlayerHuman*>(player->GetOwner())->CollisionFix(player, box);
 			}
 		}
 	}

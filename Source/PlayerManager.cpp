@@ -1,6 +1,4 @@
 #include "PlayerManager.h"
-#include "PlayerHuman.h"
-#include "PlayerCar.h"
 #include "Input.h"
 #include "InputController.h"
 

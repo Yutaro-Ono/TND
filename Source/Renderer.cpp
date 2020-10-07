@@ -365,9 +365,8 @@ void Renderer::AddMeshComponent(MeshComponent * in_mesh)
 
 	if (in_mesh->GetIsSkeletal())
 	{
-		//----------------------------------------+
-		// 未使用
-		//----------------------------------------+
+		SkeletalMeshComponent* sk = static_cast<SkeletalMeshComponent*>(in_mesh);
+		m_skeletalMeshComponents.emplace_back(sk);
 	}
 	else
 	{
@@ -381,9 +380,9 @@ void Renderer::RemoveMeshComponent(MeshComponent * in_mesh)
 
 	if (in_mesh->GetIsSkeletal())
 	{
-		//----------------------------------------+
-		// 未使用
-		//----------------------------------------+
+		SkeletalMeshComponent* sk = static_cast<SkeletalMeshComponent*>(in_mesh);
+		auto iter = std::find(m_skeletalMeshComponents.begin(), m_skeletalMeshComponents.end(), sk);
+		m_skeletalMeshComponents.erase(iter);
 	}
 	else
 	{

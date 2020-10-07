@@ -29,7 +29,7 @@
 #include "ResultScene.h"
 #include "Math.h"
 #include "PlayerCar.h"
-
+#include "PlayerManager.h"
 
 #include <Windows.h>
 #include <iostream>
@@ -89,9 +89,13 @@ void GameScene::Initialize()
     // アクター
     //---------------------------------------------------------------------------------------------+
 	// プレイヤーの生成
-	PlayerCar* player = new PlayerCar();
+	//PlayerCar* player = new PlayerCar();
+	//player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
+	//player->SetScale(0.3f);
+	PlayerManager* player = new PlayerManager();
 	player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
 	player->SetScale(0.3f);
+
 
 	// ロード画面処理
 	Loading();
