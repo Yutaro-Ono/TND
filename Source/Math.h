@@ -349,6 +349,12 @@ public:
 		return (Math::Sqrt(LengthSq()));
 	}
 
+	// 2“_ŠÔ‚Ì‹——£‚ð•Ô‚·
+	static float Distance(const Vector3& in_vec1, const Vector3& in_vec2)
+	{
+		return sqrtf(pow(in_vec1.x - in_vec2.x, 2) + pow(in_vec1.y - in_vec2.y, 2) + pow(in_vec1.z - in_vec2.z, 2));
+	}
+
 	// Normalize this vector
 	void Normalize()
 	{

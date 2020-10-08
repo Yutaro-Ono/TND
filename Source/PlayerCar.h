@@ -37,8 +37,6 @@ public:
 
 	void UpdateActor(float in_deltaTime) override;
 
-	void CreateAABB(class Mesh* in_mesh);
-
 	void CollisionFix(class BoxCollider* in_hitPlayerBox, class BoxCollider* in_hitBox);
 
 	//--------------------------------------------+
@@ -52,10 +50,16 @@ public:
 	// 車の旋回状態
 	void SetTurnState(TURNING_STATE in_state) { m_turnState = in_state; }          // 車の旋回状態セット
 	TURNING_STATE GetTurnState() { return m_turnState; }                           // 車の運転状態取得
-
+	// ボックスコライダーのゲッターセッター
+	void SetBoxCollider(class BoxCollider* in_hitBox) { m_hitBox = in_hitBox; }
+	class BoxCollider* GetBoxCollider() { return m_hitBox; }
 
 	class MoveComponentCar* GetMoveComponent() const { return m_moveComp; }
 	const float GetRadian() { return m_moveComp->GetRadian(); }                    // 弧度ゲッター (MoveComponentCar)
+
+	// マネージャークラスポインタのゲッター・セッター
+	class PlayerManager* GetPlayerManager() { return m_manager; }
+	void SetPlayerManager(class PlayerManager* in_manager) { m_manager = in_manager; }
 
 private:
 
@@ -65,6 +69,9 @@ private:
 
 	bool m_isActive;      // 車両操作がアクティブの時、更新処理をする
 	
+	// マネージャークラス
+	class PlayerManager* m_manager;
+
 	// 車のパーツクラス
 	class CarBody* m_body;
 	class CarDoor* m_door[2];

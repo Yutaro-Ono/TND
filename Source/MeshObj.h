@@ -11,8 +11,6 @@ public:
 
 	// objファイルのロード → 頂点配列作成 → 登録
 	bool Load(const std::string& in_filePath, class Renderer* in_renderer) override;
-	// テクスチャを追加する
-	void AddTexture(const std::string& in_meshName, class Renderer* in_renderer);
 
 
 	// タンジェントスペース計算用関数

@@ -6,6 +6,7 @@
 #include "Collision.h"
 #include "BoxCollider.h"
 #include "PhysicsWorld.h"
+#include "PlayerManager.h"
 
 const std::string PlayerCar::CAR_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/SM_suv_parts_LOD1_body_Internal.OBJ";
 const std::string PlayerCar::CAR_DOOR_LEFT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/SM_suv_parts_LOD1_left_door_Internal.OBJ";
@@ -25,6 +26,7 @@ PlayerCar::PlayerCar()
 	// カメラコンポーネントを生成
 	m_cameraComp = new ThirdPersonCarCamera(this);
 
+
 	// 各パーツごとのクラスを作成
 	m_body = new CarBody(this, CAR_BODY_MESH_PATH);
 	m_door[0] = new CarDoor(this, CAR_DOOR_LEFT_MESH_PATH, true);
@@ -36,6 +38,8 @@ PlayerCar::PlayerCar()
 	m_wheel[2] = new CarWheel(this, CAR_WHEEL_MESH_PATH, CarWheel::WHEEL_POSITION::BACK_LEFT);
 	m_wheel[3] = new CarWheel(this, CAR_WHEEL_MESH_PATH, CarWheel::WHEEL_POSITION::BACK_RIGHT);
 
+
+
 }
 
 PlayerCar::~PlayerCar()
@@ -44,81 +48,75 @@ PlayerCar::~PlayerCar()
 
 void PlayerCar::UpdateActor(float in_deltaTime)
 {
-
+	if (m_manager->GetPlayerMode() == PlayerManager::PLAYER_MODE::MODE_CAR)
+	{
+		m_moveComp->SetActive(true);
+	}
+	else
+	{
+		m_moveComp->SetActive(false);
+	}
 
 	// ディアクティベートされたら
 	if (!m_isActive)
 	{
 		m_moveComp->SetActive(false);
 		// メッシュの表示を切らせるよう命令
-		m_body->GetMeshComponent()->SetVisible(false);
-		m_door[0]->GetMeshComponent()->SetVisible(false);
-		m_door[1]->GetMeshComponent()->SetVisible(false);
-		m_handle->GetMeshComponent()->SetVisible(false);
-		for (int i = 0; i < 4; i++)
-		{
-			m_wheel[i]->GetMeshComponent()->SetVisible(false);
-		}
+		//m_body->GetMeshComponent()->SetVisible(false);
+		//m_door[0]->GetMeshComponent()->SetVisible(false);
+		//m_door[1]->GetMeshComponent()->SetVisible(false);
+		//m_handle->GetMeshComponent()->SetVisible(false);
+		//for (int i = 0; i < 4; i++)
+		//{
+		//	m_wheel[i]->GetMeshComponent()->SetVisible(false);
+		//}
 
 	}
 	else
 	{
+		GAME_INSTANCE.SetCamera(m_cameraComp);
 		m_moveComp->SetActive(true);
-		m_body->GetMeshComponent()->SetVisible(true);
-		m_door[0]->GetMeshComponent()->SetVisible(true);
-		m_door[1]->GetMeshComponent()->SetVisible(true);
-		m_handle->GetMeshComponent()->SetVisible(true);
-		for (int i = 0; i < 4; i++)
-		{
-			m_wheel[i]->GetMeshComponent()->SetVisible(true);
-		}
+		//m_body->GetMeshComponent()->SetVisible(true);
+		//m_door[0]->GetMeshComponent()->SetVisible(true);
+		//m_door[1]->GetMeshComponent()->SetVisible(true);
+		//m_handle->GetMeshComponent()->SetVisible(true);
+		//for (int i = 0; i < 4; i++)
+		//{
+		//	m_wheel[i]->GetMeshComponent()->SetVisible(true);
+		//}
 	}
 
 }
 
-// 受け取ったメッシュから当たり判定ボックスを生成
-void PlayerCar::CreateAABB(Mesh* in_mesh)
-{
-	// 当たり判定セット
-	AABB playerBox = in_mesh->GetCollisionBox();
-	// ※車のメッシュからは座標が取れないため、手動でセット
-	playerBox.SetMinVector(Vector3(-50.0f, -50.0f, -50.0f));
-	playerBox.SetMaxVector(Vector3(50.0f, 50.0f, 50.0f));
-	m_hitBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER);
-	playerBox.m_min.x *= 1.0f;
-	playerBox.m_min.y *= 1.0f;
-	playerBox.m_max.x *= 1.0f;
-	playerBox.m_max.y *= 1.0f;
-	m_hitBox->SetObjectBox(playerBox);
-}
+
 
 // 衝突時の押し出し処理
 void PlayerCar::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hitBox)
 {
-	Vector3 fix;
+	//Vector3 fix = Vector3::Zero;
 
 
-	//壁とぶつかったとき
-	AABB bgBox = in_hitBox->GetWorldBox();
-	AABB playerBox = m_hitBox->GetWorldBox();
+	////壁とぶつかったとき
+	//AABB bgBox = in_hitBox->GetWorldBox();
+	//AABB playerBox = m_hitBox->GetWorldBox();
 
-	// めり込みを修正
-	CalcCollisionFixVec(playerBox, bgBox, fix);
+	//// めり込みを修正
+	//CalcCollisionFixVec(playerBox, bgBox, fix);
 
-	// 補正ベクトル分戻す
-	m_position += fix;
+	//// 補正ベクトル分戻す
+	//m_position += fix;
 
-	// 壁衝突時の処理
-	if (fix.x > 5.0f || fix.x < -5.0f || fix.y > 5.0f || fix.y < -5.0f)
-	{
+	//// 壁衝突時の処理
+	//if (fix.x > 5.0f || fix.x < -5.0f || fix.y > 5.0f || fix.y < -5.0f)
+	//{
 
-		// アクセル減少 (衝突時直前の半分のスピードにする)
-		m_moveComp->SetAccel(m_moveComp->GetAccelValue() / 2.0f);
-	}
+	//	// アクセル減少 (衝突時直前の半分のスピードにする)
+	//	m_moveComp->SetAccel(m_moveComp->GetAccelValue() / 2.0f);
+	//}
 
 
-	// 位置が変わったのでボックス再計算
-	m_hitBox->OnUpdateWorldTransform();
+	//// 位置が変わったのでボックス再計算
+	//m_hitBox->OnUpdateWorldTransform();
 
 	// printf("[%f, %f, %f]\n", m_position.x, m_position.y, m_position.z);
 }

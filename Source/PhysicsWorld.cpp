@@ -99,7 +99,7 @@ void PhysicsWorld::PlayerAndBGTest()
 			{
 				//ƒvƒŒ[ƒ„[‚Ì•Ç‚ß‚è‚İC³ˆ—‚Ö
 				dynamic_cast<PlayerCar *>(player->GetOwner())->CollisionFix(player, box);
-				//dynamic_cast<PlayerHuman*>(player->GetOwner())->CollisionFix(player, box);
+				dynamic_cast<PlayerHuman*>(player->GetOwner())->CollisionFix(player, box);
 			}
 		}
 	}

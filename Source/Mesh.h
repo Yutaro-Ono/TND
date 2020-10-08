@@ -35,6 +35,9 @@ public:
 	virtual bool Load(const std::string& in_fileName, class Renderer* in_renderer) = 0;       // メッシュのロード
 	void Delete();                                                                // メッシュの解放
 
+	// テクスチャの追加 (メッシュファイルと同階層のディフューズ・スペキュラ・ノーマルを取得)
+	void AddTexture(const std::string& in_meshName, class Renderer* in_renderer);
+
 	class VertexArray* GetVertexArray() { return m_vertexArray; }                 // メッシュの頂点配列の取得
 	class Texture* GetTexture(size_t in_index);                                      // 指定されたインデックスからテクスチャ取得
 

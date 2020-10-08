@@ -9,15 +9,19 @@ public:
 	// プレイヤーの視点モード
 	typedef enum PLAYER_POV
 	{
-		FIRST_PERSON,
-		THIRD_PERSON
+		POV_FIRST_PERSON,
+		POV_THIRD_PERSON
 	};
 
 	// アニメーションタイプ
 	typedef enum PLAYER_ANIM
 	{
 		ANIM_IDLE = 0,
-		ANIM_WALKING,
+		ANIM_IDLE_LOOKAROUND,
+		ANIM_WALKING_FWD,
+		ANIM_WALKING_BWD,
+		ANIM_WALKING_LEFT,
+		ANIM_WALKING_RIGHT,
 		ANIM_RUNNING,
 		ANIM_JUMPSTART,
 		ANIM_JUMPLOOP,
@@ -34,19 +38,26 @@ public:
 
 	void CollisionFix(class BoxCollider* in_hitPlayerBox, class BoxCollider* in_hitBox);
 
+	void SetActive(bool in_active);
 
 	//-------------------------------------------+
 	// Getter/Setter
 	//-------------------------------------------+
 	// POVモードのセッター
 	void SetPlayerPov(PLAYER_POV in_pov) { m_pov = in_pov; }
+	PLAYER_POV GetPlayerPOV() { return m_pov; }
+	// アニメーションステートのセッター
+	PLAYER_ANIM SetPlayerAnimState(PLAYER_ANIM in_animState) { m_animState = in_animState; }
 
+	// マネージャークラスポインタの取得
+	class PlayerManager* GetPlayerManager() { return m_manager; }
 
 private:
 
 	PLAYER_POV m_pov;       // 視点モード
 
-	class HumanCamera* m_camera;        // カメラ
+	class HumanCamera* m_cameraComp;        // カメラ
+	class MoveComponentHuman* m_moveComp;
 
 	class PlayerManager* m_manager;     // ステート制御のマネージメントクラス
 
@@ -60,7 +71,7 @@ private:
 	class BoxCollider* m_hitGroundBox;
 	class BoxCollider* m_hitHeadBox;
 
-
+	bool m_isActive;         // 人間の操作が有効かどうか
 	bool m_isJump;           // ジャンプしたか
 	bool m_onGround;         // 地面に足がついているか
 

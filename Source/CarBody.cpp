@@ -1,5 +1,8 @@
 #include "CarBody.h"
 #include "PlayerCar.h"
+#include "PhysicsWorld.h"
+#include "BoxCollider.h"
+#include "Collision.h"
 
 // コンストラクタ
 CarBody::CarBody(PlayerCar* in_owner, const std::string& in_meshPath)
@@ -15,7 +18,14 @@ CarBody::CarBody(PlayerCar* in_owner, const std::string& in_meshPath)
 	m_meshComp->SetMesh(mesh);
 
 	// ボディのメッシュを基準としてオーナーの当たり判定ボックスをセット
-	m_owner->CreateAABB(mesh);
+	// 当たり判定ボックスのセット
+	AABB playerBox = mesh->GetCollisionBox();
+	m_owner->SetBoxCollider(new BoxCollider(in_owner, PhysicsWorld::TYPE_PLAYER));
+	playerBox.m_min.x *= 0.6f;
+	playerBox.m_min.y *= 0.6f;
+	playerBox.m_max.x *= 0.6f;
+	playerBox.m_max.y *= 0.6f;
+	m_owner->GetBoxCollider()->SetObjectBox(playerBox);
 }
 
 // デストラクタ

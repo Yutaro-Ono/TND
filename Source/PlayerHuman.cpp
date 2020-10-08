@@ -6,42 +6,50 @@
 #include "Skeleton.h"
 #include "SkeletalMeshComponent.h"
 #include "HumanCamera.h"
+#include "MoveComponentHuman.h"
 #include "PhysicsWorld.h"
 #include "BoxCollider.h"
 #include "Collision.h"
 #include "Input.h"
 #include "InputController.h"
 
-const float cAnimationSpeed = 0.5f;
+const float cAnimationSpeed = 0.6f;
 
 PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 	:m_manager(in_manager)
+	,m_pov(POV_THIRD_PERSON)
 	,m_jumpVec(Vector3(0.0f, 0.0f, 0.0f))
+	,m_isActive(true)
 {
 
-
 	// カメラの生成
-	m_camera = new HumanCamera(this);
+	m_cameraComp = new HumanCamera(this);
+
+	// MoveComponentの生成
+	m_moveComp = new MoveComponentHuman(this);
 
 	// スケルタルメッシュのロード
-	Mesh* mesh = GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Actors/Player/rp_eric_rigged_001_ue4.gpmesh");
+	Mesh* mesh = GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Actors/Player/rp_nathan_rigged_003_ue4.gpmesh");
 	m_skelMeshComp = new SkeletalMeshComponent(this);
 	m_skelMeshComp->SetMesh(mesh);
-	m_skelMeshComp->SetSkeleton(RENDERER->GetSkeleton("Data/Meshes/TND/Actors/Player/rp_eric_rigged_001_ue4.gpskel"));
+	m_skelMeshComp->SetSkeleton(RENDERER->GetSkeleton("Data/Meshes/TND/Actors/Player/rp_nathan_rigged_003_ue4.gpskel"));
 
 	// アニメーション取得
 	m_animTypes.resize(PLAYER_ANIM::ANIM_ALL_NUM);
 	// 対応するアニメーション配列にセット
 	m_animTypes[ANIM_IDLE] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonIdle.gpanim", true);
-	m_animTypes[ANIM_WALKING] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonIdle.gpanim", true);
+	m_animTypes[ANIM_IDLE_LOOKAROUND] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonIdle_Around.gpanim", true);
+	m_animTypes[ANIM_WALKING_FWD] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonWalk_Fwd.gpanim", true);
+	m_animTypes[ANIM_WALKING_BWD] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonWalk_Bwd.gpanim", true);
+	m_animTypes[ANIM_WALKING_LEFT] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonWalk_Left.gpanim", true);
+	m_animTypes[ANIM_WALKING_RIGHT] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonWalk_Right.gpanim", true);
 	m_animTypes[ANIM_RUNNING] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonRun.gpanim", true);
-	m_animTypes[ANIM_JUMPSTART] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonJump_Start.gpanim", true);
+	m_animTypes[ANIM_JUMPSTART] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonJump_Start.gpanim", false);
 	m_animTypes[ANIM_JUMPLOOP] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonJump_Loop.gpanim", true);
-	m_animTypes[ANIM_LANDING] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonJump_End.gpanim", true);
+	m_animTypes[ANIM_LANDING] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonJump_End.gpanim", false);
 
 	// アイドル時のアニメーションをセットしておく
-	m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_RUNNING], cAnimationSpeed);
-
+	m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed);
 
 	// 当たり判定ボックスのセット
 	AABB playerBox = mesh->GetCollisionBox();
@@ -83,6 +91,10 @@ void PlayerHuman::UpdateActor(float in_deltaTime)
 {
 	if (m_manager->GetPlayerMode() == PlayerManager::MODE_HUMAN)
 	{
+		GAME_INSTANCE.SetCamera(m_cameraComp);
+		m_moveComp->SetActive(true);
+		m_skelMeshComp->SetVisible(true);
+
 		//キャラ状態遷移
 		ChangeState();
 
@@ -92,58 +104,6 @@ void PlayerHuman::UpdateActor(float in_deltaTime)
 			return;
 		}
 
-		//キャラ入力
-		const float speed = 200.0f;
-		Vector3 forwardVec;
-		Vector3 rightVec = Vector3(1.0f, 0.0f, 0.0f);
-		Vector3 charaForwardVec = GetForward();
-
-		// キャラクター移動
-		Vector3 DirVec(0.0f, 0.0f, 0.0f);
-
-		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_RIGHT))
-		{
-			DirVec = rightVec;
-		}
-
-		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_LEFT))
-		{
-			DirVec = -1.0f * rightVec;
-		}
-
-		//ジャンプ
-		if (INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_SPACE) && !m_isJump)
-		{
-			m_jumpVec.z += 320.0f * in_deltaTime;
-			m_isJump = true;
-			m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_JUMPSTART], cAnimationSpeed);
-			m_animState = ANIM_JUMPSTART;
-		}
-
-		if (m_isJump)
-		{
-			m_jumpVec.z -= 1.0f * in_deltaTime;
-		}
-
-		if (DirVec.LengthSq() > 0.5f)
-		{
-			// 方向キー入力
-			charaForwardVec = DirVec;
-
-			// 進行方向に向けて回転
-			charaForwardVec.Normalize();
-			RotateToNewForward(charaForwardVec);
-
-			// 現在のスピードを保存
-			m_speed = speed * in_deltaTime;
-		}
-		else
-		{
-			charaForwardVec = Vector3(0, 0, 0);
-		}
-
-		// 進行方向に移動
-		m_position += m_speed * charaForwardVec + m_jumpVec;
 		m_recomputeWorldTransform = true;
 
 		// 当たり判定処理で地面フラグをfalseにし、この後の当たり判定処理でtrueになるかチェックする
@@ -152,8 +112,10 @@ void PlayerHuman::UpdateActor(float in_deltaTime)
 
 	else
 	{
+		m_moveComp->SetActive(false);
+		m_skelMeshComp->SetVisible(false);
 		// アイドル時のアニメーションをセット
-		//m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed);
+		m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed);
 	}
 }
 
@@ -184,11 +146,15 @@ void PlayerHuman::ChangeState()
 		return;
 	}
 
+	// 左スティック入力値取得
+	Vector2 axisL = CONTROLLER_INSTANCE.GetLAxisVec();
+
 	// キー入力からアニメーション状態へ移行
 	bool IsIdleStart = INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_UP) &
 		INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_RIGHT) &
 		INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_DOWN) &
-		INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_LEFT);
+		INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_LEFT) &
+		!(axisL.y != 0.0f) & !(axisL.x != 0.0f);
 
 	// 待機アニメ開始
 	if (IsIdleStart)
@@ -219,14 +185,61 @@ void PlayerHuman::ChangeState()
 			}
 		}
 
-		// RUNアニメ開始
-		if (m_animState != ANIM_RUNNING)
+		//-----------------------------------------------------------------------------------+
+		// 歩行アニメーション
+		//-----------------------------------------------------------------------------------+
+		if ((axisL.y < -0.1f || axisL.y > 0.1f) && axisL.x < 0.1f && axisL.x > -0.1f)
 		{
-			m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_RUNNING], cAnimationSpeed);
-			m_animState = ANIM_RUNNING;
+			// 正面
+			if (m_animState != ANIM_WALKING_FWD && CONTROLLER_INSTANCE.GetLAxisVec().y < -0.1f && CONTROLLER_INSTANCE.GetLAxisVec().y > -0.65f)
+			{
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_FWD], cAnimationSpeed);
+				m_animState = ANIM_WALKING_FWD;
+			}
+			// RUNアニメ開始
+			if (m_animState != ANIM_RUNNING && CONTROLLER_INSTANCE.GetLAxisVec().y <= -0.65f)
+			{
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_RUNNING], cAnimationSpeed);
+				m_animState = ANIM_RUNNING;
+			}
 		}
+		
+		// 後方
+		if (m_animState != ANIM_WALKING_BWD && CONTROLLER_INSTANCE.GetLAxisVec().y > 0.1f)
+		{
+			m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_BWD], cAnimationSpeed);
+			m_animState = ANIM_WALKING_BWD;
+		}
+
+		if ((axisL.x < -0.1f || axisL.x > 0.1f) && axisL.y < 0.1f && axisL.y > -0.1f)
+		{
+			// 左側
+			if (m_animState != ANIM_WALKING_LEFT && axisL.x < -0.1f)
+			{
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_LEFT], cAnimationSpeed);
+				m_animState = ANIM_WALKING_LEFT;
+			}
+			// 右側
+			if (m_animState != ANIM_WALKING_RIGHT && axisL.x > 0.1f)
+			{
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_RIGHT], cAnimationSpeed);
+				m_animState = ANIM_WALKING_RIGHT;
+			}
+		}
+		
+
+		
+
+
 	}
+
+	float f = Vector3::Distance(m_position, m_manager->GetPlayerCar()->GetPosition());
+	
+	//float f = m_position.Length() - m_manager->GetPlayerCar()->GetPosition().Length();
+
+	printf("%f\n", f);
 }
+
 
 void PlayerHuman::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hitBox)
 {
@@ -270,4 +283,16 @@ void PlayerHuman::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hit
 
 	// 位置が変わったのでボックス再計算
 	m_hitBox->OnUpdateWorldTransform();
+}
+
+// プレイヤー操作の有効化
+void PlayerHuman::SetActive(bool in_active)
+{
+	m_isActive = in_active;
+
+	if (m_isActive)
+	{
+		GAME_INSTANCE.SetCamera(m_cameraComp);
+	}
+
 }

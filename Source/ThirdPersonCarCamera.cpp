@@ -5,8 +5,8 @@
 #include "InputController.h"
 #include "Mouse.h"
 
-const float ThirdPersonCarCamera::CAMERA_SENSITIVITY = 50.0f;
-const Vector3 ThirdPersonCarCamera::DEFAULT_DISTANCE_OFFSET = Vector3(-250.0f, 0.0f, 100.0f);
+const float ThirdPersonCarCamera::CAMERA_SENSITIVITY = 25.0f;
+const Vector3 ThirdPersonCarCamera::DEFAULT_DISTANCE_OFFSET = Vector3(-150.0f, 0.0f, 70.0f);
 const float ThirdPersonCarCamera::MIN_TARGET_DISTANCE = -80.0f;
 const float ThirdPersonCarCamera::MAX_TARGET_DISTANCE = 300.0f;
 
@@ -43,7 +43,7 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 	Vector3 targetPos = m_owner->GetPosition();
 
 	// プレイヤーの車が走っていない時のみ、軌道カメラ操作を行う
-	if (m_playerCar->GetMoveComponent()->GetAccelValue() >= 10.0f || CONTROLLER_INSTANCE.GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) >= 0.1f ||
+	if (m_playerCar->GetMoveComponent()->GetAccelValue() >= 30.0f && CONTROLLER_INSTANCE.GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) >= 0.5f ||
 		INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_W))
 	{
 		// ばね定数

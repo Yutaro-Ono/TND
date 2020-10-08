@@ -6,11 +6,11 @@ class MoveComponentHuman : public MoveComponent
 
 public:
 
-	MoveComponentHuman(class Actor* in_owner);
-	~MoveComponentHuman();
+	MoveComponentHuman(class PlayerHuman* in_owner);     // コンストラクタ
+	~MoveComponentHuman();                               // デストラクタ
 
 
-	void Update(float in_deltaTime) override {}                          // コンポーネントの更新
+	void Update(float in_deltaTime) override;                      // コンポーネントの更新
 
 	void ProcessInput(float in_deltaTime) override {}                                    // コンポーネントの入力処理
 
@@ -24,5 +24,8 @@ public:
 
 protected:
 
-	bool m_padIsActive;                 // コントローラがアクティブかどうか
+	class PlayerHuman* m_playerHuman;       // プレイヤー(人間型)へのポインタ
+
+	static const float PLAYER_SPEED;
+
 };

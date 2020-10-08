@@ -71,22 +71,24 @@ bool MeshGpmesh::Load(const std::string& in_filePath, Renderer* in_renderer)
 	m_specValue = static_cast<float>(doc["specularPower"].GetDouble());
 
 	// テクスチャ読み込み
-	for (rapidjson::SizeType i = 0; i < textures.Size(); i++)
-	{
-		// このテクスチャを既に読みこんでるか
-		std::string texName = textures[i].GetString();
-		Texture* t = in_renderer->GetTexture(texName);
-		if (t == nullptr)
-		{
-			// テクスチャ読み込みのトライ
-			t = in_renderer->GetTexture(texName);
-			if (t == nullptr)
-			{
-				printf("Mesh %s has no textures, there should be at least one", in_filePath.c_str());
-			}
-		}
-		m_textures.emplace_back(t);
-	}
+	//for (rapidjson::SizeType i = 0; i < textures.Size(); i++)
+	//{
+	//	// このテクスチャを既に読みこんでるか
+	//	std::string texName = textures[i].GetString();
+	//	Texture* t = in_renderer->GetTexture(texName);
+	//	if (t == nullptr)
+	//	{
+	//		// テクスチャ読み込みのトライ
+	//		t = in_renderer->GetTexture(texName);
+	//		if (t == nullptr)
+	//		{
+	//			printf("Mesh %s has no textures, there should be at least one", in_filePath.c_str());
+	//		}
+	//	}
+	//	m_textures.emplace_back(t);
+	//}
+	// テクスチャ生成
+	AddTexture(in_filePath, in_renderer);
 
 	// 頂点読み込み
 	const rapidjson::Value& vertsJson = doc["vertices"];

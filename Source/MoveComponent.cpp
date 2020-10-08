@@ -14,27 +14,6 @@ MoveComponent::MoveComponent(Actor * in_owner, int in_updateOrder)
 
 void MoveComponent::Update(float in_deltaTime)
 {
-
-
-
-
-	//if (!Math::NearZero(m_angularSpeed))
-	//{
-	//	Quaternion rot = m_owner->GetRotation();
-	//	float angle = m_angularSpeed * in_deltaTime;
-	//	// Create quaternion for incremental rotation
-	//	// (Rotate about up axis)
-	//	Quaternion inc(Vector3::UnitZ, angle);
-	//	// 新しい回転行列と古い回転行列を連結
-	//	rot = Quaternion::Concatenate(rot, inc);
-	//	m_owner->SetRotation(rot);
-	//}
-
-	//if (!Math::NearZero(m_forwardSpeed) || !Math::NearZero(m_strafeSpeed))
-	//{
-	//	Vector3 pos = m_owner->GetPosition();
-	//	pos += m_owner->GetForward() * m_forwardSpeed * in_deltaTime;
-	//	pos += m_owner->GetRight() * m_strafeSpeed * in_deltaTime;
-	//	m_owner->SetPosition(pos);
-	//}
+	// パッド接続されているかの更新処理
+	m_padIsActive = CONTROLLER_INSTANCE.IsAvailable();
 }

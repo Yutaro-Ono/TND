@@ -1,6 +1,5 @@
 #include "MeshObj.h"
 
-
 MeshObj::MeshObj()
 {
 }
@@ -157,54 +156,6 @@ bool MeshObj::Load(const std::string& in_filePath, Renderer* in_renderer)
 	return true;
 }
 
-// 入力されたメッシュファイル名からディフューズマップ、スペキュラーマップ、法線マップをロード・追加する
-void MeshObj::AddTexture(const std::string& in_meshName, class Renderer* in_renderer)
-{
-	std::string pngPath = in_meshName;
-
-	int extNum = pngPath.find_last_of(".");
-	pngPath = pngPath.substr(0, extNum);            // 拡張子以外のメッシュファイル名を取得
-
-	// ディフューズ読み込み
-	Texture* t = in_renderer->GetTexture(pngPath + "_DiffuseMap.png");
-
-	if (t != nullptr)
-	{
-		m_textures.emplace_back(t);
-	}
-	else
-	{
-		std::cout << "Obj Mesh : Load [Diffuse] Texture Error\n";
-	}
-	
-	// スペキュラ読み込み
-	//t = nullptr;
-	//t = in_renderer->GetTexture(pngPath + "_SpecularMap.png");
-
-	//if (t != nullptr)
-	//{
-	//	m_textures.emplace_back(t);
-	//}
-	//else
-	//{
-	//	std::cout << "Obj Mesh : Load [Specular] Texture Error\n";
-	//}
-
-	// 法線マップ読み込み
-	t = nullptr;
-	t = in_renderer->GetTexture(pngPath + "_NormalMap.png");
-
-	if (t != nullptr)
-	{
-		m_textures.emplace_back(t);
-	}
-	else
-	{
-		std::cout << "Obj Mesh : Load [Normal] Texture Error\n";
-	}
-
-
-}
 
 
 //----------------------------------------------------------------------------------------+

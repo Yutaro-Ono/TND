@@ -8,9 +8,14 @@ PlayerManager::PlayerManager()
 {
 	m_playerHuman = new PlayerHuman(this);
 	m_playerHuman->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
+	m_playerHuman->SetScale(0.265f);
 
 	m_playerCar = new PlayerCar();
-	m_playerCar->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
+	m_playerCar->SetPlayerManager(this);
+	m_playerCar->SetPosition(Vector3(1700.0f, 2400.0f, 0.0f));
+	m_playerCar->SetScale(0.3f);
+
+	m_playerHuman->SetActive(true);
 }
 
 PlayerManager::~PlayerManager()
@@ -19,6 +24,24 @@ PlayerManager::~PlayerManager()
 
 void PlayerManager::UpdateActor(float in_deltaTime)
 {
+
+	// lŠÔ‚ªŽÔ‚É‹ß‚Ã‚¢‚ÄYƒ{ƒ^ƒ“‚ð‰Ÿ‚·‚Ææ‚é
+	// æŽÔ’†‚¾‚Á‚½‚ç~ŽÔ
+	if (Vector3::Distance(m_playerHuman->GetPosition(), m_playerCar->GetPosition()) <= 95.0f
+		&& CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_Y))
+	{
+		if (m_playerMode == MODE_HUMAN)
+		{
+			SetPlayerMode(MODE_CAR);
+		}
+		else if (m_playerMode == MODE_CAR)
+		{
+			SetPlayerMode(MODE_HUMAN);
+		}
+		
+	}
+
+
 	if (m_playerMode == PLAYER_MODE::MODE_HUMAN)
 	{
 		m_playerHuman->SetState(STATE_ACTIVE);
@@ -27,6 +50,7 @@ void PlayerManager::UpdateActor(float in_deltaTime)
 
 	if (m_playerMode == PLAYER_MODE::MODE_CAR)
 	{
-		m_playerCar->SetActive(false);
+		m_playerCar->SetActive(true);
+		m_playerHuman->SetPosition(m_playerCar->GetPosition());
 	}
 }
