@@ -2,14 +2,13 @@
 #include "PlayerHuman.h"
 
 const float HumanCamera::CAMERA_SENSITIVITY = 20.0f;    // カメラ速度(低いほど高感度)
-const Vector3 HumanCamera::DEFAULT_DISTANCE_OFFSET = Vector3(-50.0f, 0.0f, 50.0f);
-const float HumanCamera::MIN_TARGET_DISTANCE = -30.0f;
+const Vector3 HumanCamera::DEFAULT_DISTANCE_OFFSET = Vector3(-50.0f, 0.0f, 20.0f);
+const float HumanCamera::MIN_TARGET_DISTANCE = -10.0f;
 const float HumanCamera::MAX_TARGET_DISTANCE = 150.0f;
 
 HumanCamera::HumanCamera(PlayerHuman* in_owner)
 	:CameraComponent(in_owner)
 	,m_player(in_owner)
-	, m_position(Vector3::Zero)
 	, m_offset(DEFAULT_DISTANCE_OFFSET)
 	, m_upVec(Vector3::UnitZ)
 	,m_playerForward(Vector3::Zero)
@@ -93,17 +92,21 @@ void HumanCamera::Update(float in_deltaTime)
 		Vector3 rightVec = Vector3::Cross(m_upVec, forwardVec);
 		rightVec.Normalize();
 
+
 		// カメラの右方向ベクトルからピッチのクォータニオンを生成
 		Quaternion pitch(rightVec, m_pitch * in_deltaTime);
 
-		// オフセットにピッチの値を入れて更新
-		m_offset = Vector3::Transform(m_offset, pitch);
 		// カメラの情報ベクトルもピッチから更新
 		m_upVec = Vector3::Transform(m_upVec, pitch);
 
+		// オフセットにピッチの値を入れて更新
+		m_offset = Vector3::Transform(m_offset, pitch);
+
 
 		// ワールド座標をターゲットの座標とオフセットから算出
+		//m_position = Vector3::Lerp(m_position, targetPos + m_offset, 2.0f * in_deltaTime);
 		m_position = targetPos + m_offset;
+		printf("position.x : %f, position.y : %f, position.z : %f\n", m_position.x, m_position.y, m_position.z);
 		// ビュー行列を更新
 		view = Matrix4::CreateLookAt(m_position, targetPos, m_upVec);
 
@@ -111,6 +114,7 @@ void HumanCamera::Update(float in_deltaTime)
 		Vector3 dist = Vector3(-15.0f, -35.0f, m_distance);
 		// 距離分を加算
 		view = view * Matrix4::CreateTranslation(dist);
+
 
 
 	}
@@ -172,7 +176,7 @@ void HumanCamera::ProcessInput(float in_deltaTime)
 			pitchSpeed *= maxOrbitSpeed;
 
 			// プレイヤーの前進ベクトルを更新
-			m_playerForward = m_player->GetPosition() + Vector3(0.0f, 0.0f, 40.0f) - m_position;
+			m_playerForward = m_player->GetPosition() - m_position;
 			m_playerForward.z = 0.0f;
 			m_playerForward.Normalize();
 
@@ -181,6 +185,21 @@ void HumanCamera::ProcessInput(float in_deltaTime)
 		// ヨー計算
 		yawSpeed = axisR.x / CAMERA_SENSITIVITY;
 		yawSpeed *= maxOrbitSpeed;
+
+
+		// ピッチの最大・最小角度を調整
+		const float pitchMaxDegree = 40.0f; // カメラピッチ最高角度(degree)
+		const float pitchMinDegree = -20.0f; // カメラピッチ最低角度(degree)
+		if (axisR.y > 0.0f && m_offset.z + pitchSpeed > pitchMaxDegree)
+		{
+			pitchSpeed = 0.0f;
+		}
+		if (axisR.y < 0.0f && m_offset.z + pitchSpeed < pitchMinDegree)
+		{
+			pitchSpeed = 0.0f;		
+		}
+
+
 		// ヨーをメンバにセット
 		SetYaw(yawSpeed);
 		// ピッチをメンバにセット
@@ -228,8 +247,12 @@ void HumanCamera::ProcessInput(float in_deltaTime)
 		// ピッチ計算
 		pitchSpeed -= yoffset;
 		//pitchSpeed *= maxOrbitSpeed;
+
+
 		// メンバにセット
 		SetPitch(pitchSpeed);
+
+
 
 		if (m_mousePos.x != 1919.0f && m_mousePos.x > 0.0f)
 		{
@@ -240,5 +263,8 @@ void HumanCamera::ProcessInput(float in_deltaTime)
 			m_frameMousePos.y = MOUSE_INSTANCE.GetPositionY();
 		}
 	}
+
+
 }
+
 

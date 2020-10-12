@@ -56,7 +56,7 @@ private:
 
 	PLAYER_POV m_pov;       // 視点モード
 
-	class HumanCamera* m_cameraComp;        // カメラ
+	class ThirdPersonCamera* m_cameraComp;        // カメラ
 	class MoveComponentHuman* m_moveComp;
 
 	class PlayerManager* m_manager;     // ステート制御のマネージメントクラス

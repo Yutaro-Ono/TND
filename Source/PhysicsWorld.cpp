@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "PlayerCar.h"
 #include "PlayerHuman.h"
+#include "ThirdPersonCamera.h"
 #include "Collision.h"
 #include "BoxCollider.h"
 
@@ -27,9 +28,15 @@ PhysicsWorld::~PhysicsWorld()
 void PhysicsWorld::AddBoxCollider(PhysicsType in_type, BoxCollider * in_box)
 {
 	// プレイヤー
-	if (in_type == TYPE_PLAYER)
+	if (in_type == TYPE_PLAYER_CAR)
 	{
-		m_playerBoxes.push_back(in_box);
+		m_playerCarBoxes.push_back(in_box);
+	}
+
+	// プレイヤー(人間)
+	if (in_type == TYPE_PLAYER_HUMAN)
+	{
+		m_playerHumanBoxes.push_back(in_box);
 	}
 
 	// 背景当たり判定
@@ -38,11 +45,12 @@ void PhysicsWorld::AddBoxCollider(PhysicsType in_type, BoxCollider * in_box)
 		m_bgBoxes.push_back(in_box);
 	}
 
-	// 炎当たり判定
-	if (in_type == TYPE_FLAME)
+	// カメラ当たり判定
+	if (in_type == TYPE_CAMERA)
 	{
-		m_fires.push_back(in_box);
+		m_cameraBoxes.push_back(in_box);
 	}
+
 }
 
 // BoxColliderの削除
@@ -88,32 +96,71 @@ void PhysicsWorld::DebugShowBox()
 // プレイヤー関係の当たり判定処理
 void PhysicsWorld::PlayerAndBGTest()
 {
-	//背景とプレーヤーの衝突検出
-	for (auto p : m_playerBoxes)
+	//プレーヤー(車)の衝突検出
+	for (auto p : m_playerCarBoxes)
 	{
+		BoxCollider *playerCar = p;
+		
+		// 環境オブジェクトとの当たり判定
 		for (auto b : m_bgBoxes)
 		{
-			BoxCollider *player = p;
 			BoxCollider *box = b;
-			if (Intersect(player->GetWorldBox(), b->GetWorldBox()))
+			if (Intersect(playerCar->GetWorldBox(), b->GetWorldBox()))
 			{
 				//プレーヤーの壁めり込み修正処理へ
-				dynamic_cast<PlayerCar *>(player->GetOwner())->CollisionFix(player, box);
-				dynamic_cast<PlayerHuman*>(player->GetOwner())->CollisionFix(player, box);
+				dynamic_cast<PlayerCar *>(playerCar->GetOwner())->CollisionFix(playerCar, box);
+			}
+		}
+
+	}
+
+	//プレーヤー(人間)の衝突検出
+	for (auto p : m_playerHumanBoxes)
+	{
+		BoxCollider* playerHuman = p;
+
+		// 環境オブジェクトとの当たり判定
+		for (auto b : m_bgBoxes)
+		{
+			BoxCollider* box = b;
+			if (Intersect(playerHuman->GetWorldBox(), b->GetWorldBox()))
+			{
+				//プレーヤーの壁めり込み修正処理へ
+				dynamic_cast<PlayerHuman*>(playerHuman->GetOwner())->CollisionFix(playerHuman, box);
+			}
+		}
+
+		// 車との当たり判定
+		for (auto c : m_playerCarBoxes)
+		{
+			BoxCollider* car = c;
+			if (Intersect(playerHuman->GetWorldBox(), c->GetWorldBox()))
+			{
+				//プレーヤーの壁めり込み修正処理へ
+				dynamic_cast<PlayerHuman*>(playerHuman->GetOwner())->CollisionFix(playerHuman, car);
 			}
 		}
 	}
 
-	// プレーヤーと炎の衝突検出
-	for (auto p : m_playerBoxes)
+	// カメラの当たり判定
+	for (auto c : m_cameraBoxes)
 	{
-		for (auto c : m_fires)
+		BoxCollider* camera = c;
+
+		//printf("Min.x : %f, Min.y : %f, Min.z : %f\n", c->m_worldBox.m_min.x, c->m_worldBox.m_min.y, c->m_worldBox.m_min.z);
+		//printf("Max.x : %f, Max.y : %f, Max.z : %f\n", c->m_worldBox.m_max.x, c->m_worldBox.m_max.y, c->m_worldBox.m_max.z);
+
+		// 環境オブジェクトとの当たり判定
+		for (auto b : m_bgBoxes)
 		{
-			// 炎とプレーヤーがヒットしたか？
-			if (Intersect(p->GetWorldBox(), c->GetWorldBox()))
+			BoxCollider* box = b;
+			if (Intersect(camera->GetWorldBox(), b->GetWorldBox()))
 			{
-				c->GetOwner()->SetState(Actor::STATE_DEAD);
+				//プレーヤーの壁めり込み修正処理へ
+				dynamic_cast<ThirdPersonCamera*>(camera->GetCamera())->CollisionFix(camera, box);
+
 			}
 		}
 	}
+
 }

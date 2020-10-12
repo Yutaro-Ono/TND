@@ -249,6 +249,9 @@
     <Filter Include="ソース ファイル\Camera\HumanCamera">
       <UniqueIdentifier>{2be2cf55-170e-440b-8b9e-2f89bd3ef926}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Camera\ThirdPerson">
+      <UniqueIdentifier>{76f2700a-da4f-4ce9-ae4f-56685d22c002}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -526,6 +529,9 @@
     </ClCompile>
     <ClCompile Include="Source\HumanCamera.cpp">
       <Filter>ソース ファイル\Camera\HumanCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ThirdPersonCamera.cpp">
+      <Filter>ソース ファイル\Camera\ThirdPerson</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -819,6 +825,9 @@
     </ClInclude>
     <ClInclude Include="Source\HumanCamera.h">
       <Filter>ソース ファイル\Camera\HumanCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ThirdPersonCamera.h">
+      <Filter>ソース ファイル\Camera\ThirdPerson</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -80,7 +80,8 @@ public:
 	SDL_Renderer* GetSDLRenderer();                                                  // 2D用SDLレンダラーの取得
 	// カメラ
 	void SetCamera(class Camera* in_camera);                                         // カメラをシステムに登録
-	void SetCamera(class CameraComponent* in_camera);                                         // カメラをシステムに登録
+	void SetCamera(class CameraComponent* in_camera);                                // カメラをシステムに登録
+	class CameraComponent* GetCamera() { return m_activeCamera; }                    // アクティブなカメラポインタの取得
 
 	void InActiveCamera(class Camera* in_activeCam);                                 // カメラの登録を解除
 	void InActiveCamera(class CameraComponent* in_activeCam);                        // カメラの登録を解除

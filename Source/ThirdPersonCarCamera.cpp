@@ -13,7 +13,6 @@ const float ThirdPersonCarCamera::MAX_TARGET_DISTANCE = 300.0f;
 ThirdPersonCarCamera::ThirdPersonCarCamera(PlayerCar* in_target)
 	:CameraComponent(in_target)
 	,m_playerCar(in_target)
-	,m_position(Vector3::Zero)
 	, m_offset(DEFAULT_DISTANCE_OFFSET)
 	, m_upVec(Vector3::UnitZ)
 	,m_velocity(Vector3::Zero)
@@ -117,7 +116,9 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 		m_upVec = Vector3::Transform(m_upVec, pitch);
 
 		// ワールド座標をターゲットの座標とオフセットから算出
-		m_position = targetPos + m_offset;
+		m_position = Vector3::Lerp(m_position, targetPos + m_offset, 2.0f * in_deltaTime);
+
+		//m_position = targetPos + m_offset;
 
 		// ビュー行列を更新
 		view = Matrix4::CreateLookAt(m_position, targetPos, m_upVec);
@@ -146,9 +147,10 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 			m_offset = Vector3::Transform(m_offset, pitch);
 			// カメラの情報ベクトルもピッチから更新
 			m_upVec = Vector3::Transform(m_upVec, pitch);
+
+
 			m_position = targetPos - m_offset;
 			view = Matrix4::CreateLookAt(m_position, targetPos, m_upVec);
-			printf("%f %f %f\n", targetPos.x - m_position.x, targetPos.y - m_position.y, targetPos.z - m_position.z);
 
 		}
 

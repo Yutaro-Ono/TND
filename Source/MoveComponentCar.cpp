@@ -4,8 +4,8 @@
 #include "Actor.h"
 #include "PlayerCar.h"
 
-const float MoveComponentCar::HAND_BRAKE_VALUE = 8.0f;                 // ハンドブレーキ操作時のブレーキ値
-const float MoveComponentCar::ACCEL_LIMIT = 100.0f;                // 最大速度の上限値(現在の基準：150km/h)
+const float MoveComponentCar::HAND_BRAKE_VALUE = 8.0f;            // ハンドブレーキ操作時のブレーキ値
+const float MoveComponentCar::ACCEL_LIMIT = 80.0f;                // 最大速度の上限値(現在の基準：150km/h)
 const float MoveComponentCar::BRAKE_LIMIT = 35.0f;
 
 
@@ -46,7 +46,7 @@ void MoveComponentCar::Update(float in_deltaTime)
 void MoveComponentCar::MovementByController(float in_deltaTime)
 {
 	//キャラ入力
-	const float speed = 8.0f;
+	const float speed = 5.0f;
 	Vector3 forwardVec = Vector3(60.0f, 0.0f, 0.0f);
 	Vector3 rightVec = Vector3(0.0f, 1.0f, 0.0f);
 	Vector3 charaForwardVec = m_owner->GetForward();
@@ -255,7 +255,7 @@ void MoveComponentCar::MovementByKeyboard(float in_deltaTime)
 {
 
 	//キャラ入力
-	const float speed = 8.0f;
+	const float speed = 5.0f;
 	Vector3 forwardVec = Vector3(60.0f, 0.0f, 0.0f);
 	Vector3 rightVec = Vector3(0.0f, 1.0f, 0.0f);
 	Vector3 charaForwardVec = m_owner->GetForward();

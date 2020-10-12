@@ -1,6 +1,7 @@
 #include "PlayerCar.h"
 #include "MoveComponentCar.h"
 #include "ThirdPersonCarCamera.h"
+#include "ThirdPersonCamera.h"
 #include "Input.h"
 #include "InputController.h"
 #include "Collision.h"
@@ -24,8 +25,9 @@ PlayerCar::PlayerCar()
 	m_moveComp = new MoveComponentCar(this);
 	m_moveComp->SetActive(false);
 	// カメラコンポーネントを生成
-	m_cameraComp = new ThirdPersonCarCamera(this);
-
+	m_cameraComp = new ThirdPersonCamera(this);
+	m_cameraComp->SetAdjustForward(false);
+	m_cameraComp->SetChaseOwnerForward(false);
 
 	// 各パーツごとのクラスを作成
 	m_body = new CarBody(this, CAR_BODY_MESH_PATH);
@@ -48,43 +50,29 @@ PlayerCar::~PlayerCar()
 
 void PlayerCar::UpdateActor(float in_deltaTime)
 {
+
+	// プレイヤーが車を運転している状態の時
 	if (m_manager->GetPlayerMode() == PlayerManager::PLAYER_MODE::MODE_CAR)
-	{
-		m_moveComp->SetActive(true);
-	}
-	else
-	{
-		m_moveComp->SetActive(false);
-	}
-
-	// ディアクティベートされたら
-	if (!m_isActive)
-	{
-		m_moveComp->SetActive(false);
-		// メッシュの表示を切らせるよう命令
-		//m_body->GetMeshComponent()->SetVisible(false);
-		//m_door[0]->GetMeshComponent()->SetVisible(false);
-		//m_door[1]->GetMeshComponent()->SetVisible(false);
-		//m_handle->GetMeshComponent()->SetVisible(false);
-		//for (int i = 0; i < 4; i++)
-		//{
-		//	m_wheel[i]->GetMeshComponent()->SetVisible(false);
-		//}
-
-	}
-	else
 	{
 		GAME_INSTANCE.SetCamera(m_cameraComp);
 		m_moveComp->SetActive(true);
-		//m_body->GetMeshComponent()->SetVisible(true);
-		//m_door[0]->GetMeshComponent()->SetVisible(true);
-		//m_door[1]->GetMeshComponent()->SetVisible(true);
-		//m_handle->GetMeshComponent()->SetVisible(true);
-		//for (int i = 0; i < 4; i++)
-		//{
-		//	m_wheel[i]->GetMeshComponent()->SetVisible(true);
-		//}
+
+		// 速度が一定以上かつアクセルを踏んでいる時、カメラの追従をオンにする
+		if (m_moveComp->GetAccelValue() >= 30.0f)
+		{
+			m_cameraComp->SetChaseOwnerForward(true);
+		}
+		else
+		{
+			m_cameraComp->SetChaseOwnerForward(false);
+		}
 	}
+	else
+	{
+		m_moveComp->SetActive(false);
+	}
+
+
 
 }
 
@@ -93,30 +81,30 @@ void PlayerCar::UpdateActor(float in_deltaTime)
 // 衝突時の押し出し処理
 void PlayerCar::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hitBox)
 {
-	//Vector3 fix = Vector3::Zero;
+	Vector3 fix = Vector3::Zero;
 
 
-	////壁とぶつかったとき
-	//AABB bgBox = in_hitBox->GetWorldBox();
-	//AABB playerBox = m_hitBox->GetWorldBox();
+	//壁とぶつかったとき
+	AABB bgBox = in_hitBox->GetWorldBox();
+	AABB playerBox = m_hitBox->GetWorldBox();
 
-	//// めり込みを修正
-	//CalcCollisionFixVec(playerBox, bgBox, fix);
+	// めり込みを修正
+	CalcCollisionFixVec(playerBox, bgBox, fix);
 
-	//// 補正ベクトル分戻す
-	//m_position += fix;
+	// 補正ベクトル分戻す
+	m_position += fix;
 
-	//// 壁衝突時の処理
-	//if (fix.x > 5.0f || fix.x < -5.0f || fix.y > 5.0f || fix.y < -5.0f)
-	//{
+	// 壁衝突時の処理
+	if (fix.x > 5.0f || fix.x < -5.0f || fix.y > 5.0f || fix.y < -5.0f)
+	{
 
-	//	// アクセル減少 (衝突時直前の半分のスピードにする)
-	//	m_moveComp->SetAccel(m_moveComp->GetAccelValue() / 2.0f);
-	//}
+		// アクセル減少 (衝突時直前の半分のスピードにする)
+		m_moveComp->SetAccel(m_moveComp->GetAccelValue() / 2.0f);
+	}
 
 
-	//// 位置が変わったのでボックス再計算
-	//m_hitBox->OnUpdateWorldTransform();
+	// 位置が変わったのでボックス再計算
+	m_hitBox->OnUpdateWorldTransform();
 
 	// printf("[%f, %f, %f]\n", m_position.x, m_position.y, m_position.z);
 }

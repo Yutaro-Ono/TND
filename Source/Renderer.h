@@ -76,6 +76,8 @@ public:
 	float GetScreenHeight() { return static_cast<float>(m_screenHeight); }
 	// ディレクショナルライト
 	DirectionalLight& GetDirectionalLight() { return m_directionalLight; }
+	// カメラ位置セット
+	void SetCameraPosition(const Vector3& in_cameraPos) { m_cameraPos = in_cameraPos; }
 	// 行列
 	const Matrix4& GetViewMatrix() { return m_view; }
 	const Matrix4& GetProjectionMatrix() { return m_projection; }
@@ -108,40 +110,47 @@ private:
 	std::vector<class MeshComponent*> m_meshComponents;                    // メッシュコンポーネント
 	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;
 
-	//--------------------------------------------//
+	//--------------------------------------------+
 	// ライティング関連
-	//-------------------------------------------//
+	//--------------------------------------------+
 	Vector3 m_ambientLight;                                                // アンビエントライト
 	DirectionalLight m_directionalLight;                                   // ディレクショナルライト
 
-	//-------------------------------------------//
+	//--------------------------------------------+
 	// Sprite関連
-	//------------------------------------------//
+	//--------------------------------------------+
 	class Shader* m_spriteShader;
 	class VertexArray* m_spriteVerts;
 
-	//-------------------------------------------//
+	//--------------------------------------------+
 	// メッシュ関連
-	//------------------------------------------//
+	//--------------------------------------------+
 	class Shader* m_meshShader;
+	class Shader* m_meshNormalShader;
 	class Shader* m_skinnedShader;
+	int m_switchShader;
 
-	//-------------------------------------------//
+	//--------------------------------------------+
 	// パーティクル関連
-	//------------------------------------------//
+	//--------------------------------------------+
 	class Shader* m_particleShader;
 	class VertexArray* m_particleVertex;
 	class ParticleManager* m_particleManager;
 
-	//-------------------------------------------//
+	//--------------------------------------------+
+    // カメラ関連
+    //--------------------------------------------+
+	Vector3 m_cameraPos;
+
+	//--------------------------------------------+
 	// 基本行列関連
-	//------------------------------------------//
+	//--------------------------------------------+
 	Matrix4 m_view;
 	Matrix4 m_projection;
 
-	//-------------------------------------------//
+	//--------------------------------------------+
 	// レンダリングベース情報関連
-	//------------------------------------------//
+	//--------------------------------------------+
 	SDL_Window* m_window;                                                   // SDLのウィンドウハンドル
 	SDL_Renderer* m_SDLRenderer;                                            // SDLのレンダリングハンドル
 	SDL_GLContext m_context;                                                // OpenGLコンテキスト (内部状態管理)

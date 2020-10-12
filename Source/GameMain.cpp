@@ -292,6 +292,8 @@ int GameMain::UpdateGame()
 		// アクティブカメラのビュー行列を持ってくる
 		//m_viewMatrix = m_activeCamera->GetViewMatrix();
 		//m_renderer->SetViewMatrix(m_viewMatrix);
+		// レンダラーにカメラ位置をセット
+		m_renderer->SetCameraPosition(m_activeCamera->GetPosition());
 	}
 
 	// パーティクル更新
@@ -665,7 +667,7 @@ void GameMain::SetCamera(Camera * in_camera)
 
 void GameMain::SetCamera(CameraComponent* in_camera)
 {
-	printf("SetCamera [%p]\n", in_camera);
+	//printf("SetCamera [%p]\n", in_camera);
 	m_activeCamera = in_camera;
 }
 

@@ -6,6 +6,7 @@
 #include "Skeleton.h"
 #include "SkeletalMeshComponent.h"
 #include "HumanCamera.h"
+#include "ThirdPersonCamera.h"
 #include "MoveComponentHuman.h"
 #include "PhysicsWorld.h"
 #include "BoxCollider.h"
@@ -13,7 +14,7 @@
 #include "Input.h"
 #include "InputController.h"
 
-const float cAnimationSpeed = 0.6f;
+const float cAnimationSpeed = 0.5f;
 
 PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 	:m_manager(in_manager)
@@ -23,7 +24,10 @@ PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 {
 
 	// カメラの生成
-	m_cameraComp = new HumanCamera(this);
+	m_cameraComp = new ThirdPersonCamera(this);
+	m_cameraComp->SetAdjustForward(true);
+	m_cameraComp->SetChaseOwnerForward(false);
+
 
 	// MoveComponentの生成
 	m_moveComp = new MoveComponentHuman(this);
@@ -53,7 +57,7 @@ PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 
 	// 当たり判定ボックスのセット
 	AABB playerBox = mesh->GetCollisionBox();
-	m_hitBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER);
+	m_hitBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER_HUMAN);
 	playerBox.m_min.x *= 0.6f;
 	playerBox.m_min.y *= 0.6f;
 	playerBox.m_max.x *= 0.6f;
@@ -69,7 +73,7 @@ PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 	groundBox.m_max.y *= 0.8f;
 	groundBox.m_min.z = -2.0f;  //ジャンプ時に引っかからない高さ
 	groundBox.m_max.z *= 0.0f;
-	m_hitGroundBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER);
+	m_hitGroundBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER_HUMAN);
 	m_hitGroundBox->SetObjectBox(groundBox);
 
 	// プレーヤーの頭上を調べるボックスを作成 ボックス底面が頭上に来るようにする
@@ -77,7 +81,7 @@ PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 	headBox = groundBox;
 	headBox.m_min.z = playerBox.m_max.z;
 	headBox.m_max.z = headBox.m_min.z + 2.0f;
-	m_hitHeadBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER);
+	m_hitHeadBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER_HUMAN);
 	m_hitHeadBox->SetObjectBox(headBox);
 
 }

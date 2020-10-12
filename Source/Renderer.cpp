@@ -32,7 +32,10 @@ Renderer::Renderer()
 	,m_context(0)
 	,m_spriteShader(nullptr)
 	,m_meshShader(nullptr)
+	,m_meshNormalShader(nullptr)
 	,m_skinnedShader(nullptr)
+	,m_switchShader(0)
+	,m_cameraPos(Vector3::Zero)
 {
 }
 
@@ -263,21 +266,46 @@ void Renderer::Draw()
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
-
-
-	//メッシュシェーダーで描画する対象の変数をセット
-	m_meshShader->SetActive();
-	m_meshShader->SetMatrixUniform("uViewProj", m_view * m_projection);
-	// ライティング変数をセット
-	SetLightUniforms(m_meshShader);
-	// 全てのメッシュコンポーネントを描画
-	for (auto mc : m_meshComponents)
+	// メッシュシェーダー(phong)
+	if (m_switchShader == 0)
 	{
-		if (mc->GetVisible())
+		//メッシュシェーダーで描画する対象の変数をセット
+		m_meshShader->SetActive();
+		m_meshShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+		// ライティング変数をセット
+		SetLightUniforms(m_meshShader);
+		// 全てのメッシュコンポーネントを描画
+		for (auto mc : m_meshComponents)
 		{
-			mc->Draw(m_meshShader);
+			if (mc->GetVisible())
+			{
+				mc->Draw(m_meshShader);
+			}
 		}
 	}
+
+	// メッシュシェーダー(normal)
+	if (m_switchShader == 1)
+	{
+		//メッシュシェーダーで描画する対象の変数をセット
+		m_meshNormalShader->SetActive();
+		m_meshNormalShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+		// ライティング変数をセット
+		SetLightUniforms(m_meshNormalShader);
+		m_meshNormalShader->SetVectorUniform("uLightPos", m_directionalLight.m_position);
+		m_meshNormalShader->SetVectorUniform("uCameraPos", m_cameraPos);
+		// 全てのメッシュコンポーネントを描画
+		for (auto mc : m_meshComponents)
+		{
+			if (mc->GetVisible())
+			{
+				mc->Draw(m_meshNormalShader);
+			}
+		}
+	}
+
+
+
 
 	// ボーン入りメッシュの描画
 	m_skinnedShader->SetActive();
@@ -326,7 +354,23 @@ void Renderer::Draw()
 
 	// デバッグコンソール描画
 	//MOUSE_INSTANCE.ImGuiDebugRendering();
-	STEERING_CONTROLLER_INSTANCE.RenderDebugImGui();
+	// STEERING_CONTROLLER_INSTANCE.RenderDebugImGui();
+
+	// ImGuiフレームを開始
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame(GAME_INSTANCE.GetRenderer()->GetSDLWindow());
+	ImGui::NewFrame();
+
+	// ImGui更新
+	ImGui::Begin("Debug Console : Mouse Input");
+	ImGui::SliderInt("MeshShader", &m_switchShader, 0, 1);
+
+	ImGui::End();
+	ImGui::Render();
+	glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
+	//glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	// Swap the buffers
 	SDL_GL_SwapWindow(m_window);
@@ -359,7 +403,7 @@ void Renderer::RemoveSprite(SpriteComponent * in_sprite)
 }
 
 
-
+// メッシュコンポーネント追加
 void Renderer::AddMeshComponent(MeshComponent * in_mesh)
 {
 
@@ -375,6 +419,7 @@ void Renderer::AddMeshComponent(MeshComponent * in_mesh)
 
 }
 
+// メッシュコンポーネント格納配列から削除
 void Renderer::RemoveMeshComponent(MeshComponent * in_mesh)
 {
 
@@ -659,15 +704,24 @@ bool Renderer::LoadShaders()
 		static_cast<float>(m_screenHeight),
 		1.0f, 10000.0f);
 
-	if (!m_meshShader->Load("Source/Shaders/Phong.vert", "Source/Shaders/Phong.frag"))
+	if (!m_meshShader->Load("Data/Shaders/Phong.vert", "Data/Shaders/Phong.frag"))
 	{
 		return false;
 	}
 
 	m_meshShader->SetActive();
-
 	m_meshShader->SetMatrixUniform("uViewProj", m_view * m_projection);
 
+	// メッシュシェーダー(法線マップ)
+	m_meshNormalShader = new Shader();
+	if (!m_meshNormalShader->Load("Data/Shaders/NormalMap.vert", "Data/Shaders/NormalMap.frag"))
+	{
+		return false;
+	}
+	m_meshNormalShader->SetActive();
+	m_meshNormalShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+	m_meshNormalShader->SetVectorUniform("uLightPos", m_directionalLight.m_position);
+	m_meshNormalShader->SetVectorUniform("uCameraPos", m_cameraPos);
 
 	// スキンシェーダー
 	m_skinnedShader = new Shader();
@@ -693,6 +747,7 @@ void Renderer::SetLightUniforms(Shader * in_shader)
 	in_shader->SetVectorUniform("uAmbientLight", m_ambientLight);
 
 	// ディレクショナルライト
+	in_shader->SetVectorUniform("uDirLight.mPosition", m_directionalLight.m_direction);
 	in_shader->SetVectorUniform("uDirLight.mDirection", m_directionalLight.m_direction);
 	in_shader->SetVectorUniform("uDirLight.mDiffuseColor", m_directionalLight.m_diffuseColor);
 	in_shader->SetVectorUniform("uDirLight.mSpecColor", m_directionalLight.m_specColor);

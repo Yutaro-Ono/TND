@@ -53,8 +53,13 @@ void MeshComponent::Draw(Shader * in_shader)
 		// 法線マップ情報などが格納されている場合は
 		if (m_mesh->GetTextureNum() >= 2)
 		{
-			in_shader->SetInt("u_mat.diffuseMap", m_mesh->GetTexture(0)->GetTextureID());
-			in_shader->SetInt("u_mat.normalMap", m_mesh->GetTexture(1)->GetTextureID());
+			in_shader->SetInt("u_mat.diffuseMap", 0);
+			in_shader->SetInt("u_mat.normalMap", 1);
+			// テクスチャのアクティブ化
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, m_mesh->GetTexture(0)->GetTextureID());
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, m_mesh->GetTexture(1)->GetTextureID());
 		}
 
 		// Set the mesh's vertex array as active　頂点配列をアクティブに

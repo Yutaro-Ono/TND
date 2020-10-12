@@ -82,7 +82,7 @@ private:
 	class MoveComponentCar* m_moveComp;
 
 	// CameraComponent
-	class ThirdPersonCarCamera* m_cameraComp;
+	class ThirdPersonCamera* m_cameraComp;
 
 	// 当たり判定ボックス
 	class BoxCollider* m_hitBox;

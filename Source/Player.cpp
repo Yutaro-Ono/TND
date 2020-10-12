@@ -62,7 +62,7 @@ Player::Player(bool in_isTitle)
 
 	// 当たり判定セット
 	AABB playerBox = mesh->GetCollisionBox();
-	m_hitBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER);
+	m_hitBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER_HUMAN);
 	playerBox.m_min.x *= 0.6f;
 	playerBox.m_min.y *= 0.6f;
 	playerBox.m_max.x *= 0.6f;
@@ -78,7 +78,7 @@ Player::Player(bool in_isTitle)
 	groundBox.m_max.y *= 0.8f;
 	groundBox.m_min.z = -2.0f;  //ジャンプ時に引っかからない高さ
 	groundBox.m_max.z *= 0.0f;
-	m_hitGroundBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER);
+	m_hitGroundBox = new BoxCollider(this, PhysicsWorld::TYPE_PLAYER_HUMAN);
 	m_hitGroundBox->SetObjectBox(groundBox);
 
 	// ともし火のセット

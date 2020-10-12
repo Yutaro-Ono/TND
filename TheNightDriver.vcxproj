@@ -104,6 +104,7 @@
     <ClCompile Include="Source\SpeedMeterUI.cpp" />
     <ClCompile Include="Source\SpriteComponent.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\ThirdPersonCamera.cpp" />
     <ClCompile Include="Source\ThirdPersonCarCamera.cpp" />
     <ClCompile Include="Source\tiny_obj_loader.cc" />
     <ClCompile Include="Source\TitleScene.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Source\SpeedMeterUI.h" />
     <ClInclude Include="Source\SpriteComponent.h" />
     <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\ThirdPersonCamera.h" />
     <ClInclude Include="Source\ThirdPersonCarCamera.h" />
     <ClInclude Include="Source\tiny_obj_loader.h" />
     <ClInclude Include="Source\TitleScene.h" />

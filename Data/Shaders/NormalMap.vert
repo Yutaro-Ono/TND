@@ -36,7 +36,6 @@ void main()
 {
 	// 座標変換を行った上で、GLの組み込み変数に代入
 	gl_Position = uViewProj * uWorldTransform * vec4(in_Position, 1.0f);
-
 	// UV座標をフラグメントシェーダに送る
 	vs_out.TexCoords = in_TexCoords;
 

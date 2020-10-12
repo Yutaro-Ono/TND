@@ -13,9 +13,14 @@ public:
 
 	void SetActive() { GAME_INSTANCE.SetCamera(this); }
 
+	const Vector3 GetPosition() const { return m_position; }
+
 	const Matrix4& GetViewMatrix() const { return GAME_INSTANCE.GetViewMatrix(); }
 
 protected:
 
 	void SetViewMatrix(const Matrix4& in_view);
+
+
+	Vector3 m_position;       // ÉJÉÅÉâÇÃç¿ïW
 };

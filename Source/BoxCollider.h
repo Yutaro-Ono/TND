@@ -19,7 +19,11 @@ public:
 	void OnUpdateWorldTransform() override;                                 // ワールド変換時
 	void SetObjectBox(const AABB& in_box) { m_objectBox = in_box; }         // 当たり判定用境界ボックスをセット
 	const AABB& GetWorldBox() const { return m_worldBox; }                  // ワールド空間上での境界ボックスを取得
-	void setArrowRotate(bool in_value) { m_rotatable = in_value; }          // 回転を許可するか
+	void SetArrowRotate(bool in_value) { m_rotatable = in_value; }          // 回転を許可するか
+
+	// カメラクラスのセッター・ゲッター
+	void SetCamera(class CameraComponent* in_camera) { m_camera = in_camera; }
+	class CameraComponent* GetCamera() { return m_camera; }
 
 private:
 
@@ -27,6 +31,8 @@ private:
 	AABB m_worldBox;                                                        // ワールド空間でのボックス
 
 	bool m_rotatable;                                                       // 回転を許可するか
+
+	class CameraComponent* m_camera;                                        // カメラに当たり判定を付けた際に用いるポインタ
 
 	friend class PhysicsWorld;                                              // フレンド化
 

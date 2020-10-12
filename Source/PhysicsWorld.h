@@ -8,7 +8,9 @@ public:
 
 	typedef enum
 	{
-		TYPE_PLAYER,
+		TYPE_PLAYER_CAR,
+		TYPE_PLAYER_HUMAN,
+		TYPE_CAMERA,
 		TYPE_ENEMY,
 		TYPE_FLAME,
 		TYPE_BACK_GROUND,
@@ -31,8 +33,10 @@ private:
 
 	bool m_boolDebugMode;
 	std::vector<class BoxCollider*> m_bgBoxes;                                // 背景当たり判定
-	std::vector<class BoxCollider*> m_playerBoxes;                             // プレイヤー当たり判定
-	std::vector<class BoxCollider*> m_fires;                                  // 炎当たり判定
+	std::vector<class BoxCollider*> m_playerCarBoxes;                         // プレイヤー当たり判定
+	std::vector<class BoxCollider*> m_playerHumanBoxes;                       // プレイヤー(人間)当たり判定ボックス
+	std::vector<class BoxCollider*> m_cameraBoxes;                            // カメラ当たり判定
+
 
 	void PlayerAndBGTest();                                                   // プレイヤーと壁の当たり判定テスト
 

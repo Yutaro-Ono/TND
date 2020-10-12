@@ -3,6 +3,7 @@
 
 CameraComponent::CameraComponent(Actor * in_target, int updateOrder)
 	:Component(in_target, updateOrder)
+	,m_position(Vector3::Zero)
 {
 	// ゲーム側にこのカメラをアクティブなカメラとして登録
 	SetActive();

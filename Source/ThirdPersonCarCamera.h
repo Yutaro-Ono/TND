@@ -37,8 +37,6 @@ private:
 
 	class PlayerCar* m_playerCar;      // プレイヤーへのポインタ
 
-	Vector3 m_position;       // カメラの座標
-
 	Vector3 m_offset;          // ターゲットからの距離オフセット
 
 	Vector3 m_upVec;           // カメラの上方ベクトル
