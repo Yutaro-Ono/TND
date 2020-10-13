@@ -3,6 +3,7 @@
 #include "PhysicsWorld.h"
 #include "BoxCollider.h"
 #include "Collision.h"
+#include "MeshComponent.h"
 
 const float ThirdPersonCamera::CAMERA_SENSITIVITY = 20.0f;    // カメラ速度(低いほど高感度)
 const Vector3 ThirdPersonCamera::DEFAULT_DISTANCE_OFFSET = Vector3(-50.0f, 0.0f, 20.0f);
@@ -30,11 +31,11 @@ ThirdPersonCamera::ThirdPersonCamera(Actor* in_owner)
 
 	// 当たり判定ボックスのセット
 	AABB hitBox;
-	hitBox.m_min.x = -5.0f;
-	hitBox.m_min.y = -5.0f;
+	hitBox.m_min.x = -25.0f;
+	hitBox.m_min.y = -125.0f;
 	hitBox.m_min.z = -5.0f;
-	hitBox.m_max.x = 5.0f;
-	hitBox.m_max.y = 5.0f;
+	hitBox.m_max.x = 25.0f;
+	hitBox.m_max.y = 125.0f;
 	hitBox.m_max.z = 5.0f;
 	m_hitBox = new BoxCollider(m_cameraActor, PhysicsWorld::TYPE_CAMERA);
 	m_hitBox->SetObjectBox(hitBox);
@@ -123,7 +124,7 @@ void ThirdPersonCamera::Update(float in_deltaTime)
 		// オフセットにピッチの値を入れて更新
 		m_offset = Vector3::Transform(m_offset, pitch);
 
-
+		
 		// ワールド座標をターゲットの座標とオフセットから算出
 		//m_position = Vector3::Lerp(m_position, targetPos + m_offset, 2.0f * in_deltaTime);
 		m_position = targetPos + m_offset;
@@ -136,11 +137,16 @@ void ThirdPersonCamera::Update(float in_deltaTime)
 		// 距離分を加算
 		view = view * Matrix4::CreateTranslation(dist);
 
-
+		
+		m_cameraActor->SetPosition(m_position);
+		m_cameraActor->ComputeWorldTransform();
+		m_hitBox->OnUpdateWorldTransform();
 	}
 
-	m_cameraActor->SetPosition(m_position);
-	m_hitBox->OnUpdateWorldTransform();
+	
+
+
+	printf("x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
 
 	// レンダラーのビュー行列更新
 	SetViewMatrix(view);
@@ -212,13 +218,9 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 			}
 		}
 
-
-
 		// ヨー計算
 		yawSpeed = axisR.x / CAMERA_SENSITIVITY;
 		yawSpeed *= maxOrbitSpeed;
-
-
 
 		// ピッチの最大・最小角度を調整
 		if (axisR.y > 0.0f && m_offset.z + pitchSpeed > pitchMaxDegree)
@@ -239,10 +241,8 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
     //-----------------------------------------------------+
 	else
 	{
-
 		// マウスの位置からカメラのヨーとピッチを取得
 		m_mousePos = MOUSE_INSTANCE.GetPosition();
-
 
 		// x座標のオフセット
 		float xoffset = 0.0f;
@@ -312,11 +312,11 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 
 
 		// ピッチの最大・最小角度を調整
-		if (m_mousePos.y > 0.0f && m_offset.z + pitchSpeed > pitchMaxDegree)
+		if (m_offset.z + pitchSpeed > pitchMaxDegree)
 		{
 			pitchSpeed = 0.0f;
 		}
-		if (m_mousePos.y < 0.0f && m_offset.z + pitchSpeed < pitchMinDegree)
+		if (m_offset.z + pitchSpeed < pitchMinDegree)
 		{
 			pitchSpeed = 0.0f;
 		}
@@ -344,39 +344,8 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 // 当たり判定処理
 void ThirdPersonCamera::CollisionFix(BoxCollider* in_hitCameraBox, BoxCollider* in_hitBox)
 {
-	// 修正用ベクトル
-	Vector3 fix = Vector3::Zero;
-
-	//壁とぶつかったとき
-	AABB bgBox = in_hitBox->GetWorldBox();
-	AABB cameraBox = m_hitBox->GetWorldBox();
-
-	fix *= 2;
-
-	// めり込みを修正
-	CalcCollisionFixVec(cameraBox, bgBox, fix);
-
-	// 補正ベクトル分戻す
-	m_position += fix;
-
-	m_cameraActor->SetPosition(m_position);
-
-	// ビュー行列を更新
-	Matrix4 view = Matrix4::CreateLookAt(m_position, m_owner->GetPosition() + m_offset, m_upVec);
-
-	// レンダラーのビュー行列更新
-	SetViewMatrix(view);
-
-
-
-	if (fix.x != 0.0f || fix.y != 0.0f || fix.z != 0.0f)
-	{
-		printf("当たった！\n");
-	}
-
-
-	// 位置が変わったのでボックス再計算
-	m_hitBox->OnUpdateWorldTransform();
+	// 当たったメッシュを非表示
+	in_hitBox->GetOwner()->GetMeshComponent()->SetVisible(false);
 }
 
 // カメラ距離のセッター (最大・最小値を超えてしまった場合には調整を加える)

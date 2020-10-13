@@ -150,14 +150,41 @@ void PlayerHuman::ChangeState()
 		return;
 	}
 
-	// 左スティック入力値取得
-	Vector2 axisL = CONTROLLER_INSTANCE.GetLAxisVec();
+	// 移動コマンドの入力値取得
+	Vector2 axisL = Vector2::Zero;
+
+	if (CONTROLLER_INSTANCE.IsAvailable())
+	{
+		// コントローラ接続時、左スティックの入力値を取得
+		axisL = CONTROLLER_INSTANCE.GetLAxisVec();
+	}
+	else
+	{
+		// コントローラ未接続時、キーボード(WASD)の入力値を取得
+		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_W))
+		{
+			axisL.y += -1.0f;
+		}
+		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_S))
+		{
+			axisL.y += 1.0f;
+		}
+		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_A))
+		{
+			axisL.x += -1.0f;
+		}
+		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_D))
+		{
+			axisL.x += 1.0f;
+		}
+	}
+
 
 	// キー入力からアニメーション状態へ移行
-	bool IsIdleStart = INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_UP) &
-		INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_RIGHT) &
-		INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_DOWN) &
-		INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_LEFT) &
+	bool IsIdleStart = INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_W) &
+		INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_D) &
+		INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_S) &
+		INPUT_INSTANCE.IsKeyOff(SDL_SCANCODE_A) &
 		!(axisL.y != 0.0f) & !(axisL.x != 0.0f);
 
 	// 待機アニメ開始
@@ -195,13 +222,13 @@ void PlayerHuman::ChangeState()
 		if ((axisL.y < -0.1f || axisL.y > 0.1f) && axisL.x < 0.1f && axisL.x > -0.1f)
 		{
 			// 正面
-			if (m_animState != ANIM_WALKING_FWD && CONTROLLER_INSTANCE.GetLAxisVec().y < -0.1f && CONTROLLER_INSTANCE.GetLAxisVec().y > -0.65f)
+			if (m_animState != ANIM_WALKING_FWD && axisL.y < -0.1f && axisL.y > -0.65f)
 			{
 				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_FWD], cAnimationSpeed);
 				m_animState = ANIM_WALKING_FWD;
 			}
 			// RUNアニメ開始
-			if (m_animState != ANIM_RUNNING && CONTROLLER_INSTANCE.GetLAxisVec().y <= -0.65f)
+			if (m_animState != ANIM_RUNNING && axisL.y <= -0.65f)
 			{
 				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_RUNNING], cAnimationSpeed);
 				m_animState = ANIM_RUNNING;
@@ -209,7 +236,7 @@ void PlayerHuman::ChangeState()
 		}
 		
 		// 後方
-		if (m_animState != ANIM_WALKING_BWD && CONTROLLER_INSTANCE.GetLAxisVec().y > 0.1f)
+		if (m_animState != ANIM_WALKING_BWD && axisL.y > 0.1f)
 		{
 			m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_BWD], cAnimationSpeed);
 			m_animState = ANIM_WALKING_BWD;
@@ -230,18 +257,10 @@ void PlayerHuman::ChangeState()
 				m_animState = ANIM_WALKING_RIGHT;
 			}
 		}
-		
-
-		
-
 
 	}
 
-	float f = Vector3::Distance(m_position, m_manager->GetPlayerCar()->GetPosition());
-	
-	//float f = m_position.Length() - m_manager->GetPlayerCar()->GetPosition().Length();
 
-	printf("%f\n", f);
 }
 
 

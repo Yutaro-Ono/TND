@@ -8,15 +8,11 @@
 #include "GameMain.h"
 #include "Input.h"
 #include "InputController.h"
-#include "PlayerCamera.h"
 #include "AudioManager.h"
 #include "Renderer.h"
 #include "ParticleManager.h"
-#include "FlameManager.h"
 #include "LevelManager.h"
 #include "Skydome.h"
-#include "AngelStatue.h"
-#include "Player.h"
 #include "RuleScore.h"
 #include "RuleTime.h"
 #include "HUD.h"
@@ -302,7 +298,7 @@ SceneBase * GameScene::Update()
 		// 制限時間クラスからゲーム終了の合図が出たら終了
 		if (m_time->GetGameEnd() == true)
 		{
-			m_player->AllStopSound();
+			//m_player->AllStopSound();
 
 			// 全てのUIをCloseに設定
 			for (auto iter : GAME_INSTANCE.GetUIStack())
@@ -333,7 +329,7 @@ SceneBase * GameScene::Update()
 	// ゲームフィニッシュ時、プレイヤーをストップしカメラを離す
 	if (m_time->GetCountState() == m_time->STATE_FINISH)
 	{
-		m_player->SetState(m_player->STATE_PAUSED);
+		//m_player->SetState(m_player->STATE_PAUSED);
 
 		//m_camera->SetHorizonDist(m_camera->GetPosition().x * 0.2f);
 		//m_camera->SetVerticalDist(500.0f);

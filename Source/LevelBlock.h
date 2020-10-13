@@ -21,6 +21,6 @@ public:
 
 private:
 
-	class MeshComponent* m_meshComp;
+
 	class BoxCollider* m_box;
 };

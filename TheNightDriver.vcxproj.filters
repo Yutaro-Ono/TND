@@ -45,18 +45,6 @@
     <Filter Include="ソース ファイル\Audio">
       <UniqueIdentifier>{5a49fa68-6e54-4832-b469-7c2805c9a72e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Actor\Flame">
-      <UniqueIdentifier>{bbec9281-f2c4-4f53-8bd0-aa24b5116fec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Camera\Follow">
-      <UniqueIdentifier>{9859d897-283f-4c54-83d5-562da82f21a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Camera\LookD">
-      <UniqueIdentifier>{c0e98c64-b003-46c4-a3f0-e341501ca0f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Camera\PlayerC">
-      <UniqueIdentifier>{465075a1-9285-42e1-ac42-4a9410474f2f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Collision\Box">
       <UniqueIdentifier>{3ef2b456-8a27-4784-8d14-4376e56fed01}</UniqueIdentifier>
     </Filter>
@@ -138,15 +126,6 @@
     <Filter Include="ソース ファイル\Particle">
       <UniqueIdentifier>{63988c44-6f1f-481d-928a-546ca7ef2819}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Particle\Smoke">
-      <UniqueIdentifier>{0ac0b497-1e78-4268-9977-7b8402ba6078}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Particle\Spark">
-      <UniqueIdentifier>{38da3fcb-d9ea-401a-af24-88456d43b51a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Particle\GetEffect">
-      <UniqueIdentifier>{7c4aa0a8-958d-43e2-b759-821ac52a9124}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Interface\Chain">
       <UniqueIdentifier>{06c9eb0a-d6f6-466d-8f75-a01be7382041}</UniqueIdentifier>
     </Filter>
@@ -185,12 +164,6 @@
     </Filter>
     <Filter Include="ソース ファイル\Actor\Level\Block">
       <UniqueIdentifier>{f60c317e-2476-44b6-9f0c-3dcc3784dc08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Actor\Level\FlameStatue">
-      <UniqueIdentifier>{33c38d39-464b-4d6b-828c-b1a9592e4cea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Actor\Level\AngelStatue">
-      <UniqueIdentifier>{29ea2ea4-2734-479c-bdd4-817f1a769ce0}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Actor\Level\LevelObject">
       <UniqueIdentifier>{1aa1a028-ff05-4834-ba9e-14fc266082fa}</UniqueIdentifier>
@@ -275,9 +248,6 @@
     <ClCompile Include="Source\Component.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Player.cpp">
-      <Filter>ソース ファイル\Actor\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Camera.cpp">
       <Filter>ソース ファイル\Camera</Filter>
     </ClCompile>
@@ -298,18 +268,6 @@
     </ClCompile>
     <ClCompile Include="Source\AudioManager.cpp">
       <Filter>ソース ファイル\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FlameActor.cpp">
-      <Filter>ソース ファイル\Actor\Flame</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LookDownCamera.cpp">
-      <Filter>ソース ファイル\Camera\LookD</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FollowCamera.cpp">
-      <Filter>ソース ファイル\Camera\Follow</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PlayerCamera.cpp">
-      <Filter>ソース ファイル\Camera\PlayerC</Filter>
     </ClCompile>
     <ClCompile Include="Source\BoxCollider.cpp">
       <Filter>ソース ファイル\Collision\Box</Filter>
@@ -353,9 +311,6 @@
     <ClCompile Include="Source\RapidJsonHelper.cpp">
       <Filter>ソース ファイル\System\Json</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FlameManager.cpp">
-      <Filter>ソース ファイル\Actor\Flame</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Music.cpp">
       <Filter>ソース ファイル\Audio\Music</Filter>
     </ClCompile>
@@ -370,12 +325,6 @@
     </ClCompile>
     <ClCompile Include="Source\HUD.cpp">
       <Filter>ソース ファイル\Interface\HUD</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SandSmoke.cpp">
-      <Filter>ソース ファイル\Particle\Smoke</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FlameSpark.cpp">
-      <Filter>ソース ファイル\Particle\Spark</Filter>
     </ClCompile>
     <ClCompile Include="Source\CountDownUI.cpp">
       <Filter>ソース ファイル\Interface\Time</Filter>
@@ -404,17 +353,8 @@
     <ClCompile Include="Source\ResultScreen.cpp">
       <Filter>ソース ファイル\Interface\Result</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GetEffect.cpp">
-      <Filter>ソース ファイル\Particle\GetEffect</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\FlameStatue.cpp">
-      <Filter>ソース ファイル\Actor\Level\FlameStatue</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ChainUI.cpp">
       <Filter>ソース ファイル\Interface\Chain</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\AngelStatue.cpp">
-      <Filter>ソース ファイル\Actor\Level\AngelStatue</Filter>
     </ClCompile>
     <ClCompile Include="Source\TutorialUI.cpp">
       <Filter>ソース ファイル\Interface\Tutorial</Filter>
@@ -533,14 +473,11 @@
     <ClCompile Include="Source\ThirdPersonCamera.cpp">
       <Filter>ソース ファイル\Camera\ThirdPerson</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MissionBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\FlameActor.h">
-      <Filter>ソース ファイル\Actor\Flame</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Player.h">
-      <Filter>ソース ファイル\Actor\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Actor.h">
       <Filter>ソース ファイル\Actor</Filter>
     </ClInclude>
@@ -555,15 +492,6 @@
     </ClInclude>
     <ClInclude Include="Source\Camera.h">
       <Filter>ソース ファイル\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FollowCamera.h">
-      <Filter>ソース ファイル\Camera\Follow</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\LookDownCamera.h">
-      <Filter>ソース ファイル\Camera\LookD</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlayerCamera.h">
-      <Filter>ソース ファイル\Camera\PlayerC</Filter>
     </ClInclude>
     <ClInclude Include="Source\Component.h">
       <Filter>ソース ファイル\Component</Filter>
@@ -646,20 +574,11 @@
     <ClInclude Include="Source\GameMain.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\FlameManager.h">
-      <Filter>ソース ファイル\Actor\Flame</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Font.h">
       <Filter>ソース ファイル\Interface\Font</Filter>
     </ClInclude>
     <ClInclude Include="Source\HUD.h">
       <Filter>ソース ファイル\Interface\HUD</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SandSmoke.h">
-      <Filter>ソース ファイル\Particle\Smoke</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FlameSpark.h">
-      <Filter>ソース ファイル\Particle\Spark</Filter>
     </ClInclude>
     <ClInclude Include="Source\CountDownUI.h">
       <Filter>ソース ファイル\Interface\Time</Filter>
@@ -688,20 +607,11 @@
     <ClInclude Include="Source\ResultScreen.h">
       <Filter>ソース ファイル\Interface\Result</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GetEffect.h">
-      <Filter>ソース ファイル\Particle\GetEffect</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\FlameStatue.h">
-      <Filter>ソース ファイル\Actor\Level\FlameStatue</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ChainUI.h">
       <Filter>ソース ファイル\Interface\Chain</Filter>
     </ClInclude>
     <ClInclude Include="Source\TutorialUI.h">
       <Filter>ソース ファイル\Interface\Tutorial</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\AngelStatue.h">
-      <Filter>ソース ファイル\Actor\Level\AngelStatue</Filter>
     </ClInclude>
     <ClInclude Include="Source\RecordScore.h">
       <Filter>ソース ファイル\Rule\Score\RecordScore</Filter>
@@ -828,6 +738,12 @@
     </ClInclude>
     <ClInclude Include="Source\ThirdPersonCamera.h">
       <Filter>ソース ファイル\Camera\ThirdPerson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameWorld.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MissionBase.h">
+      <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

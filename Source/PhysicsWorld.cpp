@@ -2,7 +2,6 @@
 #include <typeinfo>
 #include <algorithm>
 #include "Actor.h"
-#include "Player.h"
 #include "PlayerCar.h"
 #include "PlayerHuman.h"
 #include "ThirdPersonCamera.h"
@@ -154,9 +153,13 @@ void PhysicsWorld::PlayerAndBGTest()
 		for (auto b : m_bgBoxes)
 		{
 			BoxCollider* box = b;
+
+			// 非表示にしているメッシュを表示状態にする
+			b->GetOwner()->GetMeshComponent()->SetVisible(true);
+
 			if (Intersect(camera->GetWorldBox(), b->GetWorldBox()))
 			{
-				//プレーヤーの壁めり込み修正処理へ
+				// カメラの壁めり込み時、メッシュを非表示
 				dynamic_cast<ThirdPersonCamera*>(camera->GetCamera())->CollisionFix(camera, box);
 
 			}

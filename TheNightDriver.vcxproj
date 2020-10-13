@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Actor.cpp" />
-    <ClCompile Include="Source\AngelStatue.cpp" />
     <ClCompile Include="Source\Animation.cpp" />
     <ClCompile Include="Source\AudioManager.cpp" />
     <ClCompile Include="Source\BoneTransform.cpp" />
@@ -36,16 +35,10 @@
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\CountDownUI.cpp" />
     <ClCompile Include="Source\DebugBox.cpp" />
-    <ClCompile Include="Source\FlameActor.cpp" />
-    <ClCompile Include="Source\FlameManager.cpp" />
-    <ClCompile Include="Source\FlameSpark.cpp" />
-    <ClCompile Include="Source\FlameStatue.cpp" />
-    <ClCompile Include="Source\FollowCamera.cpp" />
     <ClCompile Include="Source\Font.cpp" />
     <ClCompile Include="Source\GameConfig.cpp" />
     <ClCompile Include="Source\GameMain.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
-    <ClCompile Include="Source\GetEffect.cpp" />
     <ClCompile Include="Source\Grid.cpp" />
     <ClCompile Include="Source\HUD.cpp" />
     <ClCompile Include="Source\HumanCamera.cpp" />
@@ -64,13 +57,13 @@
     <ClCompile Include="Source\LevelManager.cpp" />
     <ClCompile Include="Source\LevelObject.cpp" />
     <ClCompile Include="Source\LoadScreen.cpp" />
-    <ClCompile Include="Source\LookDownCamera.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Math.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\MeshComponent.cpp" />
     <ClCompile Include="Source\MeshGpmesh.cpp" />
     <ClCompile Include="Source\MeshObj.cpp" />
+    <ClCompile Include="Source\MissionBase.cpp" />
     <ClCompile Include="Source\Mouse.cpp" />
     <ClCompile Include="Source\MoveComponent.cpp" />
     <ClCompile Include="Source\MoveComponentCar.cpp" />
@@ -82,8 +75,6 @@
     <ClCompile Include="Source\ParticleTestScene.cpp" />
     <ClCompile Include="Source\PauseScreen.cpp" />
     <ClCompile Include="Source\PhysicsWorld.cpp" />
-    <ClCompile Include="Source\Player.cpp" />
-    <ClCompile Include="Source\PlayerCamera.cpp" />
     <ClCompile Include="Source\PlayerCar.cpp" />
     <ClCompile Include="Source\PlayerHuman.cpp" />
     <ClCompile Include="Source\PlayerManager.cpp" />
@@ -94,7 +85,6 @@
     <ClCompile Include="Source\ResultScreen.cpp" />
     <ClCompile Include="Source\RuleScore.cpp" />
     <ClCompile Include="Source\RuleTime.cpp" />
-    <ClCompile Include="Source\SandSmoke.cpp" />
     <ClCompile Include="Source\ScoreUI.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\SkeletalMeshComponent.cpp" />
@@ -115,7 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor.h" />
-    <ClInclude Include="Source\AngelStatue.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\AudioManager.h" />
     <ClInclude Include="Source\BoneTransform.h" />
@@ -132,16 +121,11 @@
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\CountDownUI.h" />
     <ClInclude Include="Source\DebugBox.h" />
-    <ClInclude Include="Source\FlameActor.h" />
-    <ClInclude Include="Source\FlameManager.h" />
-    <ClInclude Include="Source\FlameSpark.h" />
-    <ClInclude Include="Source\FlameStatue.h" />
-    <ClInclude Include="Source\FollowCamera.h" />
     <ClInclude Include="Source\Font.h" />
     <ClInclude Include="Source\GameConfig.h" />
     <ClInclude Include="Source\GameMain.h" />
     <ClInclude Include="Source\GameScene.h" />
-    <ClInclude Include="Source\GetEffect.h" />
+    <ClInclude Include="Source\GameWorld.h" />
     <ClInclude Include="Source\Grid.h" />
     <ClInclude Include="Source\HUD.h" />
     <ClInclude Include="Source\HumanCamera.h" />
@@ -163,13 +147,13 @@
     <ClInclude Include="Source\LevelManager.h" />
     <ClInclude Include="Source\LevelObject.h" />
     <ClInclude Include="Source\LoadScreen.h" />
-    <ClInclude Include="Source\LookDownCamera.h" />
     <ClInclude Include="Source\Math.h" />
     <ClInclude Include="Source\MatrixPalette.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\MeshComponent.h" />
     <ClInclude Include="Source\MeshGpmesh.h" />
     <ClInclude Include="Source\MeshObj.h" />
+    <ClInclude Include="Source\MissionBase.h" />
     <ClInclude Include="Source\Mouse.h" />
     <ClInclude Include="Source\MoveComponent.h" />
     <ClInclude Include="Source\MoveComponentCar.h" />
@@ -181,8 +165,6 @@
     <ClInclude Include="Source\ParticleTestScene.h" />
     <ClInclude Include="Source\PauseScreen.h" />
     <ClInclude Include="Source\PhysicsWorld.h" />
-    <ClInclude Include="Source\Player.h" />
-    <ClInclude Include="Source\PlayerCamera.h" />
     <ClInclude Include="Source\PlayerCar.h" />
     <ClInclude Include="Source\PlayerHuman.h" />
     <ClInclude Include="Source\PlayerManager.h" />
@@ -193,7 +175,6 @@
     <ClInclude Include="Source\ResultScreen.h" />
     <ClInclude Include="Source\RuleScore.h" />
     <ClInclude Include="Source\RuleTime.h" />
-    <ClInclude Include="Source\SandSmoke.h" />
     <ClInclude Include="Source\SceneBase.h" />
     <ClInclude Include="Source\ScoreUI.h" />
     <ClInclude Include="Source\Shader.h" />

@@ -10,8 +10,6 @@
 #include "Mesh.h"
 #include "LevelBlock.h"
 #include "RapidJsonHelper.h"
-#include "FlameStatue.h"
-#include "AngelStatue.h"
 #include "Skydome.h"
 #include <vector>
 #include <string>

@@ -14,9 +14,6 @@
 #include "Actor.h"
 #include "Skydome.h"
 #include "LevelObject.h"
-#include "FlameStatue.h"
-#include "AngelStatue.h"
-#include "FlameActor.h"
 #include "Camera.h"
 #include "ResultScreen.h"
 #include "LoadScreen.h"
@@ -75,10 +72,6 @@ void ResultScene::Initialize()
 		RENDERER->Draw();
 	}
 
-	// 燭台の生成
-	m_flameStatue = new FlameStatue();
-	m_flameStatue->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Objects/FlameStatue/FlameStatue.gpmesh"));
-	m_flameStatue->SetPosition(Vector3(0.0f, 0.0f, -120.0f));
 
 	// ロード画面処理
 	{
@@ -86,36 +79,14 @@ void ResultScene::Initialize()
 		RENDERER->Draw();
 	}
 
-	// モンク像生成
-	for (int i = 0; i < 3; i++)
+
+
+	// ロード画面処理
 	{
-		m_monkStatue[i] = new AngelStatue();
-		m_monkStatue[i]->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Objects/Monk_Statue/SM_MonkStatue_01.gpmesh"));
-
-		if (i == 0)
-		{
-
-			m_monkStatue[i]->SetPosition(Vector3(0.0f, 100.0f, -120.0f));
-			m_monkStatue[i]->SetRotation(Quaternion(Vector3::UnitZ, 1.5f));
-
-		}
-		else if(i == 1)
-		{
-			m_monkStatue[i]->SetPosition(Vector3(-150.0f, 75.0f, -120.0f));
-			m_monkStatue[i]->SetRotation(Quaternion(Vector3::UnitZ, 2.5f));
-		}
-		else if(i == 2)
-		{
-			m_monkStatue[i]->SetPosition(Vector3(150.0f, 75.0f, -120.0f));
-			m_monkStatue[i]->SetRotation(Quaternion(Vector3::UnitZ, 0.5f));
-		}
-
-		// ロード画面処理
-		{
-			GAME_INSTANCE.GetLoadScreen()->AddGauge();
-			RENDERER->Draw();
-		}
+		GAME_INSTANCE.GetLoadScreen()->AddGauge();
+		RENDERER->Draw();
 	}
+	
 
 	//------------------------------------------------------------//
 	// オブジェクトの生成
@@ -143,13 +114,6 @@ void ResultScene::Initialize()
 	}
 
 
-	// ともしびの生成
-	m_flame = new FlameActor();
-	m_flame->SetPosition(Vector3::Zero);
-	// ともしびはスコアに応じたサイズにセット
-	m_flame->SetScale(m_score / 100.0f);
-	m_flame->SetFlameLife(0.2f);
-
 	// ロード画面処理
 	{
 		GAME_INSTANCE.GetLoadScreen()->AddGauge();
@@ -159,8 +123,7 @@ void ResultScene::Initialize()
 
 
 	// カメラの生成と初期化
-	Camera* camera = new Camera(m_flame);
-	camera->Initialize(Vector3(0.0f, -250.0f, 0.0f), m_flame->GetPosition(), Vector3::Zero);
+	//Camera* camera = new Camera();
 
 	// ロード画面処理
 	{

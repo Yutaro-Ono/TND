@@ -20,6 +20,5 @@ private:
 
 	class PlayerCar* m_owner;
 
-	class MeshComponent* m_meshComp;
 };
 

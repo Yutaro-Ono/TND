@@ -15,9 +15,9 @@
 #include "Font.h"
 #include "GameScene.h"
 #include "PlayerCar.h"
-#include "PlayerCamera.h"
 #include "Skydome.h"
 #include "LoadScreen.h"
+#include "Camera.h"
 
 const int TitleScene::STAGE_ALL_NUM = 1;
 

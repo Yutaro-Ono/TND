@@ -47,6 +47,7 @@ public:
 
 	// ワールド変換行列
 	void ComputeWorldTransform();
+	void SetWorldTransform(const Matrix4& in_mat) { m_worldTransform = in_mat; }
 	const Matrix4& GetWorldTransform() const { return m_worldTransform; }
 	// ベクトル
 	const Vector3& GetForward() const { return Vector3::Transform(Vector3::UnitX, m_rotation); }     // 前進
@@ -63,6 +64,9 @@ public:
 	// コンポーネント
 	void AddComponent(class Component* in_comp);
 	void RemoveComponent(class Component* in_comp);
+	// メッシュコンポーネント
+	class MeshComponent* GetMeshComponent() { return m_meshComp; }
+
 
 
 protected:
@@ -80,6 +84,8 @@ protected:
 	float m_speed;                                  // 移動速度
 
 	bool m_recomputeWorldTransform;                 // ワールド座標変換を行うか
+
+	class MeshComponent* m_meshComp;                // メッシュコンポーネントのポインタ
 
 	std::vector<class Component*> m_components;     // コンポーネント配列(アクターの持つコンポーネントを格納)
 

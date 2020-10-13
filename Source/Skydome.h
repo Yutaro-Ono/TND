@@ -30,8 +30,6 @@ private:
 
 	float m_radian;
 
-	class MeshComponent* m_meshComp;
-
 	bool m_isSpin;
 
 

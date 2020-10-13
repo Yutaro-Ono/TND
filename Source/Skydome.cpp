@@ -13,8 +13,7 @@
 
 // スカイドーム
 Skydome::Skydome()
-	:m_meshComp(nullptr)
-	,m_radian(0.0f)
+	:m_radian(0.0f)
 	,m_isSpin(false)
 {
 
@@ -35,8 +34,9 @@ void Skydome::SetMesh(Mesh * in_mesh)
 {
 
 	// メッシュをセット
+	Mesh* mesh = in_mesh;
 	m_meshComp = new MeshComponent(this);
-	m_meshComp->SetMesh(in_mesh);
+	m_meshComp->SetMesh(mesh);
 
 }
 

@@ -40,6 +40,8 @@ public:
 private:
 
 
+	unsigned int m_lastTime, m_currentTime;
+
 	float m_nowCount;
 
 	CountState m_state;

@@ -21,8 +21,6 @@
 #include "Font.h"
 #include "PauseScreen.h"
 #include "LoadScreen.h"
-
-
 #include <algorithm>
 #include <utility>
 #include <SDL.h>

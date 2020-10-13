@@ -92,7 +92,7 @@ void CountDownUI::Update(float in_deltaTime)
 
 
 		// カウントが1秒より高ければ数字で表示、低ければテキストで「START」と表示
-		if (m_time->GetNowCount() > 1.0f)
+		if (m_time->GetNowCount() > 0.0f)
 		{
 			// 制限時間の本体
 			m_timeTex = m_font->RenderText(str, Vector3(1.0f, 1.0f, 1.0f), m_fontSize);

@@ -10,7 +10,6 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Shader.h"
-#include "Player.h"
 
 #include <sstream>
 
@@ -48,7 +47,7 @@ void HUD::Update(float in_deltaTime)
 {
 
 	// プレイヤーの速度が100km/h以上なら集中線を表示
-	if (m_targetPlayer->GetAccel() >= 100.0f)
+	if (true)
 	{
 		m_isImpact = true;
 	}

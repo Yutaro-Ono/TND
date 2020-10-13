@@ -61,33 +61,38 @@ void MoveComponentHuman::MovementByController(float in_deltaTime)
 // プレイヤーの移動処理(キーボード)
 void MoveComponentHuman::MovementByKeyboard(float in_deltaTime)
 {
-	// プレイヤーの前進ベクトル
-	Vector3 forwardVec = m_playerHuman->GetForward();
+	// キー入力値
+	Vector2 inputAxis = Vector2::Zero;
+
+	// プレイヤーの前進・右方向ベクトル定義
+	Vector3 charaForwardVec = m_playerHuman->GetForward();
+	Vector3 charaRightVec = Vector3::Cross(Vector3::UnitZ, charaForwardVec);
 	// 移動ベクトル
 	Vector3 moveVec = Vector3::Zero;
 
 	// キー入力WASDによる移動処理
 	if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_W))
 	{
-		moveVec.x = -1.0f;
+		inputAxis.x += 1.0f;
 	}
 	if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_S))
 	{
-		moveVec.x = 1.0f;
+		inputAxis.x += -1.0f;
 	}
 	if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_A))
 	{
-		moveVec.y = 1.0f;
+		inputAxis.y += -1.0f;
 	}
 	if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_D))
 	{
-		moveVec.y = -1.0f;
+		inputAxis.y += 1.0f;
 	}
 
+	moveVec = charaForwardVec * inputAxis.x + charaRightVec * inputAxis.y;
 
 	// 最終的な座標を更新し、オーナーへセット
 	Vector3 resultPos = m_playerHuman->GetPosition();
-	resultPos += PLAYER_SPEED * in_deltaTime * forwardVec;
+	resultPos += moveVec * PLAYER_SPEED * in_deltaTime;
 
 	m_playerHuman->SetPosition(resultPos);
 }

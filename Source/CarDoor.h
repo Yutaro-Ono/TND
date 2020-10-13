@@ -19,8 +19,6 @@ private:
 
 	class PlayerCar* m_owner;
 
-	class MeshComponent* m_meshComp;
-
 	Vector3 m_adjustPos;                    // ドアの位置を補正する位置ベクトル
   
 };

@@ -46,11 +46,6 @@ private:
 
 	class Skydome* m_skydome;                                 // スカイドーム
 
-	class FlameStatue* m_flameStatue;                              // 燭台
-
-	class AngelStatue* m_monkStatue[3];
-
-	class FlameActor* m_flame;                                // ともし火(スコア)
 
 	class ResultScreen* m_resultUI;                           // リザルトシーンUI
 
