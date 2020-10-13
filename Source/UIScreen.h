@@ -37,11 +37,10 @@ public:
 	
 	UIState GetState() const { return m_state; }
 
-	void SetTitle(const std::string& in_text,
-		const Vector3& in_color = Color::White,
-		int in_pointSize = 40);
-	
-	void AddButton(const std::string& in_name, std::function<void()> onClick);
+	// 指定した文字列のテクスチャ化
+	void SetTitle(const std::string& in_text, const Vector3& in_color = Color::White,
+		          int in_pointSize = 40);
+
 
 
 protected:
@@ -54,15 +53,10 @@ protected:
 	void SetRelativeMouseMode(bool in_relative);
 
 	class Font* m_font;
-	class Texture* m_title;
-	class Texture* m_backGround;
-	class Texture* m_buttonOn;
-	class Texture* m_buttonOff;
+	class Texture* m_texture;
 
-	
-	Vector2 m_titlePos;
-	Vector2 m_nextButtonPos;
-	Vector2 m_bgPos;
+
+
 
 	// State
 	UIState m_state;

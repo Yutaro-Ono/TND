@@ -5,6 +5,7 @@
 #include "Mouse.h"
 #include "PlayerHuman.h"
 #include "PlayerManager.h"
+#include "ThirdPersonCamera.h"
 
 const float MoveComponentHuman::PLAYER_SPEED = 200.0f;
 
@@ -46,6 +47,7 @@ void MoveComponentHuman::MovementByController(float in_deltaTime)
 	// プレイヤーの前進・右方向ベクトル定義
 	Vector3 charaForwardVec = m_playerHuman->GetForward();
 	Vector3 charaRightVec = Vector3::Cross(Vector3::UnitZ, charaForwardVec);
+
 	// 前進ベクトルと右方向ベクトルから移動量を算出
 	Vector3 moveVec = Vector3::Zero;
 	moveVec = charaForwardVec * -axisL.y + charaRightVec * axisL.x;

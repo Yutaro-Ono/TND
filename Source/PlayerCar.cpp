@@ -28,6 +28,7 @@ PlayerCar::PlayerCar()
 	m_cameraComp = new ThirdPersonCamera(this);
 	m_cameraComp->SetAdjustForward(false);
 	m_cameraComp->SetChaseOwnerForward(false);
+	m_cameraComp->SetDistance(200.0f);
 
 	// 各パーツごとのクラスを作成
 	m_body = new CarBody(this, CAR_BODY_MESH_PATH);
@@ -54,8 +55,7 @@ void PlayerCar::UpdateActor(float in_deltaTime)
 	// プレイヤーが車を運転している状態の時
 	if (m_manager->GetPlayerMode() == PlayerManager::PLAYER_MODE::MODE_CAR)
 	{
-		GAME_INSTANCE.SetCamera(m_cameraComp);
-		m_moveComp->SetActive(true);
+
 
 		// 速度が一定以上かつアクセルを踏んでいる時、カメラの追従をオンにする
 		if (m_moveComp->GetAccelValue() >= 30.0f)
@@ -77,6 +77,13 @@ void PlayerCar::UpdateActor(float in_deltaTime)
 }
 
 
+// 人間操作から切り替わった時の各種変更処理
+void PlayerCar::OnChange()
+{
+	GAME_INSTANCE.SetCamera(m_cameraComp);
+	m_cameraComp->SetDistance(200.0f);
+	m_moveComp->SetActive(true);
+}
 
 // 衝突時の押し出し処理
 void PlayerCar::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hitBox)

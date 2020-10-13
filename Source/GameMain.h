@@ -105,6 +105,8 @@ public:
 	void SwapPauseUI();                                                               // ポーズ画面を最前面に持ってくる
 	// フォント
 	class Font* GetFont(const std::string& in_fileName);
+	const std::string& GetFontPath() { return FONT_FILE_PATH; }
+	// テキスト
 	void LoadText(const std::string& in_fileName);
 	const std::string& GetText(const std::string& in_key);
 	// ロード画面クラスのゲッター
@@ -147,24 +149,29 @@ private:
 
 	class CameraComponent* m_activeCamera;                                   // アクティブなカメラ (システムが描画に用いる)
 
+	// 物理法則関連
 	class PhysicsWorld* m_physicsWorld;                                      // 当たり判定システム
 	class DebugBox* m_debugBox;                                              // デバッグ用ボックス
+	
+    // 音楽
 	class AudioManager* m_audio;                                             // オーディオ管理
 
+	// UI関連
+	std::vector<class UIScreen*> m_uiStack;                                  // UIスタック
+	std::unordered_map<std::string, class Font*> m_fonts;                    // フォントマップ (キー : ttfファイルパス)
+	std::unordered_map<std::string, std::string> m_text;                     // テキスト文字列 (キー : テキスト文字列
 	class PauseScreen* m_pause;                                              // ポーズ画面
 	class LoadScreen* m_load;                                                // ロード画面
 
+	// アクター配列
 	std::vector<class Actor*> m_actors;                                      // アクター配列
 	std::vector<class Actor*> m_pendingActors;                               // アクター追加準備用配列
 
-	std::vector<class UIScreen*> m_uiStack;                                  // UIスタック
-	std::unordered_map<std::string, class Font*> m_fonts;                    // フォント
-	std::unordered_map<std::string, std::string> m_text;
-
-
+	// デバッグ用ウィンドウ・レンダラー
 	SDL_Window* m_debugWindow;                                               // SDLウィンドウ(デバッグ用)
 	SDL_Renderer* m_debugRenderer;                                           // SDLレンダラー
 
+	static const std::string FONT_FILE_PATH;                                 // 標準のフォントパス
 
 };
 

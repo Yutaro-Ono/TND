@@ -39,6 +39,7 @@ private:
 
 	Vector3 m_offset;          // ターゲットからの距離オフセット
 
+
 	Vector3 m_upVec;           // カメラの上方ベクトル
 
 	// カメラ加速度

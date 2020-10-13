@@ -225,6 +225,18 @@
     <Filter Include="ソース ファイル\Camera\ThirdPerson">
       <UniqueIdentifier>{76f2700a-da4f-4ce9-ae4f-56685d22c002}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Interface\Mission">
+      <UniqueIdentifier>{93e10fdb-17cd-4aa8-9f59-c14d873a8163}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Mission">
+      <UniqueIdentifier>{5a47227f-fc01-40c6-8e13-6ca93442d18a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Mission\Delivery">
+      <UniqueIdentifier>{f5bd4d96-9eab-499b-a9e2-c7d0d0ecf838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Mission\Taxi">
+      <UniqueIdentifier>{ba7bb6cf-b383-460b-a59c-a7068351bdf4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -473,8 +485,20 @@
     <ClCompile Include="Source\ThirdPersonCamera.cpp">
       <Filter>ソース ファイル\Camera\ThirdPerson</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MissionBase.cpp">
+    <ClCompile Include="Source\GameWorld.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MissionUI.cpp">
+      <Filter>ソース ファイル\Interface\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MissionBase.cpp">
+      <Filter>ソース ファイル\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MissionDelivery.cpp">
+      <Filter>ソース ファイル\Mission\Delivery</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MissionManager.cpp">
+      <Filter>ソース ファイル\Mission</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -742,8 +766,17 @@
     <ClInclude Include="Source\GameWorld.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Source\MissionUI.h">
+      <Filter>ソース ファイル\Interface\Mission</Filter>
+    </ClInclude>
     <ClInclude Include="Source\MissionBase.h">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Mission</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MissionDelivery.h">
+      <Filter>ソース ファイル\Mission\Delivery</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MissionManager.h">
+      <Filter>ソース ファイル\Mission</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

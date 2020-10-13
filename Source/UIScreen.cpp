@@ -14,19 +14,14 @@
 
 // コンストラクタ
 UIScreen::UIScreen()
-	:m_title(nullptr)
-	,m_backGround(nullptr)
-	,m_titlePos(0.0f, 300.0f)
-	,m_bgPos(100.0f, 80.0f)
-	,m_nextButtonPos(0.0f, 250.0f)
-	,m_state(ACTIVE)
+	:m_state(ACTIVE)
 {
 
 	// ゲームクラスのUIスタックに自身を追加
 	GAME_INSTANCE.AddUI(this);
 
 	// フォントのロード
-	m_font = GAME_INSTANCE.GetFont("Data/Fonts/The 2K12.ttf");
+	m_font = GAME_INSTANCE.GetFont(GAME_INSTANCE.GetFontPath());
 
 }
 
@@ -54,43 +49,47 @@ void UIScreen::HandleKeyPress(int in_key)
 {
 }
 
+// UIを閉じる (この後GameMain側でスタックから削除される)
 void UIScreen::Close()
 {
 	m_state = CLOSE;
 }
 
+// タイトルのセット
+// 指定した文字列を指定したカラーで、指定したサイズに作成する
 void UIScreen::SetTitle(const std::string & in_text, const Vector3 & in_color, int in_pointSize)
 {
-	// Clear out previous title texture if it exists
-	if (m_title)
+	
+	if (m_texture)
 	{
-		m_title->Delete();
-		delete m_title;
-		m_title = nullptr;
+		m_texture->Delete();
+		delete m_texture;
+		m_texture = nullptr;
 	}
-	m_title = m_font->RenderText(in_text, in_color, in_pointSize);
+	m_texture = m_font->RenderText(in_text, in_color, in_pointSize);
 }
 
-void UIScreen::AddButton(const std::string & in_name, std::function<void()> onClick)
-{
-}
 
+// 指定したテクスチャを画面上のオフセットに描画する
+// ワールド行列を作成し、シェーダへ送信
 void UIScreen::DrawTexture(Shader * in_shader, Texture * in_texture, const Vector2 & offset, float scale)
 {
-	// Scale the quad by the width/height of texture
+	// テクスチャの縦横サイズにスケールを掛け合わせた値をスケール行列として定義
 	Matrix4 scaleMat = Matrix4::CreateScale(
 		static_cast<float>(in_texture->GetWidth()) * scale,
 		static_cast<float>(in_texture->GetHeight()) * scale,
 		1.0f);
-	// Translate to position on screen
+	// 指定した画面位置へのスクリーン変換行列を作成
 	Matrix4 transMat = Matrix4::CreateTranslation(
 		Vector3(offset.x, offset.y, 0.0f));
-	// Set world transform
+	// スケールと変換行列をワールド行列へ変換
 	Matrix4 world = scaleMat * transMat;
+	
+	// シェーダにワールド変換行列を送信
 	in_shader->SetMatrixUniform("uWorldTransform", world);
-	// Set current texture
+	// テクスチャをアクティブ化
 	in_texture->SetActive();
-	// Draw quad
+	// 描画する
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 

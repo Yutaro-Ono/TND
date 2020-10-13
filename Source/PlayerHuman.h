@@ -48,7 +48,8 @@ public:
 	PLAYER_POV GetPlayerPOV() { return m_pov; }
 	// アニメーションステートのセッター
 	PLAYER_ANIM SetPlayerAnimState(PLAYER_ANIM in_animState) { m_animState = in_animState; }
-
+	// カメラクラス(三人称視点)のポインタゲッター
+	class ThirdPersonCamera* GetCamera() { return m_cameraComp; }
 	// マネージャークラスポインタの取得
 	class PlayerManager* GetPlayerManager() { return m_manager; }
 

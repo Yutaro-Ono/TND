@@ -39,6 +39,7 @@
     <ClCompile Include="Source\GameConfig.cpp" />
     <ClCompile Include="Source\GameMain.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
+    <ClCompile Include="Source\GameWorld.cpp" />
     <ClCompile Include="Source\Grid.cpp" />
     <ClCompile Include="Source\HUD.cpp" />
     <ClCompile Include="Source\HumanCamera.cpp" />
@@ -64,6 +65,9 @@
     <ClCompile Include="Source\MeshGpmesh.cpp" />
     <ClCompile Include="Source\MeshObj.cpp" />
     <ClCompile Include="Source\MissionBase.cpp" />
+    <ClCompile Include="Source\MissionDelivery.cpp" />
+    <ClCompile Include="Source\MissionManager.cpp" />
+    <ClCompile Include="Source\MissionUI.cpp" />
     <ClCompile Include="Source\Mouse.cpp" />
     <ClCompile Include="Source\MoveComponent.cpp" />
     <ClCompile Include="Source\MoveComponentCar.cpp" />
@@ -154,6 +158,9 @@
     <ClInclude Include="Source\MeshGpmesh.h" />
     <ClInclude Include="Source\MeshObj.h" />
     <ClInclude Include="Source\MissionBase.h" />
+    <ClInclude Include="Source\MissionDelivery.h" />
+    <ClInclude Include="Source\MissionManager.h" />
+    <ClInclude Include="Source\MissionUI.h" />
     <ClInclude Include="Source\Mouse.h" />
     <ClInclude Include="Source\MoveComponent.h" />
     <ClInclude Include="Source\MoveComponentCar.h" />

@@ -28,10 +28,11 @@ void PlayerManager::UpdateActor(float in_deltaTime)
 	// lŠÔ‚ªŽÔ‚É‹ß‚Ã‚¢‚ÄYƒ{ƒ^ƒ“‚ð‰Ÿ‚·‚Ææ‚é
 	// æŽÔ’†‚¾‚Á‚½‚ç~ŽÔ
 	if (Vector3::Distance(m_playerHuman->GetPosition(), m_playerCar->GetPosition()) <= 95.0f
-		&& CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_Y))
+		&& CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_Y) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E))
 	{
 		if (m_playerMode == MODE_HUMAN)
 		{
+			m_playerCar->OnChange();
 			SetPlayerMode(MODE_CAR);
 		}
 		else if (m_playerMode == MODE_CAR)

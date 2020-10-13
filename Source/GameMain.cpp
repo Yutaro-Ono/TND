@@ -32,6 +32,9 @@
 #include <sstream>
 #include <rapidjson/document.h>
 
+// 標準フォント
+const std::string GameMain::FONT_FILE_PATH = "Data/Fonts/The 2K12.ttf";
+
 // コンストラクタ
 GameMain::GameMain()
 	:m_state(PLAYING)
@@ -153,6 +156,11 @@ bool GameMain::Initialize()
 
 	// SDLが初期化されてから経過した時間(ミリ秒単位)
 	m_ticksCount = SDL_GetTicks();
+
+	// フォント生成
+	Font* font = new Font();
+	font->Load(FONT_FILE_PATH);
+	m_fonts.emplace(FONT_FILE_PATH, font);
 
 	// ポーズ画面生成
 	m_pause = new PauseScreen();
@@ -573,21 +581,27 @@ void GameMain::SwapPauseUI()
 	m_pause = new PauseScreen();
 }
 
-Font * GameMain::GetFont(const std::string & in_fileName)
+// 引数のキーとなるファイルパスでフォント配列を検索し、一致したフォントを返す
+// 見つからなかった場合、新規にフォントを生成し、配列に追加後、フォントを返す
+Font* GameMain::GetFont(const std::string & in_keyPath)
 {
-	auto iter = m_fonts.find(in_fileName);
+	// 同じフォントがすでに配列にないか検索
+	auto iter = m_fonts.find(in_keyPath);
 
+	// 同じフォントが入っていたら
 	if (iter != m_fonts.end())
 	{
+		// 同じフォントを返す
 		return iter->second;
 	}
+	// フォントが入っていなかったらフォントを生成し、生成したフォントを返す
 	else
 	{
 		Font* font = new Font();
 
-		if (font->Load(in_fileName))
+		if (font->Load(in_keyPath))
 		{
-			m_fonts.emplace(in_fileName, font);
+			m_fonts.emplace(in_keyPath, font);
 		}
 		else
 		{
@@ -602,31 +616,34 @@ Font * GameMain::GetFont(const std::string & in_fileName)
 
 }
 
+// テキストのロード
 void GameMain::LoadText(const std::string & in_fileName)
 {
-	// Clear the existing map, if already loaded
+	// テキストマップのクリア
 	m_text.clear();
-	// Try to open the file
+	// 指定パスのファイルを受け取る
 	std::ifstream file(in_fileName);
+	// 開けなかったら
 	if (!file.is_open())
 	{
-		SDL_Log("Text file %s not found", in_fileName.c_str());
+		SDL_Log("Text file %s not found\n", in_fileName.c_str());
 		return;
 	}
-	// Read the entire file to a string stream
+
+	// 文字列を取得
 	std::stringstream fileStream;
 	fileStream << file.rdbuf();
 	std::string contents = fileStream.str();
-	// Open this file in rapidJSON
+	// rapidjsonで開く
 	rapidjson::StringStream jsonStr(contents.c_str());
 	rapidjson::Document doc;
 	doc.ParseStream(jsonStr);
 	if (!doc.IsObject())
 	{
-		SDL_Log("Text file %s is not valid JSON", in_fileName.c_str());
+		SDL_Log("Text file %s is not valid JSON\n", in_fileName.c_str());
 		return;
 	}
-	// Parse the text map
+	// テキストマップに保管
 	const rapidjson::Value& actions = doc["TextMap"];
 	for (rapidjson::Value::ConstMemberIterator itr = actions.MemberBegin();
 		itr != actions.MemberEnd(); ++itr)
@@ -639,10 +656,11 @@ void GameMain::LoadText(const std::string & in_fileName)
 	}
 }
 
+// テキストの取得
 const std::string & GameMain::GetText(const std::string & in_key)
 {
 	static std::string errorMsg("**KEY NOT FOUND**");
-	// Find this text in the map, if it exists
+	//マップから指定のキーを検索
 	auto iter = m_text.find(in_key);
 	if (iter != m_text.end())
 	{

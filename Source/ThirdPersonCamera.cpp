@@ -28,6 +28,10 @@ ThirdPersonCamera::ThirdPersonCamera(Actor* in_owner)
 	m_cameraActor = new Actor();
 	m_cameraActor->SetPosition(m_position);
 
+	// 向きベクトル初期化
+	m_forwardVec = -1.0f * m_offset;
+	m_forwardVec.Normalize();
+
 
 	// 当たり判定ボックスのセット
 	AABB hitBox;
@@ -57,6 +61,9 @@ void ThirdPersonCamera::Update(float in_deltaTime)
 	Vector3 targetPos = m_owner->GetPosition();
 	// ビュー行列
 	Matrix4 view;
+
+	float height = -35.0f;      // カメラの高さ
+
 
 	//----------------------------------------------------+
 	// カメラ追従あり
@@ -107,11 +114,11 @@ void ThirdPersonCamera::Update(float in_deltaTime)
 		m_upVec = Vector3::Transform(m_upVec, yaw);
 
 		// カメラの前進ベクトルをオフセットから算出
-		Vector3 forwardVec = -1.0f * m_offset;
-		forwardVec.Normalize();
+		m_forwardVec = -1.0f * m_offset;
+		m_forwardVec.Normalize();
 
 		// 右方向ベクトルを上方ベクトルと前進ベクトルから算出
-		Vector3 rightVec = Vector3::Cross(m_upVec, forwardVec);
+		Vector3 rightVec = Vector3::Cross(m_upVec, m_forwardVec);
 		rightVec.Normalize();
 
 
@@ -127,13 +134,16 @@ void ThirdPersonCamera::Update(float in_deltaTime)
 		
 		// ワールド座標をターゲットの座標とオフセットから算出
 		//m_position = Vector3::Lerp(m_position, targetPos + m_offset, 2.0f * in_deltaTime);
+		
+		Vector3 pos = targetPos + m_offset;
+		//m_position = Vector3::Lerp(m_position, pos, attenRate * in_deltaTime);
 		m_position = targetPos + m_offset;
 		//printf("position.x : %f, position.y : %f, position.z : %f\n", m_position.x, m_position.y, m_position.z);
 		// ビュー行列を更新
 		view = Matrix4::CreateLookAt(m_position, targetPos, m_upVec);
 
 		// 距離ベクトル
-		Vector3 dist = Vector3(-15.0f, -35.0f, m_distance);
+		Vector3 dist = Vector3(-15.0f, height, m_distance);
 		// 距離分を加算
 		view = view * Matrix4::CreateTranslation(dist);
 
@@ -145,8 +155,8 @@ void ThirdPersonCamera::Update(float in_deltaTime)
 
 	
 
-
-	printf("x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
+	//printf("Camera : x : %f, y : %f, z : %f\n", m_position.x, m_position.y, m_position.z);
+	printf("hitBox : x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
 
 	// レンダラーのビュー行列更新
 	SetViewMatrix(view);
@@ -159,6 +169,8 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 	// ヨー速度、ピッチ速度
 	float yawSpeed, pitchSpeed;
 	yawSpeed = pitchSpeed = 0.0f;
+
+	float attenRate = 3.0f;    // 減衰比率
 
 	// ピッチの最大角度・最小角度
 	const float pitchMaxDegree = 40.0f; // カメラピッチ最高角度(degree)
@@ -205,6 +217,8 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 			// ピッチ計算
 			pitchSpeed = axisR.y / CAMERA_SENSITIVITY;
 			pitchSpeed *= maxOrbitSpeed;
+			m_pitch = Math::Lerp(m_pitch, (axisR.y / CAMERA_SENSITIVITY * maxOrbitSpeed), attenRate * in_deltaTime);
+
 
 			// 前進ベクトル更新を許可している時のみ
 			if (m_adjustForward)
@@ -219,17 +233,16 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 		}
 
 		// ヨー計算
-		yawSpeed = axisR.x / CAMERA_SENSITIVITY;
-		yawSpeed *= maxOrbitSpeed;
+		m_yaw = Math::Lerp(m_yaw, (axisR.x / CAMERA_SENSITIVITY * maxOrbitSpeed), attenRate * in_deltaTime);
 
 		// ピッチの最大・最小角度を調整
-		if (axisR.y > 0.0f && m_offset.z + pitchSpeed > pitchMaxDegree)
+		if (axisR.y > 0.0f && m_offset.z + m_pitch > pitchMaxDegree)
 		{
-			pitchSpeed = 0.0f;
+			m_pitch = 0.0f;
 		}
-		if (axisR.y < 0.0f && m_offset.z + pitchSpeed < pitchMinDegree)
+		if (axisR.y < 0.0f && m_offset.z + m_pitch < pitchMinDegree)
 		{
-			pitchSpeed = 0.0f;
+			m_pitch = 0.0f;
 		}
 
 	}
@@ -263,6 +276,7 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 
 		// ヨー計算
 		yawSpeed -= xoffset;
+		m_yaw = Math::Lerp(m_yaw, -xoffset, attenRate * in_deltaTime);
 		//yawSpeed *= maxOrbitSpeed;
 
 
@@ -295,8 +309,8 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 			}
 
 			// ピッチ計算
-			float yoffset = (m_frameMousePos.y - m_mousePos.y) / CAMERA_SENSITIVITY;
-			pitchSpeed -= yoffset;
+			float yoffset = (m_frameMousePos.y - m_mousePos.y) / CAMERA_SENSITIVITY * maxOrbitSpeed * in_deltaTime;
+			m_pitch = Math::Lerp(m_pitch, -yoffset, attenRate * in_deltaTime);
 
 			// 前進ベクトル更新を許可している時のみ
 			if (m_adjustForward)
@@ -312,13 +326,13 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 
 
 		// ピッチの最大・最小角度を調整
-		if (m_offset.z + pitchSpeed > pitchMaxDegree)
+		if (m_offset.z + m_pitch > pitchMaxDegree)
 		{
-			pitchSpeed = 0.0f;
+			m_pitch = 0.0f;
 		}
-		if (m_offset.z + pitchSpeed < pitchMinDegree)
+		if (m_offset.z + m_pitch < pitchMinDegree)
 		{
-			pitchSpeed = 0.0f;
+			m_pitch = 0.0f;
 		}
 
 		// 前フレームのマウス座標を更新
@@ -334,9 +348,6 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 
 
 
-	// ヨーとピッチをメンバにセット
-	m_yaw = yawSpeed;
-	m_pitch = pitchSpeed;;
 
 
 }
@@ -345,7 +356,41 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 void ThirdPersonCamera::CollisionFix(BoxCollider* in_hitCameraBox, BoxCollider* in_hitBox)
 {
 	// 当たったメッシュを非表示
-	in_hitBox->GetOwner()->GetMeshComponent()->SetVisible(false);
+	//in_hitBox->GetOwner()->GetMeshComponent()->SetVisible(false);
+
+	Vector3 fix;
+
+
+	//壁とぶつかったとき
+	AABB bgBox = in_hitBox->GetWorldBox();
+	AABB playerBox = m_hitBox->GetWorldBox();
+
+	// めり込みを修正
+	CalcCollisionFixVec(playerBox, bgBox, fix);
+
+	if (m_position.x != fix.x || m_position.y != fix.y || m_position.z != fix.z)
+	{
+		printf("当たった！\n");
+	}
+
+	// 補正ベクトル分戻す
+	m_position = Vector3::Lerp(m_position, m_position + fix, 5.0f * GAME_INSTANCE.GetDeltaTime());
+	//m_position += fix;
+	m_cameraActor->SetPosition(m_position);
+	m_cameraActor->ComputeWorldTransform();
+
+	// ビュー行列を更新
+	Matrix4 view = Matrix4::CreateLookAt(m_position, m_owner->GetPosition(), m_upVec);
+
+	printf("hitBoxfix : x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
+
+
+
+	// レンダラーのビュー行列更新
+	SetViewMatrix(view);
+
+	// 位置が変わったのでボックス再計算
+	m_hitBox->OnUpdateWorldTransform();
 }
 
 // カメラ距離のセッター (最大・最小値を超えてしまった場合には調整を加える)

@@ -37,6 +37,9 @@ public:
 
 	void UpdateActor(float in_deltaTime) override;
 
+	// lŠÔ‘€ìƒ‚[ƒh‚©‚çØ‚è‘Ö‚í‚Á‚½‚Ìˆ—
+	void OnChange();
+
 	void CollisionFix(class BoxCollider* in_hitPlayerBox, class BoxCollider* in_hitBox);
 
 	//--------------------------------------------+

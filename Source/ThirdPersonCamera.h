@@ -38,12 +38,17 @@ public:
 	// カメラ追従処理を行うかどうかのセッター
 	void SetChaseOwnerForward(bool in_chase) { m_chaseOwnerForward = in_chase; }
 
+	// カメラ前進ベクトルのゲッター
+	const Vector3& GetForward() { return m_forwardVec; }
+
 private:
 
 	// オーナーの後方から一定距離にカメラ位置を調整し、その座標を返す
 	const Vector3& ComputeCameraPos() const;
 
 	Vector3 m_offset;        // 三人称視点時ターゲットからの距離オフセット
+
+	Vector3 m_forwardVec;      // カメラの前進ベクトル
 	Vector3 m_upVec;           // カメラの上方ベクトル
 
 	// カメラ加速度
