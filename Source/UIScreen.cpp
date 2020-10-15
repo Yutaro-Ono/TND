@@ -41,7 +41,7 @@ void UIScreen::Draw(Shader * in_shader)
 
 }
 
-void UIScreen::ProcessInput(const uint8_t * in_keys)
+void UIScreen::ProcessInput()
 {
 }
 

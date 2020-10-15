@@ -14,7 +14,7 @@ class MissionBase
 public:
 
 	// ミッションのステート
-	typedef enum MissionState
+	typedef enum MISSION_STATE
 	{
 		HOLD,            // 保留状態
 		ACTIVE,          // アクティブ
@@ -22,8 +22,14 @@ public:
 		FAILED           // 失敗
 	};
 
+	// ミッションの目的別
+	typedef enum MISSION_TYPE
+	{
+		DELIVERY,     // 荷物配達
+		TAXI          // タクシー(人を乗せる)
+	};
 
-	MissionBase(class Actor* in_client);
+	MissionBase(class MissionManager* in_client);
 	~MissionBase();
 
 	// 更新処理
@@ -32,23 +38,44 @@ public:
 	// ミッション詳細内容の定義
 	void SetMissionDetail(const Vector3& in_start, const Vector3& in_goal, unsigned int in_baseScore, unsigned int in_timeLimit);
 
+	// 耐久値減少処理
+	void DecraseDurableValue();
+
+	//------------------------------------------------------------+
+	// Getter / Setter
+	//------------------------------------------------------------+
 	// ミッション状態のセッター・ゲッター
-	void SetMissionState(MissionState in_state) { m_missionState = in_state; }
-	MissionState GetMissionState() { return m_missionState; }
+	void SetMissionState(MISSION_STATE in_state) { m_missionState = in_state; }
+	MISSION_STATE GetMissionState() { return m_missionState; }
+
+	// ミッションタイプのセッターゲッター
+	void SetMissionType(MISSION_TYPE in_type) { m_missionType = in_type; }
+	MISSION_TYPE GetMissionType() { return m_missionType; }
+
+	// 制限時間取得
+	unsigned int GetTimeLimit() { return m_timeLimit; }
+
+	// 耐久値取得
+	unsigned int GetDurableValue() { return m_durableVal; }
 
 
 protected:
 
 
-	MissionState m_missionState;     // ミッションのステート
+	MISSION_STATE m_missionState;     // ミッションのステート
+	MISSION_TYPE m_missionType;       // ミッションタイプ
 
 	class Actor* m_client;           // 依頼者アクター
-
-	class MissionUI* m_missionUI;    // ミッション概要表示UI
+	class MissionUI* m_missionUI;    // ミッションの内容を表示するUIクラス
+	class MissionManager* m_manager; // ミッションマネージャー
 
 	// 目標定義
 	Vector3 m_startPos;              // 出発地点(依頼者の位置)
 	Vector3 m_goalPos;               // ゴール地点(配送先の位置)
+	float m_playerDistance;          // プレイヤーまでの距離
+
+
+	unsigned int m_durableVal;       // 耐久値
 
 	unsigned int m_baseScore;        // スコア
 

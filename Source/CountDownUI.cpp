@@ -14,6 +14,7 @@
 #include "InputController.h"
 #include <string>
 
+
 // コンストラクタ
 CountDownUI::CountDownUI(RuleTime * in_time)
 	:m_time(in_time)

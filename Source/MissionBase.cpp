@@ -1,17 +1,21 @@
 #include "MissionBase.h"
 #include "Actor.h"
 #include "MissionUI.h"
+#include "GameMain.h"
+#include "GameConfig.h"
 
-MissionBase::MissionBase(Actor* in_client)
-	:m_client(in_client)
+MissionBase::MissionBase(MissionManager* in_manager)
+	:m_manager(in_manager)
 	,m_missionState(HOLD)
+	,m_durableVal(100)
 {
 	// 初期化
 	m_startPos = m_goalPos = Vector3::Zero;
 	m_currentTime = m_lastTime = SDL_GetTicks();
 
-	// UIの生成
+	// UI生成
 	m_missionUI = new MissionUI(this);
+	m_missionUI->SetUIPosition();
 }
 
 MissionBase::~MissionBase()
@@ -56,9 +60,13 @@ void MissionBase::Update(float in_deltaTime)
 		// 制限時間が切れたらミッション失敗
 		if (m_timeLimit <= 0)
 		{
-			// UIを落とす
-			m_missionUI->Close();
 			// 失敗状態にする
+			m_missionState = FAILED;
+		}
+
+		// 耐久値が0になったらミッション失敗
+		if (m_durableVal <= 0)
+		{
 			m_missionState = FAILED;
 		}
 	}
@@ -77,5 +85,11 @@ void MissionBase::SetMissionDetail(const Vector3& in_start, const Vector3& in_go
 
 	m_baseScore = in_baseScore;     // ベーススコア
 	m_timeLimit = in_timeLimit;     // 制限時間
+}
+
+// 耐久値減少処理
+void MissionBase::DecraseDurableValue()
+{
+	m_durableVal -= 3;
 }
 

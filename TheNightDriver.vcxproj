@@ -207,6 +207,8 @@
     <None Include="Source\Shaders\DirectLine.vert" />
     <None Include="Source\Shaders\Line.frag" />
     <None Include="Source\Shaders\Line.vert" />
+    <None Include="Source\Shaders\Neon.frag" />
+    <None Include="Source\Shaders\Neon.vert" />
     <None Include="Source\Shaders\NormalMap.frag" />
     <None Include="Source\Shaders\NormalMap.vert" />
     <None Include="Source\Shaders\Particle.frag" />

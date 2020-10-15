@@ -23,7 +23,7 @@ public:
 
 	virtual void Update(float in_deltaTime);                   // 更新処理
 	virtual void Draw(class Shader* in_shader);                // 描画処理
-	virtual void ProcessInput(const uint8_t* in_keys);
+	virtual void ProcessInput();
 	virtual void HandleKeyPress(int in_key);
 	
 	// ステート(CLOSEで消去される)

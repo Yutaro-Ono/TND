@@ -18,7 +18,7 @@ public:
 
 	void Update(float in_deltaTime) override;            // XVˆ—
 
-	void Draw(class Shader* in_shader);                  // •`‰æˆ—
+	void Draw(class Shader* in_shader) override;                  // •`‰æˆ—
 
 
 private:

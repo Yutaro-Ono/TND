@@ -687,7 +687,7 @@ void GameMain::SetCamera(CameraComponent* in_camera)
 	m_activeCamera = in_camera;
 }
 
-// アクティブなカメラ
+// 引数のカメラをアクティブにする(レンダラーのカメラを登録)
 void GameMain::InActiveCamera(Camera * in_activeCam)
 {
 	//if (in_activeCam == m_activeCamera)

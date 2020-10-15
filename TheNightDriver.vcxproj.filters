@@ -819,5 +819,11 @@
     <None Include="Source\Shaders\Sprite.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
+    <None Include="Source\Shaders\Neon.vert">
+      <Filter>ソース ファイル\Shader\Source</Filter>
+    </None>
+    <None Include="Source\Shaders\Neon.frag">
+      <Filter>ソース ファイル\Shader\Source</Filter>
+    </None>
   </ItemGroup>
 </Project>
