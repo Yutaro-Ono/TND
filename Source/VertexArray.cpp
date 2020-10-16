@@ -19,8 +19,6 @@
 // | x | y | z | x | y | z | char[4] | char[4] | u | v |
 //                                    ※weightの確保はcharだが、精度が必要ないので8bit固定小数として使用する
 //-------------------------------------------------------------------------------------------------------------------+
-
-
 VertexArray::VertexArray(const void * in_verts, unsigned int in_vertsNum, Layout in_layout, const unsigned int * in_inDices, unsigned int in_numInDices)
 	:m_vertsNum(in_vertsNum)
 	,m_numInDices(in_numInDices)
@@ -134,6 +132,20 @@ VertexArray::VertexArray(const float * in_verts, unsigned int in_vertsNum, const
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
 		reinterpret_cast<void*>(sizeof(float) * 6));
+}
+
+// スカイボックス用頂点配列オブジェクト
+VertexArray::VertexArray(const float* in_verts, unsigned int in_vertsNum)
+{
+	glGenVertexArrays(1, &m_VAO);
+	glGenBuffers(1, &m_VBO);
+	glBindVertexArray(m_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(in_verts), &in_verts, GL_STATIC_DRAW);
+	// アトリビュートへのセット(頂点座標のみ)
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
 }
 
 VertexArray::~VertexArray()

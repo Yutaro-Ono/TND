@@ -69,3 +69,4 @@ void MeshComponent::Draw(Shader * in_shader)
 		glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
 	}
 }
+

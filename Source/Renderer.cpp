@@ -17,6 +17,7 @@
 #include "MeshComponent.h"
 #include "Skeleton.h"
 #include "SkeletalMeshComponent.h"
+#include "CubeMapComponent.h"
 #include "Animation.h"
 #include "Shader.h"
 #include "VertexArray.h"
@@ -34,6 +35,7 @@ Renderer::Renderer()
 	,m_meshShader(nullptr)
 	,m_meshNormalShader(nullptr)
 	,m_skinnedShader(nullptr)
+	,m_skyboxShader(nullptr)
 	,m_switchShader(0)
 	,m_cameraPos(Vector3::Zero)
 {
@@ -183,6 +185,11 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	//------------------------------------------------------------------+
 	CreateSpriteVerts();        // スプライト用の頂点作成
 
+	//------------------------------------------------------------------+
+	// キューブマップ用頂点配列
+	//------------------------------------------------------------------+
+	CreateCubeMapVerts();
+
 	// カリング
 	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
@@ -246,6 +253,8 @@ void Renderer::Delete()
 	delete m_spriteVerts;
 	m_spriteShader->Delete();
 	delete m_spriteShader;
+	delete m_skyboxVerts;
+	m_skyboxShader->Delete();
 
 	// コンテキストの破棄
 	SDL_GL_DeleteContext(m_context);
@@ -266,7 +275,9 @@ void Renderer::Draw()
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
+	//----------------------------------------------+
 	// メッシュシェーダー(phong)
+	//----------------------------------------------+
 	if (m_switchShader == 0)
 	{
 		//メッシュシェーダーで描画する対象の変数をセット
@@ -284,7 +295,9 @@ void Renderer::Draw()
 		}
 	}
 
+	//-----------------------------------------------+
 	// メッシュシェーダー(normal)
+	//-----------------------------------------------+
 	if (m_switchShader == 1)
 	{
 		//メッシュシェーダーで描画する対象の変数をセット
@@ -304,14 +317,13 @@ void Renderer::Draw()
 		}
 	}
 
-
-
-
+	//-----------------------------------------------------------+
 	// ボーン入りメッシュの描画
+	//-----------------------------------------------------------+
 	m_skinnedShader->SetActive();
-	// Update view-projection matrix
+	// ビュー・プロジェクションの合成行列をセット
 	m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
-	// Update lighting uniforms
+	// ライティング変数をセット
 	SetLightUniforms(m_skinnedShader);
 
 	for (auto sk : m_skeletalMeshComponents)
@@ -322,8 +334,25 @@ void Renderer::Draw()
 		}
 	}
 
+	//---------------------------------------------------------------+
+	// スカイボックスの描画
+	//---------------------------------------------------------------+
+	glDepthFunc(GL_LEQUAL);
+	// シェーダーアクティブ化
+	m_skyboxShader->SetActive();
+	// 平行移動要素を削除したビュー行列をシェーダーにセット
+	Matrix4 view = m_view.CreateTranslation(Vector3::Zero);
+	m_skyboxShader->SetMatrixUniform("uViewMat", m_view);
+	m_skyboxShader->SetMatrixUniform("uProjMat", m_projection);
 
+	for (auto sky : m_skyBoxComponents)
+	{
+		sky->Draw(m_skyboxShader);
+	}
+	
+	//----------------------------------------------------------------+
 	// パーティクル描画
+	//----------------------------------------------------------------+
 	m_particleManager->Draw();
 
 	// Spriteの描画
@@ -465,6 +494,25 @@ void Renderer::RemoveTexture(Texture* in_texture)
 			break;
 		}
 	}
+}
+
+// skybox配列に追加する
+void Renderer::AddSkyBox(CubeMapComponent* in_comp)
+{
+	m_skyBoxComponents.emplace_back(in_comp);
+}
+
+// skybox配列からの削除
+void Renderer::RemoveSkyBox(CubeMapComponent* in_comp)
+{
+	auto iter = std::find(m_skyBoxComponents.begin(), m_skyBoxComponents.end(), in_comp);
+	m_skyBoxComponents.erase(iter);
+}
+
+// skyboxVAOのバインド
+void Renderer::SetCubeMapVAO()
+{
+	m_skyboxVerts->SetActive();
 }
 
 
@@ -639,6 +687,59 @@ ParticleManager * Renderer::GetParticleManager() const
 	return m_particleManager;
 }
 
+// スカイボックス用頂点配列定義
+void Renderer::CreateCubeMapVerts()
+{
+	float skyboxVertices[] = 
+	{
+      
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f
+	};
+
+	// VAO, VBO作成
+	m_skyboxVerts = new VertexArray(skyboxVertices, 36);
+}
+
 // スプライト(2D用)の頂点配列を生成
 void Renderer::CreateSpriteVerts()
 {
@@ -652,7 +753,8 @@ void Renderer::CreateSpriteVerts()
 
 	};
 
-	unsigned int indices[] = {
+	unsigned int indices[] = 
+	{
 	    0, 2, 1,
 	    2, 0, 3
 	};
@@ -663,14 +765,16 @@ void Renderer::CreateSpriteVerts()
 // パーティクル用の頂点配列を生成
 void Renderer::CreateParticleVerts()
 {
-	float vertices[] = {
-	-0.5f, 0.f, 0.5f, 0.f, 0.f, 0.0f, 0.f, 0.f, // 左上頂点
-	 0.5f, 0.f, 0.5f, 0.f, 0.f, 0.0f, 1.f, 0.f, // 右上頂点
-	 0.5f, 0.f,-0.5f, 0.f, 0.f, 0.0f, 1.f, 1.f, // 右下頂点
-	-0.5f, 0.f,-0.5f, 0.f, 0.f, 0.0f, 0.f, 1.f  // 左下頂点
+	float vertices[] = 
+	{
+		-0.5f, 0.f, 0.5f, 0.f, 0.f, 0.0f, 0.f, 0.f, // 左上頂点
+		 0.5f, 0.f, 0.5f, 0.f, 0.f, 0.0f, 1.f, 0.f, // 右上頂点
+		 0.5f, 0.f,-0.5f, 0.f, 0.f, 0.0f, 1.f, 1.f, // 右下頂点
+		-0.5f, 0.f,-0.5f, 0.f, 0.f, 0.0f, 0.f, 1.f  // 左下頂点
 	};
 
-	unsigned int indices[] = {
+	unsigned int indices[] = 
+	{
 		0, 2, 1,
 		2, 0, 3
 	};
@@ -731,6 +835,15 @@ bool Renderer::LoadShaders()
 	}
 	m_skinnedShader->SetActive();
 	m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+
+	// スカイボックス用シェーダー
+		// スキンシェーダー
+	m_skyboxShader = new Shader();
+	if (!m_skyboxShader->Load("Data/Shaders/SkyBox.vert", "Data/Shaders/SkyBox.frag"))
+	{
+		return false;
+	}
+
 
 	return true;
 }

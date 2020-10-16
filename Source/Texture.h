@@ -5,10 +5,8 @@
 // copyright (C) 2020 Yutaro Ono. all rights reserved.
 //-----------------------------------------------------------------------+
 #pragma once
-
-// インクルードファイル
 #include <string>
-
+#include <vector>
 
 class Texture
 {
@@ -20,6 +18,7 @@ public:
 	~Texture();                                                   // デストラクタ
 
 	bool Load(const std::string& in_fileName);                    // テクスチャのロード
+	bool LoadSkyBox(const std::vector<std::string>& in_faces);              // キューブマップのロード(スカイボックス用)
 	void Delete();                                                // テクスチャの解放処理
 	void CreateSurface(struct SDL_Surface* surface);              // SDLサーフェスからテクスチャを作成する
 

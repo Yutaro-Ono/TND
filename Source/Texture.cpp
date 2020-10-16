@@ -12,7 +12,7 @@
 #include <GL/glew.h>
 #include <SDL.h>
 #include <SDL_image.h>
-
+#include <stb_image.h>
 
 // コンストラクタ
 Texture::Texture()
@@ -81,6 +81,37 @@ bool Texture::Load(const std::string & in_fileName)
 
 	// ロードに成功
 	return true;
+}
+
+// 6つの面を持つキューブマップ用テクスチャの生成
+bool Texture::LoadSkyBox(const std::vector<std::string>& in_faces)
+{
+	glGenTextures(1, &m_textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, m_textureID);
+
+	int channels;
+
+	for (unsigned int i = 0; i < in_faces.size(); i++)
+	{
+		unsigned char* data = stbi_load(in_faces[i].c_str(), &m_width, &m_height, &channels, 0);
+
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		}
+		else
+		{
+			std::cout << "CubeMap Texture Load Failed at Path : " << in_faces[i] << std::endl;
+			stbi_image_free(data);
+		}
+	}
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
 }
 
 // テクスチャ解放処理

@@ -22,6 +22,9 @@ public:
 
 	VertexArray(const void* in_verts, unsigned int in_vertsNum, Layout in_layout, const unsigned int* in_inDices, unsigned int in_numInDices);     // 頂点配列コンストラクタ
 	VertexArray(const float* in_verts, unsigned int in_vertsNum, const unsigned int* in_inDices, unsigned int in_numInDices);
+	// スカイボックス用頂点アレイオブジェクト
+	VertexArray(const float* in_verts, unsigned int in_vertsNum);
+
 	~VertexArray();                                                        // デストラクタ
 
 	void SetActive();                                                      // この頂点配列をアクティブにして描画で使用する

@@ -231,11 +231,11 @@
     <Filter Include="ソース ファイル\Mission">
       <UniqueIdentifier>{5a47227f-fc01-40c6-8e13-6ca93442d18a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Mission\Delivery">
-      <UniqueIdentifier>{f5bd4d96-9eab-499b-a9e2-c7d0d0ecf838}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Mission\Taxi">
       <UniqueIdentifier>{ba7bb6cf-b383-460b-a59c-a7068351bdf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Renderer\Skybox">
+      <UniqueIdentifier>{ba38a6f3-62c1-44df-8561-28909ce14eec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -494,11 +494,11 @@
     <ClCompile Include="Source\MissionBase.cpp">
       <Filter>ソース ファイル\Mission</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MissionDelivery.cpp">
-      <Filter>ソース ファイル\Mission\Delivery</Filter>
-    </ClCompile>
     <ClCompile Include="Source\MissionManager.cpp">
       <Filter>ソース ファイル\Mission</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CubeMapComponent.cpp">
+      <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -772,57 +772,66 @@
     <ClInclude Include="Source\MissionBase.h">
       <Filter>ソース ファイル\Mission</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MissionDelivery.h">
-      <Filter>ソース ファイル\Mission\Delivery</Filter>
-    </ClInclude>
     <ClInclude Include="Source\MissionManager.h">
       <Filter>ソース ファイル\Mission</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SkyBox.h">
+      <Filter>ソース ファイル\Renderer\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CubeMapComponent.h">
+      <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\Shaders\BasicMesh.frag">
+    <None Include="Data\Shaders\BasicMesh.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\BasicMesh.vert">
+    <None Include="Data\Shaders\BasicMesh.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\DirectLine.vert">
+    <None Include="Data\Shaders\DirectLine.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\Line.frag">
+    <None Include="Data\Shaders\Line.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\Line.vert">
+    <None Include="Data\Shaders\Line.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\NormalMap.frag">
+    <None Include="Data\Shaders\Neon.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\NormalMap.vert">
+    <None Include="Data\Shaders\Neon.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\Particle.frag">
+    <None Include="Data\Shaders\NormalMap.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\Phong.frag">
+    <None Include="Data\Shaders\NormalMap.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\Phong.vert">
+    <None Include="Data\Shaders\Particle.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\Skinned.vert">
+    <None Include="Data\Shaders\Phong.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\Sprite.frag">
+    <None Include="Data\Shaders\Phong.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\Sprite.vert">
+    <None Include="Data\Shaders\Skinned.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\Neon.vert">
+    <None Include="Data\Shaders\Sprite.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Source\Shaders\Neon.frag">
+    <None Include="Data\Shaders\Sprite.vert">
+      <Filter>ソース ファイル\Shader\Source</Filter>
+    </None>
+    <None Include="Data\Shaders\SkyBox.vert">
+      <Filter>ソース ファイル\Shader\Source</Filter>
+    </None>
+    <None Include="Data\Shaders\SkyBox.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
   </ItemGroup>

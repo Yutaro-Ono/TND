@@ -52,6 +52,11 @@ public:
 	// TextureComponent
 	void RemoveTexture(class Texture* in_texture);
 
+	// SkyBox
+	void AddSkyBox(class CubeMapComponent* in_comp);
+	void RemoveSkyBox(class CubeMapComponent* in_comp);
+	void SetCubeMapVAO();
+
 	void WindowClear() { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
 	void WindowFlip() { SDL_GL_SwapWindow(m_window); }
 
@@ -91,8 +96,9 @@ public:
 
 private:
 
-	void CreateSpriteVerts();
-	void CreateParticleVerts();
+	void CreateCubeMapVerts();                                             // キューブマップ(スカイボックス用)頂点配列定義
+	void CreateSpriteVerts();                                              // スプライト用頂点配列定義
+	void CreateParticleVerts();                                            // パーティクル用頂点配列定義
 	bool LoadShaders();                                                    // シェーダーの初期化
 	void SetLightUniforms(class Shader* in_shader);                        // ライト値をシェーダーにセット
 
@@ -108,6 +114,7 @@ private:
 
 	std::vector<class SpriteComponent*> m_spriteComponents;
 	std::vector<class MeshComponent*> m_meshComponents;                    // メッシュコンポーネント
+	std::vector<class CubeMapComponent*> m_skyBoxComponents;                  // スカイボックス用メッシュコンポーネント
 	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;
 
 	//--------------------------------------------+
@@ -136,6 +143,12 @@ private:
 	class Shader* m_particleShader;
 	class VertexArray* m_particleVertex;
 	class ParticleManager* m_particleManager;
+
+	//--------------------------------------------+
+	// スカイボックス関連
+	//--------------------------------------------+
+	class Shader* m_skyboxShader;          // スカイボックス用シェーダー
+	class VertexArray* m_skyboxVerts;      // スカイボックス用頂点配列
 
 	//--------------------------------------------+
     // カメラ関連
