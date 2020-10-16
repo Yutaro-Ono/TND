@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-
+#include <string>
 class CubeMapComponent : public Component
 {
 

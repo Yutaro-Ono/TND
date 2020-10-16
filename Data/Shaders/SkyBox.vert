@@ -12,8 +12,12 @@ uniform mat4 uProjMat;
 
 void main()
 {
-	TexCoords = aPos;
-	vec4 pos = uProjMat * uViewMat * vec4(aPos, 1.0);
-	gl_Position = pos.xyww;
+	mat4 view = mat4(mat3(uViewMat));
+	
+
+
+	TexCoords = vec3(aPos.y, -aPos.z, aPos.x);
+	vec4 pos = uProjMat * view * vec4(aPos, 1.0);
+	gl_Position = vec4(-pos.x, -pos.y, pos.w, pos.w);     // zê¨ï™ÇÕç≈âúÇ…ï\é¶Ç∑ÇÈÇÊÇ§Ç…Ç∑ÇÈ
 
 }

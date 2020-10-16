@@ -18,7 +18,7 @@ public:
 	~Texture();                                                   // デストラクタ
 
 	bool Load(const std::string& in_fileName);                    // テクスチャのロード
-	bool LoadSkyBox(const std::vector<std::string>& in_faces);              // キューブマップのロード(スカイボックス用)
+	bool LoadSkyBox(const std::string& in_filePath);              // キューブマップのロード(スカイボックス用)
 	void Delete();                                                // テクスチャの解放処理
 	void CreateSurface(struct SDL_Surface* surface);              // SDLサーフェスからテクスチャを作成する
 

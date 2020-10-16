@@ -3,7 +3,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include <vector>
-#include <string>
+
 
 CubeMapComponent::CubeMapComponent(Actor* in_owner)
 	:Component(in_owner)
@@ -14,6 +14,7 @@ CubeMapComponent::CubeMapComponent(Actor* in_owner)
 
 CubeMapComponent::~CubeMapComponent()
 {
+	RENDERER->RemoveSkyBox(this);
 }
 
 // テクスチャの生成
@@ -21,18 +22,7 @@ void CubeMapComponent::CreateTexture(const std::string& in_filePath)
 {
 	m_texture = new Texture();
 
-	// 各スカイボックス用画像のパス
-	std::vector<std::string> faces
-	{
-		in_filePath + "right.jpg",
-		in_filePath + "left.jpg",
-		in_filePath + "top.jpg",
-		in_filePath + "bottom.jpg",
-		in_filePath + "front.jpg",
-		in_filePath + "back.jpg"
-	};
-
-	m_texture->LoadSkyBox(faces);
+	m_texture->LoadSkyBox(in_filePath);
 
 }
 

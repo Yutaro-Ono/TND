@@ -18,7 +18,7 @@
 #include "Skydome.h"
 #include "LoadScreen.h"
 #include "Camera.h"
-
+#include "SkyBox.h"
 const int TitleScene::STAGE_ALL_NUM = 1;
 
 
@@ -77,6 +77,8 @@ void TitleScene::Initialize()
 	Camera* camera = new Camera(m_player);
 	camera->Initialize(Vector3(0.0f, -250.0f, 0.0f), m_player->GetPosition(), Vector3::Zero);
 
+	// Skybox
+	SkyBox* sky = new SkyBox();
 
 
 	// ‰¹Šy

@@ -340,9 +340,14 @@ void Renderer::Draw()
 	glDepthFunc(GL_LEQUAL);
 	// シェーダーアクティブ化
 	m_skyboxShader->SetActive();
+	m_skyboxVerts->SetActive();
 	// 平行移動要素を削除したビュー行列をシェーダーにセット
-	Matrix4 view = m_view.CreateTranslation(Vector3::Zero);
-	m_skyboxShader->SetMatrixUniform("uViewMat", m_view);
+	Matrix4 view = m_view;
+	view.Invert();
+	//Matrix4 view = m_view;
+
+
+	m_skyboxShader->SetMatrixUniform("uViewMat", view);
 	m_skyboxShader->SetMatrixUniform("uProjMat", m_projection);
 
 	for (auto sky : m_skyBoxComponents)
@@ -735,6 +740,19 @@ void Renderer::CreateCubeMapVerts()
 		-1.0f, -1.0f,  1.0f,
 		 1.0f, -1.0f,  1.0f
 	};
+
+	unsigned int indices[] = 
+	{
+		0, 1, 2, 0, 2, 3,    // 前面
+		4, 5, 6, 4, 6, 7,    // 背面
+		8, 9, 10, 8, 10, 11,   // 上面
+		12, 13, 14, 12, 14, 15,   // 底面
+		16, 17, 18, 16, 18, 19,   // 右側面
+		20, 21, 22, 20, 22, 23    // 左側面
+	};
+
+
+
 
 	// VAO, VBO作成
 	m_skyboxVerts = new VertexArray(skyboxVertices, 36);

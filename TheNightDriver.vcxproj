@@ -37,6 +37,7 @@
     <ClCompile Include="Source\CubeMapComponent.cpp" />
     <ClCompile Include="Source\DebugBox.cpp" />
     <ClCompile Include="Source\Font.cpp" />
+    <ClCompile Include="Source\FrameBuffer.cpp" />
     <ClCompile Include="Source\GameConfig.cpp" />
     <ClCompile Include="Source\GameMain.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
@@ -93,6 +94,7 @@
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\SkeletalMeshComponent.cpp" />
     <ClCompile Include="Source\Skeleton.cpp" />
+    <ClCompile Include="Source\SkyBox.cpp" />
     <ClCompile Include="Source\Skydome.cpp" />
     <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\SpeedMeterUI.cpp" />
@@ -127,6 +129,7 @@
     <ClInclude Include="Source\CubeMapComponent.h" />
     <ClInclude Include="Source\DebugBox.h" />
     <ClInclude Include="Source\Font.h" />
+    <ClInclude Include="Source\FrameBuffer.h" />
     <ClInclude Include="Source\GameConfig.h" />
     <ClInclude Include="Source\GameMain.h" />
     <ClInclude Include="Source\GameScene.h" />

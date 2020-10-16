@@ -136,12 +136,13 @@ VertexArray::VertexArray(const float * in_verts, unsigned int in_vertsNum, const
 
 // スカイボックス用頂点配列オブジェクト
 VertexArray::VertexArray(const float* in_verts, unsigned int in_vertsNum)
+	:m_vertsNum(in_vertsNum)
 {
 	glGenVertexArrays(1, &m_VAO);
 	glGenBuffers(1, &m_VBO);
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(in_verts), &in_verts, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, in_vertsNum * 8 * sizeof(float), in_verts, GL_STATIC_DRAW);
 	// アトリビュートへのセット(頂点座標のみ)
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);

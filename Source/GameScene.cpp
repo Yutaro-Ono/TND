@@ -13,6 +13,7 @@
 #include "ParticleManager.h"
 #include "LevelManager.h"
 #include "Skydome.h"
+#include "SkyBox.h"
 #include "RuleScore.h"
 #include "RuleTime.h"
 #include "HUD.h"
@@ -107,12 +108,6 @@ void GameScene::Initialize()
 	// ロード画面処理
 	Loading();
 
-	// スカイドーム
-	Skydome* skydome = new Skydome();
-	skydome->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Skydome/Skydome_Sunny.gpmesh"));
-	skydome->SetPosition(Vector3(5000.0f, 5000.0f, 0.0f));
-	skydome->SetScale(50.0f);
-	skydome->SetSpin();           // ゲーム中では回転させる
 
 	// ウェイト
 	Wait(300);
@@ -137,12 +132,8 @@ void GameScene::Initialize()
 	// ロード画面処理
 	Loading();
 
-	// カメラ
-	// m_camera = new PlayerCamera(m_player);
-	//m_camera = new PlayerCamera(player);
-	//m_camera->SetHorizonDist(m_camera->GetPosition().x * 0.2f);
-	//m_camera->SetVerticalDist(50.0f);
-	//m_camera->SetBestCameraDist();
+	// SkyBox
+	SkyBox* sky = new SkyBox();
 
 	// ウェイト
 	Wait(300);

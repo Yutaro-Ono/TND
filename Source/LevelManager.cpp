@@ -30,7 +30,8 @@ LevelManager::LevelManager(int in_stageNum)
 	// ステージメッシュ読み込み
 	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/GroundBase/Ground.OBJ"));
 	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Street/Street.OBJ"));
-	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Building/Building.OBJ"));
+	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Building/2/BuildingSimple.OBJ"));
+
 
 
 	//-----------------------------------------------------------------------------------------+
@@ -54,15 +55,23 @@ LevelManager::LevelManager(int in_stageNum)
 		return;
 	}
 
-	// 壁
-	std::vector<std::vector<int>> wallData;
-	if (!ReadTiledJson(wallData, mapPath.c_str(), "layer_8"))
+	//// 壁
+	//std::vector<std::vector<int>> wallData;
+	//if (!ReadTiledJson(wallData, mapPath.c_str(), "layer_8"))
+	//{
+	//	printf("<Level> Street Data Load : Failed\n");
+	//	GAME_INSTANCE.SetShutDown();
+	//	return;
+	//}
+
+	// 建物
+	std::vector<std::vector<int>> buildingData;
+	if (!ReadTiledJson(buildingData, mapPath.c_str(), "layer_3"))
 	{
-		printf("<Level> Street Data Load : Failed\n");
+		printf("<Level> Building Data Load : Failed\n");
 		GAME_INSTANCE.SetShutDown();
 		return;
 	}
-
 
 	LevelBlock* block;
 	const float blockSize = 200.0f;
@@ -107,22 +116,39 @@ LevelManager::LevelManager(int in_stageNum)
 	}
 	streetData.clear();
 
-	// マップブロックを登録(壁)
+	//// マップブロックを登録(壁)
+	//for (int iy = 0; iy < sizeY; iy++)
+	//{
+	//	for (int ix = 0; ix < sizeX; ix++)
+	//	{
+	//		// オブジェクトはTiled上で18で登録されている
+	//		if (wallData[iy][ix] == 19)
+	//		{
+	//			block = new LevelBlock();
+	//			block->SetMesh(m_blockMeshes[2]);
+	//			block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
+	//		}
+
+	//	}
+	//}
+
+		// マップブロックを登録(建物)
 	for (int iy = 0; iy < sizeY; iy++)
 	{
 		for (int ix = 0; ix < sizeX; ix++)
 		{
-			// オブジェクトはTiled上で18で登録されている
-			if (wallData[iy][ix] == 19)
+			
+			if (buildingData[iy][ix] >= 1)
 			{
 				block = new LevelBlock();
 				block->SetMesh(m_blockMeshes[2]);
 				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
+				block->SetScale(5.0f);
 			}
 
 		}
 	}
-
+	buildingData.clear();
 
 }
 

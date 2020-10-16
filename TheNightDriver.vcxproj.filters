@@ -234,8 +234,11 @@
     <Filter Include="ソース ファイル\Mission\Taxi">
       <UniqueIdentifier>{ba7bb6cf-b383-460b-a59c-a7068351bdf4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Renderer\Skybox">
-      <UniqueIdentifier>{ba38a6f3-62c1-44df-8561-28909ce14eec}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Shader\Source\FrameBuffer">
+      <UniqueIdentifier>{0b912002-6a1f-4e68-870a-7946740d55dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Renderer\FrameBuffer">
+      <UniqueIdentifier>{bbf94f3e-8b15-47db-9e84-425e40ba7492}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -499,6 +502,12 @@
     </ClCompile>
     <ClCompile Include="Source\CubeMapComponent.cpp">
       <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SkyBox.cpp">
+      <Filter>ソース ファイル\Actor\Level\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameBuffer.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -775,11 +784,14 @@
     <ClInclude Include="Source\MissionManager.h">
       <Filter>ソース ファイル\Mission</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SkyBox.h">
-      <Filter>ソース ファイル\Renderer\Skybox</Filter>
-    </ClInclude>
     <ClInclude Include="Source\CubeMapComponent.h">
       <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SkyBox.h">
+      <Filter>ソース ファイル\Actor\Level\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FrameBuffer.h">
+      <Filter>ソース ファイル\Renderer\FrameBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
