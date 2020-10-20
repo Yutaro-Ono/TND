@@ -65,6 +65,8 @@ public:
 	int GetListNum() { return m_listNum; }
 	void SetListNum(int in_listNum) { m_listNum = in_listNum; }
 
+	// ミッションマネージャーのゲッター
+	class MissionManager* GetMissionManager() { return m_manager; }
 
 
 protected:

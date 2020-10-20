@@ -144,16 +144,22 @@ void MissionUI::Update(float in_deltaTime)
 // •`‰æˆ—
 void MissionUI::Draw(Shader* in_shader)
 {
+	
 	// ‰æ‘œƒXƒP[ƒ‹
-	float scale = 1.0f;
+	float scale = 0.5f;
+	// ‘I‘ð’†‚Ìƒ~ƒbƒVƒ‡ƒ“‚¾‚Á‚½‚çƒXƒP[ƒ‹Šg‘å
+	if (m_mission->GetMissionManager()->GetSelectedMission() == m_mission->GetListNum())
+	{
+		scale = 1.0f;
+	}
 
 	// ƒ~ƒbƒVƒ‡ƒ“ŠT—vƒeƒNƒXƒ`ƒƒ‚Ì•`‰æ
-	DrawTexture(in_shader, m_detailTex, m_uiPos, scale);
+	DrawTexture(in_shader, m_detailTex, m_uiPos + Vector2(0.0f, -(30 * m_mission->GetListNum())), scale);
 
 	// §ŒÀŽžŠÔ‚Ì•`‰æ
 	if (m_timeTex != nullptr)
 	{
-		DrawTexture(in_shader, m_timeTex, m_uiPos + Vector2(200.0f, +(30 * m_mission->GetListNum())), scale);
+		DrawTexture(in_shader, m_timeTex, m_uiPos + Vector2(300.0f, -(30 * m_mission->GetListNum())), scale);
 	}
 
 	// ‘Ï‹v’l‚Ì•`‰æ
@@ -161,7 +167,7 @@ void MissionUI::Draw(Shader* in_shader)
 	{
 	
 		// ‘Ï‹v“x‚Ì•`‰æ
-		DrawTexture(in_shader, m_durableValTex, m_uiPos + Vector2(500.0f, +(30 * m_mission->GetListNum())), scale);
+		DrawTexture(in_shader, m_durableValTex, m_uiPos + Vector2(500.0f, -(30 * m_mission->GetListNum())), scale);
 	}
 
 
@@ -169,7 +175,7 @@ void MissionUI::Draw(Shader* in_shader)
 	if (m_distanceTex != nullptr)
 	{
 		// ‹——£‚Ì•`‰æ
-		DrawTexture(in_shader, m_distanceTex, m_uiPos + Vector2(900.0f, +(30 * m_mission->GetListNum())), scale);
+		DrawTexture(in_shader, m_distanceTex, m_uiPos + Vector2(900.0f, -(30 * m_mission->GetListNum())), scale);
 	}
 
 

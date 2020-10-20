@@ -334,6 +334,7 @@ void Renderer::Draw()
 		}
 	}
 
+	
 	//---------------------------------------------------------------+
 	// スカイボックスの描画
 	//---------------------------------------------------------------+
@@ -345,8 +346,6 @@ void Renderer::Draw()
 	Matrix4 view = m_view;
 	view.Invert();
 	//Matrix4 view = m_view;
-
-
 	m_skyboxShader->SetMatrixUniform("uViewMat", view);
 	m_skyboxShader->SetMatrixUniform("uProjMat", m_projection);
 
@@ -354,7 +353,8 @@ void Renderer::Draw()
 	{
 		sky->Draw(m_skyboxShader);
 	}
-	
+
+
 	//----------------------------------------------------------------+
 	// パーティクル描画
 	//----------------------------------------------------------------+
@@ -385,6 +385,8 @@ void Renderer::Draw()
 	{
 		ui->Draw(m_spriteShader);
 	}
+
+
 
 	// デバッグコンソール描画
 	//MOUSE_INSTANCE.ImGuiDebugRendering();

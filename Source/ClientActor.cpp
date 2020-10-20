@@ -16,7 +16,7 @@ ClientActor::ClientActor(const Vector3& in_pos)
 	texture->Load("Data/Interface/landmark.png");
 	m_landMark = new SpriteComponent(this);
 	m_landMark->SetTexture(texture);
-	AddComponent(m_landMark);
+
 
 	Mesh* mesh = RENDERER->GetMesh("Data/Meshes/TND/Actors/Player/rp_nathan_rigged_003_ue4.gpmesh");
 	SkeletalMeshComponent* skel = new SkeletalMeshComponent(this);
@@ -30,6 +30,5 @@ ClientActor::~ClientActor()
 
 void ClientActor::UpdateActor(float in_deltaTime)
 {
-	// d—Íˆ—
-	m_position.y -= 10.0f;
+	m_recomputeWorldTransform = true;
 }

@@ -3,6 +3,8 @@
 #include "MissionBase.h"
 #include "MissionUI.h"
 #include "ClientActor.h"
+#include "Input.h"
+#include "InputController.h"
 #include <stdio.h>
 #include <time.h>
 
@@ -12,6 +14,7 @@ const int MissionManager::MISSION_ALL_NUM = 3;    // 同時進行する任務の限界数
 MissionManager::MissionManager(GameWorld* in_world)
 	:m_player(in_world->GetPlayer())
 	,m_world(in_world)
+	,m_selectNum(0)
 {
 	InitRandom();
 	// ミッションリストの生成
@@ -85,6 +88,8 @@ void MissionManager::Update(float in_deltaTime)
 	}
 	endMissions.clear();
 
+
+
 	// ミッションリストは常時3つ。減っていたら作成する
 	int addMissionNum = MISSION_ALL_NUM - m_missions.size();
 	if (addMissionNum > 0)
@@ -120,6 +125,8 @@ void MissionManager::Update(float in_deltaTime)
 	}
 
 
+	// ミッションカーソル
+	ChangeSelectNum();
 
 	
 }
@@ -127,4 +134,34 @@ void MissionManager::Update(float in_deltaTime)
 void MissionManager::InitRandom()
 {
 	srand((unsigned int)time(NULL));
+}
+
+void MissionManager::ChangeSelectNum()
+{
+	// カーソル下移動
+	if (INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_DOWN) || CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
+	{
+		m_selectNum++;
+		// ミッション数を超えたら0番目に折り返し
+		if (m_selectNum >= MISSION_ALL_NUM)
+		{
+			m_selectNum = 0;
+		}
+	}
+	
+	// カーソル上移動
+	if (INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_UP) || CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_DPAD_UP))
+	{
+		m_selectNum--;
+		// 1だったら折り返し
+		if (m_selectNum < 0)
+		{
+			m_selectNum = 2;
+		}
+	}
+
+	for (auto mission : m_missions)
+	{
+		
+	}
 }
