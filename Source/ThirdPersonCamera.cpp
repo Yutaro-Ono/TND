@@ -35,11 +35,11 @@ ThirdPersonCamera::ThirdPersonCamera(Actor* in_owner)
 
 	// 当たり判定ボックスのセット
 	AABB hitBox;
-	hitBox.m_min.x = -25.0f;
-	hitBox.m_min.y = -125.0f;
+	hitBox.m_min.x = -5.0f;
+	hitBox.m_min.y = -5.0f;
 	hitBox.m_min.z = -5.0f;
-	hitBox.m_max.x = 25.0f;
-	hitBox.m_max.y = 125.0f;
+	hitBox.m_max.x = 5.0f;
+	hitBox.m_max.y = 5.0f;
 	hitBox.m_max.z = 5.0f;
 	m_hitBox = new BoxCollider(m_cameraActor, PhysicsWorld::TYPE_CAMERA);
 	m_hitBox->SetObjectBox(hitBox);
@@ -187,24 +187,6 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 		Vector2 axisR;
 		axisR = CONTROLLER_INSTANCE.GetRAxisVec();
 
-
-		// ターゲットまでの距離を変更 (backボタンを押している時)
-		if (CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_BACK))
-		{
-			// 距離を右スティックの入力値から算出
-			m_distance += axisR.y * 500.0f * in_deltaTime;
-
-			// 最小距離・最大距離の調整
-			if (m_distance < MIN_TARGET_DISTANCE)
-			{
-				m_distance = MIN_TARGET_DISTANCE;
-			}
-			if (m_distance > MAX_TARGET_DISTANCE)
-			{
-				m_distance = MAX_TARGET_DISTANCE;
-			}
-		}
-
 		// backボタンを押していない時
 		if (!CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_BACK))
 		{
@@ -213,12 +195,6 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 			{
 				m_distance = MAX_TARGET_DISTANCE / 2;
 			}
-
-			// ピッチ計算
-			pitchSpeed = axisR.y / CAMERA_SENSITIVITY;
-			pitchSpeed *= maxOrbitSpeed;
-			m_pitch = Math::Lerp(m_pitch, (axisR.y / CAMERA_SENSITIVITY * maxOrbitSpeed), attenRate * in_deltaTime);
-
 
 			// 前進ベクトル更新を許可している時のみ
 			if (m_adjustForward)
@@ -232,6 +208,29 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 			}
 		}
 
+		// ターゲットまでの距離を変更 (backボタンを押している時)
+		if (CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_BACK))
+		{
+			// 距離を右スティックの入力値から算出
+			m_distance += axisR.y * 500.0f * in_deltaTime;
+			// フリーカメラ時はピッチを変更しない
+			axisR.y = 0.0f;
+
+			// 最小距離・最大距離の調整
+			if (m_distance < MIN_TARGET_DISTANCE)
+			{
+				m_distance = MIN_TARGET_DISTANCE;
+			}
+			if (m_distance > MAX_TARGET_DISTANCE)
+			{
+				m_distance = MAX_TARGET_DISTANCE;
+			}
+		}
+
+		// ピッチ計算
+		pitchSpeed = axisR.y / CAMERA_SENSITIVITY;
+		pitchSpeed *= maxOrbitSpeed;
+		m_pitch = Math::Lerp(m_pitch, (axisR.y / CAMERA_SENSITIVITY * maxOrbitSpeed), attenRate * in_deltaTime);
 		// ヨー計算
 		m_yaw = Math::Lerp(m_yaw, (axisR.x / CAMERA_SENSITIVITY * maxOrbitSpeed), attenRate * in_deltaTime);
 
@@ -274,19 +273,15 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 
 
 
-		// ヨー計算
-		yawSpeed -= xoffset;
-		m_yaw = Math::Lerp(m_yaw, -xoffset, attenRate * in_deltaTime);
-		//yawSpeed *= maxOrbitSpeed;
 
-
-		//pitchSpeed *= maxOrbitSpeed;
 
 		// ターゲットまでの距離を変更 (Fキーを押している時)
 		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_F))
 		{
 			// 距離を右スティックの入力値から算出
 			m_distance += (m_frameMousePos.y - m_mousePos.y) / CAMERA_SENSITIVITY * in_deltaTime;
+			// フリーカメラ時はピッチを変更しない
+
 
 			// 最小距離・最大距離の調整
 			if (m_distance < MIN_TARGET_DISTANCE)
@@ -324,6 +319,9 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 			}
 		}
 
+		// ヨー計算
+		yawSpeed -= xoffset;
+		m_yaw = Math::Lerp(m_yaw, -xoffset, attenRate * in_deltaTime);
 
 		// ピッチの最大・最小角度を調整
 		if (m_offset.z + m_pitch > pitchMaxDegree)
@@ -374,20 +372,26 @@ void ThirdPersonCamera::CollisionFix(BoxCollider* in_hitCameraBox, BoxCollider* 
 	}
 
 	// 補正ベクトル分戻す
-	m_position = Vector3::Lerp(m_position, m_position + fix, 5.0f * GAME_INSTANCE.GetDeltaTime());
-	//m_position += fix;
+	m_position += fix;
 	m_cameraActor->SetPosition(m_position);
 	m_cameraActor->ComputeWorldTransform();
 
-	// ビュー行列を更新
-	Matrix4 view = Matrix4::CreateLookAt(m_position, m_owner->GetPosition(), m_upVec);
+	//// ビュー行列を更新
+	//Matrix4 view = Matrix4::CreateLookAt(m_position, m_owner->GetPosition(), m_upVec);
+
+	//// 距離ベクトル
+	//Vector3 dist = Vector3(-15.0f, 35.0f, m_distance);
+	//// 距離分を加算
+	//view = view * Matrix4::CreateTranslation(dist);
+
+	//// レンダラーのビュー行列更新
+	//SetViewMatrix(view);
+
 
 	printf("hitBoxfix : x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
 
 
 
-	// レンダラーのビュー行列更新
-	SetViewMatrix(view);
 
 	// 位置が変わったのでボックス再計算
 	m_hitBox->OnUpdateWorldTransform();

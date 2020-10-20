@@ -27,6 +27,7 @@
 #include "Math.h"
 #include "PlayerCar.h"
 #include "PlayerManager.h"
+#include "GameWorld.h"
 
 #include <Windows.h>
 #include <iostream>
@@ -51,13 +52,13 @@ GameScene::GameScene(int in_stageNum)
 	RENDERER->SetProjectionMatrix(projection);
 	
 	// ライティング
-	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.3f, 0.36f, 0.4f));
+	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.0f, 0.04f, 0.15f));
 	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
 	dir.m_position = Vector3(0.0f, 0.0f, 1000.0f);
-	dir.m_direction = Vector3(0.0f, 0.0f, 1.0f);
+	dir.m_direction = Vector3(0.0f, 0.0f, -1.0f);
 	dir.m_direction.Normalize();
-	dir.m_diffuseColor = Vector3(0.0f, 1.0f, 0.6f);
-	dir.m_specColor = Vector3(0.0f, 1.0f, 0.0f);
+	dir.m_diffuseColor = Vector3(0.07f, 0.05f, 0.3f);
+	dir.m_specColor = Vector3(0.01f, 0.0f, 0.1f);
 }
 
 
@@ -85,23 +86,11 @@ void GameScene::Initialize()
 	//---------------------------------------------------------------------------------------------+
     // アクター
     //---------------------------------------------------------------------------------------------+
-	// プレイヤーの生成
-	//PlayerCar* player = new PlayerCar();
-	//player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
-	//player->SetScale(0.3f);
-	PlayerManager* player = new PlayerManager();
-	player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
-	player->SetScale(0.3f);
-
+	// ワールド生成
+	m_world = new GameWorld();
 
 	// ロード画面処理
 	Loading();
-
-	// 天使の像
-	//AngelStatue* angel = new AngelStatue();
-	//angel->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Objects/Angel_Statue/Statue_Ruins.gpmesh"));
-	//angel->SetPosition(Vector3(5000.0f, 3080.0f, 200.0f));
-	//angel->SetScale(3.0f);
 
 	// ウェイト
 	Wait(300);
@@ -113,9 +102,6 @@ void GameScene::Initialize()
 	Wait(300);
 	// ロード画面処理
 	Loading();
-
-    // レベルの生成
-	LevelManager* level = new LevelManager(m_stageNum);
 
 	// ロード画面処理
 	Loading();
@@ -181,14 +167,14 @@ void GameScene::Initialize()
 	m_time = ruleTime;
 	CountDownUI* countUI = new CountDownUI(ruleTime);
 
-	// チュートリアルUI
-	//TutorialUI* tutorialUI = new TutorialUI();
-
 }
 
 // 更新処理
 SceneBase * GameScene::Update()
 {
+
+	m_world->Update(GAME_INSTANCE.GetDeltaTime());
+
 	// シーンの状態により処理を分岐
 	switch (m_state)
 	{

@@ -31,10 +31,10 @@ TitleScene::TitleScene()
 	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.5f, 0.56f, 0.6f));
 	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
 	dir.m_position = Vector3(0.0f, 0.0f, 1000.0f);
-	dir.m_direction = Vector3(0.0f, 0.0f, 1.0f);
+	dir.m_direction = Vector3(0.0f, 0.0f, -1.0f);
 	dir.m_direction.Normalize();
-	dir.m_diffuseColor = Vector3(0.0f, 1.0f, 0.6f);
-	dir.m_specColor = Vector3(0.0f, 1.0f, 0.0f);
+	dir.m_diffuseColor = Vector3(1.0f, 1.0f, 0.6f);
+	dir.m_specColor = Vector3(0.5f, 1.0f, 0.5f);
 }
 
 

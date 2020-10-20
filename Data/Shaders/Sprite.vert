@@ -28,6 +28,7 @@ void main()
 	// Transform to position world space, then clip space
 	gl_Position = pos * uWorldTransform * uViewProj;
 
+
 	// Pass along the texture coordinate to frag shader
 	fragTexCoord = inTexCoord;
 }

@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------+
 #pragma once
 #include "Actor.h"
+#include "MeshComponent.h"
 
 class LevelBlock : public Actor
 {
@@ -18,6 +19,7 @@ public:
 
 	void SetMesh(class Mesh* in_mesh);       // メッシュのセット
 
+	void SetMeshVisible() { m_meshComp->SetVisible(false); }     // メッシュの透明化
 
 private:
 

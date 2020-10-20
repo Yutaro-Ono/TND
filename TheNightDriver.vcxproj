@@ -31,6 +31,7 @@
     <ClCompile Include="Source\CarHandle.cpp" />
     <ClCompile Include="Source\CarWheel.cpp" />
     <ClCompile Include="Source\ChainUI.cpp" />
+    <ClCompile Include="Source\ClientActor.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\CountDownUI.cpp" />
@@ -122,6 +123,7 @@
     <ClInclude Include="Source\CarHandle.h" />
     <ClInclude Include="Source\CarWheel.h" />
     <ClInclude Include="Source\ChainUI.h" />
+    <ClInclude Include="Source\ClientActor.h" />
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\Common.h" />
     <ClInclude Include="Source\Component.h" />

@@ -34,8 +34,11 @@ out VS_OUT
 
 void main()
 {
+	
+	vec4 pos = vec4(in_Position, 1.0);
+	pos = pos * uWorldTransform;
 	// 座標変換を行った上で、GLの組み込み変数に代入
-	gl_Position = uViewProj * uWorldTransform * vec4(in_Position, 1.0f);
+	gl_Position = pos * uViewProj;
 
 	// UV座標をフラグメントシェーダに送る
 	vs_out.TexCoords = in_TexCoords;

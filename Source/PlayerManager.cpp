@@ -25,10 +25,12 @@ PlayerManager::~PlayerManager()
 void PlayerManager::UpdateActor(float in_deltaTime)
 {
 
+
+
 	// 人間が車に近づいてYボタンを押すと乗る
 	// 乗車中だったら降車
 	if (Vector3::Distance(m_playerHuman->GetPosition(), m_playerCar->GetPosition()) <= 95.0f
-		&& CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_Y) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E))
+		&& (CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_Y) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E)))
 	{
 		if (m_playerMode == MODE_HUMAN)
 		{
@@ -54,4 +56,7 @@ void PlayerManager::UpdateActor(float in_deltaTime)
 		m_playerCar->SetActive(true);
 		m_playerHuman->SetPosition(m_playerCar->GetPosition());
 	}
+
+	// プレイヤー(人間)の座標を自身の座標とする
+	m_position = m_playerHuman->GetPosition();
 }

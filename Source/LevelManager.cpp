@@ -9,8 +9,9 @@
 #include "Renderer.h"
 #include "Mesh.h"
 #include "LevelBlock.h"
+#include "ClientActor.h"
 #include "RapidJsonHelper.h"
-#include "Skydome.h"
+#include "GameWorld.h"
 #include <vector>
 #include <string>
 #include <sstream>
@@ -19,7 +20,7 @@ const int LevelManager::MAP_INDEX_GROUND = 16;
 
 
 // コンストラクタ
-LevelManager::LevelManager(int in_stageNum)
+LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	:m_camera(nullptr)
 {
 	// マップの配置を保存したjsonへのファイルパスを生成
@@ -55,20 +56,29 @@ LevelManager::LevelManager(int in_stageNum)
 		return;
 	}
 
-	//// 壁
-	//std::vector<std::vector<int>> wallData;
-	//if (!ReadTiledJson(wallData, mapPath.c_str(), "layer_8"))
-	//{
-	//	printf("<Level> Street Data Load : Failed\n");
-	//	GAME_INSTANCE.SetShutDown();
-	//	return;
-	//}
+	// 壁
+	std::vector<std::vector<int>> wallData;
+	if (!ReadTiledJson(wallData, mapPath.c_str(), "layer_8"))
+	{
+		printf("<Level> Street Data Load : Failed\n");
+		GAME_INSTANCE.SetShutDown();
+		return;
+	}
 
 	// 建物
 	std::vector<std::vector<int>> buildingData;
 	if (!ReadTiledJson(buildingData, mapPath.c_str(), "layer_3"))
 	{
 		printf("<Level> Building Data Load : Failed\n");
+		GAME_INSTANCE.SetShutDown();
+		return;
+	}
+
+	// 依頼人
+	std::vector< std::vector<int>> clientData;
+	if (!ReadTiledJson(clientData, mapPath.c_str(), "layer_human"))
+	{
+		printf("<Level> client Data Load : Failed\n");
 		GAME_INSTANCE.SetShutDown();
 		return;
 	}
@@ -116,23 +126,25 @@ LevelManager::LevelManager(int in_stageNum)
 	}
 	streetData.clear();
 
-	//// マップブロックを登録(壁)
-	//for (int iy = 0; iy < sizeY; iy++)
-	//{
-	//	for (int ix = 0; ix < sizeX; ix++)
-	//	{
-	//		// オブジェクトはTiled上で18で登録されている
-	//		if (wallData[iy][ix] == 19)
-	//		{
-	//			block = new LevelBlock();
-	//			block->SetMesh(m_blockMeshes[2]);
-	//			block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
-	//		}
+	// マップブロックを登録(壁)
+	for (int iy = 0; iy < sizeY; iy++)
+	{
+		for (int ix = 0; ix < sizeX; ix++)
+		{
+			// オブジェクトはTiled上で18で登録されている
+			if (wallData[iy][ix] == 19)
+			{
+				block = new LevelBlock();
+				block->SetMesh(m_blockMeshes[2]);
+				block->SetMeshVisible();
+				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
+			}
 
-	//	}
-	//}
+		}
+	}
+	wallData.clear();
 
-		// マップブロックを登録(建物)
+	// マップブロックを登録(建物)
 	for (int iy = 0; iy < sizeY; iy++)
 	{
 		for (int ix = 0; ix < sizeX; ix++)
@@ -149,6 +161,24 @@ LevelManager::LevelManager(int in_stageNum)
 		}
 	}
 	buildingData.clear();
+
+	// マップに登録(依頼人)
+	for (int iy = 0; iy < sizeY; iy++)
+	{
+		for (int ix = 0; ix < sizeX; ix++)
+		{
+
+			if (clientData[iy][ix] >= 1)
+			{
+				ClientActor* client = new ClientActor(Vector3(ix * blockSize, offsetY - iy * blockSize, 50.0f));
+				
+				in_world->AddClientActor(client);
+
+			}
+
+		}
+	}
+	clientData.clear();
 
 }
 

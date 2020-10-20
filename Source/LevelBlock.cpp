@@ -6,7 +6,6 @@
 //-----------------------------------------------------------------------+
 #include "LevelBlock.h"
 #include "Mesh.h"
-#include "MeshComponent.h"
 #include "BoxCollider.h"
 
 

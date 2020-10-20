@@ -17,7 +17,7 @@ class LevelManager
 
 public:
 
-	LevelManager(int in_stageNum);                               // コンストラクタ
+	LevelManager(class GameWorld* in_world, int in_stageNum);                               // コンストラクタ
 	~LevelManager();                                             // デストラクタ
 
 	bool LoadLevel(const char* in_json, int in_layerNum);

@@ -1,13 +1,17 @@
 #include "MissionBase.h"
 #include "Actor.h"
 #include "MissionUI.h"
+#include "MissionManager.h"
+#include "PlayerManager.h"
 #include "GameMain.h"
 #include "GameConfig.h"
 
-MissionBase::MissionBase(MissionManager* in_manager)
+MissionBase::MissionBase(MissionManager* in_manager, MISSION_TYPE in_type, int in_listNum)
 	:m_manager(in_manager)
+	,m_missionType(in_type)
 	,m_missionState(HOLD)
 	,m_durableVal(100)
+	, m_listNum(in_listNum)
 {
 	// 初期化
 	m_startPos = m_goalPos = Vector3::Zero;
@@ -20,11 +24,16 @@ MissionBase::MissionBase(MissionManager* in_manager)
 
 MissionBase::~MissionBase()
 {
+	m_missionUI->Close();
 }
 
 // 更新処理
 void MissionBase::Update(float in_deltaTime)
 {
+
+	// プレイヤー座標を取得しておく
+	Vector3 playerPos = m_manager->GetPlayer()->GetPosition();
+	
 
 	//---------------------------------------------------+
 	//
@@ -36,6 +45,12 @@ void MissionBase::Update(float in_deltaTime)
 	{
 		// 最終時刻を更新し続ける
 		m_lastTime = SDL_GetTicks();
+
+		// ゴール地点にプレイヤーが接触し、ボタンを押したらミッション開始
+		if (CheckDistPlayer(playerPos, m_startPos))
+		{
+			m_missionState = ACTIVE;
+		}
 	}
 
 	// ミッション受注時
@@ -69,10 +84,13 @@ void MissionBase::Update(float in_deltaTime)
 		{
 			m_missionState = FAILED;
 		}
+
+		// ゴール地点にプレイヤーが接触し、ボタンを押したらミッション終了(成功)
+		if (CheckDistPlayer(playerPos, m_goalPos))
+		{
+			m_missionState = SUCCESS;
+		}
 	}
-
-
-
 
 }
 
@@ -85,6 +103,24 @@ void MissionBase::SetMissionDetail(const Vector3& in_start, const Vector3& in_go
 
 	m_baseScore = in_baseScore;     // ベーススコア
 	m_timeLimit = in_timeLimit;     // 制限時間
+}
+
+// プレイヤーの座標～開始地点or終了地点座標の距離を求め、一定以上接近してボタンを押したら真)
+bool MissionBase::CheckDistPlayer(const Vector3& in_playerPos, const Vector3& in_missionPos)
+{
+	// プレイヤーとの距離を測定する
+	m_playerDistance = Vector3::Distance(in_playerPos, in_missionPos);
+	// 距離が一定以上近いとき
+	if (m_playerDistance < 95.0f)
+	{
+		// 承諾ボタンを押したらtrue
+		if (CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_A) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 // 耐久値減少処理

@@ -240,6 +240,9 @@
     <Filter Include="ソース ファイル\Renderer\FrameBuffer">
       <UniqueIdentifier>{bbf94f3e-8b15-47db-9e84-425e40ba7492}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Actor\ClientActor">
+      <UniqueIdentifier>{ac54dc95-48b5-48c4-ae2e-73a27d414d1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -508,6 +511,9 @@
     </ClCompile>
     <ClCompile Include="Source\FrameBuffer.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ClientActor.cpp">
+      <Filter>ソース ファイル\Actor\ClientActor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -792,6 +798,9 @@
     </ClInclude>
     <ClInclude Include="Source\FrameBuffer.h">
       <Filter>ソース ファイル\Renderer\FrameBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ClientActor.h">
+      <Filter>ソース ファイル\Actor\ClientActor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

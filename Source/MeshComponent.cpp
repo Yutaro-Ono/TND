@@ -36,30 +36,37 @@ MeshComponent::~MeshComponent()
 // 描画処理
 void MeshComponent::Draw(Shader * in_shader)
 {
-	if (m_mesh)
+	if (m_mesh && m_visible)
 	{
 		// Set the world transform　ワールド変換をセット
 		in_shader->SetMatrixUniform("uWorldTransform",
 			m_owner->GetWorldTransform());
 		// Set specular power　スペキュラ強度セット
 		in_shader->SetFloatUniform("uSpecPower", 100);
-		// Set the active texture　アクティブテクスチャセット
-		Texture* t = m_mesh->GetTexture(m_textureIndex);
-		if (t)
+
+		
+		// アクティブテクスチャセット
+		Texture* diff = m_mesh->GetTexture(m_textureIndex);
+		if (diff)
 		{
-			t->SetActive();
+			//glActiveTexture(GL_TEXTURE0);
+			diff->SetActive();
 		}
 
 		// 法線マップ情報などが格納されている場合は
 		if (m_mesh->GetTextureNum() >= 2)
 		{
-			in_shader->SetInt("u_mat.diffuseMap", 0);
-			in_shader->SetInt("u_mat.normalMap", 1);
-			// テクスチャのアクティブ化
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetTexture(0)->GetTextureID());
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetTexture(1)->GetTextureID());
+			
+			//in_shader->SetInt("u_mat.diffuseMap", 0);
+			//in_shader->SetInt("u_mat.normalMap", 1);
+
+			// アクティブテクスチャセット
+			//Texture* norm = m_mesh->GetTexture(1);
+			//if (norm)
+			//{
+			//	//glActiveTexture(GL_TEXTURE1);
+			//	//norm->SetActive();
+			//}
 		}
 
 		// Set the mesh's vertex array as active　頂点配列をアクティブに

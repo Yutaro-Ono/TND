@@ -67,7 +67,7 @@ bool FrameBuffer::CreateFrameBuffer()
 	unsigned int texColorBuffer;
 	glGenTextures(1, &texColorBuffer);
 	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, SCREEN_SIZE_W, SCREEN_SIZE_H, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	//glBindTexture(GL_TEXTURE_2D, 0);
@@ -85,7 +85,7 @@ bool FrameBuffer::CreateFrameBuffer()
 	// レンダーバッファ操作がオブジェクトに影響を与えるようにバインド
 	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
 	// レンダーバッファは書き込み専用
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCREEN_SIZE_W, SCREEN_SIZE_H);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight());
 	//glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	// FBOにRBOをアタッチ
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);

@@ -287,20 +287,17 @@ int GameMain::UpdateGame()
 	// アクターの処理
 	UpdateActor();
 
-	// 当たり判定
-	m_physicsWorld->Collision();
-
 	// カメラ更新
 	if (m_activeCamera != nullptr)
 	{
 		// カメラ行列計算
 		m_activeCamera->Update(m_deltaTime);
-		// アクティブカメラのビュー行列を持ってくる
-		//m_viewMatrix = m_activeCamera->GetViewMatrix();
-		//m_renderer->SetViewMatrix(m_viewMatrix);
-		// レンダラーにカメラ位置をセット
-		m_renderer->SetCameraPosition(m_activeCamera->GetPosition());
 	}
+
+
+
+	// 当たり判定
+	m_physicsWorld->Collision();
 
 	// パーティクル更新
 	m_renderer->GetParticleManager()->Update(m_deltaTime);

@@ -48,14 +48,10 @@ private:
 
 	int m_stageNum;                                           // ステージ番号
 
-	class Player* m_player;
-
-	class PlayerCamera* m_camera;
+	class GameWorld* m_world;                                 // ゲームワールドクラス
 
 	class RuleTime* m_time;
 	class RuleScore* m_score;                                 // スコア
-
-	class FlameManager* m_flame;                              // フレームマネージャー
 
 	int m_prevScore;                                          // 更新前のスコア
 	int m_nowScore;                                           // 毎フレームのスコア

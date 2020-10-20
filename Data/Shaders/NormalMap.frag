@@ -75,7 +75,7 @@ void main()
     //float diff = max(dot(lightDir, normal), 0.0);
     //vec3 diffuse = diff * color;
 	vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
-	vec3 diffuse = max(dot(uDirLight.mDirection, normal), 0.0) * color;
+	vec3 diffuse =uDirLight.mDiffuseColor * max(dot(uDirLight.mDirection, normal), 0.0) * color;
 
     // specular
     vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);

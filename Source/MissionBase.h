@@ -13,6 +13,12 @@ class MissionBase
 
 public:
 
+	// ミッションの目的別
+	typedef enum MISSION_TYPE
+	{
+		DELIVERY,     // 荷物配達
+		TAXI          // タクシー(人を乗せる)
+	};
 	// ミッションのステート
 	typedef enum MISSION_STATE
 	{
@@ -22,14 +28,8 @@ public:
 		FAILED           // 失敗
 	};
 
-	// ミッションの目的別
-	typedef enum MISSION_TYPE
-	{
-		DELIVERY,     // 荷物配達
-		TAXI          // タクシー(人を乗せる)
-	};
 
-	MissionBase(class MissionManager* in_client);
+	MissionBase(class MissionManager* in_manager, MISSION_TYPE in_type, int in_listNum);
 	~MissionBase();
 
 	// 更新処理
@@ -37,6 +37,9 @@ public:
 
 	// ミッション詳細内容の定義
 	void SetMissionDetail(const Vector3& in_start, const Vector3& in_goal, unsigned int in_baseScore, unsigned int in_timeLimit);
+
+	// プレイヤーの座標～開始地点or終了地点座標の距離を求め、一定以上接近してボタンを押したら真)
+	bool CheckDistPlayer(const Vector3& in_playerPos, const Vector3& in_missionPos);
 
 	// 耐久値減少処理
 	void DecraseDurableValue();
@@ -49,14 +52,19 @@ public:
 	MISSION_STATE GetMissionState() { return m_missionState; }
 
 	// ミッションタイプのセッターゲッター
-	void SetMissionType(MISSION_TYPE in_type) { m_missionType = in_type; }
 	MISSION_TYPE GetMissionType() { return m_missionType; }
+	// プレイヤーとの距離のゲッター
+	float GetPlayerDistance() { return m_playerDistance; }
 
 	// 制限時間取得
 	unsigned int GetTimeLimit() { return m_timeLimit; }
 
 	// 耐久値取得
 	unsigned int GetDurableValue() { return m_durableVal; }
+	// リスト番号のゲッター
+	int GetListNum() { return m_listNum; }
+	void SetListNum(int in_listNum) { m_listNum = in_listNum; }
+
 
 
 protected:
@@ -83,4 +91,6 @@ protected:
 	unsigned int m_timeLimit;                   // 制限時間
 	unsigned int m_lastTime, m_currentTime;     // 時間計測用の現在時刻と最終更新時刻
 
+
+	int m_listNum;                           // ミッションリストの何番目か
 };

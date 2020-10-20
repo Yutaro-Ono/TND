@@ -93,11 +93,21 @@ PlayerHuman::~PlayerHuman()
 
 void PlayerHuman::UpdateActor(float in_deltaTime)
 {
+
+	// プレイヤー操作時の更新処理
 	if (m_manager->GetPlayerMode() == PlayerManager::MODE_HUMAN)
 	{
+		// カメラをアクティブにする
 		GAME_INSTANCE.SetCamera(m_cameraComp);
 		m_moveComp->SetActive(true);
 		m_skelMeshComp->SetVisible(true);
+
+		// 重力処理
+		m_position.z -= 1.0f;
+		if (m_position.z < -20.0f)
+		{
+			m_position.z = 0.0f;
+		}
 
 		//キャラ状態遷移
 		ChangeState();
