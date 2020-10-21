@@ -1,13 +1,16 @@
 #include "MissionBase.h"
-#include "Actor.h"
+#include "ClientActor.h"
 #include "MissionUI.h"
 #include "MissionManager.h"
 #include "PlayerManager.h"
 #include "GameMain.h"
 #include "GameConfig.h"
 
+// コンストラクタ
 MissionBase::MissionBase(MissionManager* in_manager, MISSION_TYPE in_type, int in_listNum)
 	:m_manager(in_manager)
+	,m_startActor(nullptr)
+	,m_goalActor(nullptr)
 	,m_missionType(in_type)
 	,m_missionState(HOLD)
 	,m_durableVal(100)
@@ -22,6 +25,7 @@ MissionBase::MissionBase(MissionManager* in_manager, MISSION_TYPE in_type, int i
 	m_missionUI->SetUIPosition();
 }
 
+// デストラクタ
 MissionBase::~MissionBase()
 {
 	m_missionUI->Close();
@@ -34,7 +38,6 @@ void MissionBase::Update(float in_deltaTime)
 	// プレイヤー座標を取得しておく
 	Vector3 playerPos = m_manager->GetPlayer()->GetPosition();
 	
-
 	//---------------------------------------------------+
 	//
 	// ステートごとの更新処理
@@ -96,10 +99,13 @@ void MissionBase::Update(float in_deltaTime)
 
 
 // ミッション詳細設定の定義
-void MissionBase::SetMissionDetail(const Vector3& in_start, const Vector3& in_goal, unsigned int in_baseScore, unsigned int in_timeLimit)
+void MissionBase::SetMissionDetail(ClientActor* in_start, ClientActor* in_goal, unsigned int in_baseScore, unsigned int in_timeLimit)
 {
-	m_startPos = in_start;          // 開始地点
-	m_goalPos = in_goal;            // ゴール地点
+	m_startActor = in_start;
+	m_goalActor = in_goal;
+
+	m_startPos = m_startActor->GetPosition();          // 開始地点
+	m_goalPos = m_goalActor->GetPosition();            // ゴール地点
 
 	m_baseScore = in_baseScore;     // ベーススコア
 	m_timeLimit = in_timeLimit;     // 制限時間
@@ -127,5 +133,17 @@ bool MissionBase::CheckDistPlayer(const Vector3& in_playerPos, const Vector3& in
 void MissionBase::DecraseDurableValue()
 {
 	m_durableVal -= 3;
+}
+
+
+// スコアを成功か失敗かによって計算し、更新したスコア値を返す
+int MissionBase::GetCalcScore()
+{
+	if (m_missionState = FAILED)
+	{
+		return 0;
+	}
+
+	return m_baseScore;
 }
 

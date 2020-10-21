@@ -10,14 +10,15 @@ ClientActor::ClientActor(const Vector3& in_pos)
 	:m_isSelected(false)
 	,m_landMark(nullptr)
 {
+	// 座標設定
 	m_position = in_pos;
-
+	// テクスチャ生成
 	Texture* texture = new Texture();
 	texture->Load("Data/Interface/landmark.png");
 	m_landMark = new SpriteComponent(this);
 	m_landMark->SetTexture(texture);
 
-
+	// 依頼人のメッシュ生成
 	Mesh* mesh = RENDERER->GetMesh("Data/Meshes/TND/Actors/Player/rp_nathan_rigged_003_ue4.gpmesh");
 	SkeletalMeshComponent* skel = new SkeletalMeshComponent(this);
 	skel->SetMesh(mesh);

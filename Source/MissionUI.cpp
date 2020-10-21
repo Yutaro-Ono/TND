@@ -79,6 +79,7 @@ void MissionUI::Update(float in_deltaTime)
 		// 制限時間のフォントテクスチャを生成
 		m_timeTex = m_font->RenderText(sstream.str(), color, fontSize);
 		sstream.str("");
+
 		//-------------------------------------------------+
 		// 耐久値
 		//-------------------------------------------------+

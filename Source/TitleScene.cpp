@@ -15,7 +15,6 @@
 #include "Font.h"
 #include "GameScene.h"
 #include "PlayerCar.h"
-#include "Skydome.h"
 #include "LoadScreen.h"
 #include "Camera.h"
 #include "SkyBox.h"

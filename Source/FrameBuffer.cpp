@@ -3,13 +3,45 @@
 #include <SDL.h>
 #include <GL/glew.h>
 #include "GameMain.h"
+#include "Shader.h"
 
+// コンストラクタ
 FrameBuffer::FrameBuffer()
 {
+	// 全ポストエフェクト分のシェーダーを生成・ロード
+	for (int i = 0; i < POST_EFFECT_TYPE::ALL_NUM; i++)
+	{
+		m_postEffectShaders.push_back(new Shader());
+	}
+
+	// ポストエフェクトシェーダのロード
+	m_postEffectShaders[NONE]->Load("Data/Shaders/FB/FrameBufferScreen.vert", "Data/Shaders/FB/FrameBufferScreen.frag");
+	m_postEffectShaders[INVERT_COLOR]->Load("Data/Shaders/FB/FrameBufferScreen.vert", "Data/Shaders/FB/InvertColorScreen.frag");
+	m_postEffectShaders[GREY_SCALE]->Load("Data/Shaders/FB/FrameBufferScreen.vert", "Data/Shaders/FB/GreyScaleScreen.frag");
+	m_postEffectShaders[CERNEL]->Load("Data/Shaders/FB/FrameBufferScreen.vert", "Data/Shaders/FB/CernelScreen.frag");
+	m_postEffectShaders[BLUR]->Load("Data/Shaders/FB/FrameBufferScreen.vert", "Data/Shaders/FB/BlurScreen.frag");
+	m_postEffectShaders[SHARP_EDGE]->Load("Data/Shaders/FB/FrameBufferScreen.vert", "Data/Shaders/FB/SharpEdgeScreen.frag");
+
+	m_activeShader = m_postEffectShaders[NONE];
+
+	m_shaderNum = 0;
+
 }
 
+// デストラクタ
 FrameBuffer::~FrameBuffer()
 {
+	glDeleteFramebuffers(1, &m_FBO);
+	glDeleteRenderbuffers(1, &m_RBO);
+	glDeleteVertexArrays(1, &m_VAO);
+	glDeleteBuffers(1, &m_VBO);
+
+	for (auto shader : m_postEffectShaders)
+	{
+		shader->Delete();
+	}
+	m_postEffectShaders.clear();
+
 }
 
 bool FrameBuffer::CreateFrameBuffer()
@@ -42,12 +74,9 @@ bool FrameBuffer::CreateFrameBuffer()
     //
     //----------------------------------------------------------------------+
     // フレームバッファオブジェクトを定義して作成(Gen)
-	unsigned int fbo;
-	glGenFramebuffers(1, &fbo);
+	glGenFramebuffers(1, &m_FBO);
 	// activeなフレームバッファとしてバインドすると、描画先になる
-	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-	// 描画命令を行った後にバインドを解除すると、描画先がスクリーンに戻る
-	// glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 
 	// フレームバッファが正常に完了したかどうかをチェック
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE)
@@ -56,23 +85,19 @@ bool FrameBuffer::CreateFrameBuffer()
 
 	}
 
-	// フレームバッファオブジェクトはアプリ終了前に削除することを忘れずに
-	// glDeleteFramebuffers(1, &fbo);
 
 	//-----------------------------------------------------------------------+
 	//
 	// テクスチャカラーバッファの作成
 	//
 	//-----------------------------------------------------------------------+
-	unsigned int texColorBuffer;
-	glGenTextures(1, &texColorBuffer);
-	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+	glGenTextures(1, &m_colorBuffer);
+	glBindTexture(GL_TEXTURE_2D, m_colorBuffer);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	//glBindTexture(GL_TEXTURE_2D, 0);
 	// 現在のフレームバッファオブジェクトにアタッチする
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texColorBuffer, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_colorBuffer, 0);
 
 	//-------------------------------------------------------------+
 	//
@@ -86,7 +111,6 @@ bool FrameBuffer::CreateFrameBuffer()
 	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
 	// レンダーバッファは書き込み専用
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight());
-	//glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	// FBOにRBOをアタッチ
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
@@ -98,8 +122,61 @@ bool FrameBuffer::CreateFrameBuffer()
 
 	// フレームバッファ解除
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
 }
 
+// フレームバッファへの書き込み処理 (この直後にメッシュなどの通常描画処理を行う)
+void FrameBuffer::WriteFrameBuffer()
+{
+	if (m_shaderNum != 0)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+
+	}
+}
+
+// 書き込まれたフレームを編集し描画する
 void FrameBuffer::DrawFrameBuffer()
 {
+	if (m_shaderNum != 0)
+	{
+		// ブレンドの有効化
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		// 2.フレームバッファ内容をスクリーンに描画
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		m_activeShader->SetActive();
+		m_activeShader->SetInt("screenTexture", 0);
+		// VAOバインド
+		glBindVertexArray(m_VAO);
+		// 深度テストオフ
+		glDisable(GL_DEPTH_TEST);
+		glBindTexture(GL_TEXTURE_2D, m_colorBuffer);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+	}
+
+
+
+	// Imguiデバッグ
+	DebugFrameBuffer();
+}
+
+// ポストエフェクト変更 (デバッグ用)
+void FrameBuffer::DebugFrameBuffer()
+{
+#ifdef  _DEBUG
+
+	// ImGui更新
+	//ImGui::Begin("Debug Console : PostProcess");
+	ImGui::SliderInt("PostProcessShader", &m_shaderNum, 0, ALL_NUM - 1);
+	// 指定したポストエフェクトをアクティブシェーダとして更新
+	m_activeShader = m_postEffectShaders[m_shaderNum];
+
+
+#endif //  _DEBUG
+
 }

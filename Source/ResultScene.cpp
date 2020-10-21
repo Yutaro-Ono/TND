@@ -12,7 +12,6 @@
 #include "InputController.h"
 #include "TitleScene.h"
 #include "Actor.h"
-#include "Skydome.h"
 #include "LevelObject.h"
 #include "Camera.h"
 #include "ResultScreen.h"
@@ -58,13 +57,6 @@ void ResultScene::Initialize()
 		RENDERER->Draw();
 	}
 
-
-
-	// スカイドームの生成と設定
-	m_skydome = new Skydome();
-	m_skydome->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Skydome/Skydome_Sunny.gpmesh"));
-	m_skydome->SetPosition(Vector3(0.0f, 0.0f, -20.0f));
-	m_skydome->SetScale(0.45f);
 
 	// ロード画面処理
 	{

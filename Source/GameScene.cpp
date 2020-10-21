@@ -12,7 +12,6 @@
 #include "Renderer.h"
 #include "ParticleManager.h"
 #include "LevelManager.h"
-#include "Skydome.h"
 #include "SkyBox.h"
 #include "RuleScore.h"
 #include "RuleTime.h"

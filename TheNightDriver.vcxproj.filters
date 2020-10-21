@@ -305,9 +305,6 @@
     <ClCompile Include="Source\Grid.cpp">
       <Filter>ソース ファイル\Debug\Grid</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Skydome.cpp">
-      <Filter>ソース ファイル\Actor\Level\Sky</Filter>
-    </ClCompile>
     <ClCompile Include="Source\LevelBlock.cpp">
       <Filter>ソース ファイル\Actor\Level\Block</Filter>
     </ClCompile>
@@ -509,11 +506,11 @@
     <ClCompile Include="Source\SkyBox.cpp">
       <Filter>ソース ファイル\Actor\Level\Sky</Filter>
     </ClCompile>
-    <ClCompile Include="Source\FrameBuffer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ClientActor.cpp">
       <Filter>ソース ファイル\Actor\ClientActor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameBuffer.cpp">
+      <Filter>ソース ファイル\Renderer\FrameBuffer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -582,9 +579,6 @@
     </ClInclude>
     <ClInclude Include="Source\LevelBlock.h">
       <Filter>ソース ファイル\Actor\Level\Block</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Skydome.h">
-      <Filter>ソース ファイル\Actor\Level\Sky</Filter>
     </ClInclude>
     <ClInclude Include="Source\DebugBox.h">
       <Filter>ソース ファイル\Debug</Filter>
@@ -854,6 +848,27 @@
     </None>
     <None Include="Data\Shaders\SkyBox.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
+    </None>
+    <None Include="Data\Shaders\FB\BlurScreen.frag">
+      <Filter>ソース ファイル\Shader\Source\FrameBuffer</Filter>
+    </None>
+    <None Include="Data\Shaders\FB\CernelScreen.frag">
+      <Filter>ソース ファイル\Shader\Source\FrameBuffer</Filter>
+    </None>
+    <None Include="Data\Shaders\FB\FrameBufferScreen.frag">
+      <Filter>ソース ファイル\Shader\Source\FrameBuffer</Filter>
+    </None>
+    <None Include="Data\Shaders\FB\FrameBufferScreen.vert">
+      <Filter>ソース ファイル\Shader\Source\FrameBuffer</Filter>
+    </None>
+    <None Include="Data\Shaders\FB\GreyScaleScreen.frag">
+      <Filter>ソース ファイル\Shader\Source\FrameBuffer</Filter>
+    </None>
+    <None Include="Data\Shaders\FB\InvertColorScreen.frag">
+      <Filter>ソース ファイル\Shader\Source\FrameBuffer</Filter>
+    </None>
+    <None Include="Data\Shaders\FB\SharpEdgeScreen.frag">
+      <Filter>ソース ファイル\Shader\Source\FrameBuffer</Filter>
     </None>
   </ItemGroup>
 </Project>

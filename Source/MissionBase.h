@@ -36,7 +36,7 @@ public:
 	void Update(float in_deltaTime);
 
 	// ミッション詳細内容の定義
-	void SetMissionDetail(const Vector3& in_start, const Vector3& in_goal, unsigned int in_baseScore, unsigned int in_timeLimit);
+	void SetMissionDetail(class ClientActor* in_start, class ClientActor* in_goal, unsigned int in_baseScore, unsigned int in_timeLimit);
 
 	// プレイヤーの座標～開始地点or終了地点座標の距離を求め、一定以上接近してボタンを押したら真)
 	bool CheckDistPlayer(const Vector3& in_playerPos, const Vector3& in_missionPos);
@@ -50,7 +50,9 @@ public:
 	// ミッション状態のセッター・ゲッター
 	void SetMissionState(MISSION_STATE in_state) { m_missionState = in_state; }
 	MISSION_STATE GetMissionState() { return m_missionState; }
-
+	// 開始地点アクターのゲッター・ゴール地点アクターのゲッター
+	class ClientActor* GetStartActor() { return m_startActor; }
+	class ClientActor* GetGoalActor() { return m_goalActor; }
 	// ミッションタイプのセッターゲッター
 	MISSION_TYPE GetMissionType() { return m_missionType; }
 	// プレイヤーとの距離のゲッター
@@ -68,6 +70,8 @@ public:
 	// ミッションマネージャーのゲッター
 	class MissionManager* GetMissionManager() { return m_manager; }
 
+	// スコアの計算・ゲッター
+	int GetCalcScore();
 
 protected:
 
@@ -80,6 +84,8 @@ protected:
 	class MissionManager* m_manager; // ミッションマネージャー
 
 	// 目標定義
+	class ClientActor* m_startActor;  // 出発地点となるアクター
+	class ClientActor* m_goalActor;   // ゴール地点となるアクター
 	Vector3 m_startPos;              // 出発地点(依頼者の位置)
 	Vector3 m_goalPos;               // ゴール地点(配送先の位置)
 	float m_playerDistance;          // プレイヤーまでの距離

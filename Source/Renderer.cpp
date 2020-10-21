@@ -23,6 +23,7 @@
 #include "VertexArray.h"
 #include "ParticleManager.h"
 #include "UIScreen.h"
+#include "FrameBuffer.h"
 #include <algorithm>
 #include <GL/glew.h>
 
@@ -36,6 +37,7 @@ Renderer::Renderer()
 	,m_meshNormalShader(nullptr)
 	,m_skinnedShader(nullptr)
 	,m_skyboxShader(nullptr)
+	,m_frameBuffer(nullptr)
 	,m_switchShader(0)
 	,m_cameraPos(Vector3::Zero)
 {
@@ -159,8 +161,6 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	ImGui_ImplSDL2_InitForOpenGL(m_window, m_context);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-
-
 	// GLEWは無害なエラーコードを出すのでクリアしておく
 	glGetError();
 
@@ -170,7 +170,6 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 		printf("Shader Load : Failed");
 		return false;
 	}
-
 
 	//------------------------------------------------------------------+
 	// パーティクル関連
@@ -189,6 +188,13 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	// キューブマップ用頂点配列
 	//------------------------------------------------------------------+
 	CreateCubeMapVerts();
+
+	//------------------------------------------------------------------+
+	// ポストエフェクト
+	//------------------------------------------------------------------+
+	m_frameBuffer = new FrameBuffer();
+	m_frameBuffer->CreateFrameBuffer();
+
 
 	// カリング
 	glFrontFace(GL_CCW);
@@ -255,6 +261,7 @@ void Renderer::Delete()
 	delete m_spriteShader;
 	delete m_skyboxVerts;
 	m_skyboxShader->Delete();
+	delete m_frameBuffer;
 
 	// コンテキストの破棄
 	SDL_GL_DeleteContext(m_context);
@@ -266,14 +273,26 @@ void Renderer::Delete()
 void Renderer::Draw()
 {
 
-	// Set the clear color to light grey
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	// ImGuiフレームを開始
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame(GAME_INSTANCE.GetRenderer()->GetSDLWindow());
+	ImGui::NewFrame();
+	// ImGui更新
+	ImGui::Begin("Renderer");
+	ImGui::SliderInt("MeshShader", &m_switchShader, 0, 1);
+
+	// フレームバッファ書き込み処理
+	m_frameBuffer->WriteFrameBuffer();
+
+	// 深度テストをON、ブレンドをオフ
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+	// 画面をクリア
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	// Clear the color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
 
 	//----------------------------------------------+
 	// メッシュシェーダー(phong)
@@ -334,6 +353,7 @@ void Renderer::Draw()
 		}
 	}
 
+
 	
 	//---------------------------------------------------------------+
 	// スカイボックスの描画
@@ -353,6 +373,10 @@ void Renderer::Draw()
 	{
 		sky->Draw(m_skyboxShader);
 	}
+
+
+	
+
 
 
 	//----------------------------------------------------------------+
@@ -392,20 +416,13 @@ void Renderer::Draw()
 	//MOUSE_INSTANCE.ImGuiDebugRendering();
 	// STEERING_CONTROLLER_INSTANCE.RenderDebugImGui();
 
-	// ImGuiフレームを開始
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(GAME_INSTANCE.GetRenderer()->GetSDLWindow());
-	ImGui::NewFrame();
+	// フレームバッファ描画
+	m_frameBuffer->DrawFrameBuffer();
 
-	// ImGui更新
-	ImGui::Begin("Debug Console : Mouse Input");
-	ImGui::SliderInt("MeshShader", &m_switchShader, 0, 1);
 
 	ImGui::End();
 	ImGui::Render();
 	glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
-	//glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
-	//glClear(GL_COLOR_BUFFER_BIT);
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	// Swap the buffers

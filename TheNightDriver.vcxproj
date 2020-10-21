@@ -96,7 +96,6 @@
     <ClCompile Include="Source\SkeletalMeshComponent.cpp" />
     <ClCompile Include="Source\Skeleton.cpp" />
     <ClCompile Include="Source\SkyBox.cpp" />
-    <ClCompile Include="Source\Skydome.cpp" />
     <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\SpeedMeterUI.cpp" />
     <ClCompile Include="Source\SpriteComponent.cpp" />
@@ -193,7 +192,6 @@
     <ClInclude Include="Source\SkeletalMeshComponent.h" />
     <ClInclude Include="Source\Skeleton.h" />
     <ClInclude Include="Source\SkyBox.h" />
-    <ClInclude Include="Source\Skydome.h" />
     <ClInclude Include="Source\Sound.h" />
     <ClInclude Include="Source\SpeedMeterUI.h" />
     <ClInclude Include="Source\SpriteComponent.h" />
@@ -211,6 +209,13 @@
     <None Include="Data\Shaders\BasicMesh.frag" />
     <None Include="Data\Shaders\BasicMesh.vert" />
     <None Include="Data\Shaders\DirectLine.vert" />
+    <None Include="Data\Shaders\FB\BlurScreen.frag" />
+    <None Include="Data\Shaders\FB\CernelScreen.frag" />
+    <None Include="Data\Shaders\FB\FrameBufferScreen.frag" />
+    <None Include="Data\Shaders\FB\FrameBufferScreen.vert" />
+    <None Include="Data\Shaders\FB\GreyScaleScreen.frag" />
+    <None Include="Data\Shaders\FB\InvertColorScreen.frag" />
+    <None Include="Data\Shaders\FB\SharpEdgeScreen.frag" />
     <None Include="Data\Shaders\Line.frag" />
     <None Include="Data\Shaders\Line.vert" />
     <None Include="Data\Shaders\Neon.frag" />

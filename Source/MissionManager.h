@@ -17,6 +17,7 @@ public:
 
 	void ChangeSelectNum();                  // 何番目のミッションを指しているか
 
+	bool GetNotWearPos(int* in_start, int* in_goal);                    // ミッション開始地点とゴール地点が被っていないかを返す
 
 	//------------------------------------------+
 	// Getter / Setter
@@ -35,7 +36,9 @@ private:
 
 	class GameWorld* m_world;                     // ワールドへのポインタ
 
-	std::vector<class MissionBase*> m_missions;     // 任務スタック
+	class ScoreUI* m_scoreUI;                       // スコアUI
+
+	std::vector<class MissionBase*> m_missions;   // 任務スタック
 
 	int m_selectNum;                              // 選択しているミッションNo
 

@@ -50,7 +50,7 @@ void GameWorld::Update(float in_deltaTime)
 }
 
 // 依頼人アクタの登録
-void GameWorld::AddClientActor(Actor* in_client)
+void GameWorld::AddClientActor(ClientActor* in_client)
 {
 	m_clients.push_back(in_client);
 }
