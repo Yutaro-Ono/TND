@@ -352,8 +352,6 @@ void Renderer::Draw()
 			sk->Draw(m_skinnedShader);
 		}
 	}
-
-
 	
 	//---------------------------------------------------------------+
 	// スカイボックスの描画
@@ -373,11 +371,6 @@ void Renderer::Draw()
 	{
 		sky->Draw(m_skyboxShader);
 	}
-
-
-	
-
-
 
 	//----------------------------------------------------------------+
 	// パーティクル描画
@@ -410,15 +403,12 @@ void Renderer::Draw()
 		ui->Draw(m_spriteShader);
 	}
 
-
-
 	// デバッグコンソール描画
 	//MOUSE_INSTANCE.ImGuiDebugRendering();
 	// STEERING_CONTROLLER_INSTANCE.RenderDebugImGui();
 
 	// フレームバッファ描画
 	m_frameBuffer->DrawFrameBuffer();
-
 
 	ImGui::End();
 	ImGui::Render();

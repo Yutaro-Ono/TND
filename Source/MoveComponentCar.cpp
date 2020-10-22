@@ -8,7 +8,7 @@ const float MoveComponentCar::HAND_BRAKE_VALUE = 8.0f;            // ƒnƒ“ƒhƒuƒŒ
 const float MoveComponentCar::ACCEL_LIMIT = 80.0f;                // Å‘å‘¬“x‚ÌãŒÀ’l(Œ»Ý‚ÌŠî€F150km/h)
 const float MoveComponentCar::BRAKE_LIMIT = 35.0f;
 
-
+// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 MoveComponentCar::MoveComponentCar(PlayerCar* in_owner)
 	:MoveComponent(in_owner)
 	,m_accelValue(0.0f)
@@ -22,6 +22,7 @@ MoveComponentCar::MoveComponentCar(PlayerCar* in_owner)
 	m_playerCar = in_owner;
 }
 
+// ƒfƒXƒgƒ‰ƒNƒ^
 MoveComponentCar::~MoveComponentCar()
 {
 }
@@ -235,9 +236,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	m_forwardSpeed = speed * in_deltaTime;
 
 	// ZŽ²‚Ì‰ñ“]‚ðXV
-	//Quaternion pRotation = m_owner->GetRotation();
 	Quaternion rotation = Quaternion::Quaternion(Vector3::UnitZ, m_radian);
-	//rotation = Quaternion::Lerp(pRotation, rotation, 0.1f);
 	m_owner->SetRotation(rotation);
 	rotation = m_owner->GetRotation();
 

@@ -294,8 +294,6 @@ int GameMain::UpdateGame()
 		m_activeCamera->Update(m_deltaTime);
 	}
 
-
-
 	// “–‚½‚è”»’è
 	m_physicsWorld->Collision();
 
@@ -353,7 +351,6 @@ int GameMain::UpdateGame()
 
 		return 1;
 	}
-
 
 
 	return 0;

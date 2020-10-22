@@ -170,7 +170,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 
 			if (clientData[iy][ix] >= 1)
 			{
-				ClientActor* client = new ClientActor(Vector3(ix * blockSize, offsetY - iy * blockSize, 50.0f));
+				ClientActor* client = new ClientActor(Vector3(ix * blockSize, offsetY - iy * blockSize, 0.0f));
 				
 				in_world->AddClientActor(client);
 

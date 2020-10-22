@@ -49,7 +49,7 @@ GameScene::GameScene(int in_stageNum)
 		static_cast<float>(GAME_INSTANCE.GetRenderer()->GetScreenHeight()),
 		1.0f, 100000.0f);
 	RENDERER->SetProjectionMatrix(projection);
-	
+
 	// ライティング
 	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.0f, 0.04f, 0.15f));
 	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
@@ -90,18 +90,14 @@ void GameScene::Initialize()
 
 	// ロード画面処理
 	Loading();
-
 	// ウェイト
 	Wait(300);
 	// ロード画面処理
 	Loading();
-
-
 	// ウェイト
 	Wait(300);
 	// ロード画面処理
 	Loading();
-
 	// ロード画面処理
 	Loading();
 	// ウェイト
@@ -124,8 +120,6 @@ void GameScene::Initialize()
 	Wait(300);
 	// ロード画面処理
 	Loading();
-
-
 	// ウェイト
 	Wait(300);
 	// ロード画面処理
@@ -142,12 +136,10 @@ void GameScene::Initialize()
 	Wait(300);
 	// ロード画面処理
 	Loading();
-
 	// ウェイト
 	Wait(300);
 	// ロード画面処理
 	Loading();
-
 	// ウェイト
 	Wait(300);
 
@@ -183,26 +175,8 @@ SceneBase * GameScene::Update()
 		// カウントダウン開始へ
 		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_SPACE) || CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_A))
 		{
-
-
-			// スコア
-			//RuleScore* ruleScore = new RuleScore(m_player);
-			//m_score = ruleScore;
-			//ScoreUI* scoreUI = new ScoreUI(ruleScore);
-			// チェインUI
-			//ChainUI* chainUI = new ChainUI(ruleScore);
 			// 制限時間のセット
 			m_time->SetStartTime();
-
-			// カメラ位置初期化
-			//m_camera->SetBestCameraDist();
-
-
-			// UI順序の反転
-			//GAME_INSTANCE.SwapPauseUI();
-
-			// BGM再生
-			//AUDIO->PlayMusic(m_sound["BGM"]);
 
 			// カウントダウンへ
 			m_state = STATE_START;
@@ -210,9 +184,7 @@ SceneBase * GameScene::Update()
 
 		break;
 
-
 	case STATE_START:   // スタート時処理
-
 
 		// プレイヤーをポーズする
 		//m_player->SetState(m_player->STATE_PAUSED);
@@ -263,7 +235,7 @@ SceneBase * GameScene::Update()
 		// ステート変更
 		if (m_time->GetCountState() == m_time->STATE_FINISH)
 		{
-			//m_state = STATE_FINISH;
+			m_state = STATE_FINISH;
 		}
 
 		break;
@@ -289,18 +261,16 @@ SceneBase * GameScene::Update()
 			}
 
 			// 次のシーンを返す
-			return new ResultScene(m_score->GetScore(), m_bestSpeed);
+			//return new ResultScene(m_world->GetScore(), m_bestSpeed);
 		}
 
 		break;
-
 
 	default:
 
 		break;
 
 	}
-
 
 	// ゲームフィニッシュ時、プレイヤーをストップしカメラを離す
 	if (m_time->GetCountState() == m_time->STATE_FINISH)
@@ -310,7 +280,6 @@ SceneBase * GameScene::Update()
 		//m_camera->SetHorizonDist(m_camera->GetPosition().x * 0.2f);
 		//m_camera->SetVerticalDist(500.0f);
 	}
-
 
 	return this;
 }

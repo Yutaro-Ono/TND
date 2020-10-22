@@ -25,7 +25,6 @@ MissionManager::MissionManager(GameWorld* in_world)
 	// 乱数で生成し、開始・終了点で被りがないかつ他のミッションと被らないこと
 	int startPos[MISSION_ALL_NUM], goalPos[MISSION_ALL_NUM];
 	
-
 	// ミッションリストの生成
 	for (int i = 0; i < MISSION_ALL_NUM; i++)
 	{
@@ -57,7 +56,7 @@ MissionManager::MissionManager(GameWorld* in_world)
 			m_missions.push_back(new MissionBase(this, MissionBase::DELIVERY, i));
 			// ミッション概要セット
 			m_missions[i]->SetMissionDetail(m_world->GetClients()[startPos[i]],
-				m_world->GetClients()[goalPos[i]], 1000, 30);
+				m_world->GetClients()[goalPos[i]], 1000, 45);
 		}
 		else
 		{
@@ -65,7 +64,7 @@ MissionManager::MissionManager(GameWorld* in_world)
 			m_missions.push_back(new MissionBase(this, MissionBase::TAXI, i));
 			// ミッション概要セット
 			m_missions[i]->SetMissionDetail(m_world->GetClients()[startPos[i]],
-				m_world->GetClients()[goalPos[i]], 1000, 30);
+				m_world->GetClients()[goalPos[i]], 1000, 45);
 		}
 	}
 
@@ -91,6 +90,7 @@ void MissionManager::Update(float in_deltaTime)
 	int listNum = 0;
 	// 終了したミッションをミッションリストから削除する
 	std::vector<MissionBase*> endMissions;
+
 	for (auto mission = m_missions.begin(); mission != m_missions.end();)
 	{
 		(*mission)->SetListNum(listNum);
@@ -127,6 +127,9 @@ void MissionManager::Update(float in_deltaTime)
 	endMissions.clear();
 
 
+	// ミッション開始地点と終了地点
+    // 乱数で生成し、開始・終了点で被りがないかつ他のミッションと被らないこと
+	int startPos, goalPos;
 
 	// ミッションリストは常時3つ。減っていたら作成する
 	int addMissionNum = MISSION_ALL_NUM - m_missions.size();
@@ -138,9 +141,26 @@ void MissionManager::Update(float in_deltaTime)
 			InitRandom();
 			// ミッション種類の乱数
 			int missionType = rand() % 2 + 1;
-			// 依頼人番号の乱数
-			int startPos = rand() % m_world->GetClients().size();
-			int goalPos = rand() % m_world->GetClients().size();
+			// 依頼人の座標を新規のミッションスタート座標としてセット
+			for (int j = 0; j < m_world->GetClients().size(); j++)
+			{
+				// 選択されていなかったらスタート地点として設定
+				if (!m_world->GetClients()[j]->GetIsSelected())
+				{
+					startPos = j;
+					break;
+				}
+			}
+			// 依頼人の座標を新規のミッションゴール座標としてセット
+			for (int j = m_world->GetClients().size() - 1; j >= 0; j--)
+			{
+				// 選択されていなかったらスタート地点として設定
+				if (!m_world->GetClients()[j]->GetIsSelected())
+				{
+					goalPos = j;
+					break;
+				}
+			}
 
 			// ミッションタイプごとにミッション内容を設定
 			if (missionType == 1)
@@ -148,7 +168,7 @@ void MissionManager::Update(float in_deltaTime)
 				// 配達ミッションの追加
 				m_missions.push_back(new MissionBase(this, MissionBase::DELIVERY, i));
 				// ミッション概要セット
-				m_missions[i]->SetMissionDetail(m_world->GetClients()[startPos],
+				m_missions.back()->SetMissionDetail(m_world->GetClients()[startPos],
 					m_world->GetClients()[goalPos], 1000, 30);
 			}
 			else
@@ -156,7 +176,7 @@ void MissionManager::Update(float in_deltaTime)
 				// 護送ミッションの追加
 				m_missions.push_back(new MissionBase(this, MissionBase::TAXI, i));
 				// ミッション概要セット
-				m_missions[i]->SetMissionDetail(m_world->GetClients()[startPos],
+				m_missions.back()->SetMissionDetail(m_world->GetClients()[startPos],
 					m_world->GetClients()[goalPos], 1000, 30);
 			}
 		}
@@ -198,27 +218,4 @@ void MissionManager::ChangeSelectNum()
 		}
 	}
 
-}
-
-bool MissionManager::GetNotWearPos(int* in_start, int* in_goal)
-{
-	// 座標の重複がないか調べる
-	for (int i = 0; i < MISSION_ALL_NUM; i++)
-	{
-		// 
-		for (int j = i + 1; j < MISSION_ALL_NUM; j++)
-		{
-			if (in_start[i] == in_start[j])
-			{
-				return false;
-			}
-
-			if (in_goal[i] == in_goal[j])
-			{
-				return false;
-			}
-		}
-	}
-
-	return true;
 }

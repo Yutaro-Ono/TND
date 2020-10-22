@@ -22,7 +22,7 @@ public:
 
 	const std::vector<class ClientActor*>& GetClients() { return m_clients; }
 
-
+	
 
 private:
 

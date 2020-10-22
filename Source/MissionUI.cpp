@@ -18,7 +18,7 @@ MissionUI::MissionUI(MissionBase* in_mission)
 	// レンダリングするフォントのカラー
 	Vector3 color = Vector3(1.0f, 1.0f, 1.0f);
 	// フォントサイズ
-	float fontSize = 32.0f;
+	int fontSize = 32;
 	//------------------------------------------------------------------+
 	// ミッション概要フォントの生成
 	//------------------------------------------------------------------+
@@ -53,7 +53,7 @@ void MissionUI::Update(float in_deltaTime)
 	// レンダリングするフォントのカラー
 	Vector3 color = Vector3(1.0f, 1.0f, 1.0f);
 	// フォントサイズ
-	float fontSize = 32.0f;
+	int fontSize = 32;
 
 	// ミッション終了でUIを閉じる
 	if (m_mission->GetMissionState() == MissionBase::MISSION_STATE::FAILED ||

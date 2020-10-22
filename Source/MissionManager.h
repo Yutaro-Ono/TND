@@ -12,18 +12,13 @@ public:
 	~MissionManager();
 
 	void Update(float in_deltaTime);
-
 	void InitRandom();
-
 	void ChangeSelectNum();                  // 何番目のミッションを指しているか
-
-	bool GetNotWearPos(int* in_start, int* in_goal);                    // ミッション開始地点とゴール地点が被っていないかを返す
 
 	//------------------------------------------+
 	// Getter / Setter
 	//------------------------------------------+
 	const std::vector<class MissionBase*>& GetMissionList() const { return m_missions; }     // ミッションリストのゲッター
-
 	class PlayerManager* GetPlayer() { return m_player; }
 
 	// カーソルで選択中のミッション番号ゲッター

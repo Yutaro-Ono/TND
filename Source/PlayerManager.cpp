@@ -24,9 +24,6 @@ PlayerManager::~PlayerManager()
 
 void PlayerManager::UpdateActor(float in_deltaTime)
 {
-
-
-
 	// lŠÔ‚ªŽÔ‚É‹ß‚Ã‚¢‚ÄYƒ{ƒ^ƒ“‚ð‰Ÿ‚·‚Ææ‚é
 	// æŽÔ’†‚¾‚Á‚½‚ç~ŽÔ
 	if (Vector3::Distance(m_playerHuman->GetPosition(), m_playerCar->GetPosition()) <= 95.0f
@@ -41,9 +38,7 @@ void PlayerManager::UpdateActor(float in_deltaTime)
 		{
 			SetPlayerMode(MODE_HUMAN);
 		}
-		
 	}
-
 
 	if (m_playerMode == PLAYER_MODE::MODE_HUMAN)
 	{
