@@ -84,7 +84,7 @@ void MissionUI::Update(float in_deltaTime)
 		// 耐久値
 		//-------------------------------------------------+
 		// 耐久値を文字列として取得
-		sstream << m_mission->GetDurableValue() << "%";
+		sstream << "HP" << m_mission->GetDurableValue();
 		// 耐久値のテクスチャを削除
 		if (m_durableValTex != nullptr) m_durableValTex->Delete();
 		// 耐久値のフォントテクスチャを生成
@@ -95,7 +95,7 @@ void MissionUI::Update(float in_deltaTime)
 		// 距離
 		//--------------------------------------------------+
 		// 距離を文字列として取得
-		sstream << m_mission->GetPlayerDistance() / 100.0f << "m";
+		sstream << (double)m_mission->GetPlayerDistance() / 20.0f << "m";
 		// 距離のテクスチャを削除
 		if (m_distanceTex != nullptr) m_distanceTex->Delete();
 		// 距離のフォントテクスチャを生成
@@ -121,7 +121,7 @@ void MissionUI::Update(float in_deltaTime)
         // 耐久値
         //-------------------------------------------------+
         // 耐久値を文字列として取得
-		sstream << m_mission->GetDurableValue() << "%";
+		sstream << "HP" << m_mission->GetDurableValue();
 		// 耐久値のテクスチャを削除
 		if (m_durableValTex != nullptr) m_durableValTex->Delete();
 		// 耐久値のフォントテクスチャを生成
@@ -132,7 +132,7 @@ void MissionUI::Update(float in_deltaTime)
 		// 距離
 		//--------------------------------------------------+
 		// 距離を文字列として取得
-		sstream << m_mission->GetPlayerDistance() / 100.0f << "m";
+		sstream << (double)m_mission->GetPlayerDistance() / 20.0f << "m";
 		// 距離のテクスチャを削除
 		if (m_distanceTex != nullptr) m_distanceTex->Delete();
 		// 距離のフォントテクスチャを生成
@@ -187,7 +187,7 @@ void MissionUI::Draw(Shader* in_shader)
 void MissionUI::SetUIPosition()
 {
 	// UI表示座標 (画面の中心 : x = 0.0, 画面上方 : y = 画面の高さ÷5
-	Vector2 screenUIPos = Vector2(-600.0f, (GAME_CONFIG->GetScreenHeight() / 5));
+	Vector2 screenUIPos = Vector2(-500.0f, (GAME_CONFIG->GetScreenHeight() / 3));
 
 	// UI表示位置をスクリーンの幅・高さから設定
 	m_uiPos = screenUIPos;

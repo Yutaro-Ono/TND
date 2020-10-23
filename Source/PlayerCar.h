@@ -56,13 +56,16 @@ public:
 	// ボックスコライダーのゲッターセッター
 	void SetBoxCollider(class BoxCollider* in_hitBox) { m_hitBox = in_hitBox; }
 	class BoxCollider* GetBoxCollider() { return m_hitBox; }
-
+	// ムーブコンポーネントのゲッター
 	class MoveComponentCar* GetMoveComponent() const { return m_moveComp; }
 	const float GetRadian() { return m_moveComp->GetRadian(); }                    // 弧度ゲッター (MoveComponentCar)
 
 	// マネージャークラスポインタのゲッター・セッター
 	class PlayerManager* GetPlayerManager() { return m_manager; }
 	void SetPlayerManager(class PlayerManager* in_manager) { m_manager = in_manager; }
+
+	// 三人称カメラのゲッター
+	class ThirdPersonCamera* GetCamera() { return m_cameraComp; }
 
 private:
 

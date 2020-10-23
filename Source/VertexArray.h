@@ -11,13 +11,13 @@ class VertexArray
 {
 public:
 
-	// 頂点レイアウト
+	// 頂点レイアウト (シェーダへ渡すデータ)
 	enum Layout
 	{
-		POS_NORMAL_TEX,                 // 位置、法線、テクスチャUVを持つフォーマット
+		POS_NORMAL_TEX,                  // 位置、法線、テクスチャUVを持つフォーマット
 		POS_NORMAL_SKIN_TEX,             // 位置、法線、スキン用の影響ボーンと重み情報、テクスチャUV
-		POS_NORMAL_TEX_TAN,       // 位置、法線ベクトル、テクスチャUV、法線マップ用タンジェント情報
-
+		POS_NORMAL_TEX_TAN,              // 位置、法線ベクトル、テクスチャUV、法線マップ用タンジェント情報
+		POS_NORMAL_SKIN_TEX_TAN          // 位置、法線、スキン用の影響ボーンと重み情報、テクスチャUV, 法線マップ用タンジェント情報
 	};
 
 	VertexArray(const void* in_verts, unsigned int in_vertsNum, Layout in_layout, const unsigned int* in_inDices, unsigned int in_numInDices);     // 頂点配列コンストラクタ

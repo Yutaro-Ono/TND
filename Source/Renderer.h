@@ -55,7 +55,6 @@ public:
 	// SkyBox
 	void AddSkyBox(class CubeMapComponent* in_comp);
 	void RemoveSkyBox(class CubeMapComponent* in_comp);
-	void SetCubeMapVAO();
 
 	void WindowClear() { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
 	void WindowFlip() { SDL_GL_SwapWindow(m_window); }

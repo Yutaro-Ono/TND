@@ -53,7 +53,7 @@ void SpriteComponent::Draw(Shader * in_shader)
 		//
 
 		// WorldTransformをセット
-		in_shader->SetMatrixUniform("uWorldTransform", world);
+		in_shader->SetMatrixUniform("u_WorldTransform", world);
 		// テクスチャをアクティブ
 		m_texture->SetActive();
 

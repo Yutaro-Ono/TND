@@ -141,8 +141,8 @@ void MissionManager::Update(float in_deltaTime)
 			InitRandom();
 			// ミッション種類の乱数
 			int missionType = rand() % 2 + 1;
-			// 依頼人の座標を新規のミッションスタート座標としてセット
-			for (int j = 0; j < m_world->GetClients().size(); j++)
+			// 依頼人の座標を新規のミッションゴール座標としてセット
+			for (int j = m_world->GetClients().size() - 1; j >= 0; j--)
 			{
 				// 選択されていなかったらスタート地点として設定
 				if (!m_world->GetClients()[j]->GetIsSelected())
@@ -151,8 +151,8 @@ void MissionManager::Update(float in_deltaTime)
 					break;
 				}
 			}
-			// 依頼人の座標を新規のミッションゴール座標としてセット
-			for (int j = m_world->GetClients().size() - 1; j >= 0; j--)
+			// 依頼人の座標を新規のミッションスタート座標としてセット
+			for (int j = 0; j < m_world->GetClients().size(); j++)
 			{
 				// 選択されていなかったらスタート地点として設定
 				if (!m_world->GetClients()[j]->GetIsSelected())
@@ -170,6 +170,10 @@ void MissionManager::Update(float in_deltaTime)
 				// ミッション概要セット
 				m_missions.back()->SetMissionDetail(m_world->GetClients()[startPos],
 					m_world->GetClients()[goalPos], 1000, 30);
+				// クライアントをセレクト状態に
+				m_world->GetClients()[startPos]->SetIsSelected(true);
+				m_world->GetClients()[goalPos]->SetIsSelected(true);
+
 			}
 			else
 			{
@@ -178,6 +182,9 @@ void MissionManager::Update(float in_deltaTime)
 				// ミッション概要セット
 				m_missions.back()->SetMissionDetail(m_world->GetClients()[startPos],
 					m_world->GetClients()[goalPos], 1000, 30);
+				// クライアントをセレクト状態に
+				m_world->GetClients()[startPos]->SetIsSelected(true);
+				m_world->GetClients()[goalPos]->SetIsSelected(true);
 			}
 		}
 	}

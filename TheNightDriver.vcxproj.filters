@@ -126,9 +126,6 @@
     <Filter Include="ソース ファイル\Particle">
       <UniqueIdentifier>{63988c44-6f1f-481d-928a-546ca7ef2819}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Interface\Chain">
-      <UniqueIdentifier>{06c9eb0a-d6f6-466d-8f75-a01be7382041}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Interface\Tutorial">
       <UniqueIdentifier>{822e1574-1d0d-40b5-9fe3-11fb14d52ca5}</UniqueIdentifier>
     </Filter>
@@ -242,6 +239,12 @@
     </Filter>
     <Filter Include="ソース ファイル\Actor\ClientActor">
       <UniqueIdentifier>{ac54dc95-48b5-48c4-ae2e-73a27d414d1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\Mesh">
+      <UniqueIdentifier>{d7575731-32e4-4fff-ba89-16d77d42143a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\Sprite">
+      <UniqueIdentifier>{0d9997d8-8e55-4d91-abd3-ccafefe15b3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -367,9 +370,6 @@
     </ClCompile>
     <ClCompile Include="Source\ResultScreen.cpp">
       <Filter>ソース ファイル\Interface\Result</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ChainUI.cpp">
-      <Filter>ソース ファイル\Interface\Chain</Filter>
     </ClCompile>
     <ClCompile Include="Source\TutorialUI.cpp">
       <Filter>ソース ファイル\Interface\Tutorial</Filter>
@@ -512,6 +512,9 @@
     <ClCompile Include="Source\FrameBuffer.cpp">
       <Filter>ソース ファイル\Renderer\FrameBuffer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\UIWorld.cpp">
+      <Filter>ソース ファイル\Interface</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor.h">
@@ -639,9 +642,6 @@
     </ClInclude>
     <ClInclude Include="Source\ResultScreen.h">
       <Filter>ソース ファイル\Interface\Result</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ChainUI.h">
-      <Filter>ソース ファイル\Interface\Chain</Filter>
     </ClInclude>
     <ClInclude Include="Source\TutorialUI.h">
       <Filter>ソース ファイル\Interface\Tutorial</Filter>
@@ -796,14 +796,11 @@
     <ClInclude Include="Source\ClientActor.h">
       <Filter>ソース ファイル\Actor\ClientActor</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UIWorld.h">
+      <Filter>ソース ファイル\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Shaders\BasicMesh.frag">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
-    <None Include="Data\Shaders\BasicMesh.vert">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
     <None Include="Data\Shaders\DirectLine.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
@@ -837,12 +834,6 @@
     <None Include="Data\Shaders\Skinned.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Data\Shaders\Sprite.frag">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
-    <None Include="Data\Shaders\Sprite.vert">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
     <None Include="Data\Shaders\SkyBox.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
@@ -869,6 +860,24 @@
     </None>
     <None Include="Data\Shaders\FB\SharpEdgeScreen.frag">
       <Filter>ソース ファイル\Shader\Source\FrameBuffer</Filter>
+    </None>
+    <None Include="Data\Shaders\BasicMesh.vert">
+      <Filter>ソース ファイル\Shader\Source\Mesh</Filter>
+    </None>
+    <None Include="Data\Shaders\BasicMesh.frag">
+      <Filter>ソース ファイル\Shader\Source\Mesh</Filter>
+    </None>
+    <None Include="Data\Shaders\Sprite.frag">
+      <Filter>ソース ファイル\Shader\Source\Sprite</Filter>
+    </None>
+    <None Include="Data\Shaders\Sprite.vert">
+      <Filter>ソース ファイル\Shader\Source\Sprite</Filter>
+    </None>
+    <None Include="Data\Shaders\SpriteShader.vert">
+      <Filter>ソース ファイル\Shader\Source\Sprite</Filter>
+    </None>
+    <None Include="Data\Shaders\SpriteShader.frag">
+      <Filter>ソース ファイル\Shader\Source\Sprite</Filter>
     </None>
   </ItemGroup>
 </Project>

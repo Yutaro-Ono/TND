@@ -120,7 +120,7 @@ bool MissionBase::CheckDistPlayer(const Vector3& in_playerPos, const Vector3& in
 	if (m_playerDistance < 95.0f)
 	{
 		// 承諾ボタンを押したらtrue
-		if (CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_A) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E))
+		if (CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_X) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E))
 		{
 			return true;
 		}
@@ -139,7 +139,7 @@ void MissionBase::DecraseDurableValue()
 // スコアを成功か失敗かによって計算し、更新したスコア値を返す
 int MissionBase::GetCalcScore()
 {
-	if (m_missionState = FAILED)
+	if (m_missionState == MISSION_STATE::FAILED)
 	{
 		return 0;
 	}

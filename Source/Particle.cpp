@@ -42,7 +42,7 @@ Particle::~Particle()
 // •`‰æ
 void Particle::Draw(Shader * in_shader)
 {
-	Matrix4 mat, scale, billboard;
+	Matrix4 mat, scale;
 	scale = Matrix4::CreateScale(m_scale);
 	mat = Matrix4::CreateTranslation(m_position);
 

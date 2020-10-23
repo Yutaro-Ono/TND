@@ -38,8 +38,9 @@ public:
 	// カメラ追従処理を行うかどうかのセッター
 	void SetChaseOwnerForward(bool in_chase) { m_chaseOwnerForward = in_chase; }
 
-	// カメラ前進ベクトルのゲッター
+	// カメラ前進ベクトルのゲッター・セッター
 	const Vector3& GetForward() { return m_forwardVec; }
+	void SetCameraForward(const Vector3& in_forward) { m_forwardVec = in_forward; }
 
 private:
 

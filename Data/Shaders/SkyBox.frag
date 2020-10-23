@@ -10,5 +10,6 @@ uniform samplerCube skybox;
 
 void main()
 {
+    // スカイボックス用テクスチャをサンプリング
 	FragColor = texture(skybox, TexCoords);
 }

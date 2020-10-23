@@ -1,7 +1,7 @@
 #include "PlayerManager.h"
 #include "Input.h"
 #include "InputController.h"
-
+#include "ThirdPersonCamera.h"
 
 PlayerManager::PlayerManager()
 	:m_playerMode(PLAYER_MODE::MODE_HUMAN)
@@ -36,6 +36,7 @@ void PlayerManager::UpdateActor(float in_deltaTime)
 		}
 		else if (m_playerMode == MODE_CAR)
 		{
+			m_playerHuman->GetCamera()->SetCameraForward(m_playerCar->GetCamera()->GetForward());
 			SetPlayerMode(MODE_HUMAN);
 		}
 	}

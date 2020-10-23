@@ -56,7 +56,7 @@ void ParticleManager::Draw()
 
 	// シェーダーON
 	m_shader->SetActive();
-	m_shader->SetMatrixUniform("uViewProj", viewProjectionMat);
+	m_shader->SetMatrixUniform("u_ViewProj", viewProjectionMat);
 
 	// 全てのパーティクルのビルボード行列をセット
 	(*itr)->SetBillboardMat(GetBillboardMatrix());

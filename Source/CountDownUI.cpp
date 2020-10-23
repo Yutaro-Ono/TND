@@ -21,7 +21,7 @@ CountDownUI::CountDownUI(RuleTime * in_time)
 	,m_timeTex(nullptr)
 	,m_isAdding(false)
 	,m_timer(0.0f)
-	,m_fontSize(68)
+	,m_fontSize(45)
 {
 	
 	// 制限時間(秒)
@@ -57,7 +57,7 @@ CountDownUI::CountDownUI(RuleTime * in_time)
 	m_addTimeTexShadow = m_font->RenderText("+1sec", Vector3(0.0f, 0.0f, 0.0f), 34);
 
 	// フォントの表示座標を設定
-	m_timeTexPos = Vector2(0.0f, (RENDERER->GetScreenHeight() / 2.5f) - (m_fontSize / 2.0f));
+	m_timeTexPos = Vector2(0.0f, (RENDERER->GetScreenHeight() / 2.0f) - (m_fontSize / 2.0f));
 
 
 }
@@ -181,11 +181,11 @@ void CountDownUI::Draw(Shader * in_shader)
 		// コントローラ接続時と未接続時で表示を切り替え
 		if (CONTROLLER_INSTANCE.IsAvailable() == true)
 		{
-			DrawTexture(in_shader, m_skipXpad, Vector2(0.0f, -RENDERER->GetScreenHeight() / 2.2f), 0.8f);
+			//DrawTexture(in_shader, m_skipXpad, Vector2(0.0f, -RENDERER->GetScreenHeight() / 2.2f), 0.8f);
 		}
 		else
 		{
-			DrawTexture(in_shader, m_skipKey, Vector2(0.0f, -RENDERER->GetScreenHeight() / 2.2f), 0.8f);
+			//DrawTexture(in_shader, m_skipKey, Vector2(0.0f, -RENDERER->GetScreenHeight() / 2.2f), 0.8f);
 		}
 	}
 

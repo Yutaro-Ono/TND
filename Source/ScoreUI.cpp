@@ -27,7 +27,7 @@ ScoreUI::ScoreUI()
 	std::stringstream ssScore;
 
 	// ルールのスコアをテキストに変換する
-	ssScore << std::to_string(m_nowScore);
+	ssScore << "$" << std::to_string(m_nowScore);
 
 	// スコア用のフォントを生成
 	m_scoreTex = m_font->RenderText(ssScore.str(), Vector3(1.0f, 1.0f, 1.0f), m_fontSize);
@@ -69,7 +69,7 @@ void ScoreUI::Update(float in_deltaTime)
 	if (m_prevScore != m_nowScore)
 	{
 		// ルールのスコアを取得する
-		ssScore << m_nowScore;
+		ssScore << "$" << m_nowScore;
 
 		// 解放処理
 		m_scoreTex->Delete();
@@ -80,10 +80,13 @@ void ScoreUI::Update(float in_deltaTime)
 		m_scoreTex = m_font->RenderText(ssScore.str(), Vector3(1.0f, 1.0f, 1.0f), m_fontSize);
 		// 影を生成
 		m_scoreTexShadow = m_font->RenderText(ssScore.str(), Vector3(0.0f, 0.0f, 0.0f), m_fontSize);
+		// 表示座標の更新
+		m_scoreTexPos = Vector2(GAME_CONFIG->GetScreenWidth() / 2 - m_scoreTex->GetWidth() / 2, RENDERER->GetScreenHeight() / 1.9f - m_scoreTex->GetHeight());
 
 		// 同じ値にする
 		m_prevScore = m_nowScore;
 	}
+
 
 }
 

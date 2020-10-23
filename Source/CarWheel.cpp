@@ -63,16 +63,19 @@ void CarWheel::UpdateActor(float in_deltaTime)
 
 	// 回転値
 	static float spin = 0.0f;
-	static float dir = -0.0f;
+	//static float dir = 0.0f;
+	Vector3 dir = Vector3::Zero;
 
 	// タイヤのZ軸回転処理
 	if (m_owner->GetTurnState() == PlayerCar::TURN_LEFT)
 	{
-		dir = -0.25f;
+		//dir = -0.25f;
+		dir = Vector3::Lerp(dir, Vector3(0.0f, 0.0f, -3.0f), 2.0f * in_deltaTime);
 	}
 	if (m_owner->GetTurnState() == PlayerCar::TURN_RIGHT)
 	{
-		dir = 0.25f;
+		//dir = 0.25f;
+		dir = Vector3::Lerp(dir, Vector3(0.0f, 0.0f, 3.0f), 2.0f * in_deltaTime);
 	}
 
 	// オーナーであるPlayerCarクラスの運転状態がアクセル状態であれば
@@ -90,7 +93,7 @@ void CarWheel::UpdateActor(float in_deltaTime)
 	// オーナーに合わせるためワールド座標を取得し続ける (前方のタイヤはZ軸にも回転させる)
 	if (m_wheelPosition == WHEEL_POSITION::FRONT_LEFT || m_wheelPosition == WHEEL_POSITION::FRONT_RIGHT)
 	{
-		m_worldTransform = Matrix4::CreateRotationY(spin) * Matrix4::CreateRotationZ(dir) * Matrix4::CreateTranslation(m_adjustPos) * m_owner->GetWorldTransform();
+		m_worldTransform = Matrix4::CreateRotationY(spin) * Matrix4::CreateRotationZ(dir.z) * Matrix4::CreateTranslation(m_adjustPos) * m_owner->GetWorldTransform();
 	}
 	// オーナーに合わせるためワールド座標を取得し続ける
 	else

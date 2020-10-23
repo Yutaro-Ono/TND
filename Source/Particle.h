@@ -33,7 +33,7 @@ public:
 
 	PARTICLE_BLEND GetBlendType() { return m_blendType; }
 
-	// セッター系
+	// Getter / Setter
 	void SetPosition(const Vector3& in_pos) { m_position = in_pos; }
 	void SetVelocity(const Vector3& in_v) { m_velocity = in_v; }
 	void SetColor(const Vector3& in_color) { m_color = in_color; }

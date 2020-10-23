@@ -356,16 +356,9 @@ void Renderer::Draw()
 	//---------------------------------------------------------------+
 	// スカイボックスの描画
 	//---------------------------------------------------------------+
-	glDepthFunc(GL_LEQUAL);
-	// シェーダーアクティブ化
+	// シェーダーアクティブ化・スカイボックス用VAOをバインド
 	m_skyboxShader->SetActive();
 	m_skyboxVerts->SetActive();
-	// 平行移動要素を削除したビュー行列をシェーダーにセット
-	Matrix4 view = m_view;
-	view.Invert();
-	//Matrix4 view = m_view;
-	m_skyboxShader->SetMatrixUniform("uViewMat", view);
-	m_skyboxShader->SetMatrixUniform("uProjMat", m_projection);
 
 	for (auto sky : m_skyBoxComponents)
 	{
@@ -521,12 +514,6 @@ void Renderer::RemoveSkyBox(CubeMapComponent* in_comp)
 {
 	auto iter = std::find(m_skyBoxComponents.begin(), m_skyBoxComponents.end(), in_comp);
 	m_skyBoxComponents.erase(iter);
-}
-
-// skyboxVAOのバインド
-void Renderer::SetCubeMapVAO()
-{
-	m_skyboxVerts->SetActive();
 }
 
 
@@ -815,14 +802,14 @@ bool Renderer::LoadShaders()
 	// スプライトシェーダー
 	m_spriteShader = new Shader();
 
-	if (!m_spriteShader->Load("Data/Shaders/Sprite.vert", "Data/Shaders/Sprite.frag"))
+	if (!m_spriteShader->Load("Data/Shaders/SpriteShader.vert", "Data/Shaders/SpriteShader.frag"))
 	{
 		return false;
 	}
 
 	m_spriteShader->SetActive();
 	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(m_screenWidth, m_screenHeight);
-	m_spriteShader->SetMatrixUniform("uViewProj", viewProj);
+	m_spriteShader->SetMatrixUniform("u_ViewProj", viewProj);
 
 
 

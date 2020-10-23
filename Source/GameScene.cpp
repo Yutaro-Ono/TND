@@ -19,7 +19,6 @@
 #include "CountDownUI.h"
 #include "SpeedMeterUI.h"
 #include "ScoreUI.h"
-#include "ChainUI.h"
 #include "TutorialUI.h"
 #include "LoadScreen.h"
 #include "ResultScene.h"

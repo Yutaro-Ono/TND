@@ -86,7 +86,7 @@ void UIScreen::DrawTexture(Shader * in_shader, Texture * in_texture, const Vecto
 	Matrix4 world = scaleMat * transMat;
 	
 	// シェーダにワールド変換行列を送信
-	in_shader->SetMatrixUniform("uWorldTransform", world);
+	in_shader->SetMatrixUniform("u_WorldTransform", world);
 	// テクスチャをアクティブ化
 	in_texture->SetActive();
 	// 描画する

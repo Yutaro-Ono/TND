@@ -30,7 +30,6 @@
     <ClCompile Include="Source\CarDoor.cpp" />
     <ClCompile Include="Source\CarHandle.cpp" />
     <ClCompile Include="Source\CarWheel.cpp" />
-    <ClCompile Include="Source\ChainUI.cpp" />
     <ClCompile Include="Source\ClientActor.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Component.cpp" />
@@ -107,6 +106,7 @@
     <ClCompile Include="Source\TitleScreen.cpp" />
     <ClCompile Include="Source\TutorialUI.cpp" />
     <ClCompile Include="Source\UIScreen.cpp" />
+    <ClCompile Include="Source\UIWorld.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -121,7 +121,6 @@
     <ClInclude Include="Source\CarDoor.h" />
     <ClInclude Include="Source\CarHandle.h" />
     <ClInclude Include="Source\CarWheel.h" />
-    <ClInclude Include="Source\ChainUI.h" />
     <ClInclude Include="Source\ClientActor.h" />
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\Common.h" />
@@ -203,6 +202,7 @@
     <ClInclude Include="Source\TitleScreen.h" />
     <ClInclude Include="Source\TutorialUI.h" />
     <ClInclude Include="Source\UIScreen.h" />
+    <ClInclude Include="Source\UIWorld.h" />
     <ClInclude Include="Source\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
@@ -230,6 +230,8 @@
     <None Include="Data\Shaders\SkyBox.vert" />
     <None Include="Data\Shaders\Sprite.frag" />
     <None Include="Data\Shaders\Sprite.vert" />
+    <None Include="Data\Shaders\SpriteShader.frag" />
+    <None Include="Data\Shaders\SpriteShader.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
