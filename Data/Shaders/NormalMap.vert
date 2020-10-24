@@ -11,8 +11,6 @@ layout (location = 2) in vec2 in_TexCoords;        // テクスチャUV座標
 layout (location = 3) in vec3 in_Tangent;          // 接ベクトル
 
 // uniform 変数
-uniform mat4 u_view;                 // ビュー行列
-uniform mat4 u_projection;           // プロジェクション行列
 uniform mat4 uViewProj;              // ビュー行列・プロジェクション行列
 uniform mat4 uWorldTransform;                // モデル行列
 

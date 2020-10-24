@@ -258,6 +258,9 @@
     <Filter Include="ソース ファイル\Actor\Helicopter\HeliBody">
       <UniqueIdentifier>{c953decf-ca65-40a7-a4ff-2546e6b07f74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Renderer\ShadowMap">
+      <UniqueIdentifier>{1fda949d-3b68-432e-b17f-fdb7a5cc23be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -538,6 +541,9 @@
     </ClCompile>
     <ClCompile Include="Source\HeliBody.cpp">
       <Filter>ソース ファイル\Actor\Helicopter\HeliBody</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShadowMap.cpp">
+      <Filter>ソース ファイル\Renderer\ShadowMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -834,6 +840,9 @@
     </ClInclude>
     <ClInclude Include="Source\HeliBody.h">
       <Filter>ソース ファイル\Actor\Helicopter\HeliBody</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShadowMap.h">
+      <Filter>ソース ファイル\Renderer\ShadowMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

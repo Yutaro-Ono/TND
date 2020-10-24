@@ -44,15 +44,15 @@ GameScene::GameScene(int in_stageNum)
 
 	// プロジェクション行列セット
 	Matrix4 projection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(75.0f),
-		static_cast<float>(GAME_INSTANCE.GetRenderer()->GetScreenWidth()),
-		static_cast<float>(GAME_INSTANCE.GetRenderer()->GetScreenHeight()),
+		static_cast<float>(GAME_CONFIG->GetScreenWidth()),
+		static_cast<float>(GAME_CONFIG->GetScreenHeight()),
 		1.0f, 100000.0f);
 	RENDERER->SetProjectionMatrix(projection);
 
 	// ライティング
 	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.0f, 0.04f, 0.15f));
 	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
-	dir.m_position = Vector3(0.0f, 0.0f, 1000.0f);
+	dir.m_position = Vector3(1800.0f, 2400.0f, 100.0f);
 	dir.m_direction = Vector3(0.0f, 0.0f, -1.0f);
 	dir.m_direction.Normalize();
 	dir.m_diffuseColor = Vector3(0.07f, 0.05f, 0.3f);

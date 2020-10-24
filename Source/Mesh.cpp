@@ -19,6 +19,9 @@ Mesh::Mesh()
 	:m_vertexArray(nullptr)
 	,m_radius(0.0f)
 	,m_specValue(100.0f)
+	,m_diffuseMap(nullptr)
+	,m_specularMap(nullptr)
+	,m_normalMap(nullptr)
 {
 }
 

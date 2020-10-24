@@ -47,11 +47,12 @@ public:
 	float GetRadius() const { return m_radius; }                                  // バウンディングスフィアの半径を取得
 
 	// 各種テクスチャの取得
-	
 	class Texture* GetDiffuseMap() { return m_diffuseMap; }
 	class Texture* GetSpecularMap() { return m_specularMap; }
 	class Texture* GetNormalMap() { return m_normalMap; }
 
+	// テクスチャ配列のサイズ取得
+	int GetTextureArraySize() { return m_textures.size(); }
 
 protected:
 

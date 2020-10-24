@@ -26,6 +26,7 @@ struct Material
 	sampler2D diffuseMap;     // ディフューズマップ
 	sampler2D specularMap;    // スペキュラマップ
 	sampler2D normalMap;      // 法線マップ
+	sampler2D shadowMap;
 	float     shininess;      // 反射光の強さ
 };
 
@@ -90,12 +91,8 @@ void main()
 	vec3 N = normalize(fs_in.FragNormal);
 	// ポリゴン表面からライト方向へのベクトル
 	vec3 L = normalize(-uDirLight.mDirection);
-	// ポリゴン表面からカメラ方向
-	vec3 V = normalize(uCameraPos - fs_in.FragPos);
-	// -L ベクトルを 法線 N に対して反射したベクトルRを求める
-	vec3 R = normalize(reflect(-L, N));
-	// フォン反射計算
-	vec3 Phong = ambient;
+
+
 	float NdotL = dot(N, L);
 
 

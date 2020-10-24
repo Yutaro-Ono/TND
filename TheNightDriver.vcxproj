@@ -96,6 +96,7 @@
     <ClCompile Include="Source\RuleTime.cpp" />
     <ClCompile Include="Source\ScoreUI.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
+    <ClCompile Include="Source\ShadowMap.cpp" />
     <ClCompile Include="Source\SkeletalMeshComponent.cpp" />
     <ClCompile Include="Source\Skeleton.cpp" />
     <ClCompile Include="Source\SkyBox.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Source\SceneBase.h" />
     <ClInclude Include="Source\ScoreUI.h" />
     <ClInclude Include="Source\Shader.h" />
+    <ClInclude Include="Source\ShadowMap.h" />
     <ClInclude Include="Source\SkeletalMeshComponent.h" />
     <ClInclude Include="Source\Skeleton.h" />
     <ClInclude Include="Source\SkyBox.h" />

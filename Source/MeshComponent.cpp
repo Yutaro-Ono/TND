@@ -44,30 +44,42 @@ void MeshComponent::Draw(Shader * in_shader)
 		// Set specular power　スペキュラ強度セット
 		in_shader->SetFloatUniform("uSpecPower", 100);
 
+		// テクスチャ配列が空でない時 (gpmesh, skeltalMesh)
+		if (m_mesh->GetTextureArraySize())
+		{
+			Texture* t = m_mesh->GetTexture(0);
+			if (t)
+			{
+				t->SetActive();
+			}
+		}
+		else    // OBJ
+		{
+			// アクティブテクスチャセット
+			Texture* diff = m_mesh->GetDiffuseMap();
+			if (diff)
+			{
+				diff->SetActive();
+				in_shader->SetInt("u_mat.diffuseMap", 0);
+			}
+			// アクティブテクスチャセット
+			Texture* specular = m_mesh->GetSpecularMap();
+			if (specular)
+			{
+				specular->SetActive();
+				in_shader->SetInt("u_mat.specularMap", 1);
+			}
+			// アクティブテクスチャセット
+			Texture* norm = m_mesh->GetNormalMap();
+			if (norm)
+			{
+				norm->SetActive();
+				in_shader->SetInt("u_mat.normalMap", 2);
+			}
+		}
 		
-		// アクティブテクスチャセット
-		Texture* diff = m_mesh->GetDiffuseMap();
-		if (diff)
-		{
-			diff->SetActive();
-		}
-		in_shader->SetInt("u_mat.diffuseMap", 0);
 
-		// アクティブテクスチャセット
-		Texture* specular = m_mesh->GetSpecularMap();
-		if (specular)
-		{
-			specular->SetActive();
-		}
-		in_shader->SetInt("u_mat.specularMap", 1);
 
-		// アクティブテクスチャセット
-		Texture* norm = m_mesh->GetNormalMap();
-		if (norm)
-		{
-			norm->SetActive();
-		}
-		in_shader->SetInt("u_mat.normalMap", 2);
 
 		// Set the mesh's vertex array as active　頂点配列をアクティブに
 		VertexArray* va = m_mesh->GetVertexArray();

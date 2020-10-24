@@ -98,8 +98,8 @@ bool MeshObj::Load(const std::string& in_filePath, Renderer* in_renderer)
 				vertexVec[idx.vertex_index * attribStride + 5] = attrib.normals[3 * idx.normal_index + 1];
 
 				// uvデータを頂点配列にコピー
-				vertexVec[idx.vertex_index * attribStride + 6] = attrib.texcoords[2 * idx.texcoord_index + 1];
-				vertexVec[idx.vertex_index * attribStride + 7] = 1.0f - attrib.texcoords[2 * idx.texcoord_index + 0];
+				vertexVec[idx.vertex_index * attribStride + 6] = attrib.texcoords[2 * idx.texcoord_index + 0];
+				vertexVec[idx.vertex_index * attribStride + 7] = 1.0f - attrib.texcoords[2 * idx.texcoord_index + 1];
 
 
 				//-------------------------------------------------------------------------------------------------+

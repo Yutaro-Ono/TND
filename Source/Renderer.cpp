@@ -325,7 +325,8 @@ void Renderer::Draw()
 		// ライティング変数をセット
 		SetLightUniforms(m_meshNormalShader);
 		m_meshNormalShader->SetVectorUniform("uLightPos", m_directionalLight.m_position);
-		m_meshNormalShader->SetVectorUniform("uCameraPos", m_cameraPos);
+		//m_meshNormalShader->SetVectorUniform("uViewPos", m_cameraPos);
+		//m_meshNormalShader->SetVectorUniform("uCameraPos", m_cameraPos);
 		// 全てのメッシュコンポーネントを描画
 		for (auto mc : m_meshComponents)
 		{
@@ -869,12 +870,13 @@ void Renderer::SetLightUniforms(Shader * in_shader)
 	Matrix4 invView = m_view;
 	invView.Invert();
 	in_shader->SetVectorUniform("uCameraPos", invView.GetTranslation());
+	in_shader->SetVectorUniform("uViewPos", invView.GetTranslation());
 
 	// アンビエントライト
 	in_shader->SetVectorUniform("uAmbientLight", m_ambientLight);
 
 	// ディレクショナルライト
-	in_shader->SetVectorUniform("uDirLight.mPosition", m_directionalLight.m_direction);
+	in_shader->SetVectorUniform("uDirLight.mPosition", m_directionalLight.m_position);
 	in_shader->SetVectorUniform("uDirLight.mDirection", m_directionalLight.m_direction);
 	in_shader->SetVectorUniform("uDirLight.mDiffuseColor", m_directionalLight.m_diffuseColor);
 	in_shader->SetVectorUniform("uDirLight.mSpecColor", m_directionalLight.m_specColor);
