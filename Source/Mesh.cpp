@@ -60,6 +60,7 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 
 	if (t != nullptr)
 	{
+		m_diffuseMap = t;
 		m_textures.emplace_back(t);
 	}
 	else
@@ -68,17 +69,18 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 	}
 
 	// スペキュラ読み込み
-	//t = nullptr;
-	//t = in_renderer->GetTexture(pngPath + "_SpecularMap.png");
+	t = nullptr;
+	t = in_renderer->GetTexture(pngPath + "_SpecularMap.png");
 
-	//if (t != nullptr)
-	//{
-	//	m_textures.emplace_back(t);
-	//}
-	//else
-	//{
-	//	std::cout << "Obj Mesh : Load [Specular] Texture Error\n";
-	//}
+	if (t != nullptr)
+	{
+		m_specularMap = t;
+		m_textures.emplace_back(t);
+	}
+	else
+	{
+		std::cout << "Obj Mesh : Load [Specular] Texture Error\n";
+	}
 
 	// 法線マップ読み込み
 	t = nullptr;
@@ -86,6 +88,7 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 
 	if (t != nullptr)
 	{
+		m_normalMap = t;
 		m_textures.emplace_back(t);
 	}
 	else

@@ -92,6 +92,7 @@ bool Particle::operator>(const Particle & in_rhs) const
 	return lenThis > lenRhs;
 }
 
+// ビルボード行列を取得
 Matrix4 GetBillboardMatrix()
 {
 	Matrix4 ret;

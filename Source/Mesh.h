@@ -46,13 +46,22 @@ public:
 
 	float GetRadius() const { return m_radius; }                                  // バウンディングスフィアの半径を取得
 
-	int GetTextureNum() { return m_textures.size(); }                             // テクスチャがいくつ格納されてるか
+	// 各種テクスチャの取得
+	
+	class Texture* GetDiffuseMap() { return m_diffuseMap; }
+	class Texture* GetSpecularMap() { return m_specularMap; }
+	class Texture* GetNormalMap() { return m_normalMap; }
+
 
 protected:
 
 	AABB m_box;
 
-	std::vector<class Texture*> m_textures;                                 // メッシュのテクスチャ
+	std::vector<class Texture*> m_textures;
+	class Texture* m_diffuseMap;                                // ディフューズマップ
+	class Texture* m_specularMap;                               // スペキュラマップ
+	class Texture* m_normalMap;                                 // ノーマルマップ
+
 	class VertexArray* m_vertexArray;                                       // メッシュの頂点配列
 
 	std::string m_shaderName;

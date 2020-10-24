@@ -46,28 +46,28 @@ void MeshComponent::Draw(Shader * in_shader)
 
 		
 		// アクティブテクスチャセット
-		Texture* diff = m_mesh->GetTexture(m_textureIndex);
+		Texture* diff = m_mesh->GetDiffuseMap();
 		if (diff)
 		{
-			//glActiveTexture(GL_TEXTURE0);
 			diff->SetActive();
 		}
+		in_shader->SetInt("u_mat.diffuseMap", 0);
 
-		// 法線マップ情報などが格納されている場合は
-		if (m_mesh->GetTextureNum() >= 2)
+		// アクティブテクスチャセット
+		Texture* specular = m_mesh->GetSpecularMap();
+		if (specular)
 		{
-			
-			//in_shader->SetInt("u_mat.diffuseMap", 0);
-			//in_shader->SetInt("u_mat.normalMap", 1);
-
-			// アクティブテクスチャセット
-			//Texture* norm = m_mesh->GetTexture(1);
-			//if (norm)
-			//{
-			//	//glActiveTexture(GL_TEXTURE1);
-			//	//norm->SetActive();
-			//}
+			specular->SetActive();
 		}
+		in_shader->SetInt("u_mat.specularMap", 1);
+
+		// アクティブテクスチャセット
+		Texture* norm = m_mesh->GetNormalMap();
+		if (norm)
+		{
+			norm->SetActive();
+		}
+		in_shader->SetInt("u_mat.normalMap", 2);
 
 		// Set the mesh's vertex array as active　頂点配列をアクティブに
 		VertexArray* va = m_mesh->GetVertexArray();

@@ -73,7 +73,7 @@ public:
 	
 	class Texture* GetTexture(const std::string& in_fileName);              // 指定したファイル名のテクスチャを返す
 	class Mesh* GetMesh(const  std::string& in_fileName);                   // 指定したファイル名のメッシュを返す
-	const class Skeleton* GetSkeleton(const char* in_fileName);             // 指定したファイル名のスケルタルメッシュの取得
+	const class Skeleton* GetSkeleton(const std::string& in_fileName);             // 指定したファイル名のスケルタルメッシュの取得
 	const class Animation* GetAnimation(const char* in_fileName, bool in_loop);
 																			// スクリーンサイズ
 	float GetScreenWidth() { return static_cast<float>(m_screenWidth); }

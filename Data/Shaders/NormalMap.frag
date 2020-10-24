@@ -6,10 +6,14 @@
 
 out vec4 out_fragColor;       // 出力先：カラー
 
+uniform vec3 uCameraPos;
+
 // 頂点シェーダーからの入力受け取り
 in VS_OUT
 {
 	vec2 TexCoords;
+	vec3 FragNormal;
+	vec3 FragPos;
 	vec3 TangentLightPos;
 	vec3 TangentViewPos;
 	vec3 TangentFragPos;
@@ -72,18 +76,31 @@ void main()
     vec3 ambient = 0.1 * color;
     // diffuse
     //vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
-    //float diff = max(dot(lightDir, normal), 0.0);
-    //vec3 diffuse = diff * color;
 	vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
-	vec3 diffuse =uDirLight.mDiffuseColor * max(dot(uDirLight.mDirection, normal), 0.0) * color;
+    float diff = max(dot(lightDir, normal), 0.0);
+    vec3 diffuse = diff * color;
+	//vec3 diffuse =uDirLight.mDiffuseColor * max(dot(uDirLight.mDirection, normal), 0.0) * color;
 
     // specular
     vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
     vec3 reflectDir = reflect(-lightDir, normal);
     vec3 halfwayDir = normalize(lightDir + viewDir);  
     float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+		// ポリゴン表面の法線（フラグメントシェーダー上で補間されている）
+	vec3 N = normalize(fs_in.FragNormal);
+	// ポリゴン表面からライト方向へのベクトル
+	vec3 L = normalize(-uDirLight.mDirection);
+	// ポリゴン表面からカメラ方向
+	vec3 V = normalize(uCameraPos - fs_in.FragPos);
+	// -L ベクトルを 法線 N に対して反射したベクトルRを求める
+	vec3 R = normalize(reflect(-L, N));
+	// フォン反射計算
+	vec3 Phong = ambient;
+	float NdotL = dot(N, L);
 
+
+	vec3 Diffuse = diff * color * max(NdotL, 0.0f);
     vec3 specular = vec3(0.2) * spec;
 	// フラグメントカラーを出力
-    out_fragColor = vec4(ambient + diffuse + specular, 1.0);
+    out_fragColor = vec4((Diffuse + ambient), 1.0) + vec4(specular, 1.0f);
 }

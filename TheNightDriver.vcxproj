@@ -43,6 +43,10 @@
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameWorld.cpp" />
     <ClCompile Include="Source\Grid.cpp" />
+    <ClCompile Include="Source\HeliBody.cpp" />
+    <ClCompile Include="Source\Helicopter.cpp" />
+    <ClCompile Include="Source\HeliRotorBack.cpp" />
+    <ClCompile Include="Source\HeliRotorMain.cpp" />
     <ClCompile Include="Source\HUD.cpp" />
     <ClCompile Include="Source\HumanCamera.cpp" />
     <ClCompile Include="Source\imgui\imgui.cpp" />
@@ -135,6 +139,10 @@
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GameWorld.h" />
     <ClInclude Include="Source\Grid.h" />
+    <ClInclude Include="Source\HeliBody.h" />
+    <ClInclude Include="Source\Helicopter.h" />
+    <ClInclude Include="Source\HeliRotorBack.h" />
+    <ClInclude Include="Source\HeliRotorMain.h" />
     <ClInclude Include="Source\HUD.h" />
     <ClInclude Include="Source\HumanCamera.h" />
     <ClInclude Include="Source\imgui\imconfig.h" />

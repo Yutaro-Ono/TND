@@ -6,6 +6,9 @@
 #include "SkeletalMeshComponent.h"
 #include "Texture.h"
 
+
+const std::string MESH_PATH_CARLA = "Data/Meshes/TND/Actors/Player/carla/rp_carla_rigged_001_ue4";
+
 const float AnimationSpeed = 0.5f;        // アニメーションの速度
 
 ClientActor::ClientActor(const Vector3& in_pos)
@@ -16,7 +19,7 @@ ClientActor::ClientActor(const Vector3& in_pos)
 	// 座標設定
 	m_position = in_pos;
 	// スケール設定
-	SetScale(0.3f);
+	SetScale(0.265f);
 
 	// テクスチャ生成
 	Texture* texture = new Texture();
@@ -25,10 +28,10 @@ ClientActor::ClientActor(const Vector3& in_pos)
 	m_landMark->SetTexture(texture);
 
 	// 依頼人のメッシュ生成
-	Mesh* mesh = RENDERER->GetMesh("Data/Meshes/TND/Actors/Player/rp_nathan_rigged_003_ue4.gpmesh");
+	Mesh* mesh = RENDERER->GetMesh(MESH_PATH_CARLA + ".gpmesh");
 	m_skelComp = new SkeletalMeshComponent(this);
 	m_skelComp->SetMesh(mesh);
-	m_skelComp->SetSkeleton(RENDERER->GetSkeleton("Data/Meshes/TND/Actors/Player/rp_nathan_rigged_003_ue4.gpskel"));
+	m_skelComp->SetSkeleton(RENDERER->GetSkeleton(MESH_PATH_CARLA + ".gpskel"));
 
 	// アニメーションの生成・取得
 	m_anim.resize(CLIENT_ANIM::ANIM_ALL_NUM);

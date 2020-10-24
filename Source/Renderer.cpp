@@ -627,7 +627,7 @@ Mesh * Renderer::GetMesh(const std::string & in_fileName)
 //       読み込みを行う。読み込みを行ってもファイルが存在しない場合 nullptrを返す
 //       内部でgpskelファイル名をキーとするスケルタル情報のmapが作成される
 //-------------------------------------------------------------------------------------+
-const Skeleton* Renderer::GetSkeleton(const char* in_fileName)
+const Skeleton* Renderer::GetSkeleton(const std::string& in_fileName)
 {
 	std::string file(in_fileName);
 	auto iter = m_skeletons.find(file);
@@ -760,10 +760,10 @@ void Renderer::CreateSpriteVerts()
 	float vertices[] = 
 	{
       // x     y     z    nx   ny   nz    u    v
-		-0.5f, 0.5f, 0.f, 0.f, 0.f, 0.0f, 0.f, 0.f, // 左上頂点
-		 0.5f, 0.5f, 0.f, 0.f, 0.f, 0.0f, 1.f, 0.f, // 右上頂点
-		 0.5f,-0.5f, 0.f, 0.f, 0.f, 0.0f, 1.f, 1.f, // 右下頂点
-		-0.5f,-0.5f, 0.f, 0.f, 0.f, 0.0f, 0.f, 1.f  // 左下頂点
+		-0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 左上頂点
+		 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 右上頂点
+		 0.5f,-0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // 右下頂点
+		-0.5f,-0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f  // 左下頂点
 
 	};
 
@@ -781,10 +781,10 @@ void Renderer::CreateParticleVerts()
 {
 	float vertices[] = 
 	{
-		-0.5f, 0.f, 0.5f, 0.f, 0.f, 0.0f, 0.f, 0.f, // 左上頂点
-		 0.5f, 0.f, 0.5f, 0.f, 0.f, 0.0f, 1.f, 0.f, // 右上頂点
-		 0.5f, 0.f,-0.5f, 0.f, 0.f, 0.0f, 1.f, 1.f, // 右下頂点
-		-0.5f, 0.f,-0.5f, 0.f, 0.f, 0.0f, 0.f, 1.f  // 左下頂点
+		-0.5f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 左上頂点
+		 0.5f, 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 右上頂点
+		 0.5f, 0.0f,-0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // 右下頂点
+		-0.5f, 0.0f,-0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f  // 左下頂点
 	};
 
 	unsigned int indices[] = 

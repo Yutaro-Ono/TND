@@ -31,5 +31,7 @@ void UIWorld::Draw(Shader* in_shader)
 	mat = Matrix4::CreateTranslation(m_position);
 
 	// シェーダのユニフォームへワールド合成行列・アルファ値をセット
+	in_shader->SetMatrixUniform("u_WorldTransform", scale * m_staticBillboardMat * mat);
+	//in_shader->SetFloatUniform("uAlpha", )
 
 }

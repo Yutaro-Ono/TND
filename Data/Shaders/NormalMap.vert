@@ -17,13 +17,14 @@ uniform mat4 uViewProj;              // ビュー行列・プロジェクション行列
 uniform mat4 uWorldTransform;                // モデル行列
 
 uniform vec3 uLightPos;             // 光源位置
-uniform vec3 uCameraPos;              // カメラの視点ベクトル
+uniform vec3 uViewPos;              // カメラの視点ベクトル
 
 // out構造体 (フラグメントへ出力する変数をまとめた構造体)
 out VS_OUT
 {
 	vec2 TexCoords;                 // テクスチャ座標
-
+	vec3 FragNormal;
+	vec3 FragPos;
 	// タンジェント空間内の各座標
 	vec3 TangentLightPos;           // ライト(明かり)の座標
 	vec3 TangentViewPos;            // ビュー(カメラ)の座標
@@ -39,14 +40,20 @@ void main()
 	pos = pos * uWorldTransform;
 	// 座標変換を行った上で、GLの組み込み変数に代入
 	gl_Position = pos * uViewProj;
-
+	vs_out.FragPos = pos.xyz;
 	// UV座標をフラグメントシェーダに送る
 	vs_out.TexCoords = in_TexCoords;
+	vs_out.FragNormal = (vec4(in_Normal, 0.0f) * uWorldTransform).xyz;
+
 
 	vec3 T, B, N;     // TBN行列
 
 	N = in_Normal;     // 法線を代入
 	T = in_Tangent;    // 接空間(TangentSpace)を代入
+
+	mat3 normalMatrix = transpose(inverse(mat3(uWorldTransform)));
+	T = normalize(normalMatrix * in_Tangent);
+	N = normalize(normalMatrix * in_Normal);
 
 	// 法線に対する接空間の再直行化
 	T = normalize(T - dot(T, N) * N);
@@ -62,6 +69,6 @@ void main()
 
 	// 接空間内の座標定義
 	vs_out.TangentLightPos = TBN * uLightPos;                                  // 接空間における光源位置
-	vs_out.TangentViewPos = TBN * uCameraPos;                                    // 接空間におけるビュー座標
+	vs_out.TangentViewPos = TBN * uViewPos;                                    // 接空間におけるビュー座標
 	vs_out.TangentFragPos = TBN * vec3(uWorldTransform * vec4(in_Position, 0.0f));      // 接空間における頂点座標
 }

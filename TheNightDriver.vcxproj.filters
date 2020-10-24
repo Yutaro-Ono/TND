@@ -246,6 +246,18 @@
     <Filter Include="ソース ファイル\Shader\Source\Sprite">
       <UniqueIdentifier>{0d9997d8-8e55-4d91-abd3-ccafefe15b3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Actor\Helicopter">
+      <UniqueIdentifier>{33ec4bae-68ff-4954-8072-e5b9c3cabc0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Helicopter\HeliRotorMain">
+      <UniqueIdentifier>{2b820c39-f6f6-4dfa-a015-375dda1e6057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Helicopter\HeliRotorBack">
+      <UniqueIdentifier>{715269d7-7b5b-4280-b561-ce74b903c974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Helicopter\HeliBody">
+      <UniqueIdentifier>{c953decf-ca65-40a7-a4ff-2546e6b07f74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -514,6 +526,18 @@
     </ClCompile>
     <ClCompile Include="Source\UIWorld.cpp">
       <Filter>ソース ファイル\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Helicopter.cpp">
+      <Filter>ソース ファイル\Actor\Helicopter</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HeliRotorMain.cpp">
+      <Filter>ソース ファイル\Actor\Helicopter\HeliRotorMain</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HeliRotorBack.cpp">
+      <Filter>ソース ファイル\Actor\Helicopter\HeliRotorBack</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HeliBody.cpp">
+      <Filter>ソース ファイル\Actor\Helicopter\HeliBody</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -798,6 +822,18 @@
     </ClInclude>
     <ClInclude Include="Source\UIWorld.h">
       <Filter>ソース ファイル\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Helicopter.h">
+      <Filter>ソース ファイル\Actor\Helicopter</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HeliRotorMain.h">
+      <Filter>ソース ファイル\Actor\Helicopter\HeliRotorMain</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HeliRotorBack.h">
+      <Filter>ソース ファイル\Actor\Helicopter\HeliRotorBack</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HeliBody.h">
+      <Filter>ソース ファイル\Actor\Helicopter\HeliBody</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
