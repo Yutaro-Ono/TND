@@ -25,8 +25,6 @@ GameWorld::GameWorld()
 	m_player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
 	m_player->SetScale(0.3f);
 
-	// ヘリコプター生成
-	m_helicopter = new Helicopter(Vector3(1800.0f, 2400.0f, 0.0f));
 
 	// レベルの生成
 	m_level = new LevelManager(this, 0);
@@ -36,6 +34,8 @@ GameWorld::GameWorld()
 
 	// スカイボックス生成
 	m_skyBox = new SkyBox();
+	// ヘリコプター生成
+	m_helicopter = new Helicopter(Vector3(1800.0f, 2400.0f, 500.0f));
 
 }
 

@@ -34,5 +34,11 @@ Helicopter::~Helicopter()
 
 void Helicopter::UpdateActor(float in_deltaTime)
 {
+	Vector3 targetPos = Vector3(29000.0f, 35000.0f, 500.0f);
+	Vector3 forwardVec = targetPos - m_position;
+	forwardVec.Normalize();
 	
+	RotateToNewForward(forwardVec);
+
+	m_position = Vector3::Lerp(m_position, targetPos, 0.01f * in_deltaTime);
 }

@@ -26,6 +26,8 @@
 #include "FrameBuffer.h"
 #include <algorithm>
 #include <GL/glew.h>
+#include "BoxCollider.h"
+#include "Collision.h"
 
 // コンストラクタ
 Renderer::Renderer()
@@ -291,8 +293,6 @@ void Renderer::Draw()
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	// Clear the color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
 
 	//----------------------------------------------+
 	// メッシュシェーダー(phong)

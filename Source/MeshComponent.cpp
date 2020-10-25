@@ -36,7 +36,7 @@ MeshComponent::~MeshComponent()
 // 描画処理
 void MeshComponent::Draw(Shader * in_shader)
 {
-	if (m_mesh && m_visible)
+	if (m_mesh != nullptr && m_visible)
 	{
 		// Set the world transform　ワールド変換をセット
 		in_shader->SetMatrixUniform("uWorldTransform",

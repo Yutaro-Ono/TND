@@ -17,9 +17,11 @@ public:
 	LevelBlock();                            // コンストラクタ
 	~LevelBlock();                           // デストラクタ
 
-	void SetMesh(class Mesh* in_mesh);       // メッシュのセット
 
+	void SetMesh(class Mesh* in_mesh);       // メッシュのセット
 	void SetMeshVisible() { m_meshComp->SetVisible(false); }     // メッシュの透明化
+
+	void UpdateActor(float in_deltaTime);
 
 private:
 

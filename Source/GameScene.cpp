@@ -42,13 +42,6 @@ GameScene::GameScene(int in_stageNum)
 	,m_cameraMove(-10.0f)
 {
 
-	// プロジェクション行列セット
-	Matrix4 projection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(75.0f),
-		static_cast<float>(GAME_CONFIG->GetScreenWidth()),
-		static_cast<float>(GAME_CONFIG->GetScreenHeight()),
-		1.0f, 100000.0f);
-	RENDERER->SetProjectionMatrix(projection);
-
 	// ライティング
 	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.1f, 0.1f, 0.15f));
 	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();

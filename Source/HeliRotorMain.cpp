@@ -5,10 +5,11 @@
 #include "MeshComponent.h"
 #include "Helicopter.h"
 
+static float radian = 0.0f;
+
 HeliRotorMain::HeliRotorMain(Helicopter* in_heli, const std::string& in_filePath)
+	:m_owner(in_heli)
 {
-	// オーナークラスをセット
-	m_owner = in_heli;
 
 	// メッシュのロード・レンダラーへの登録
 	Mesh* mesh = RENDERER->GetMesh(in_filePath);
@@ -33,5 +34,15 @@ void HeliRotorMain::UpdateActor(float in_deltaTime)
 	SetScale(m_owner->GetScale());
 	SetPosition(m_owner->GetPosition());
 	SetRotation(m_owner->GetRotation());
+
+	// プロペラ回転
+	radian += 10.0f * in_deltaTime;
+	if (radian >= 360.0f)
+	{
+		radian = 0.0f;
+	}
+
+	SetRotation(Quaternion::Quaternion(Vector3::UnitZ, radian));
+
 	SetWorldTransform(m_owner->GetWorldTransform());
 }

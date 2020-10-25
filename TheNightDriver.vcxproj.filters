@@ -549,7 +549,7 @@
       <Filter>ソース ファイル\Renderer\ShadowMap</Filter>
     </ClCompile>
     <ClCompile Include="Source\HeliSpotLight.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Actor\Helicopter\HeliLight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
