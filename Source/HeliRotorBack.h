@@ -1,13 +1,13 @@
 #pragma once
 #include "Helicopter.h"
-
+#include <string>
 
 class HeliRotorBack : public Actor
 {
 
 public:
 
-	HeliRotorBack();
+	HeliRotorBack(class Helicopter* in_heli, const std::string& in_filePath);
 	~HeliRotorBack();
 
 	void UpdateActor(float in_deltaTime) override;
@@ -17,6 +17,6 @@ public:
 private:
 
 
-
+	class Helicopter* m_owner;
 
 };

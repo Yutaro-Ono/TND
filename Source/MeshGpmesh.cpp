@@ -138,14 +138,14 @@ bool MeshGpmesh::Load(const std::string& in_filePath, Renderer* in_renderer)
 		else // ボーンデータ入りなら　PosNormSkinTexなら
 		{
 			Vertex v;
-			// Add pos/normal　頂点と法線を追加　6個分
+			// 頂点と法線を追加　6個分
 			for (rapidjson::SizeType j = 0; j < 6; j++)
 			{
 				v.f = static_cast<float>(vert[j].GetDouble());
 				vertices.emplace_back(v);
 			}
 
-			// Add skin information　スキン情報追加（ボーン番号:unsigned charの1バイト分）
+			// スキン情報追加（ボーン番号:unsigned charの1バイト分）
 			for (rapidjson::SizeType j = 6; j < 14; j += 4)  //ループとしては2回転する　1回転目はボーン番号、2回転目はボーンウェイトをintとして取ってくる（使用時に浮動小数化するっぽい）
 			{
 				v.b[0] = vert[j].GetUint();
@@ -164,10 +164,10 @@ bool MeshGpmesh::Load(const std::string& in_filePath, Renderer* in_renderer)
 		}
 	}
 
-	// We were computing length squared earlier　バウンディングスフィアの半径を計算
+	// バウンディングスフィアの半径を計算
 	m_radius = Math::Sqrt(m_radius);
 
-	// Load in the indices　頂点インデックスをロード
+	// 頂点インデックスをロード
 	const rapidjson::Value& indJson = doc["indices"];
 	if (!indJson.IsArray() || indJson.Size() < 1)
 	{
@@ -192,7 +192,7 @@ bool MeshGpmesh::Load(const std::string& in_filePath, Renderer* in_renderer)
 		indices.emplace_back(ind[2].GetUint());
 	}
 
-	// Now create a vertex array　頂点配列を作成する
+	// 頂点配列を作成する
 	m_vertexArray = new VertexArray(vertices.data(), static_cast<unsigned>(vertices.size()) / vertSize,
 		layout, indices.data(), static_cast<unsigned>(indices.size()));
 	return true;

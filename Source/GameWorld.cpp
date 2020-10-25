@@ -12,6 +12,7 @@
 #include "PlayerCar.h"
 #include "PlayerManager.h"
 #include "MissionManager.h"
+#include "Helicopter.h"
 
 #include <Windows.h>
 #include <iostream>
@@ -23,6 +24,9 @@ GameWorld::GameWorld()
 	m_player = new PlayerManager();
 	m_player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
 	m_player->SetScale(0.3f);
+
+	// ヘリコプター生成
+	m_helicopter = new Helicopter(Vector3(1800.0f, 2400.0f, 0.0f));
 
 	// レベルの生成
 	m_level = new LevelManager(this, 0);
@@ -39,6 +43,7 @@ GameWorld::~GameWorld()
 {
 	m_clients.clear();
 	delete m_player;
+	delete m_helicopter;
 	delete m_level;
 	delete m_mission;
 	delete m_skyBox;

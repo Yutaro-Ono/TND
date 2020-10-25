@@ -30,6 +30,8 @@ private:
 
 	class PlayerManager* m_player;
 
+	class Helicopter* m_helicopter;
+
 	class LevelManager* m_level;
 
 	class MissionManager* m_mission;

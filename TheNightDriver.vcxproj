@@ -47,6 +47,7 @@
     <ClCompile Include="Source\Helicopter.cpp" />
     <ClCompile Include="Source\HeliRotorBack.cpp" />
     <ClCompile Include="Source\HeliRotorMain.cpp" />
+    <ClCompile Include="Source\HeliSpotLight.cpp" />
     <ClCompile Include="Source\HUD.cpp" />
     <ClCompile Include="Source\HumanCamera.cpp" />
     <ClCompile Include="Source\imgui\imgui.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Source\Helicopter.h" />
     <ClInclude Include="Source\HeliRotorBack.h" />
     <ClInclude Include="Source\HeliRotorMain.h" />
+    <ClInclude Include="Source\HeliSpotLight.h" />
     <ClInclude Include="Source\HUD.h" />
     <ClInclude Include="Source\HumanCamera.h" />
     <ClInclude Include="Source\imgui\imconfig.h" />

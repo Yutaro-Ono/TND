@@ -35,7 +35,7 @@ ShadowMap::ShadowMap()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// ‰æ–Ê‘S‘Ì‚ð•¢‚¤’¸“_‚ð’è‹`
-	unsigned int vbo;
+	unsigned int vbo = 0;
 	float quadVertices[] =
 	{
 		// x   // y   // z  // u  // v

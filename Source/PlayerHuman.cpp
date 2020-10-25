@@ -103,7 +103,7 @@ void PlayerHuman::UpdateActor(float in_deltaTime)
 		m_skelMeshComp->SetVisible(true);
 
 		// d—Íˆ—
-		m_position.z -= 1.0f;
+		//m_position.z -= 1.0f;
 		if (m_position.z < -20.0f)
 		{
 			m_position.z = 0.0f;

@@ -19,6 +19,6 @@ private:
 	class HeliBody* m_body;                // ボディ
 	class HeliRotorMain* m_mainRotor;      // メインローター
 	class HeliRotorBack* m_backRotor;      // バックローター
-
+	class HeliSpotLight* m_spotLight;      // ライト
 
 };

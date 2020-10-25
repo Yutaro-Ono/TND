@@ -45,9 +45,9 @@ void MeshComponent::Draw(Shader * in_shader)
 		in_shader->SetFloatUniform("uSpecPower", 100);
 
 		// テクスチャ配列が空でない時 (gpmesh, skeltalMesh)
-		if (m_mesh->GetTextureArraySize())
+		if (m_mesh->GetTextureArraySize() >= 1)
 		{
-			Texture* t = m_mesh->GetTexture(0);
+			Texture* t = m_mesh->GetTexture(m_textureIndex);
 			if (t)
 			{
 				t->SetActive();
@@ -59,27 +59,28 @@ void MeshComponent::Draw(Shader * in_shader)
 			Texture* diff = m_mesh->GetDiffuseMap();
 			if (diff)
 			{
-				diff->SetActive();
 				in_shader->SetInt("u_mat.diffuseMap", 0);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, diff->GetTextureID());
 			}
 			// アクティブテクスチャセット
 			Texture* specular = m_mesh->GetSpecularMap();
 			if (specular)
 			{
-				specular->SetActive();
 				in_shader->SetInt("u_mat.specularMap", 1);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, specular->GetTextureID());
 			}
 			// アクティブテクスチャセット
 			Texture* norm = m_mesh->GetNormalMap();
 			if (norm)
 			{
-				norm->SetActive();
 				in_shader->SetInt("u_mat.normalMap", 2);
+				glActiveTexture(GL_TEXTURE2);
+				glBindTexture(GL_TEXTURE_2D, norm->GetTextureID());
 			}
 		}
 		
-
-
 
 		// Set the mesh's vertex array as active　頂点配列をアクティブに
 		VertexArray* va = m_mesh->GetVertexArray();

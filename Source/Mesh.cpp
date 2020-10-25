@@ -78,7 +78,7 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 	if (t != nullptr)
 	{
 		m_specularMap = t;
-		m_textures.emplace_back(t);
+		//m_textures.emplace_back(t);
 	}
 	else
 	{
@@ -92,7 +92,7 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 	if (t != nullptr)
 	{
 		m_normalMap = t;
-		m_textures.emplace_back(t);
+		//m_textures.emplace_back(t);
 	}
 	else
 	{

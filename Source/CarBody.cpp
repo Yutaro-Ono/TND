@@ -13,7 +13,7 @@ CarBody::CarBody(PlayerCar* in_owner, const std::string& in_meshPath)
 	m_position = m_owner->GetPosition();
 	m_rotation = m_owner->GetRotation();
 	// メッシュのセット
-	Mesh* mesh = GAME_INSTANCE.GetRenderer()->GetMesh(in_meshPath);
+	Mesh* mesh = RENDERER->GetMesh(in_meshPath);
 	m_meshComp = new MeshComponent(this);
 	m_meshComp->SetMesh(mesh);
 

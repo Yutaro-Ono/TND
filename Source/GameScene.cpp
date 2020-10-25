@@ -50,7 +50,7 @@ GameScene::GameScene(int in_stageNum)
 	RENDERER->SetProjectionMatrix(projection);
 
 	// ライティング
-	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.0f, 0.04f, 0.15f));
+	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.1f, 0.1f, 0.15f));
 	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
 	dir.m_position = Vector3(1800.0f, 2400.0f, 100.0f);
 	dir.m_direction = Vector3(0.0f, 0.0f, -1.0f);
