@@ -249,20 +249,35 @@
     <Filter Include="ソース ファイル\Actor\Helicopter">
       <UniqueIdentifier>{33ec4bae-68ff-4954-8072-e5b9c3cabc0d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Actor\Helicopter\HeliRotorMain">
-      <UniqueIdentifier>{2b820c39-f6f6-4dfa-a015-375dda1e6057}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Actor\Helicopter\HeliRotorBack">
-      <UniqueIdentifier>{715269d7-7b5b-4280-b561-ce74b903c974}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Actor\Helicopter\HeliBody">
-      <UniqueIdentifier>{c953decf-ca65-40a7-a4ff-2546e6b07f74}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Renderer\ShadowMap">
       <UniqueIdentifier>{1fda949d-3b68-432e-b17f-fdb7a5cc23be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Actor\Helicopter\HeliLight">
+    <Filter Include="ソース ファイル\Actor\CameraActor">
+      <UniqueIdentifier>{af1f7a7d-c2a0-47e5-a8d1-838e1ae53ac5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Component\Helicopter">
+      <UniqueIdentifier>{0212efed-a767-475b-9543-7b15d1910242}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Component\Helicopter\Patrol">
+      <UniqueIdentifier>{6796079c-c07d-495b-8e7f-04f4901556b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Helicopter\parts">
+      <UniqueIdentifier>{8964056e-e320-43c4-bed7-d3fb351cfaf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Helicopter\parts\HeliBody">
+      <UniqueIdentifier>{c953decf-ca65-40a7-a4ff-2546e6b07f74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Helicopter\parts\HeliLight">
       <UniqueIdentifier>{6b9691a2-2b4a-4088-8ce8-075586486a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Helicopter\parts\HeliRotorBack">
+      <UniqueIdentifier>{715269d7-7b5b-4280-b561-ce74b903c974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Helicopter\parts\HeliRotorMain">
+      <UniqueIdentifier>{2b820c39-f6f6-4dfa-a015-375dda1e6057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Helicopter\PatrolPoint">
+      <UniqueIdentifier>{15441825-e259-40d9-b2e1-08309ac27336}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -537,19 +552,28 @@
       <Filter>ソース ファイル\Actor\Helicopter</Filter>
     </ClCompile>
     <ClCompile Include="Source\HeliRotorMain.cpp">
-      <Filter>ソース ファイル\Actor\Helicopter\HeliRotorMain</Filter>
+      <Filter>ソース ファイル\Actor\Helicopter\parts\HeliRotorMain</Filter>
     </ClCompile>
     <ClCompile Include="Source\HeliRotorBack.cpp">
-      <Filter>ソース ファイル\Actor\Helicopter\HeliRotorBack</Filter>
+      <Filter>ソース ファイル\Actor\Helicopter\parts\HeliRotorBack</Filter>
     </ClCompile>
     <ClCompile Include="Source\HeliBody.cpp">
-      <Filter>ソース ファイル\Actor\Helicopter\HeliBody</Filter>
+      <Filter>ソース ファイル\Actor\Helicopter\parts\HeliBody</Filter>
     </ClCompile>
     <ClCompile Include="Source\ShadowMap.cpp">
       <Filter>ソース ファイル\Renderer\ShadowMap</Filter>
     </ClCompile>
     <ClCompile Include="Source\HeliSpotLight.cpp">
-      <Filter>ソース ファイル\Actor\Helicopter\HeliLight</Filter>
+      <Filter>ソース ファイル\Actor\Helicopter\parts\HeliLight</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CameraActor.cpp">
+      <Filter>ソース ファイル\Actor\CameraActor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PatrolComponent.cpp">
+      <Filter>ソース ファイル\Component\Helicopter\Patrol</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PatrolPoint.cpp">
+      <Filter>ソース ファイル\Actor\Helicopter\PatrolPoint</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -839,19 +863,28 @@
       <Filter>ソース ファイル\Actor\Helicopter</Filter>
     </ClInclude>
     <ClInclude Include="Source\HeliRotorMain.h">
-      <Filter>ソース ファイル\Actor\Helicopter\HeliRotorMain</Filter>
+      <Filter>ソース ファイル\Actor\Helicopter\parts\HeliRotorMain</Filter>
     </ClInclude>
     <ClInclude Include="Source\HeliRotorBack.h">
-      <Filter>ソース ファイル\Actor\Helicopter\HeliRotorBack</Filter>
+      <Filter>ソース ファイル\Actor\Helicopter\parts\HeliRotorBack</Filter>
     </ClInclude>
     <ClInclude Include="Source\HeliBody.h">
-      <Filter>ソース ファイル\Actor\Helicopter\HeliBody</Filter>
+      <Filter>ソース ファイル\Actor\Helicopter\parts\HeliBody</Filter>
     </ClInclude>
     <ClInclude Include="Source\ShadowMap.h">
       <Filter>ソース ファイル\Renderer\ShadowMap</Filter>
     </ClInclude>
     <ClInclude Include="Source\HeliSpotLight.h">
-      <Filter>ソース ファイル\Actor\Helicopter\HeliLight</Filter>
+      <Filter>ソース ファイル\Actor\Helicopter\parts\HeliLight</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CameraActor.h">
+      <Filter>ソース ファイル\Actor\CameraActor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PatrolComponent.h">
+      <Filter>ソース ファイル\Component\Helicopter\Patrol</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PatrolPoint.h">
+      <Filter>ソース ファイル\Actor\Helicopter\PatrolPoint</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

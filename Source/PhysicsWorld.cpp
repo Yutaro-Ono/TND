@@ -155,7 +155,7 @@ void PhysicsWorld::PlayerAndBGTest()
 			BoxCollider* box = b;
 
 			// 非表示にしているメッシュを表示状態にする
-			b->GetOwner()->GetMeshComponent()->SetVisible(true);
+			//b->GetOwner()->GetMeshComponent()->SetVisible(true);
 
 			if (Intersect(camera->GetWorldBox(), b->GetWorldBox()))
 			{

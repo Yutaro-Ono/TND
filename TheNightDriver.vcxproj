@@ -25,6 +25,7 @@
     <ClCompile Include="Source\BoneTransform.cpp" />
     <ClCompile Include="Source\BoxCollider.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\CameraActor.cpp" />
     <ClCompile Include="Source\CameraComponent.cpp" />
     <ClCompile Include="Source\CarBody.cpp" />
     <ClCompile Include="Source\CarDoor.cpp" />
@@ -83,6 +84,8 @@
     <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\ParticleManager.cpp" />
     <ClCompile Include="Source\ParticleTestScene.cpp" />
+    <ClCompile Include="Source\PatrolComponent.cpp" />
+    <ClCompile Include="Source\PatrolPoint.cpp" />
     <ClCompile Include="Source\PauseScreen.cpp" />
     <ClCompile Include="Source\PhysicsWorld.cpp" />
     <ClCompile Include="Source\PlayerCar.cpp" />
@@ -122,6 +125,7 @@
     <ClInclude Include="Source\BoneTransform.h" />
     <ClInclude Include="Source\BoxCollider.h" />
     <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\CameraActor.h" />
     <ClInclude Include="Source\CameraComponent.h" />
     <ClInclude Include="Source\CarBody.h" />
     <ClInclude Include="Source\CarDoor.h" />
@@ -184,6 +188,8 @@
     <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\ParticleManager.h" />
     <ClInclude Include="Source\ParticleTestScene.h" />
+    <ClInclude Include="Source\PatrolComponent.h" />
+    <ClInclude Include="Source\PatrolPoint.h" />
     <ClInclude Include="Source\PauseScreen.h" />
     <ClInclude Include="Source\PhysicsWorld.h" />
     <ClInclude Include="Source\PlayerCar.h" />

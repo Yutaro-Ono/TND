@@ -252,7 +252,7 @@ void PlayerHuman::ChangeState()
 			m_animState = ANIM_WALKING_BWD;
 		}
 
-		if ((axisL.x < -0.1f || axisL.x > 0.1f) && axisL.y < 0.1f && axisL.y > -0.1f)
+		if ((axisL.x < -0.1f || axisL.x > 0.1f) && axisL.y <= 0.1f && axisL.y >= -0.1f)
 		{
 			// ç∂ë§
 			if (m_animState != ANIM_WALKING_LEFT && axisL.x < -0.1f)

@@ -293,6 +293,9 @@ void Renderer::Draw()
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	// Clear the color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// モデルの背面をカリング
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	//----------------------------------------------+
 	// メッシュシェーダー(phong)

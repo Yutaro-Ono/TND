@@ -10,6 +10,7 @@
 #include "Mesh.h"
 #include "LevelBlock.h"
 #include "ClientActor.h"
+#include "PatrolPoint.h"
 #include "RapidJsonHelper.h"
 #include "GameWorld.h"
 #include <vector>
@@ -41,25 +42,16 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
     //-----------------------------------------------------------------------------------------+
     // 地面
 	std::vector<std::vector<int>> groundData;
-	if (!ReadTiledJson(groundData, mapPath.c_str(), "layer_1"))
+	if (!ReadTiledJson(groundData, mapPath.c_str(), "layer_Ground"))
 	{
 		printf("<Level> Map Data Load : Failed\n");
 		GAME_INSTANCE.SetShutDown();
 		return;
 	}
 
-	// 道路
-	std::vector<std::vector<int>> streetData;
-	if (!ReadTiledJson(streetData, mapPath.c_str(), "layer_2"))
-	{
-		printf("<Level> Street Data Load : Failed\n");
-		GAME_INSTANCE.SetShutDown();
-		return;
-	}
-
 	// 壁
 	std::vector<std::vector<int>> wallData;
-	if (!ReadTiledJson(wallData, mapPath.c_str(), "layer_8"))
+	if (!ReadTiledJson(wallData, mapPath.c_str(), "layer_wall"))
 	{
 		printf("<Level> Street Data Load : Failed\n");
 		GAME_INSTANCE.SetShutDown();
@@ -68,7 +60,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 
 	// 建物
 	std::vector<std::vector<int>> buildingData;
-	if (!ReadTiledJson(buildingData, mapPath.c_str(), "layer_3"))
+	if (!ReadTiledJson(buildingData, mapPath.c_str(), "layer_Building"))
 	{
 		printf("<Level> Building Data Load : Failed\n");
 		GAME_INSTANCE.SetShutDown();
@@ -78,6 +70,15 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	// 依頼人
 	std::vector< std::vector<int>> clientData;
 	if (!ReadTiledJson(clientData, mapPath.c_str(), "layer_human"))
+	{
+		printf("<Level> client Data Load : Failed\n");
+		GAME_INSTANCE.SetShutDown();
+		return;
+	}
+
+	// ヘリ巡回ポイント
+	std::vector<std::vector<int>> patrolPointData;
+	if (!ReadTiledJson(patrolPointData, mapPath.c_str(), "layer_patrolPoint"))
 	{
 		printf("<Level> client Data Load : Failed\n");
 		GAME_INSTANCE.SetShutDown();
@@ -105,18 +106,8 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset));
 			}
 
-		}
-	}
-	groundData.clear();
-
-	
-	// マップブロックを登録(道路)
-	for (int iy = 0; iy < sizeY; iy++)
-	{
-		for (int ix = 0; ix < sizeX; ix++)
-		{
 			// 道路オブジェクトはTiled上で1～11で登録されている
-			if (streetData[iy][ix] >= 1 && streetData[iy][ix] <= 11)
+			if (groundData[iy][ix] >= 1 && groundData[iy][ix] <= 11)
 			{
 				block = new LevelBlock();
 				block->SetMesh(m_blockMeshes[1]);
@@ -125,7 +116,8 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 
 		}
 	}
-	streetData.clear();
+	groundData.clear();
+
 
 	// マップブロックを登録(壁)
 	for (int iy = 0; iy < sizeY; iy++)
@@ -137,8 +129,8 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 			{
 				block = new LevelBlock();
 				block->SetMesh(m_blockMeshes[2]);
-				block->SetMeshVisible();
 				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
+				block->SetMeshVisible();
 			}
 
 		}
@@ -151,7 +143,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 		for (int ix = 0; ix < sizeX; ix++)
 		{
 			
-			if (buildingData[iy][ix] >= 1)
+			if (buildingData[iy][ix] == 19)
 			{
 				block = new LevelBlock();
 				block->SetMesh(m_blockMeshes[2]);
@@ -169,7 +161,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 		for (int ix = 0; ix < sizeX; ix++)
 		{
 
-			if (clientData[iy][ix] >= 1)
+			if (clientData[iy][ix] >= 33)
 			{
 				ClientActor* client = new ClientActor(Vector3(ix * blockSize, offsetY - iy * blockSize, -10.0f));
 				
@@ -180,6 +172,25 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 		}
 	}
 	clientData.clear();
+
+
+	// マップに登録 (ヘリの巡回ポイント)
+	for (int iy = 0; iy < sizeY; iy++)
+	{
+		for (int ix = 0; ix < sizeX; ix++)
+		{
+
+			if (patrolPointData[iy][ix] >= 34)
+			{
+				PatrolPoint* patrol = new PatrolPoint(Vector3(ix * blockSize, offsetY - iy * blockSize, 800.0f));
+
+				in_world->AddPatrolPoint(patrol);
+
+			}
+
+		}
+	}
+	patrolPointData.clear();
 
 }
 

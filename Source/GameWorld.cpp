@@ -16,6 +16,7 @@
 
 #include <Windows.h>
 #include <iostream>
+#include <algorithm>
 
 // コンストラクタ
 GameWorld::GameWorld()
@@ -35,13 +36,18 @@ GameWorld::GameWorld()
 	// スカイボックス生成
 	m_skyBox = new SkyBox();
 	// ヘリコプター生成
-	m_helicopter = new Helicopter(Vector3(1800.0f, 2400.0f, 500.0f));
+	for (int i = 0; i < 3; i++)
+	{
+		m_helicopter[i] = new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 800.0f));
+	}
+
 
 }
 
 GameWorld::~GameWorld()
 {
 	m_clients.clear();
+	m_patrolPoints.clear();
 	delete m_player;
 	delete m_helicopter;
 	delete m_level;
@@ -58,4 +64,16 @@ void GameWorld::Update(float in_deltaTime)
 void GameWorld::AddClientActor(ClientActor* in_client)
 {
 	m_clients.push_back(in_client);
+}
+
+// 巡回地点の登録
+void GameWorld::AddPatrolPoint(PatrolPoint* in_patrolPoint)
+{
+	m_patrolPoints.push_back(in_patrolPoint);
+}
+
+// 巡回地点のシャッフル
+void GameWorld::ShufflePatrolPoint()
+{
+	std::random_shuffle(m_patrolPoints.begin(), m_patrolPoints.end());
 }

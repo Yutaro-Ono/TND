@@ -6,7 +6,7 @@
 #include "Helicopter.h"
 
 static float radian = 0.0f;
-const Vector3 ADJUST_POS = Vector3(-320.0f, -10.0f, 95.0f);
+//const Vector3 ADJUST_POS = Vector3(-320.0f, -10.0f, 95.0f);
 
 HeliRotorBack::HeliRotorBack(Helicopter* in_heli, const std::string& in_filePath)
 {
@@ -32,11 +32,12 @@ HeliRotorBack::~HeliRotorBack()
 
 void HeliRotorBack::UpdateActor(float in_deltaTime)
 {
-	// オーナーに座標・スケール・回転・ワールド行列を合わせる
-	SetScale(m_owner->GetScale());
-	m_position = m_owner->GetPosition() + ADJUST_POS;
-	SetRotation(m_owner->GetRotation());
+	const Vector3 ADJUST_POS = Vector3(-320.0f, -10.0f, 95.0f);
 
+	// オーナーに座標・回転・ワールド行列を合わせる
+	m_scale = m_owner->GetScale();
+	m_position = m_owner->GetPosition() + ADJUST_POS;
+	m_rotation = m_owner->GetRotation();
 
 	// プロペラ回転
 	radian += 20.0f * in_deltaTime;
@@ -44,10 +45,12 @@ void HeliRotorBack::UpdateActor(float in_deltaTime)
 	{
 		radian = 0.0f;
 	}
+	Quaternion rot = Quaternion::Quaternion(Vector3::UnitY, radian);
 
+	// 位置調整ベクトルを回転に応じて行進
+	Vector3 offset = ADJUST_POS;
+	offset = Vector3::Transform(offset, m_rotation);
+	// ワールド変換行列更新
+	m_worldTransform = Matrix4::CreateFromQuaternion(rot) * m_owner->GetWorldTransform() * Matrix4::CreateTranslation(offset);
 
-	//SetRotation(Quaternion::Quaternion(Vector3::UnitY, radian));
-
-	//m_worldTransform = Matrix4::CreateFromQuaternion(m_rotation) * Matrix4::CreateTranslation(ADJUST_POS) * m_owner->GetWorldTransform();
-	//SetWorldTransform(Matrix4::CreateTranslation(ADJUST_POS) * m_owner->GetWorldTransform());
 }

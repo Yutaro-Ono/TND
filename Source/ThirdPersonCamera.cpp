@@ -156,7 +156,7 @@ void ThirdPersonCamera::Update(float in_deltaTime)
 	
 
 	//printf("Camera : x : %f, y : %f, z : %f\n", m_position.x, m_position.y, m_position.z);
-	printf("hitBox : x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
+	//printf("hitBox : x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
 
 	// レンダラーのビュー行列更新
 	SetViewMatrix(view);
@@ -368,7 +368,7 @@ void ThirdPersonCamera::CollisionFix(BoxCollider* in_hitCameraBox, BoxCollider* 
 
 	if (m_position.x != fix.x || m_position.y != fix.y || m_position.z != fix.z)
 	{
-		printf("当たった！\n");
+		//printf("当たった！\n");
 	}
 
 	// 補正ベクトル分戻す
@@ -388,7 +388,7 @@ void ThirdPersonCamera::CollisionFix(BoxCollider* in_hitCameraBox, BoxCollider* 
 	//SetViewMatrix(view);
 
 
-	printf("hitBoxfix : x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
+	//printf("hitBoxfix : x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
 
 
 

@@ -1,5 +1,8 @@
 #include "CameraComponent.h"
 #include "Renderer.h"
+#include "PhysicsWorld.h"
+#include "BoxCollider.h"
+#include "Collision.h"
 
 CameraComponent::CameraComponent(Actor * in_target, int updateOrder)
 	:Component(in_target, updateOrder)
@@ -12,6 +15,14 @@ CameraComponent::CameraComponent(Actor * in_target, int updateOrder)
 		static_cast<float>(GAME_CONFIG->GetScreenHeight()),
 		1.0f, 100000.0f);
 	RENDERER->SetProjectionMatrix(projection);
+
+	//AABB cullingBox;
+	//cullingBox.m_min.x = 1.0f;
+	//cullingBox.m_min.y = 0.0f;
+	//cullingBox.m_min.z = 0.0f;
+	//cullingBox.m_max.x = 100000.0f;
+	//cullingBox.m_max.y = (float)GAME_CONFIG->GetScreenWidth();
+	//cullingBox.m_max.z = (float)GAME_CONFIG->GetScreenHeight();
 
 	// ゲーム側にこのカメラをアクティブなカメラとして登録
 	SetActive();

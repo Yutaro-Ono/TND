@@ -35,5 +35,5 @@ void LevelBlock::SetMesh(Mesh * in_mesh)
 
 void LevelBlock::UpdateActor(float in_deltaTime)
 {
-	m_meshComp->SetVisible(false);
+
 }
