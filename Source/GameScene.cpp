@@ -42,14 +42,7 @@ GameScene::GameScene(int in_stageNum)
 	,m_cameraMove(-10.0f)
 {
 
-	// ライティング
-	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.1f, 0.1f, 0.15f));
-	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
-	dir.m_position = Vector3(1800.0f, 2400.0f, 100.0f);
-	dir.m_direction = Vector3(0.0f, 0.5f, -1.0f);
-	dir.m_direction.Normalize();
-	dir.m_diffuseColor = Vector3(0.07f, 0.05f, 0.3f);
-	dir.m_specColor = Vector3(0.01f, 0.0f, 0.1f);
+
 }
 
 
@@ -105,8 +98,6 @@ void GameScene::Initialize()
 	// ロード画面処理
 	Loading();
 
-	// SkyBox
-	SkyBox* sky = new SkyBox();
 
 	// ウェイト
 	Wait(300);

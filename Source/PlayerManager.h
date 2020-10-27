@@ -8,6 +8,7 @@
 #include "Actor.h"
 #include "PlayerHuman.h"
 #include "PlayerCar.h"
+#include "Collision.h"
 
 class PlayerManager : public Actor
 {
@@ -48,7 +49,7 @@ private:
 	class PlayerHuman* m_playerHuman;
 	class PlayerCar* m_playerCar;
 
-
+	Sphere m_searchSphere;
 
 
 };

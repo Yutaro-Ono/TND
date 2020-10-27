@@ -36,6 +36,9 @@ void MoveComponentHuman::Update(float in_deltaTime)
 			MovementByKeyboard(in_deltaTime);
 		}
 	}
+
+	// d—Íˆ—
+	m_owner->SetPosition(m_owner->GetPosition() - Vector3(0.0f, 0.0f, 2.0f));
 }
 
 

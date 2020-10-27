@@ -128,7 +128,7 @@ bool MeshGpmesh::Load(const std::string& in_filePath, Renderer* in_renderer)
 		if (layout == VertexArray::POS_NORMAL_TEX)
 		{
 			Vertex v;
-			// Add the floats@float’l‚ğ’Ç‰Á
+			// float’l‚ğ’Ç‰Á
 			for (rapidjson::SizeType j = 0; j < vert.Size(); j++)
 			{
 				v.f = static_cast<float>(vert[j].GetDouble());

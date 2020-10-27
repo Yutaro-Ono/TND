@@ -21,6 +21,17 @@
 // コンストラクタ
 GameWorld::GameWorld()
 {
+
+
+	// ライティング
+	RENDERER->SetAmbientLight(Vector3(0.1f, 0.1f, 0.15f));
+	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
+	dir.m_position = Vector3(1800.0f, 2400.0f, 100.0f);
+	dir.m_direction = Vector3(0.0f, 0.5f, -1.0f);
+	dir.m_direction.Normalize();
+	dir.m_diffuseColor = Vector3(0.07f, 0.05f, 0.3f);
+	dir.m_specColor = Vector3(0.01f, 0.0f, 0.1f);
+
 	// プレイヤーの生成
 	m_player = new PlayerManager();
 	m_player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
@@ -33,8 +44,11 @@ GameWorld::GameWorld()
 	// ミッションマネージャー生成
 	m_mission = new MissionManager(this);
 
-	// スカイボックス生成
-	m_skyBox = new SkyBox();
+	// 環境(光源など)作成
+	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
+	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
+
+
 	// ヘリコプター生成
 	for (int i = 0; i < 3; i++)
 	{
@@ -52,7 +66,7 @@ GameWorld::~GameWorld()
 	delete m_helicopter;
 	delete m_level;
 	delete m_mission;
-	delete m_skyBox;
+	delete m_environment;
 }
 
 void GameWorld::Update(float in_deltaTime)
@@ -76,4 +90,14 @@ void GameWorld::AddPatrolPoint(PatrolPoint* in_patrolPoint)
 void GameWorld::ShufflePatrolPoint()
 {
 	std::random_shuffle(m_patrolPoints.begin(), m_patrolPoints.end());
+}
+
+// 依頼人アクタ配列のシャッフル
+void GameWorld::ShuffleClientActor()
+{
+	std::random_shuffle(m_clients.begin(), m_clients.end());
+}
+
+void GameWorld::ImGuiDebugWorld()
+{
 }

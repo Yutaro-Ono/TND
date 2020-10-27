@@ -43,6 +43,9 @@ public:
 	void AddSprite(class SpriteComponent* in_sprite);
 	void RemoveSprite(class SpriteComponent* in_sprite);
 	const std::vector<class SpriteComponent*>& GetSpriteStack() const { return m_spriteComponents; }
+	// Sprite (ワールド空間)
+	void AddSpriteWorld(class WorldSpaceUI* in_sprite);
+	void RemoveSpriteWorld(class WorldSpaceUI* in_sprite);
 
 	// MeshComponent
 	void AddMeshComponent(class MeshComponent* in_mesh);                    // メッシュコンポーネントの追加
@@ -60,7 +63,7 @@ public:
 	void WindowFlip() { SDL_GL_SwapWindow(m_window); }
 
 	void SetWindowTitle(const std::string& in_title);
-	void SetParticleVertex();
+	void SetWorldSpriteVertex();
 	void SetDirectionalLight(const DirectionalLight& in_dirLight);
 
 	//--------------------------------------------+
@@ -97,7 +100,7 @@ private:
 
 	void CreateCubeMapVerts();                                             // キューブマップ(スカイボックス用)頂点配列定義
 	void CreateSpriteVerts();                                              // スプライト用頂点配列定義
-	void CreateParticleVerts();                                            // パーティクル用頂点配列定義
+	void CreateWorldSpriteVerts();                                            // パーティクル用頂点配列定義
 	bool LoadShaders();                                                    // シェーダーの初期化
 	void SetLightUniforms(class Shader* in_shader);                        // ライト値をシェーダーにセット
 
@@ -111,7 +114,6 @@ private:
 	std::unordered_map<std::string, class Skeleton*> m_skeletons;
 	std::unordered_map<std::string, class Animation*> m_animations;
 
-	std::vector<class SpriteComponent*> m_spriteComponents;
 	std::vector<class MeshComponent*> m_meshComponents;                    // メッシュコンポーネント
 	std::vector<class CubeMapComponent*> m_skyBoxComponents;                  // スカイボックス用メッシュコンポーネント
 	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;
@@ -125,8 +127,11 @@ private:
 	//--------------------------------------------+
 	// Sprite関連
 	//--------------------------------------------+
-	class Shader* m_spriteShader;
-	class VertexArray* m_spriteVerts;
+	class VertexArray* m_spriteVerts;                                      // スプライト用頂点配列
+	class Shader* m_spriteShader;                                          // スプライト基本シェーダ
+	class Shader* m_worldSpaceSpriteShader;                                // ワールド空間上のスプライトシェーダ
+	std::vector<class SpriteComponent*> m_spriteComponents;                // スプライト配列 (スクリーン空間)
+	std::vector<class WorldSpaceUI*> m_worldSprites;                       // スプライト配列 (ワールド空間)
 
 	//--------------------------------------------+
 	// メッシュ関連

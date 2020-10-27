@@ -60,7 +60,7 @@ void PlayerCar::UpdateActor(float in_deltaTime)
 		// 速度が一定以上かつアクセルを踏んでいる時、カメラの追従をオンにする
 		if (m_moveComp->GetAccelValue() >= 30.0f)
 		{
-			m_cameraComp->SetChaseOwnerForward(true);
+			//m_cameraComp->SetChaseOwnerForward(true);
 		}
 		else
 		{

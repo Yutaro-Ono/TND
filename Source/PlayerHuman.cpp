@@ -303,6 +303,13 @@ void PlayerHuman::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hit
 	// めり込みを修正
 	CalcCollisionFixVec(playerBox, bgBox, fix);
 
+	// 重力分z値を追加 (将来的には重力コンポーネントから重力値を取得したい)
+	//if (fix.z != 0.0f)
+	//{
+	//	fix.z = 5.0f * 2.0f;
+	//}
+	
+
 	// 補正ベクトル分戻す
 	m_position += fix;
 

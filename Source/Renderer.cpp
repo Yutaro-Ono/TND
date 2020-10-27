@@ -28,6 +28,7 @@
 #include <GL/glew.h>
 #include "BoxCollider.h"
 #include "Collision.h"
+#include "WorldSpaceUI.h"
 
 // コンストラクタ
 Renderer::Renderer()
@@ -174,15 +175,15 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	}
 
 	//------------------------------------------------------------------+
-	// パーティクル関連
+	// ワールド空間用スプライト関連
 	//------------------------------------------------------------------+
-	// パーティクル用頂点作成
-	CreateParticleVerts();
+	// ワールド空間用スプライト頂点作成
+	CreateWorldSpriteVerts();
 	// パーティクルマネージャー作成
 	m_particleManager = new ParticleManager;
 
 	//------------------------------------------------------------------+
-	// Sprite関連
+	// スクリーン空間用のSprite関連
 	//------------------------------------------------------------------+
 	CreateSpriteVerts();        // スプライト用の頂点作成
 
@@ -258,8 +259,13 @@ void Renderer::Delete()
 	m_meshShader->Delete();
 
 	// スプライトの解放
+	while (!m_worldSprites.empty())
+	{
+		delete m_worldSprites.back();
+	}
 	delete m_spriteVerts;
 	m_spriteShader->Delete();
+	m_worldSpaceSpriteShader->Delete();
 	delete m_spriteShader;
 	delete m_skyboxVerts;
 	m_skyboxShader->Delete();
@@ -374,11 +380,19 @@ void Renderer::Draw()
 	//----------------------------------------------------------------+
 	m_particleManager->Draw();
 
+	// ワールド空間上のスプライト描画
+	for (auto spr : m_worldSprites)
+	{
+		spr->Draw(m_worldSpaceSpriteShader);
+	}
+
+
 	// Spriteの描画
-	// 深度テストの停止
-	glDisable(GL_DEPTH_TEST);
 	// ブレンドのアクティブ化
 	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	// 深度テストの停止
+	glDisable(GL_DEPTH_TEST);
 	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
 	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 
@@ -420,6 +434,7 @@ void Renderer::Draw()
 
 void Renderer::AddSprite(SpriteComponent * in_sprite)
 {
+
 	int myDrawOrder = in_sprite->GetDrawOrder();
 	auto iter = m_spriteComponents.begin();
 	for (;
@@ -432,14 +447,29 @@ void Renderer::AddSprite(SpriteComponent * in_sprite)
 		}
 	}
 
-	// Inserts element before position of iterator
+	// イテレータで指定した番号にスプライトを挿入
 	m_spriteComponents.insert(iter, in_sprite);
 }
 
+// 指定したスプライトの削除
 void Renderer::RemoveSprite(SpriteComponent * in_sprite)
 {
+	// イテレータで削除指示の出たスプライトを探索
 	auto iter = std::find(m_spriteComponents.begin(), m_spriteComponents.end(), in_sprite);
 	m_spriteComponents.erase(iter);
+}
+
+// ワールド上のスプライトを配列に追加
+void Renderer::AddSpriteWorld(WorldSpaceUI* in_sprite)
+{
+	m_worldSprites.push_back(in_sprite);
+}
+
+// ワールドスプライト配列から指定したスプライトを削除
+void Renderer::RemoveSpriteWorld(WorldSpaceUI* in_sprite)
+{
+	auto iter = std::find(m_worldSprites.begin(), m_worldSprites.end(), in_sprite);
+	m_worldSprites.erase(iter);
 }
 
 
@@ -529,7 +559,7 @@ void Renderer::SetWindowTitle(const std::string & in_title)
 }
 
 // パーティクルの頂点情報をバインドしアクティブ化
-void Renderer::SetParticleVertex()
+void Renderer::SetWorldSpriteVertex()
 {
 	m_particleVertex->SetActive();
 }
@@ -781,7 +811,7 @@ void Renderer::CreateSpriteVerts()
 }
 
 // パーティクル用の頂点配列を生成
-void Renderer::CreateParticleVerts()
+void Renderer::CreateWorldSpriteVerts()
 {
 	float vertices[] = 
 	{
@@ -810,11 +840,18 @@ bool Renderer::LoadShaders()
 	{
 		return false;
 	}
-
 	m_spriteShader->SetActive();
 	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(m_screenWidth, m_screenHeight);
 	m_spriteShader->SetMatrixUniform("u_ViewProj", viewProj);
 
+	// ワールド空間用スプライトシェーダー
+	m_worldSpaceSpriteShader = new Shader();
+	if (!m_worldSpaceSpriteShader->Load("Data/Shaders/WorldSpaceSprite.vert", "Data/Shaders/WorldSpaceSprite.frag"))
+	{
+		return false;
+	}
+	m_worldSpaceSpriteShader->SetActive();
+	m_worldSpaceSpriteShader->SetMatrixUniform("u_ViewProj", viewProj);
 
 
 	// メッシュシェーダー
@@ -855,7 +892,6 @@ bool Renderer::LoadShaders()
 	m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
 
 	// スカイボックス用シェーダー
-		// スキンシェーダー
 	m_skyboxShader = new Shader();
 	if (!m_skyboxShader->Load("Data/Shaders/SkyBox.vert", "Data/Shaders/SkyBox.frag"))
 	{

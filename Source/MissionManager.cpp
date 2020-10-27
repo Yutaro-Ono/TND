@@ -25,28 +25,46 @@ MissionManager::MissionManager(GameWorld* in_world)
 	// 乱数で生成し、開始・終了点で被りがないかつ他のミッションと被らないこと
 	int startPos[MISSION_ALL_NUM], goalPos[MISSION_ALL_NUM];
 	
+	// 依頼人アクタ配列をシャッフル
+	m_world->ShuffleClientActor();
+
 	// ミッションリストの生成
 	for (int i = 0; i < MISSION_ALL_NUM; i++)
 	{
 		// ミッション種類の乱数
 		int missionType = rand() % 2 + 1;
-		// 依頼人番号の乱数
-		startPos[i] = rand() % m_world->GetClients().size();
-		goalPos[i] = rand() % m_world->GetClients().size();
-
-		// 座標の被りがないようにする
-		do
-		{
-			startPos[i] = rand() % m_world->GetClients().size();
-		} while (m_world->GetClients()[startPos[i]]->GetIsSelected());
-		m_world->GetClients()[startPos[i]]->SetIsSelected(true);
-		do
-		{
-			goalPos[i] = rand() % m_world->GetClients().size();
-
-		} while (m_world->GetClients()[goalPos[i]]->GetIsSelected());
-		m_world->GetClients()[goalPos[i]]->SetIsSelected(true);
 		
+		startPos[i] = -1;
+		// 依頼人アクタの中から選択状態でない依頼人を探し、スタート地点アクタの番号を取得する
+		for (int j = 0; j < m_world->GetClients().size(); j++)
+		{
+			if (m_world->GetClients()[j]->GetIsSelected() != true)
+			{
+				startPos[i] = j;
+				m_world->GetClients()[j]->SetIsSelected(true);
+			}
+			// スタート地点が変更されていたらループを抜ける
+			if (startPos[i] >= 0)
+			{
+				break;
+			}
+		}
+
+		goalPos[i] = -1;
+		// 依頼人アクタの中から選択状態でない依頼人を探し、ゴール地点アクタの番号を取得する
+		for (int j = 0; j < m_world->GetClients().size(); j++)
+		{
+			if (m_world->GetClients()[j]->GetIsSelected() != true)
+			{
+				goalPos[i] = j;
+				m_world->GetClients()[j]->SetIsSelected(true);
+			}
+			// ゴール地点が変更されていたらループを抜ける
+			if (goalPos[i] >= 0)
+			{
+				break;
+			}
+		}
 
 
 		// ミッションタイプごとにミッション内容を設定
@@ -66,6 +84,9 @@ MissionManager::MissionManager(GameWorld* in_world)
 			m_missions[i]->SetMissionDetail(m_world->GetClients()[startPos[i]],
 				m_world->GetClients()[goalPos[i]], 1000, 45);
 		}
+
+		// 依頼人アクタ配列をシャッフル
+		m_world->ShuffleClientActor();
 	}
 
 
@@ -106,8 +127,13 @@ void MissionManager::Update(float in_deltaTime)
 			// 依頼人を非セレクト状態に
 			auto itr = std::find(m_world->GetClients().begin(), m_world->GetClients().end(), (*mission)->GetStartActor());
 			(*itr)->SetIsSelected(false);
+			(*itr)->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
 			itr = std::find(m_world->GetClients().begin(), m_world->GetClients().end(), (*mission)->GetGoalActor());
 			(*itr)->SetIsSelected(false);
+			(*itr)->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
+
+			// ミッションシャッフル
+			m_world->ShuffleClientActor();
 
 			endMissions.emplace_back(*mission);
 			mission = m_missions.erase(mission);
@@ -117,6 +143,7 @@ void MissionManager::Update(float in_deltaTime)
 			++mission;
 		}
 
+		
 		listNum++;
 	}
 	// 削除処理
@@ -185,6 +212,7 @@ void MissionManager::Update(float in_deltaTime)
 				// クライアントをセレクト状態に
 				m_world->GetClients()[startPos]->SetIsSelected(true);
 				m_world->GetClients()[goalPos]->SetIsSelected(true);
+
 			}
 		}
 	}

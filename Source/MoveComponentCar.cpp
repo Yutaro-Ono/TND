@@ -41,6 +41,12 @@ void MoveComponentCar::Update(float in_deltaTime)
 		}
 	}
 
+	// 重力処理
+	m_owner->SetPosition(m_owner->GetPosition() - Vector3(0.0f, 0.0f, 1.0f));
+	if (m_owner->GetPosition().z <= -20.0f)
+	{
+		m_owner->SetPosition(m_owner->GetPosition() + Vector3(0.0f, 0.0f, 20.0f));
+	}
 }
 
 
@@ -180,7 +186,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 			// 左右回転
 			DirVec.y += rightVec.y * axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 5.0f) * in_deltaTime;
 			// Z軸回転
-			m_radian += axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 60.0f) * in_deltaTime;
+			m_radian += axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 100.0f) * in_deltaTime;
 		}
 		// バック時
 		if (m_playerCar->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_BRAKE)
@@ -244,7 +250,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	// Rotationから前進ベクトルを更新し、結果の座標を算出
 	charaForwardVec = Vector3::Transform(charaForwardVec, rotation);
 	Vector3 resultPos = m_owner->GetPosition();
-	resultPos += m_forwardSpeed * charaForwardVec - Vector3(0.0f, 0.0f, 0.0f);
+	resultPos += m_forwardSpeed * charaForwardVec;
 
 	// オーナーへ渡す
 	m_owner->SetPosition(resultPos);

@@ -1,5 +1,5 @@
 #include "ClientActor.h"
-#include "SpriteComponent.h"
+#include "WorldSpaceUI.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "Skeleton.h"
@@ -13,6 +13,7 @@ const float AnimationSpeed = 0.5f;        // アニメーションの速度
 
 ClientActor::ClientActor(const Vector3& in_pos)
 	:m_isSelected(false)
+	,m_setting(CLIENT_SETTING::NONE)
 	,m_landMark(nullptr)
 	,m_animState(CLIENT_ANIM::ANIM_IDLE_LOOKAROUND)
 {
@@ -21,11 +22,9 @@ ClientActor::ClientActor(const Vector3& in_pos)
 	// スケール設定
 	SetScale(0.265f);
 
-	// テクスチャ生成
-	Texture* texture = new Texture();
-	texture->Load("Data/Interface/landmark.png");
-	m_landMark = new SpriteComponent(this);
-	m_landMark->SetTexture(texture);
+	// ランドマーク生成
+	m_landMark = new WorldSpaceUI(m_position, "Data/Interface/landmark.png", 300.0f);
+
 
 	// 依頼人のメッシュ生成
 	Mesh* mesh = RENDERER->GetMesh(MESH_PATH_CARLA + ".gpmesh");
@@ -59,5 +58,15 @@ ClientActor::~ClientActor()
 
 void ClientActor::UpdateActor(float in_deltaTime)
 {
+	// この依頼人がミッションに設定されている時のみランドマーク表示
+	if (m_isSelected && (m_setting == CLIENT_SETTING::START || m_setting == CLIENT_SETTING::GOAL))
+	{
+		m_landMark->SetVisible(true);
+	}
+	else
+	{
+		m_landMark->SetVisible(false);
+	}
+
 	m_recomputeWorldTransform = true;
 }

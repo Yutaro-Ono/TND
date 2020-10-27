@@ -1,15 +1,19 @@
-#pragma once
-#include <vector>
 //---------------------------------------------------------+
 //
 // ゲームワールド統括クラス
 //
 //---------------------------------------------------------+
+#pragma once
+#include <vector>
+#include "Environment.h"
 
 class GameWorld
 {
 
 public:
+
+
+
 
 	GameWorld();             // コンストラクタ
 	~GameWorld();            // デストラクタ
@@ -22,12 +26,17 @@ public:
 
 	class PlayerManager* GetPlayer() { return m_player; }
 
+	// 巡回地点・依頼人アクタのシャッフル処理
+	void ShufflePatrolPoint();
+	void ShuffleClientActor();
+	
 	// 依頼人アクタの配列ゲッター
 	const std::vector<class ClientActor*>& GetClients() { return m_clients; }
 
 	// 巡回地点の配列ゲッター
 	const std::vector<class PatrolPoint*>& GetPatrolPoint() { return m_patrolPoints; }
-	void ShufflePatrolPoint();
+
+	void ImGuiDebugWorld();
 
 
 	// 地形マネージャのポインタゲッター
@@ -47,6 +56,8 @@ private:
 
 	class MissionManager* m_mission;
 
-	class SkyBox* m_skyBox;
+
+	class Environment* m_environment;
+	Environment::GAME_TIME m_gameTime;
 
 };

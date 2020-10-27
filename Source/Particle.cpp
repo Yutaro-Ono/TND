@@ -50,7 +50,7 @@ void Particle::Draw(Shader * in_shader)
 	in_shader->SetFloatUniform("uAlpha", m_alpha);
 	in_shader->SetVectorUniform("uColor", m_color);
 
-	RENDERER->SetParticleVertex();
+	RENDERER->SetWorldSpriteVertex();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 }

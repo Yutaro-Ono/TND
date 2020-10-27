@@ -37,6 +37,7 @@
     <ClCompile Include="Source\CountDownUI.cpp" />
     <ClCompile Include="Source\CubeMapComponent.cpp" />
     <ClCompile Include="Source\DebugBox.cpp" />
+    <ClCompile Include="Source\Environment.cpp" />
     <ClCompile Include="Source\Font.cpp" />
     <ClCompile Include="Source\FrameBuffer.cpp" />
     <ClCompile Include="Source\GameConfig.cpp" />
@@ -115,8 +116,8 @@
     <ClCompile Include="Source\TitleScreen.cpp" />
     <ClCompile Include="Source\TutorialUI.cpp" />
     <ClCompile Include="Source\UIScreen.cpp" />
-    <ClCompile Include="Source\UIWorld.cpp" />
     <ClCompile Include="Source\VertexArray.cpp" />
+    <ClCompile Include="Source\WorldSpaceUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Source\CountDownUI.h" />
     <ClInclude Include="Source\CubeMapComponent.h" />
     <ClInclude Include="Source\DebugBox.h" />
+    <ClInclude Include="Source\Environment.h" />
     <ClInclude Include="Source\Font.h" />
     <ClInclude Include="Source\FrameBuffer.h" />
     <ClInclude Include="Source\GameConfig.h" />
@@ -220,8 +222,8 @@
     <ClInclude Include="Source\TitleScreen.h" />
     <ClInclude Include="Source\TutorialUI.h" />
     <ClInclude Include="Source\UIScreen.h" />
-    <ClInclude Include="Source\UIWorld.h" />
     <ClInclude Include="Source\VertexArray.h" />
+    <ClInclude Include="Source\WorldSpaceUI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\BasicMesh.frag" />
@@ -250,6 +252,8 @@
     <None Include="Data\Shaders\Sprite.vert" />
     <None Include="Data\Shaders\SpriteShader.frag" />
     <None Include="Data\Shaders\SpriteShader.vert" />
+    <None Include="Data\Shaders\WorldSpaceSprite.frag" />
+    <None Include="Data\Shaders\WorldSpaceSprite.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

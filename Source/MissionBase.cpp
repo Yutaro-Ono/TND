@@ -38,6 +38,20 @@ void MissionBase::Update(float in_deltaTime)
 	// プレイヤー座標を取得しておく
 	Vector3 playerPos = m_manager->GetPlayer()->GetPosition();
 	
+
+	bool isSelected = false;
+	// ミッションがカーソルで選択されている時
+	if (m_listNum == m_manager->GetSelectedMission())
+	{
+		isSelected = true;
+	}
+	else
+	{
+		// 選択されていなければ表示しない
+		m_startActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
+		m_goalActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
+	}
+
 	//---------------------------------------------------+
 	//
 	// ステートごとの更新処理
@@ -46,19 +60,35 @@ void MissionBase::Update(float in_deltaTime)
 	// ミッション保留中
 	if (m_missionState == HOLD)
 	{
+		// UI上のカーソルでこの任務が選択されている場合、ランドマークを表示
+		if (isSelected)
+		{
+			m_startActor->SetClientSetting(ClientActor::CLIENT_SETTING::START);
+		}
+
+
 		// 最終時刻を更新し続ける
 		m_lastTime = SDL_GetTicks();
 
 		// ゴール地点にプレイヤーが接触し、ボタンを押したらミッション開始
 		if (CheckDistPlayer(playerPos, m_startPos))
 		{
+			m_startActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
+			// 任務を受諾したとしてカウントダウン開始
 			m_missionState = ACTIVE;
 		}
+
+
 	}
 
 	// ミッション受注時
 	if (m_missionState == ACTIVE)
 	{
+		// UI上のカーソルでこの任務が選択されている場合、ランドマークを表示
+		if (isSelected)
+		{
+			m_goalActor->SetClientSetting(ClientActor::CLIENT_SETTING::GOAL);
+		}
 
 		// 現在時刻を更新
 		m_currentTime = SDL_GetTicks();
@@ -91,8 +121,10 @@ void MissionBase::Update(float in_deltaTime)
 		// ゴール地点にプレイヤーが接触し、ボタンを押したらミッション終了(成功)
 		if (CheckDistPlayer(playerPos, m_goalPos))
 		{
+			m_goalActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
 			m_missionState = SUCCESS;
 		}
+
 	}
 
 }

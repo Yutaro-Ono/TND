@@ -18,6 +18,8 @@
 #include "LoadScreen.h"
 #include "Camera.h"
 #include "SkyBox.h"
+#include "Environment.h"
+#include "WorldSpaceUI.h"
 const int TitleScene::STAGE_ALL_NUM = 1;
 
 
@@ -42,8 +44,8 @@ TitleScene::~TitleScene()
 {
 	// プレイヤーを削除
 	m_player->SetState(Actor::STATE_DEAD);
-	// スカイドームを削除
-	//m_skydome->SetState(Actor::STATE_DEAD);
+	
+	delete m_environment;
 
 }
 
@@ -76,8 +78,9 @@ void TitleScene::Initialize()
 	Camera* camera = new Camera(m_player);
 	camera->Initialize(Vector3(0.0f, -250.0f, 0.0f), m_player->GetPosition(), Vector3::Zero);
 
-	// Skybox
-	SkyBox* sky = new SkyBox();
+	// 環境生成
+	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
+	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
 
 
 	// 音楽

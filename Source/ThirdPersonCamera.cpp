@@ -253,6 +253,8 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
     //-----------------------------------------------------+
 	else
 	{
+		//SDL_SetRelativeMouseMode(SDL_TRUE);
+
 		// マウスの位置からカメラのヨーとピッチを取得
 		m_mousePos = MOUSE_INSTANCE.GetPosition();
 

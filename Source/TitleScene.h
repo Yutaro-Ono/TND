@@ -50,7 +50,7 @@ private:
 
 	class FollowCamera* m_camera;                                       // カメラ
 
-	class Skydome* m_skydome;                                           // スカイドーム
+	class Environment* m_environment;                                   // 環境
 
 	int m_selectedStage;                                                // 選択中のステージ
 	std::vector<int> m_stage;                                           // ステージ番号

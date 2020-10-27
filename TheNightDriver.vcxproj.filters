@@ -279,6 +279,15 @@
     <Filter Include="ソース ファイル\Actor\Helicopter\PatrolPoint">
       <UniqueIdentifier>{15441825-e259-40d9-b2e1-08309ac27336}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\World">
+      <UniqueIdentifier>{2a4edf35-73c1-49bf-8590-bd8c1bb9cf6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\Sprite\WorldSpace">
+      <UniqueIdentifier>{47e2aff1-5947-48f1-8a8c-a34400383581}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Interface\WorldSpace">
+      <UniqueIdentifier>{33b7adf4-3564-4883-89ac-2c035e10b9eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -313,9 +322,6 @@
     </ClCompile>
     <ClCompile Include="Source\UIScreen.cpp">
       <Filter>ソース ファイル\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\LevelManager.cpp">
-      <Filter>ソース ファイル\Actor\Level</Filter>
     </ClCompile>
     <ClCompile Include="Source\Math.cpp">
       <Filter>ソース ファイル\System</Filter>
@@ -521,9 +527,6 @@
     <ClCompile Include="Source\ThirdPersonCamera.cpp">
       <Filter>ソース ファイル\Camera\ThirdPerson</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameWorld.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\MissionUI.cpp">
       <Filter>ソース ファイル\Interface\Mission</Filter>
     </ClCompile>
@@ -544,9 +547,6 @@
     </ClCompile>
     <ClCompile Include="Source\FrameBuffer.cpp">
       <Filter>ソース ファイル\Renderer\FrameBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\UIWorld.cpp">
-      <Filter>ソース ファイル\Interface</Filter>
     </ClCompile>
     <ClCompile Include="Source\Helicopter.cpp">
       <Filter>ソース ファイル\Actor\Helicopter</Filter>
@@ -574,6 +574,18 @@
     </ClCompile>
     <ClCompile Include="Source\PatrolPoint.cpp">
       <Filter>ソース ファイル\Actor\Helicopter\PatrolPoint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameWorld.cpp">
+      <Filter>ソース ファイル\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LevelManager.cpp">
+      <Filter>ソース ファイル\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Environment.cpp">
+      <Filter>ソース ファイル\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\WorldSpaceUI.cpp">
+      <Filter>ソース ファイル\Interface\WorldSpace</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -636,9 +648,6 @@
     </ClInclude>
     <ClInclude Include="Source\TitleScene.h">
       <Filter>ソース ファイル\Scene\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\LevelManager.h">
-      <Filter>ソース ファイル\Actor\Level</Filter>
     </ClInclude>
     <ClInclude Include="Source\LevelBlock.h">
       <Filter>ソース ファイル\Actor\Level\Block</Filter>
@@ -832,9 +841,6 @@
     <ClInclude Include="Source\ThirdPersonCamera.h">
       <Filter>ソース ファイル\Camera\ThirdPerson</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GameWorld.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Source\MissionUI.h">
       <Filter>ソース ファイル\Interface\Mission</Filter>
     </ClInclude>
@@ -855,9 +861,6 @@
     </ClInclude>
     <ClInclude Include="Source\ClientActor.h">
       <Filter>ソース ファイル\Actor\ClientActor</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\UIWorld.h">
-      <Filter>ソース ファイル\Interface</Filter>
     </ClInclude>
     <ClInclude Include="Source\Helicopter.h">
       <Filter>ソース ファイル\Actor\Helicopter</Filter>
@@ -885,6 +888,18 @@
     </ClInclude>
     <ClInclude Include="Source\PatrolPoint.h">
       <Filter>ソース ファイル\Actor\Helicopter\PatrolPoint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameWorld.h">
+      <Filter>ソース ファイル\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LevelManager.h">
+      <Filter>ソース ファイル\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Environment.h">
+      <Filter>ソース ファイル\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\WorldSpaceUI.h">
+      <Filter>ソース ファイル\Interface\WorldSpace</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -965,6 +980,12 @@
     </None>
     <None Include="Data\Shaders\SpriteShader.frag">
       <Filter>ソース ファイル\Shader\Source\Sprite</Filter>
+    </None>
+    <None Include="Data\Shaders\WorldSpaceSprite.vert">
+      <Filter>ソース ファイル\Shader\Source\Sprite\WorldSpace</Filter>
+    </None>
+    <None Include="Data\Shaders\WorldSpaceSprite.frag">
+      <Filter>ソース ファイル\Shader\Source\Sprite\WorldSpace</Filter>
     </None>
   </ItemGroup>
 </Project>
