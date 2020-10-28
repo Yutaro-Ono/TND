@@ -1,12 +1,3 @@
-// ----------------------------------------------------------------
-// From Game Programming in C++ by Sanjay Madhav
-// Copyright (C) 2017 Sanjay Madhav. All rights reserved.
-// 
-// Released under the BSD License
-// See LICENSE in root directory for full details.
-// ----------------------------------------------------------------
-
-// GLSL 3.3 を要求
 #version 330 core
 
 // 頂点シェーダーからの入力
@@ -22,6 +13,15 @@ out vec4 outColor;
 
 // テクスチャサンプリング
 uniform sampler2D uTexture;
+// テクスチャサンプリング用構造体
+struct Material
+{
+	sampler2D diffuseMap;
+	sampler2D specularMap;
+	sampler2D normalMap;
+	sampler2D depthMap;
+};
+uniform Material u_mat;
 
 // ディレクショナルライト用構造体
 struct DirectionalLight
@@ -66,6 +66,6 @@ void main()
 	Diffuse = uDirLight.mDiffuseColor * max(NdotL,0.0f);
 	Specular = uDirLight.mSpecColor * pow(max(0.0, dot(R, V)), uSpecPower);
 
-	// Final color is texture color times phong light (alpha = 1)
-	outColor = texture(uTexture, fragTexCoord) * vec4((Diffuse + uAmbientLight),1.0f) + vec4(Specular,1.0f);
+	// 最終カラーを出力 (alpha = 1)
+	outColor = texture(u_mat.diffuseMap, fragTexCoord) * vec4((Diffuse + uAmbientLight),1.0f) + vec4(Specular,1.0f);
 }

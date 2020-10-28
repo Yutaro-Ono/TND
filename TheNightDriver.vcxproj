@@ -84,7 +84,6 @@
     <ClCompile Include="Source\OrbitCamera.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\ParticleManager.cpp" />
-    <ClCompile Include="Source\ParticleTestScene.cpp" />
     <ClCompile Include="Source\PatrolComponent.cpp" />
     <ClCompile Include="Source\PatrolPoint.cpp" />
     <ClCompile Include="Source\PauseScreen.cpp" />
@@ -189,7 +188,6 @@
     <ClInclude Include="Source\OrbitCamera.h" />
     <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\ParticleManager.h" />
-    <ClInclude Include="Source\ParticleTestScene.h" />
     <ClInclude Include="Source\PatrolComponent.h" />
     <ClInclude Include="Source\PatrolPoint.h" />
     <ClInclude Include="Source\PauseScreen.h" />
@@ -228,6 +226,8 @@
   <ItemGroup>
     <None Include="Data\Shaders\BasicMesh.frag" />
     <None Include="Data\Shaders\BasicMesh.vert" />
+    <None Include="Data\Shaders\DepthMap.frag" />
+    <None Include="Data\Shaders\DepthMap.vert" />
     <None Include="Data\Shaders\DirectLine.vert" />
     <None Include="Data\Shaders\FB\BlurScreen.frag" />
     <None Include="Data\Shaders\FB\CernelScreen.frag" />
@@ -245,6 +245,8 @@
     <None Include="Data\Shaders\Particle.frag" />
     <None Include="Data\Shaders\Phong.frag" />
     <None Include="Data\Shaders\Phong.vert" />
+    <None Include="Data\Shaders\PhongShadow.frag" />
+    <None Include="Data\Shaders\PhongShadow.vert" />
     <None Include="Data\Shaders\Skinned.vert" />
     <None Include="Data\Shaders\SkyBox.frag" />
     <None Include="Data\Shaders\SkyBox.vert" />

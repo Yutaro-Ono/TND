@@ -288,6 +288,12 @@
     <Filter Include="ソース ファイル\Interface\WorldSpace">
       <UniqueIdentifier>{33b7adf4-3564-4883-89ac-2c035e10b9eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\Shadow">
+      <UniqueIdentifier>{162cfd7d-cb1a-4dd0-905d-bd67c19344b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\Shadow\DepthMap">
+      <UniqueIdentifier>{5cc68e3a-1263-4a07-9678-8ec8c58d143c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -316,9 +322,6 @@
     </ClCompile>
     <ClCompile Include="Source\DebugBox.cpp">
       <Filter>ソース ファイル\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ParticleTestScene.cpp">
-      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\UIScreen.cpp">
       <Filter>ソース ファイル\Interface</Filter>
@@ -633,9 +636,6 @@
     </ClInclude>
     <ClInclude Include="Source\Mesh.h">
       <Filter>ソース ファイル\Renderer\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ParticleTestScene.h">
-      <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneBase.h">
       <Filter>ソース ファイル\Scene</Filter>
@@ -986,6 +986,18 @@
     </None>
     <None Include="Data\Shaders\WorldSpaceSprite.frag">
       <Filter>ソース ファイル\Shader\Source\Sprite\WorldSpace</Filter>
+    </None>
+    <None Include="Data\Shaders\PhongShadow.vert">
+      <Filter>ソース ファイル\Shader\Source\Shadow</Filter>
+    </None>
+    <None Include="Data\Shaders\PhongShadow.frag">
+      <Filter>ソース ファイル\Shader\Source\Shadow</Filter>
+    </None>
+    <None Include="Data\Shaders\DepthMap.vert">
+      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap</Filter>
+    </None>
+    <None Include="Data\Shaders\DepthMap.frag">
+      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap</Filter>
     </None>
   </ItemGroup>
 </Project>

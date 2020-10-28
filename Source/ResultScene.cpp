@@ -28,10 +28,10 @@ ResultScene::ResultScene(int in_score, float in_bestSpeed)
 	//ライティング
 	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.5f, 0.56f, 0.6f));
 	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
-	dir.m_direction = Vector3(0.0f, 0.0f, 1.0f);
-	dir.m_direction.Normalize();
-	dir.m_diffuseColor = Vector3(1.0f, 1.0f, 1.0f);
-	dir.m_specColor = Vector3(0.8f, 0.8f, 0.8f);
+	dir.direction = Vector3(0.0f, 0.0f, 1.0f);
+	dir.direction.Normalize();
+	dir.diffuse = Vector3(1.0f, 1.0f, 1.0f);
+	dir.specular = Vector3(0.8f, 0.8f, 0.8f);
 }
 
 

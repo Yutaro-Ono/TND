@@ -1,36 +1,37 @@
-// Request GLSL 3.3
 #version 330 core
 
-// Uniforms for world transform and view-proj
-uniform mat4 uWorldTransform;
-uniform mat4 uViewProj;
-
-// Attribute 0 is position, 1 is normal, 2 is tex coords.
+// attribute
 layout(location = 0) in vec3 inPosition;
 layout(location = 1) in vec3 inNormal;
 layout(location = 2) in vec2 inTexCoord;
 
-// Any vertex outputs (other than position)
+// ワールド変換行列・ビュープロジェクション行列
+uniform mat4 uWorldTransform;
+uniform mat4 uViewProj;
+
+
+// フラグメントへの出力
+// テクスチャ座標
 out vec2 fragTexCoord;
-// Normal (in world space)
+// ワールドスペース上の法線
 out vec3 fragNormal;
-// Position (in world space)
+// ワールドスペース上の座標
 out vec3 fragWorldPos;
 
 void main()
 {
-	// Convert position to homogeneous coordinates
+	// vec4型に頂点座標を変換
 	vec4 pos = vec4(inPosition, 1.0);
-	// Transform position to world space
+	// 頂点情報をワールドスペースに変換
 	pos = pos * uWorldTransform;
-	// Save world position
+	// フラグメント出力にセット
 	fragWorldPos = pos.xyz;
-	// Transform to clip space
+	// クリップ空間にワールド上の頂点座標を変換
 	gl_Position = pos * uViewProj;
 
-	// Transform normal into world space (w = 0)
+	// 法線情報をワールドスペースに変換 (w = 0)
 	fragNormal = (vec4(inNormal, 0.0f) * uWorldTransform).xyz;
 
-	// Pass along the texture coordinate to frag shader
+	// テクスチャ座標をフラグメントシェーダへ出力
 	fragTexCoord = inTexCoord;
 }

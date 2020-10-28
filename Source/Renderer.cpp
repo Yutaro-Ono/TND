@@ -29,6 +29,7 @@
 #include "BoxCollider.h"
 #include "Collision.h"
 #include "WorldSpaceUI.h"
+#include "ShadowMap.h"
 
 // コンストラクタ
 Renderer::Renderer()
@@ -64,9 +65,9 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
     //-----------------------------------------------------------------+
     // OpenGLコアプロファイルを使用する
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	// 指定 -> OpenGL/ver3.3
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);     // メジャーバージョン
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);     // マイナーバージョン
+	// 指定 -> OpenGL/ver4.2
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);     // メジャーバージョン
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);     // マイナーバージョン
 	// RGBA各チャンネルに8bitのカラーバッファを指定する
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);                  // R
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);                // G
@@ -192,12 +193,17 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	//------------------------------------------------------------------+
 	CreateCubeMapVerts();
 
+
 	//------------------------------------------------------------------+
 	// ポストエフェクト
 	//------------------------------------------------------------------+
 	m_frameBuffer = new FrameBuffer();
 	m_frameBuffer->CreateFrameBuffer();
 
+	//--------------------------------------------+
+    // シャドウマップ関連
+    //--------------------------------------------+
+	m_shadowMap = new ShadowMap();
 
 	// カリング
 	glFrontFace(GL_CCW);
@@ -259,10 +265,12 @@ void Renderer::Delete()
 	m_meshShader->Delete();
 
 	// スプライトの解放
-	while (!m_worldSprites.empty())
+	for (auto sprite : m_worldSprites)
 	{
-		delete m_worldSprites.back();
+		delete sprite;
 	}
+	m_worldSprites.clear();
+
 	delete m_spriteVerts;
 	m_spriteShader->Delete();
 	m_worldSpaceSpriteShader->Delete();
@@ -270,6 +278,7 @@ void Renderer::Delete()
 	delete m_skyboxVerts;
 	m_skyboxShader->Delete();
 	delete m_frameBuffer;
+	delete m_shadowMap;
 
 	// コンテキストの破棄
 	SDL_GL_DeleteContext(m_context);
@@ -287,7 +296,7 @@ void Renderer::Draw()
 	ImGui::NewFrame();
 	// ImGui更新
 	ImGui::Begin("Renderer");
-	ImGui::SliderInt("MeshShader", &m_switchShader, 0, 1);
+	ImGui::SliderInt("MeshShader", &m_switchShader, 0, 2);
 
 	// フレームバッファ書き込み処理
 	m_frameBuffer->WriteFrameBuffer();
@@ -299,9 +308,7 @@ void Renderer::Draw()
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	// Clear the color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// モデルの背面をカリング
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+
 
 	//----------------------------------------------+
 	// メッシュシェーダー(phong)
@@ -333,9 +340,9 @@ void Renderer::Draw()
 		m_meshNormalShader->SetMatrixUniform("uViewProj", m_view * m_projection);
 		// ライティング変数をセット
 		SetLightUniforms(m_meshNormalShader);
-		m_meshNormalShader->SetVectorUniform("uLightPos", m_directionalLight.m_position);
-		//m_meshNormalShader->SetVectorUniform("uViewPos", m_cameraPos);
-		//m_meshNormalShader->SetVectorUniform("uCameraPos", m_cameraPos);
+		m_meshNormalShader->SetVectorUniform("uLightPos", m_directionalLight.position);
+		m_meshNormalShader->SetVectorUniform("uViewPos", m_cameraPos);
+		m_meshNormalShader->SetVectorUniform("uCameraPos", m_cameraPos);
 		// 全てのメッシュコンポーネントを描画
 		for (auto mc : m_meshComponents)
 		{
@@ -345,6 +352,7 @@ void Renderer::Draw()
 			}
 		}
 	}
+
 
 	//-----------------------------------------------------------+
 	// ボーン入りメッシュの描画
@@ -363,6 +371,14 @@ void Renderer::Draw()
 		}
 	}
 	
+	//-----------------------------------------------+
+    // メッシュシェーダー(shadow)
+    //-----------------------------------------------+
+	if (m_switchShader == 2)
+	{
+		m_shadowMap->RenderDepthMapFromLightView(this, m_meshComponents);
+		m_shadowMap->DrawShadowMesh(m_meshComponents);
+	}
 	//---------------------------------------------------------------+
 	// スカイボックスの描画
 	//---------------------------------------------------------------+
@@ -381,6 +397,7 @@ void Renderer::Draw()
 	m_particleManager->Draw();
 
 	// ワールド空間上のスプライト描画
+	m_worldSpaceSpriteShader->SetActive();
 	for (auto spr : m_worldSprites)
 	{
 		spr->Draw(m_worldSpaceSpriteShader);
@@ -879,8 +896,13 @@ bool Renderer::LoadShaders()
 	}
 	m_meshNormalShader->SetActive();
 	m_meshNormalShader->SetMatrixUniform("uViewProj", m_view * m_projection);
-	m_meshNormalShader->SetVectorUniform("uLightPos", m_directionalLight.m_position);
+	m_meshNormalShader->SetVectorUniform("uLightPos", m_directionalLight.position);
 	m_meshNormalShader->SetVectorUniform("uCameraPos", m_cameraPos);
+	// サンプリング用テクスチャセット
+	m_meshNormalShader->SetInt("u_mat.diffuseMap", 0);
+	m_meshNormalShader->SetInt("u_mat.specularMap", 1);
+	m_meshNormalShader->SetInt("u_mat.normalMap", 2);
+	m_meshNormalShader->SetInt("u_mat.depthMap", 3);
 
 	// スキンシェーダー
 	m_skinnedShader = new Shader();
@@ -890,6 +912,11 @@ bool Renderer::LoadShaders()
 	}
 	m_skinnedShader->SetActive();
 	m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+	// サンプリング用テクスチャセット
+	m_skinnedShader->SetInt("u_mat.diffuseMap", 0);
+	m_skinnedShader->SetInt("u_mat.specularMap", 1);
+	m_skinnedShader->SetInt("u_mat.normalMap", 2);
+	m_skinnedShader->SetInt("u_mat.depthMap", 3);
 
 	// スカイボックス用シェーダー
 	m_skyboxShader = new Shader();
@@ -915,8 +942,8 @@ void Renderer::SetLightUniforms(Shader * in_shader)
 	in_shader->SetVectorUniform("uAmbientLight", m_ambientLight);
 
 	// ディレクショナルライト
-	in_shader->SetVectorUniform("uDirLight.mPosition", m_directionalLight.m_position);
-	in_shader->SetVectorUniform("uDirLight.mDirection", m_directionalLight.m_direction);
-	in_shader->SetVectorUniform("uDirLight.mDiffuseColor", m_directionalLight.m_diffuseColor);
-	in_shader->SetVectorUniform("uDirLight.mSpecColor", m_directionalLight.m_specColor);
+	in_shader->SetVectorUniform("uDirLight.mPosition", m_directionalLight.position);
+	in_shader->SetVectorUniform("uDirLight.mDirection", m_directionalLight.direction);
+	in_shader->SetVectorUniform("uDirLight.mDiffuseColor", m_directionalLight.diffuse);
+	in_shader->SetVectorUniform("uDirLight.mSpecColor", m_directionalLight.specular);
 }

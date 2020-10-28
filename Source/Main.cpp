@@ -8,7 +8,6 @@
 #include "GameMain.h"
 #include "Renderer.h"
 #include "TitleScene.h"
-#include "ParticleTestScene.h"
 #include <SDL.h>
 #include <GL/glew.h>
 #include <iostream>

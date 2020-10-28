@@ -31,11 +31,12 @@ TitleScene::TitleScene()
 	//ライティング
 	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.5f, 0.56f, 0.6f));
 	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
-	dir.m_position = Vector3(0.0f, 0.0f, 1000.0f);
-	dir.m_direction = Vector3(0.0f, 0.0f, -1.0f);
-	dir.m_direction.Normalize();
-	dir.m_diffuseColor = Vector3(1.0f, 1.0f, 0.6f);
-	dir.m_specColor = Vector3(0.5f, 1.0f, 0.5f);
+	dir.position = Vector3(0.0f, 0.0f, 1000.0f);
+	dir.direction = Vector3(0.0f, 0.0f, -1.0f);
+	dir.direction.Normalize();
+	dir.ambient = Vector3(0.5f, 0.5f, 0.5f);
+	dir.diffuse = Vector3(1.0f, 1.0f, 0.6f);
+	dir.specular = Vector3(0.5f, 1.0f, 0.5f);
 }
 
 
@@ -81,7 +82,7 @@ void TitleScene::Initialize()
 	// 環境生成
 	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
 	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
-
+	m_worldui = new WorldSpaceUI(Vector3::Zero, "Data/Interface/landmark.png", 100.0f);
 
 	// 音楽
 	m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";

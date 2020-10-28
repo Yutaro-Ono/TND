@@ -27,12 +27,33 @@ void SkeletalMeshComponent::Draw(Shader* in_shader)                         // •
 			MAX_SKELETON_BONES);
 		// Set specular power                                             ƒXƒyƒLƒ…ƒ‰[‹­“x‚ðƒZƒbƒg
 		in_shader->SetFloatUniform("uSpecPower", 100);
-		// Set the active texture                                         ƒeƒNƒXƒ`ƒƒ‚ðƒZƒbƒg 
-		Texture* t = m_mesh->GetTexture(m_textureIndex);
-		if (t)
+
+		// ŠeŽíƒeƒNƒXƒ`ƒƒ‚ðƒVƒF[ƒ_‚ÉƒZƒbƒg‚·‚é
+		// ƒeƒNƒXƒ`ƒƒ‚ª“Ç‚Ýž‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚Í–³Ž‹‚·‚é
+		if (m_mesh->GetDiffuseMap() != nullptr)
 		{
-			t->SetActive();
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, m_mesh->GetDiffuseMap()->GetTextureID());
+
 		}
+		if (m_mesh->GetSpecularMap() != nullptr)
+		{
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, m_mesh->GetSpecularMap()->GetTextureID());
+
+		}
+		if (m_mesh->GetNormalMap() != nullptr)
+		{
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, m_mesh->GetNormalMap()->GetTextureID());
+
+		}
+		if (m_mesh->GetDepthMap() != nullptr)
+		{
+			glActiveTexture(GL_TEXTURE3);
+			glBindTexture(GL_TEXTURE_2D, m_mesh->GetDepthMap()->GetTextureID());
+		}
+
 		// Set the mesh's vertex array as active                          ƒƒbƒVƒ…‚Ì’¸“_”z—ñ‚ðƒAƒNƒeƒBƒu‚É
 		VertexArray* va = m_mesh->GetVertexArray();
 		va->SetActive();

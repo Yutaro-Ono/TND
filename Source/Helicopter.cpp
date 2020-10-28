@@ -37,7 +37,7 @@ Helicopter::Helicopter(GameWorld* in_world, const Vector3& in_pos)
 
 	// 巡回コンポーネントを生成・追加
 	m_patrolComp = new PatrolComponent(this, m_world);
-	AddComponent(m_patrolComp);
+	//AddComponent(m_patrolComp);
 
 
 	

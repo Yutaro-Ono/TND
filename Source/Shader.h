@@ -31,6 +31,7 @@ public:
 
 	void SetMatrixUniforms(const char* in_name, Matrix4* in_matrices, unsigned in_count);     // シェーダー行列配列名に行列をセットする
 	void SetVectorUniform(const char* in_name, const Vector3& in_vector);                     // ベクトル値をシェーダー変数nameにセットする
+	void SetVector2Uniform(const char* in_name, Vector2& in_vector);                           // 二次元ベクトルセット
 	void SetFloatUniform(const char* in_name, float in_value);                                // 変数値をシェーダ変数nameにセットする
 
 private:

@@ -182,7 +182,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 
 			if (patrolPointData[iy][ix] >= 34)
 			{
-				PatrolPoint* patrol = new PatrolPoint(Vector3(ix * blockSize, offsetY - iy * blockSize, 800.0f));
+				PatrolPoint* patrol = new PatrolPoint(Vector3(ix * blockSize, offsetY - iy * blockSize, 1000.0f));
 
 				in_world->AddPatrolPoint(patrol);
 

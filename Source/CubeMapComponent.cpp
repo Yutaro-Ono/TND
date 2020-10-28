@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "Math.h"
+#include "SkyBox.h"
 #include <vector>
 
 
@@ -45,6 +46,7 @@ void CubeMapComponent::Draw(Shader* in_shader)
 		in_shader->SetMatrixUniform("u_Proj", projection);
 
 		glDepthFunc(GL_LEQUAL);
+
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture->GetTextureID());

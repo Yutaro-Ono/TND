@@ -3,10 +3,11 @@
 #include "Renderer.h"
 #include "GameMain.h"
 #include "GameConfig.h"
+#include "CameraComponent.h"
 #include "MeshComponent.h"
 
-const int ShadowMap::SHADOW_WIDTH = 4096;
-const int ShadowMap::SHADOW_HEIGHT = 4096;
+const int ShadowMap::SHADOW_WIDTH = 8192;
+const int ShadowMap::SHADOW_HEIGHT = 8192;
 
 // コンストラクタ
 ShadowMap::ShadowMap()
@@ -34,31 +35,35 @@ ShadowMap::ShadowMap()
 	// フレームバッファのバインド解除
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	// 画面全体を覆う頂点を定義
-	unsigned int vbo = 0;
-	float quadVertices[] =
-	{
-		// x   // y   // z  // u  // v
-		-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-		-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-		 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-		 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-	};
-	glGenVertexArrays(1, &m_screenVAO);
-	glGenBuffers(1, &m_screenVAO);;
-	glBindVertexArray(m_screenVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	//// 画面全体を覆う頂点を定義
+	//unsigned int vbo = 0;
+	//float quadVertices[] =
+	//{
+	//	// x   // y   // z  // u  // v
+	//	-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+	//	-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+	//	 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+	//	 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+	//};
+	//glGenVertexArrays(1, &m_screenVAO);
+	//glGenBuffers(1, &m_screenVAO);;
+	//glBindVertexArray(m_screenVAO);
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+
+
 
 	// シェーダの作成
 	m_depthShader = new Shader();
-	m_depthShader->Load("Data/Shaders/depthMap.vert", "Data/Shaders/depthMap.frag");
+	m_depthShader->Load("Data/Shaders/DepthMap.vert", "Data/Shaders/DepthMap.frag");
 	m_shadowShader = new Shader();
-	m_shadowShader->Load("Data/Shaders/ShadowMap.vert", "Data/Shaders/ShadowMap.frag");
+	m_shadowShader->Load("Data/Shaders/PhongShadow.vert", "Data/Shaders/PhongShadow.frag");
+
+
 }
 
 ShadowMap::~ShadowMap()
@@ -73,15 +78,21 @@ ShadowMap::~ShadowMap()
 
 void ShadowMap::RenderDepthMapFromLightView(Renderer* in_renderer, const std::vector<class MeshComponent*>& in_mesh)
 {
+	// 深度テスト有効化
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	// ライト視点用のプロジェクション行列とビュー行列を用意する
     // ディレクショナルライト(平行)であるため、プロジェクション行列には正射影行列を使用
 
 	// ライト視点の注視点 (プレイヤーの座標を入れる予定)
-	Vector3 lightViewTraget = Vector3(1800.0f, 2400.0f, 0.0f);
+	Vector3 lightViewTraget = Vector3(12000.0f, 14000.0f, -12.0f);
+	Vector3 direction = lightViewTraget - in_renderer->GetDirectionalLight().position;
+	direction.Normalize();
 
-	m_lightProj = Matrix4::CreateOrtho(static_cast<float>(GAME_CONFIG->GetScreenWidth()), static_cast<float>(GAME_CONFIG->GetScreenHeight()),
-		1.0f, 100000.0f);
-	m_lightView = Matrix4::CreateLookAt(in_renderer->GetDirectionalLight().m_position, lightViewTraget, Vector3::UnitZ);
+	m_lightProj = Matrix4::CreateOrtho(35000.0f, 20000.0f, 1.0f, 35000.0f);
+	m_lightView = Matrix4::CreateLookAt(in_renderer->GetDirectionalLight().position, lightViewTraget, Vector3::UnitZ);
 	m_lightSpace = m_lightView * m_lightProj;
 
 	// シャドウマップはレンダリング時の解像度とは異なり、シャドウマップのサイズに合わせてViewportパラメータを変更する必要がある
@@ -91,40 +102,50 @@ void ShadowMap::RenderDepthMapFromLightView(Renderer* in_renderer, const std::ve
 	glBindFramebuffer(GL_FRAMEBUFFER, m_depthMapFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	m_depthShader->SetActive();
-	m_depthShader->SetMatrixUniform("lightSpace", m_lightSpace);
+	m_depthShader->SetMatrixUniform("uLightSpaceMatrix", m_lightSpace);
 
 	// デプスバッファを得るためにライトから見たシーンをレンダリングする
 	//----------------------------------------------------------------------+
 	for (auto mesh : in_mesh)
 	{
-		mesh->Draw(m_depthShader);
+		mesh->DrawShadow(m_depthShader);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-}
-
-// シャドウとメッシュの描画
-void ShadowMap::Draw(const std::vector<class MeshComponent*>& in_mesh)
-{
 	// ビューポートを元に戻す
 	glViewport(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight());
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// シャドウシェーダのアクティブ化・uniformへのセット
 	m_shadowShader->SetActive();
-	m_shadowShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
-	m_shadowShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().m_position);
-	m_shadowShader->SetMatrixUniform("u_lightSpace", m_lightSpace);
+	m_shadowShader->SetVectorUniform("uCameraPos", RENDERER->GetViewMatrix().GetTranslation());
+	m_shadowShader->SetVectorUniform("u_dirLight.direction", direction);
+	m_shadowShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
+	m_shadowShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
+	m_shadowShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
+
+	m_shadowShader->SetMatrixUniform("uView", RENDERER->GetViewMatrix());
+	m_shadowShader->SetMatrixUniform("uProjection", RENDERER->GetProjectionMatrix());
+	m_shadowShader->SetMatrixUniform("uViewProj", RENDERER->GetViewMatrix() * RENDERER->GetProjectionMatrix());
+	m_shadowShader->SetMatrixUniform("uLightSpaceMatrix", m_lightSpace);
+}
+
+// シャドウとメッシュの描画 (スキンメッシュは対象外)
+void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh)
+{
+
+
+
+
+
 	// サンプリング用テクスチャセット
 	m_shadowShader->SetInt("u_mat.diffuseMap", 0);
-	m_shadowShader->SetInt("u_mat.specularMao", 1);
+	m_shadowShader->SetInt("u_mat.specularMap", 1);
 	m_shadowShader->SetInt("u_mat.normalMap", 2);
-	m_shadowShader->SetInt("u_mat.shadowMap", 3);
-	// 3番目にデプスマップをセット
-	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, m_depthMap);
+	m_shadowShader->SetInt("u_mat.depthMap", 3);
 	
-	// メッシュ描画
+	// シャドウシェーダによるメッシュ描画
 	for (auto mesh : in_mesh)
 	{
 		mesh->Draw(m_shadowShader);

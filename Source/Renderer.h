@@ -19,10 +19,11 @@
 // ディレクショナルライト構造体(平行ライト:シーン全体に降り注ぐ光)
 typedef struct DirectionalLight
 {
-	Vector3 m_position;
-	Vector3 m_direction;
-	Vector3 m_diffuseColor;
-	Vector3 m_specColor;
+	Vector3 position;
+	Vector3 direction;
+	Vector3 ambient;
+	Vector3 diffuse;
+	Vector3 specular;
 
 }DirectionalLight;
 
@@ -54,6 +55,9 @@ public:
 
 	// TextureComponent
 	void RemoveTexture(class Texture* in_texture);
+
+	// ShadowMap
+	class ShadowMap* GetShadowMap() { return m_shadowMap; }
 
 	// SkyBox
 	void AddSkyBox(class CubeMapComponent* in_comp);
@@ -123,6 +127,12 @@ private:
 	//--------------------------------------------+
 	Vector3 m_ambientLight;                                                // アンビエントライト
 	DirectionalLight m_directionalLight;                                   // ディレクショナルライト
+
+	//--------------------------------------------+
+	// シャドウ関連
+	//--------------------------------------------+
+	class ShadowMap* m_shadowMap;
+
 
 	//--------------------------------------------+
 	// Sprite関連

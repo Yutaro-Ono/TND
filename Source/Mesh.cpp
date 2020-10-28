@@ -7,7 +7,7 @@
 #include "Mesh.h"
 #include "Renderer.h"
 #include "Texture.h"
-
+#include "ShadowMap.h"
 #include <SDL_log.h>
 #include "Math.h"
 
@@ -22,6 +22,7 @@ Mesh::Mesh()
 	,m_diffuseMap(nullptr)
 	,m_specularMap(nullptr)
 	,m_normalMap(nullptr)
+	,m_depthMap(nullptr)
 {
 }
 
@@ -78,7 +79,7 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 	if (t != nullptr)
 	{
 		m_specularMap = t;
-		//m_textures.emplace_back(t);
+		m_textures.emplace_back(t);
 	}
 	else
 	{
@@ -92,12 +93,16 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 	if (t != nullptr)
 	{
 		m_normalMap = t;
-		//m_textures.emplace_back(t);
+		m_textures.emplace_back(t);
 	}
 	else
 	{
 		std::cout << "Obj Mesh : Load [Normal] Texture Error\n";
 	}
+
+	// デプスマップをレンダラー経由で取得
+	m_depthMap = new Texture();
+	m_depthMap->SetTextureID(in_renderer->GetShadowMap()->GetDepthMap());
 
 
 }

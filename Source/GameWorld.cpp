@@ -22,16 +22,6 @@
 GameWorld::GameWorld()
 {
 
-
-	// ライティング
-	RENDERER->SetAmbientLight(Vector3(0.1f, 0.1f, 0.15f));
-	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
-	dir.m_position = Vector3(1800.0f, 2400.0f, 100.0f);
-	dir.m_direction = Vector3(0.0f, 0.5f, -1.0f);
-	dir.m_direction.Normalize();
-	dir.m_diffuseColor = Vector3(0.07f, 0.05f, 0.3f);
-	dir.m_specColor = Vector3(0.01f, 0.0f, 0.1f);
-
 	// プレイヤーの生成
 	m_player = new PlayerManager();
 	m_player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
@@ -45,14 +35,14 @@ GameWorld::GameWorld()
 	m_mission = new MissionManager(this);
 
 	// 環境(光源など)作成
-	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
-	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
+	//m_environment = new Environment(Environment::GAME_TIME::NIGHT);
+	m_environment = new Environment(Environment::GAME_TIME::MORNING);
 
 
 	// ヘリコプター生成
 	for (int i = 0; i < 3; i++)
 	{
-		m_helicopter[i] = new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 800.0f));
+		m_helicopter[i] = new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 1000.0f));
 	}
 
 
@@ -63,7 +53,6 @@ GameWorld::~GameWorld()
 	m_clients.clear();
 	m_patrolPoints.clear();
 	delete m_player;
-	delete m_helicopter;
 	delete m_level;
 	delete m_mission;
 	delete m_environment;

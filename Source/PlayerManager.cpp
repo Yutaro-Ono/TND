@@ -14,7 +14,7 @@ PlayerManager::PlayerManager()
 
 	m_playerCar = new PlayerCar();
 	m_playerCar->SetPlayerManager(this);
-	m_playerCar->SetPosition(Vector3(1700.0f, 2400.0f, 0.0f));
+	m_playerCar->SetPosition(Vector3(1700.0f, 2400.0f, -15.0f));
 	m_playerCar->SetScale(0.3f);
 
 	m_playerHuman->SetActive(true);

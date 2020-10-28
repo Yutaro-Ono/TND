@@ -50,6 +50,7 @@ public:
 	class Texture* GetDiffuseMap() { return m_diffuseMap; }
 	class Texture* GetSpecularMap() { return m_specularMap; }
 	class Texture* GetNormalMap() { return m_normalMap; }
+	class Texture* GetDepthMap() { return m_depthMap; }
 
 	// テクスチャ配列のサイズ取得
 	int GetTextureArraySize() { return m_textures.size(); }
@@ -62,6 +63,7 @@ protected:
 	class Texture* m_diffuseMap;                                // ディフューズマップ
 	class Texture* m_specularMap;                               // スペキュラマップ
 	class Texture* m_normalMap;                                 // ノーマルマップ
+	class Texture* m_depthMap;                                 // シャドウ描画用深度マップ
 
 	class VertexArray* m_vertexArray;                                       // メッシュの頂点配列
 

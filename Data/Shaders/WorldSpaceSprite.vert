@@ -32,11 +32,11 @@ void main()
 
 	pos = pos * world * view * proj;
 
-
 	// クリップ空間にワールド座標を変換
-	gl_Position = pos;
+	//gl_Position = pos;
 
-
+	gl_Position = vec4(pos.xy, pos.z, pos.w);
+	//gl_Position = vec4(u_NDC.xy * pos.xy, pos.z, pos.w);
 
 	// テクスチャ座標を出力
 	FragTexCoords = a_TexCoords;

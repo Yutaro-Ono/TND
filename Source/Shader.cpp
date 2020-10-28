@@ -110,6 +110,14 @@ void Shader::SetVectorUniform(const char * in_name, const Vector3 & in_vector)
 	glUniform3fv(loc, 1, in_vector.GetAsFloatPtr());
 }
 
+void Shader::SetVector2Uniform(const char* in_name, Vector2& in_vector)
+{
+	// シェーダー変数(uniform)を名前で検索する
+	GLuint loc = glGetUniformLocation(m_shaderProgram, in_name);
+	// ベクトル値をシェーダー変数に送る
+	glUniform2f(loc, in_vector.x, in_vector.y);
+}
+
 
 void Shader::SetFloatUniform(const char * in_name, float in_value)
 {

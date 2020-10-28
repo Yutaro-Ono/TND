@@ -34,11 +34,12 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		// ライティング
 		RENDERER->SetAmbientLight(Vector3(0.8f, 0.8f, 0.9f));
 		DirectionalLight& dir = RENDERER->GetDirectionalLight();
-		dir.m_position = Vector3(1800.0f, 2400.0f, 100.0f);
-		dir.m_direction = Vector3(0.0f, 0.5f, -1.0f);
-		dir.m_direction.Normalize();
-		dir.m_diffuseColor = Vector3(0.07f, 0.05f, 0.3f);
-		dir.m_specColor = Vector3(0.5f, 0.5f, 0.6f);
+		dir.position = Vector3(30000.0f, 15400.0f, 15000.0f);
+		dir.direction = Vector3(-200.0f, 500.0f, -600.0f);
+		dir.direction.Normalize();
+		dir.ambient = Vector3(0.4f, 0.4f, 0.4f);
+		dir.diffuse = Vector3(1.0f, 1.0f, 1.0f);
+		dir.specular = Vector3(0.8f, 0.8f, 0.8f);
 
 		m_morningBox->GetCubeMapComp()->SetIsVisible(true);
 
@@ -50,11 +51,12 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		// ライティング
 		RENDERER->SetAmbientLight(Vector3(0.1f, 0.1f, 0.15f));
 		DirectionalLight& dir = RENDERER->GetDirectionalLight();
-		dir.m_position = Vector3(1800.0f, 2400.0f, 100.0f);
-		dir.m_direction = Vector3(0.0f, 0.5f, -1.0f);
-		dir.m_direction.Normalize();
-		dir.m_diffuseColor = Vector3(0.07f, 0.05f, 0.3f);
-		dir.m_specColor = Vector3(0.01f, 0.0f, 0.1f);
+		dir.position = Vector3(1800.0f, 2400.0f, 1000.0f);
+		dir.direction = Vector3(0.0f, 0.5f, -1.0f);
+		dir.direction.Normalize();
+		dir.ambient = Vector3(0.5f, 0.5f, 0.5f);
+		dir.diffuse = Vector3(0.07f, 0.05f, 0.3f);
+		dir.specular = Vector3(0.5f, 0.5f, 0.6f);
 
 		m_morningBox->GetCubeMapComp()->SetIsVisible(true);
 
@@ -66,11 +68,12 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		// ライティング
 		RENDERER->SetAmbientLight(Vector3(0.1f, 0.1f, 0.15f));
 		DirectionalLight& dir = RENDERER->GetDirectionalLight();
-		dir.m_position = Vector3(1800.0f, 2400.0f, 100.0f);
-		dir.m_direction = Vector3(0.0f, 0.5f, -1.0f);
-		dir.m_direction.Normalize();
-		dir.m_diffuseColor = Vector3(0.07f, 0.05f, 0.3f);
-		dir.m_specColor = Vector3(0.01f, 0.0f, 0.1f);
+		dir.position = Vector3(1800.0f, 2400.0f, 1000.0f);
+		dir.direction = Vector3(0.0f, 0.5f, -1.0f);
+		dir.direction.Normalize();
+		dir.ambient = Vector3(0.4f, 0.4f, 0.4f);
+		dir.diffuse = Vector3(0.07f, 0.05f, 0.3f);
+		dir.specular = Vector3(0.01f, 0.0f, 0.1f);
 
 		m_eveningBox->GetCubeMapComp()->SetIsVisible(true);
 
@@ -83,11 +86,12 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		// ライティング
 		RENDERER->SetAmbientLight(Vector3(0.1f, 0.1f, 0.15f));
 		DirectionalLight& dir = RENDERER->GetDirectionalLight();
-		dir.m_position = Vector3(1800.0f, 2400.0f, 100.0f);
-		dir.m_direction = Vector3(0.0f, 0.5f, -1.0f);
-		dir.m_direction.Normalize();
-		dir.m_diffuseColor = Vector3(0.07f, 0.05f, 0.3f);
-		dir.m_specColor = Vector3(0.01f, 0.0f, 0.1f);
+		dir.position = Vector3(1800.0f, 2400.0f, 1000.0f);
+		dir.direction = Vector3(0.0f, 0.5f, -1.0f);
+		dir.direction.Normalize();
+		dir.ambient = Vector3(0.2f, 0.2f, 0.2f);
+		dir.diffuse = Vector3(0.07f, 0.05f, 0.3f);
+		dir.specular = Vector3(0.01f, 0.0f, 0.1f);
 
 		m_nightBox->GetCubeMapComp()->SetIsVisible(true);
 

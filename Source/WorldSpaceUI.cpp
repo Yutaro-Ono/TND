@@ -30,8 +30,6 @@ void WorldSpaceUI::Draw(Shader* in_shader)
 		// ビルボード行列のセット
 		m_staticBillboardMat = GetBillboardMatrix();
 
-		// ワールドUI用のシェーダアクティブ化
-		in_shader->SetActive();
 
 		// ワールド行列、スケール行列を作成する
 		Matrix4 mat, scale, projection, view;
@@ -39,12 +37,13 @@ void WorldSpaceUI::Draw(Shader* in_shader)
 		mat = Matrix4::CreateTranslation(m_position);
 		projection = RENDERER->GetProjectionMatrix();
 		view = RENDERER->GetViewMatrix();
+
 		
 		// シェーダのユニフォームへワールド合成行列・アルファ値をセット
 		in_shader->SetMatrixUniform("u_WorldTransform", scale * m_staticBillboardMat * mat);
-
 		in_shader->SetMatrixUniform("u_View", view);
 		in_shader->SetMatrixUniform("u_Projection", projection);
+
 
 		//in_shader->SetMatrixUniform("u_ViewProj", view * projection);
 
