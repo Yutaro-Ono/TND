@@ -59,7 +59,6 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	m_screenWidth = in_screenW;
 	m_screenHeight = in_screenH;
 
-
 	//-----------------------------------------------------------------+
     // OpenGLの属性設定
     //-----------------------------------------------------------------+
@@ -74,10 +73,8 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);                 // B
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);                // A
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-
 	// ダブルバッファを有効にする
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
 	// ハードウェアアクセラレーションを使用する
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
@@ -98,7 +95,6 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 		return false;
 	}
 	printf("(%d, %d) Create Window\n", m_screenWidth, m_screenHeight);
-
 	// フルスクリーンだったら
 	if (in_full)
 	{
@@ -192,7 +188,6 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	// キューブマップ用頂点配列
 	//------------------------------------------------------------------+
 	CreateCubeMapVerts();
-
 
 	//------------------------------------------------------------------+
 	// ポストエフェクト
@@ -328,6 +323,23 @@ void Renderer::Draw()
 				mc->Draw(m_meshShader);
 			}
 		}
+
+		//-----------------------------------------------------------+
+        // ボーン入りメッシュの描画
+        //-----------------------------------------------------------+
+		m_skinnedShader->SetActive();
+		// ビュー・プロジェクションの合成行列をセット
+		m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+		// ライティング変数をセット
+		SetLightUniforms(m_skinnedShader);
+
+		for (auto sk : m_skeletalMeshComponents)
+		{
+			if (sk->GetVisible())
+			{
+				sk->Draw(m_skinnedShader);
+			}
+		}
 	}
 
 	//-----------------------------------------------+
@@ -351,34 +363,35 @@ void Renderer::Draw()
 				mc->Draw(m_meshNormalShader);
 			}
 		}
-	}
 
+		//-----------------------------------------------------------+
+        // ボーン入りメッシュの描画
+        //-----------------------------------------------------------+
+		m_skinnedShader->SetActive();
+		// ビュー・プロジェクションの合成行列をセット
+		m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+		// ライティング変数をセット
+		SetLightUniforms(m_skinnedShader);
 
-	//-----------------------------------------------------------+
-	// ボーン入りメッシュの描画
-	//-----------------------------------------------------------+
-	m_skinnedShader->SetActive();
-	// ビュー・プロジェクションの合成行列をセット
-	m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
-	// ライティング変数をセット
-	SetLightUniforms(m_skinnedShader);
-
-	for (auto sk : m_skeletalMeshComponents)
-	{
-		if (sk->GetVisible())
+		for (auto sk : m_skeletalMeshComponents)
 		{
-			sk->Draw(m_skinnedShader);
+			if (sk->GetVisible())
+			{
+				sk->Draw(m_skinnedShader);
+			}
 		}
 	}
-	
+
 	//-----------------------------------------------+
     // メッシュシェーダー(shadow)
     //-----------------------------------------------+
 	if (m_switchShader == 2)
 	{
-		m_shadowMap->RenderDepthMapFromLightView(this, m_meshComponents);
-		m_shadowMap->DrawShadowMesh(m_meshComponents);
+		m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents);
+		m_shadowMap->DrawShadowMesh(m_meshComponents, m_skeletalMeshComponents);
 	}
+
+
 	//---------------------------------------------------------------+
 	// スカイボックスの描画
 	//---------------------------------------------------------------+
@@ -395,14 +408,12 @@ void Renderer::Draw()
 	// パーティクル描画
 	//----------------------------------------------------------------+
 	m_particleManager->Draw();
-
 	// ワールド空間上のスプライト描画
 	m_worldSpaceSpriteShader->SetActive();
 	for (auto spr : m_worldSprites)
 	{
 		spr->Draw(m_worldSpaceSpriteShader);
 	}
-
 
 	// Spriteの描画
 	// ブレンドのアクティブ化
@@ -431,13 +442,10 @@ void Renderer::Draw()
 		ui->Draw(m_spriteShader);
 	}
 
-	// デバッグコンソール描画
-	//MOUSE_INSTANCE.ImGuiDebugRendering();
-	// STEERING_CONTROLLER_INSTANCE.RenderDebugImGui();
-
 	// フレームバッファ描画
 	m_frameBuffer->DrawFrameBuffer();
 
+	// ImGuiの終了処理
 	ImGui::End();
 	ImGui::Render();
 	glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
@@ -488,7 +496,6 @@ void Renderer::RemoveSpriteWorld(WorldSpaceUI* in_sprite)
 	auto iter = std::find(m_worldSprites.begin(), m_worldSprites.end(), in_sprite);
 	m_worldSprites.erase(iter);
 }
-
 
 // メッシュコンポーネント追加
 void Renderer::AddMeshComponent(MeshComponent * in_mesh)
@@ -566,8 +573,6 @@ void Renderer::RemoveSkyBox(CubeMapComponent* in_comp)
 	auto iter = std::find(m_skyBoxComponents.begin(), m_skyBoxComponents.end(), in_comp);
 	m_skyBoxComponents.erase(iter);
 }
-
-
 
 // ウィンドウのタイトル
 void Renderer::SetWindowTitle(const std::string & in_title)
@@ -790,12 +795,12 @@ void Renderer::CreateCubeMapVerts()
 
 	unsigned int indices[] = 
 	{
-		0, 1, 2, 0, 2, 3,    // 前面
-		4, 5, 6, 4, 6, 7,    // 背面
-		8, 9, 10, 8, 10, 11,   // 上面
-		12, 13, 14, 12, 14, 15,   // 底面
-		16, 17, 18, 16, 18, 19,   // 右側面
-		20, 21, 22, 20, 22, 23    // 左側面
+		 0,  1,  2,  0,  2,  3,    // 前面
+		 4,  5,  6,  4,  6,  7,    // 背面
+		 8,  9, 10,  8, 10, 11,    // 上面
+		12, 13, 14, 12, 14, 15,    // 底面
+		16, 17, 18, 16, 18, 19,    // 右側面
+		20, 21, 22, 20, 22, 23     // 左側面
 	};
 
 

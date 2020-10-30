@@ -29,8 +29,9 @@ protected:
 	void ComputeGlobalInvBindPose();
 
 private:
-	// The bones in the skeleton                                            ボーン配列
+
+	// ボーン配列
 	std::vector<Bone> mBones;
-	// The global inverse bind poses for each bone                          それぞれのボーンの逆バインドポーズ行列
+	// それぞれのボーンの逆バインドポーズ行列
 	std::vector<Matrix4> mGlobalInvBindPoses;
 };

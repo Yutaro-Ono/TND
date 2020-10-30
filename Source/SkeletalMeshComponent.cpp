@@ -19,13 +19,13 @@ void SkeletalMeshComponent::Draw(Shader* in_shader)                         // •
 {
 	if (m_mesh)
 	{
-		// Set the world transform                                        ƒ[ƒ‹ƒh•ÏŠ·‚ðƒZƒbƒg
+		// ƒ[ƒ‹ƒh•ÏŠ·s—ñƒZƒbƒg
 		in_shader->SetMatrixUniform("uWorldTransform",
 			m_owner->GetWorldTransform());
-		// Set the matrix palette                                         s—ñƒpƒŒƒbƒg‚ðƒZƒbƒg    
+		// s—ñƒpƒŒƒbƒg‚ðƒZƒbƒg    
 		in_shader->SetMatrixUniforms("uMatrixPalette", &m_palette.mEntry[0],
 			MAX_SKELETON_BONES);
-		// Set specular power                                             ƒXƒyƒLƒ…ƒ‰[‹­“x‚ðƒZƒbƒg
+		// ƒXƒyƒLƒ…ƒ‰[‹­“x‚ðƒZƒbƒg
 		in_shader->SetFloatUniform("uSpecPower", 100);
 
 		// ŠeŽíƒeƒNƒXƒ`ƒƒ‚ðƒVƒF[ƒ_‚ÉƒZƒbƒg‚·‚é
@@ -54,10 +54,10 @@ void SkeletalMeshComponent::Draw(Shader* in_shader)                         // •
 			glBindTexture(GL_TEXTURE_2D, m_mesh->GetDepthMap()->GetTextureID());
 		}
 
-		// Set the mesh's vertex array as active                          ƒƒbƒVƒ…‚Ì’¸“_”z—ñ‚ðƒAƒNƒeƒBƒu‚É
+		// ƒƒbƒVƒ…‚Ì’¸“_”z—ñ‚ðƒAƒNƒeƒBƒu‚É
 		VertexArray* va = m_mesh->GetVertexArray();
 		va->SetActive();
-		// Draw                                                           •`‰æ
+		// •`‰æ
 		glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
 	}
 }

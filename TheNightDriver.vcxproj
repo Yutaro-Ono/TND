@@ -27,6 +27,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\CameraActor.cpp" />
     <ClCompile Include="Source\CameraComponent.cpp" />
+    <ClCompile Include="Source\Canvas.cpp" />
     <ClCompile Include="Source\CarBody.cpp" />
     <ClCompile Include="Source\CarDoor.cpp" />
     <ClCompile Include="Source\CarHandle.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\CameraActor.h" />
     <ClInclude Include="Source\CameraComponent.h" />
+    <ClInclude Include="Source\Canvas.h" />
     <ClInclude Include="Source\CarBody.h" />
     <ClInclude Include="Source\CarDoor.h" />
     <ClInclude Include="Source\CarHandle.h" />
@@ -248,6 +250,7 @@
     <None Include="Data\Shaders\PhongShadow.frag" />
     <None Include="Data\Shaders\PhongShadow.vert" />
     <None Include="Data\Shaders\Skinned.vert" />
+    <None Include="Data\Shaders\SkinnedShadow.vert" />
     <None Include="Data\Shaders\SkyBox.frag" />
     <None Include="Data\Shaders\SkyBox.vert" />
     <None Include="Data\Shaders\Sprite.frag" />

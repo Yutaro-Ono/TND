@@ -36,6 +36,9 @@ public:
 	// 巡回地点の配列ゲッター
 	const std::vector<class PatrolPoint*>& GetPatrolPoint() { return m_patrolPoints; }
 
+	// ヘリ配列のゲッター
+	const std::vector<class Helicopter*>& GetHeliArray() { return m_helicopters; }
+
 	void ImGuiDebugWorld();
 
 
@@ -46,11 +49,9 @@ private:
 
 	std::vector<class ClientActor*> m_clients;          // 依頼者アクター
 	std::vector<class PatrolPoint*> m_patrolPoints;     // 巡回地点の配列
-
+	std::vector<class Helicopter*> m_helicopters;        // ヘリコプターの配列
 
 	class PlayerManager* m_player;
-
-	class Helicopter* m_helicopter[3];
 
 	class LevelManager* m_level;
 

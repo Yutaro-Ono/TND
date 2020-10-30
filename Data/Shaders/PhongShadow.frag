@@ -51,7 +51,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     float currentDepth = projCoords.z;
     // シャドウ判定 (1.0:シャドウ 0.0:シャドウの外)
     // バイアスを法線とライトの向きから調整する
-    float bias = max(0.0005 * (1.0 - dot(normalize(fragNormal), u_dirLight.direction)), 0.0001);
+    float bias = max(0.0001 * (1.0 - dot(normalize(fragNormal), u_dirLight.direction)), 0.0001);
     // 現在の深度が最も近いフラグメントの深度より大きければ1.0、小さければ0.0(影になる)
     float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
 

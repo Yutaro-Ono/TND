@@ -294,6 +294,9 @@
     <Filter Include="ソース ファイル\Shader\Source\Shadow\DepthMap">
       <UniqueIdentifier>{5cc68e3a-1263-4a07-9678-8ec8c58d143c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\Shadow\Skinned">
+      <UniqueIdentifier>{982e61b7-289c-4dda-bfeb-2d47fe3e7d31}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -589,6 +592,9 @@
     </ClCompile>
     <ClCompile Include="Source\WorldSpaceUI.cpp">
       <Filter>ソース ファイル\Interface\WorldSpace</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Canvas.cpp">
+      <Filter>ソース ファイル\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -901,6 +907,9 @@
     <ClInclude Include="Source\WorldSpaceUI.h">
       <Filter>ソース ファイル\Interface\WorldSpace</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Canvas.h">
+      <Filter>ソース ファイル\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\DirectLine.vert">
@@ -998,6 +1007,9 @@
     </None>
     <None Include="Data\Shaders\DepthMap.frag">
       <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap</Filter>
+    </None>
+    <None Include="Data\Shaders\SkinnedShadow.vert">
+      <Filter>ソース ファイル\Shader\Source\Shadow\Skinned</Filter>
     </None>
   </ItemGroup>
 </Project>

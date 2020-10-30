@@ -35,6 +35,15 @@ bool Sphere::Contains(const Vector3 & in_point) const
 	return distSq <= m_radius * m_radius;
 }
 
+// ‹…‘Ì“¯Žm‚Ì“–‚½‚è”»’è
+bool Sphere::ContainsSphere(const Sphere in_otherSphere) const
+{
+	// ‹…‘Ì‚Æ‹…‘Ì‚Ì’†S“_‚Ì‹——£‚Ì“ñæ‚ðŽæ“¾
+	float distSq = (m_center - in_otherSphere.m_center).LengthSq();
+	// ‹…‘Ì“¯Žm‚Ì”¼Œa‚Ì“ñæ‚©‚ç”äŠr‚µA‰~‚Æ‰~‚ªG‚ê‚Ä‚¢‚é‚©‚ð•Ô‚·
+	return distSq <= (m_radius + in_otherSphere.m_radius) * (m_radius + in_otherSphere.m_radius);
+}
+
 
 //-------------------------------------------------------------+
 // •½–Ê

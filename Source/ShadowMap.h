@@ -15,10 +15,13 @@ public:
 	~ShadowMap();
 
 	// 光の視点からシーンをレンダリングしデプスバッファを得る
-	void RenderDepthMapFromLightView(class Renderer* in_renderer, const std::vector<class MeshComponent*>& in_mesh);
+	void RenderDepthMapFromLightView(class Renderer* in_renderer, const std::vector<class MeshComponent*>& in_mesh);          // 通常メッシュ
+	void RenderDepthMapFromLightView(const std::vector<class MeshComponent*>& in_mesh, const std::vector<class SkeletalMeshComponent*> in_skelMesh);          // 通常メッシュ・スキンメッシュ
+
+
 
 	void DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh);
-
+	void DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh, const std::vector<class SkeletalMeshComponent*>& in_skelMesh);
 
 	// Getter/Setter
 	class Shader* GetDepthShader() { return m_depthShader; }
@@ -31,10 +34,9 @@ private:
 	unsigned int m_depthMapFBO;        // デプスバッファオブジェクト
 	unsigned int m_depthMap;                 // 深度を書き込むための2Dテクスチャ
 
-	unsigned int m_screenVAO;          // スクリーン全体を覆う頂点オブジェクト
-
-	class Shader* m_depthShader;    // デプスシェーダ (影描画の前準備に使用する)
-	class Shader* m_shadowShader;   // シャドウマッピングシェーダ
+	class Shader* m_depthShader;          // デプスシェーダ (影描画の前準備に使用する)
+	class Shader* m_shadowShader;         // シャドウマッピングシェーダ
+	class Shader* m_skinShadowShader;     // シャドウ適用のスキンシェーダ
 
 	// ライト空間用行列
 	Matrix4 m_lightView, m_lightProj, m_lightSpace;

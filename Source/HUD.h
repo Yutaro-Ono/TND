@@ -14,7 +14,7 @@ class HUD : public UIScreen
 
 public:
 
-	HUD(class Player* in_player);
+	HUD(class GameWorld* in_world);
 	~HUD();
 
 	void Update(float in_deltaTime) override;
@@ -28,12 +28,12 @@ public:
 
 private:
 
-	class Texture* m_texture;
+	class Texture* m_dangerCall;                             // ヘリに見つかった時のDANGER表示
 	class Texture* m_speedTexture;
 
-	class Texture* m_impactTexture[2];                // 集中線
+	class Texture* m_impactTexture[2];                       // 集中線
 
-	class Player* m_targetPlayer;                     // プレイヤーへのポインタ
+	class GameWorld* m_world;                         // ワールドへのポインタ
 
 	std::vector<class Texture*> m_flameGauge;
 

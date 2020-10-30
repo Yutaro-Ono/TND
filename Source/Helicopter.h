@@ -18,6 +18,7 @@ public:
 	// Getter / Setter
 	//---------------------------------------------------+
 	class GameWorld* GetWorld() { return m_world; }
+	bool GetFoundPlayer() { return m_foundPlayer; }
 
 
 private:
@@ -34,5 +35,6 @@ private:
 	class HeliRotorBack* m_backRotor;      // バックローター
 	class HeliSpotLight* m_spotLight;      // ライト
 
+	bool m_foundPlayer;                    // プレイヤーを見つけたかどうか
 	Sphere m_searchSphere;                 // 索敵範囲球
 };

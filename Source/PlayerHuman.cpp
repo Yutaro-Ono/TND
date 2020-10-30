@@ -132,7 +132,7 @@ void PlayerHuman::UpdateActor(float in_deltaTime)
 		m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed);
 	}
 
-	printf("Player x : %f, y : %f, z : %f\n", m_position.x, m_position.y, m_position.z);
+	//printf("Player x : %f, y : %f, z : %f\n", m_position.x, m_position.y, m_position.z);
 }
 
 void PlayerHuman::ChangeState()

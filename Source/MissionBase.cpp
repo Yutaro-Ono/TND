@@ -70,13 +70,24 @@ void MissionBase::Update(float in_deltaTime)
 		// 最終時刻を更新し続ける
 		m_lastTime = SDL_GetTicks();
 
-		// ゴール地点にプレイヤーが接触し、ボタンを押したらミッション開始
-		if (CheckDistPlayer(playerPos, m_startPos))
+		// プレイヤーのアクセス範囲球に依頼人が入った状態で、ボタンを押したらミッション開始
+		if (m_manager->GetPlayer()->GetSearchSphere().Contains(m_startActor->GetPosition()))
 		{
-			m_startActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
-			// 任務を受諾したとしてカウントダウン開始
-			m_missionState = ACTIVE;
+			// 承諾ボタンを押したらtrue
+			if (CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_X) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E))
+			{
+				m_startActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
+				// 任務を受諾したとしてカウントダウン開始
+				m_missionState = ACTIVE;
+			}
 		}
+
+		//if (CheckDistPlayer(playerPos, m_startPos))
+		//{
+		//	m_startActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
+		//	// 任務を受諾したとしてカウントダウン開始
+		//	m_missionState = ACTIVE;
+		//}
 
 
 	}

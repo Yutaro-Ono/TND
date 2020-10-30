@@ -18,6 +18,9 @@
 #include <iostream>
 #include <algorithm>
 
+static Vector3 playerPos;
+static Vector3 tempPos;
+
 // コンストラクタ
 GameWorld::GameWorld()
 {
@@ -26,7 +29,7 @@ GameWorld::GameWorld()
 	m_player = new PlayerManager();
 	m_player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
 	m_player->SetScale(0.3f);
-
+	tempPos = playerPos = m_player->GetPosition();
 
 	// レベルの生成
 	m_level = new LevelManager(this, 0);
@@ -39,10 +42,10 @@ GameWorld::GameWorld()
 	m_environment = new Environment(Environment::GAME_TIME::MORNING);
 
 
-	// ヘリコプター生成
+	// ヘリコプターを三機生成
 	for (int i = 0; i < 3; i++)
 	{
-		m_helicopter[i] = new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 1000.0f));
+		m_helicopters.emplace_back(new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 1000.0f)));
 	}
 
 
@@ -52,6 +55,7 @@ GameWorld::~GameWorld()
 {
 	m_clients.clear();
 	m_patrolPoints.clear();
+	m_helicopters.clear();
 	delete m_player;
 	delete m_level;
 	delete m_mission;
@@ -60,6 +64,16 @@ GameWorld::~GameWorld()
 
 void GameWorld::Update(float in_deltaTime)
 {
+	// ディレクショナルライト更新
+	//playerPos = m_player->GetPosition();
+	//if (playerPos.x != tempPos.x || playerPos.y != tempPos.y)
+	//{
+	//	RENDERER->GetDirectionalLight().position += playerPos - tempPos;
+	//	tempPos = playerPos;
+
+	//}
+
+	// ミッションの更新
 	m_mission->Update(in_deltaTime);
 }
 

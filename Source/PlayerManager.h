@@ -41,6 +41,10 @@ public:
 	PLAYER_MODE GetPlayerMode() { return m_playerMode; }
 	void SetPlayerMode(PLAYER_MODE in_mode) { m_playerMode = in_mode; }
 
+	// 索敵範囲のセッター・ゲッター
+	Sphere GetSearchSphere() { return m_searchSphere; }
+
+
 private:
 
 	PLAYER_MODE m_playerMode;
@@ -49,7 +53,6 @@ private:
 	class PlayerHuman* m_playerHuman;
 	class PlayerCar* m_playerCar;
 
-	Sphere m_searchSphere;
-
+	Sphere m_searchSphere;       // プレイヤーのアクセス範囲球体
 
 };

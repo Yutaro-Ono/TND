@@ -14,12 +14,14 @@ uniform mat4 uWorldTransform;
 uniform mat4 uViewProj;
 // 行列パレット
 uniform mat4 uMatrixPalette[196];
-
+// ライト空間行列
+uniform mat4 uLightSpaceMatrix;
 
 // 頂点への出力
 out vec2 fragTexCoord;        // テクスチャ座標
 out vec3 fragNormal;          // ワールドスペース上の法線
 out vec3 fragWorldPos;        // ワールドスペース上の頂点座標
+out vec4 fragPosLightSpace;      // ライトスペース上の座標
 
 void main()
 {
@@ -50,5 +52,8 @@ void main()
 
 	// テクスチャ座標を出力
 	fragTexCoord = inTexCoord;
+
+	fragPosLightSpace = vec4(fragWorldPos, 1.0) * uLightSpaceMatrix;
+
 }
 

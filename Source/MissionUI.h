@@ -13,6 +13,8 @@ public:
 
 	void Update(float in_deltaTime) override;       // 更新処理
 
+	void UpdateMissionInfo();                       // ミッション情報の生成・更新処理
+
 	void Draw(class Shader* in_shader) override;    // 描画処理
 
 	void SetUIPosition();

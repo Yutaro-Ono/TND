@@ -7,14 +7,14 @@ class PlayerHuman : public Actor
 public:
 
 	// プレイヤーの視点モード
-	typedef enum PLAYER_POV
+	enum PLAYER_POV
 	{
 		POV_FIRST_PERSON,
 		POV_THIRD_PERSON
 	};
 
 	// アニメーションタイプ
-	typedef enum PLAYER_ANIM
+	enum PLAYER_ANIM
 	{
 		ANIM_IDLE = 0,
 		ANIM_IDLE_LOOKAROUND,

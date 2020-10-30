@@ -16,7 +16,7 @@ class PlayerCar : public Actor
 public:
 
 	// ‰^“]‚Ìó‘Ô
-	typedef enum DRIVE_STATE
+	enum DRIVE_STATE
 	{
 		DRIVE_IDLE,
 		DRIVE_ACCEL,
@@ -24,7 +24,7 @@ public:
 	};
 
 	// ‚Ç‚¿‚ç‚Ö‹È‚ª‚Á‚Ä‚¢‚é‚©‚Ìó‘Ô
-	typedef enum TURNING_STATE
+	enum TURNING_STATE
 	{
 		TURN_IDLE,
 		TURN_LEFT,

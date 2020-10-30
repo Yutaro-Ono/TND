@@ -12,7 +12,7 @@ uniform mat4 u_Proj;
 
 void main()
 {
-	// テクスチャ座標にローカル位置ベクトルを設定 (軸は総入れ替え。恐らくZアップのせいか)
+	// テクスチャ座標にローカル位置ベクトルを設定
 	TexCoords = vec3(a_Pos.y, -a_Pos.z, a_Pos.x);
 
 	vec4 pos = u_Proj * u_View * vec4(a_Pos, 1.0);

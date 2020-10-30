@@ -26,8 +26,8 @@ public:
 
 
 	// ロード画面の表示、非表示
-	void EnableScreen() { m_state = ENABLE; }
-	void DisableScreen() { m_state = DISABLE; }
+	void EnableScreen() { m_state = LOAD_STATE::ENABLE; }
+	void DisableScreen() { m_state = LOAD_STATE::DISABLE; }
 
 	// ロード画面上で操作説明をする場合にフラグをオンにする
 	void SetIsGame() { m_isGame = true; }

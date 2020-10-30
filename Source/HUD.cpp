@@ -10,16 +10,22 @@
 #include "Texture.h"
 #include "Font.h"
 #include "Shader.h"
-
+#include "GameWorld.h"
+#include "PlayerManager.h"
+#include "Helicopter.h"
 #include <sstream>
 
 // コンストラクタ
-HUD::HUD(class Player* in_player)
-	:m_targetPlayer(in_player)
+HUD::HUD(class GameWorld* in_world)
+	:m_world(in_world)
+	,m_dangerCall(nullptr)
 	,m_isImpact(false)
 	,m_dispAccel(0.0f)
 	,m_speedTexPos(600.0f, 340.0f)
 {
+
+	// DANGERフォント生成
+	m_dangerCall = m_font->RenderText("DANGER", Vector3(1.0f, 0.0f, 0.0f), 48);
 
 	// 集中線
 	for (int i = 0; i < 2; i++)
@@ -58,8 +64,23 @@ void HUD::Update(float in_deltaTime)
 
 }
 
+// 描画処理
 void HUD::Draw(Shader * in_shader)
 {
+
+	// ヘリに見つかった時にDANGER表示
+	bool found = false;
+	for (auto heli : m_world->GetHeliArray())
+	{
+		found = heli->GetFoundPlayer();
+		if (found) break;
+	}
+
+	if (m_dangerCall && found)
+	{
+		// 描画
+		DrawTexture(in_shader, m_dangerCall);
+	}
 
 	// 集中線の描画
 	if (m_impactTexture && m_isImpact == true)

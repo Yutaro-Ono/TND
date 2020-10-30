@@ -157,7 +157,7 @@ void MissionManager::Update(float in_deltaTime)
 	// ミッション開始地点と終了地点
     // 乱数で生成し、開始・終了点で被りがないかつ他のミッションと被らないこと
 	int startPos, goalPos;
-
+	startPos = goalPos = 0;
 	// ミッションリストは常時3つ。減っていたら作成する
 	int addMissionNum = MISSION_ALL_NUM - m_missions.size();
 	if (addMissionNum > 0)

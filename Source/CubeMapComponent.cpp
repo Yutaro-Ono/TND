@@ -44,9 +44,8 @@ void CubeMapComponent::Draw(Shader* in_shader)
 		// Uniformに行列をセット
 		in_shader->SetMatrixUniform("u_View", view);
 		in_shader->SetMatrixUniform("u_Proj", projection);
-
+		// 深度設定
 		glDepthFunc(GL_LEQUAL);
-
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture->GetTextureID());

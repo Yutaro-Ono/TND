@@ -8,12 +8,12 @@ class Particle
 {
 public:
 
-	typedef enum PARTICLE_BLEND
+	enum PARTICLE_BLEND
 	{
 		BLEND_ALPHA,
 		BLEND_ADD,
 		BLEND_MULT
-	}PARTICLE_BLEND;
+	};
 
 	// コンストラクタ
 	Particle();

@@ -57,8 +57,8 @@ public:
 	float GetSpeed() const { return m_speed; }
 	void SetSpeed(float in_speed) { m_speed = in_speed; }
 	// ステート
-	State GetState() const { return m_state; }
-	void SetState(State in_state) { m_state = in_state; }
+	Actor::State GetState() const { return m_state; }
+	void SetState(Actor::State in_state) { m_state = in_state; }
 	// 管理ID
 	int GetID() { return m_ID; }
 	// コンポーネント
@@ -71,7 +71,7 @@ public:
 
 protected:
 
-	State m_state;                                  // ステート(状態)
+	Actor::State m_state;                                  // ステート(状態)
 
 	Vector3 m_position;                             // ポジション
 	Matrix4 m_worldTransform;                       // ワールド変換行列

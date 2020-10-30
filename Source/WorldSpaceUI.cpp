@@ -7,6 +7,7 @@
 Matrix4 WorldSpaceUI::m_staticBillboardMat;
 const Vector3 adjustPos = Vector3(0.0f, 0.0f, 200.0f);
 
+// コンストラクタ
 WorldSpaceUI::WorldSpaceUI(const Vector3& in_pos, const std::string& in_filePath, float in_scale)
 	:m_position(in_pos + adjustPos)
 	, m_scale(in_scale)
@@ -18,6 +19,7 @@ WorldSpaceUI::WorldSpaceUI(const Vector3& in_pos, const std::string& in_filePath
 	RENDERER->AddSpriteWorld(this);
 }
 
+// デストラクタ
 WorldSpaceUI::~WorldSpaceUI()
 {
 }

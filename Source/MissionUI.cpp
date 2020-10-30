@@ -47,13 +47,6 @@ MissionUI::~MissionUI()
 void MissionUI::Update(float in_deltaTime)
 {
 
-	// 耐久値、時間などの取得用
-	std::string str;
-	std::stringstream sstream;
-	// レンダリングするフォントのカラー
-	Vector3 color = Vector3(1.0f, 1.0f, 1.0f);
-	// フォントサイズ
-	int fontSize = 32;
 
 	// ミッション終了でUIを閉じる
 	if (m_mission->GetMissionState() == MissionBase::MISSION_STATE::FAILED ||
@@ -62,13 +55,29 @@ void MissionUI::Update(float in_deltaTime)
 		m_state = CLOSE;
 	}
 
+	// ミッション情報更新
+	UpdateMissionInfo();
+
+}
+
+// ミッション情報の生成・更新処理
+void MissionUI::UpdateMissionInfo()
+{
+	// 耐久値、時間などの取得用
+	std::string str;
+	std::stringstream sstream;
+	// レンダリングするフォントのカラー
+	Vector3 color = Vector3(1.0f, 1.0f, 1.0f);
+	// フォントサイズ
+	int fontSize = 32;
+
 	//-----------------------------------------------------------------------+
-	// フォントテクスチャ生成処理
-	//-----------------------------------------------------------------------+
-	// 配達ミッション時
+    // フォントテクスチャ生成処理
+    //-----------------------------------------------------------------------+
+    // 配達ミッション時
 	if (m_mission->GetMissionType() == MissionBase::DELIVERY)
 	{
-		
+
 		//-------------------------------------------------+
 		// 制限時間
 		//-------------------------------------------------+
@@ -116,11 +125,11 @@ void MissionUI::Update(float in_deltaTime)
 		// 制限時間のフォントテクスチャを生成
 		m_timeTex = m_font->RenderText(sstream.str(), color, fontSize);
 		sstream.str("");
-		
+
 		//-------------------------------------------------+
-        // 耐久値
-        //-------------------------------------------------+
-        // 耐久値を文字列として取得
+		// 耐久値
+		//-------------------------------------------------+
+		// 耐久値を文字列として取得
 		sstream << "HP" << m_mission->GetDurableValue();
 		// 耐久値のテクスチャを削除
 		if (m_durableValTex != nullptr) m_durableValTex->Delete();
@@ -139,7 +148,6 @@ void MissionUI::Update(float in_deltaTime)
 		m_distanceTex = m_font->RenderText(sstream.str(), color, fontSize);
 		sstream.str("");
 	}
-
 }
 
 // 描画処理

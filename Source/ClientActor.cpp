@@ -16,6 +16,7 @@ ClientActor::ClientActor(const Vector3& in_pos)
 	,m_setting(CLIENT_SETTING::NONE)
 	,m_landMark(nullptr)
 	,m_animState(CLIENT_ANIM::ANIM_IDLE_LOOKAROUND)
+	,m_hitBox(nullptr)
 {
 	// ç¿ïWê›íË
 	m_position = in_pos;

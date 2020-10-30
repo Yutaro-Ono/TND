@@ -15,7 +15,8 @@ typedef struct Sphere
 {
 
 	Sphere(const Vector3& in_center, float in_radius);                                      // コンストラクタ
-	bool Contains(const Vector3& in_point) const;                                           // 球体内に引数で渡したpointが含まれているか
+	bool Contains(const Vector3& in_point) const;                                           // ポイント(座標)が球体内に含まれているか
+	bool ContainsSphere(const Sphere in_otherSphere) const;                                 // 相手の球体とこの球体が接触しているか
 
 	Vector3      m_center;                                                                  // 球体の中心座標
 	float        m_radius;                                                                  // 球体の半径
