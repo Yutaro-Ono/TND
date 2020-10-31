@@ -9,7 +9,7 @@ class Helicopter : public Actor
 public:
 
 	Helicopter(class GameWorld* in_world, const Vector3& in_pos);              // コンストラクタ
-	~Helicopter();             // デストラクタ
+	~Helicopter();                                                             // デストラクタ
 
 	void UpdateActor(float in_deltaTime) override;
 
@@ -17,8 +17,8 @@ public:
 	//---------------------------------------------------+
 	// Getter / Setter
 	//---------------------------------------------------+
-	class GameWorld* GetWorld() { return m_world; }
-	bool GetFoundPlayer() { return m_foundPlayer; }
+	class GameWorld* GetWorld()  { return m_world; }
+	bool  GetFoundPlayer()       { return m_foundPlayer; }
 
 
 private:

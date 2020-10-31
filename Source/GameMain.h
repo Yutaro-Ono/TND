@@ -67,8 +67,8 @@ public:
 
 	void AddActor(class Actor* in_actor);                                           // アクターの追加
 	void RemoveActor(class Actor* in_actor);                                        // アクターの削除
+	void DeadAllActor();                                                            // アクター全削除
 	const std::vector<class Actor*>& GetActorStack() const { return m_actors; }     // アクター配列の取得
-	void AllDeadActor();                                                            // アクター全削除
 
 
     //--------------------------------------------------------------------//

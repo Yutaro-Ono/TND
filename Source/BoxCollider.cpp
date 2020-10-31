@@ -15,6 +15,7 @@ BoxCollider::BoxCollider(Actor * in_owner, PhysicsWorld::PhysicsType in_type, in
 	,m_objectBox(Vector3::Zero, Vector3::Zero)
 	,m_worldBox(Vector3::Zero, Vector3::Zero)
 	,m_rotatable(true)
+	,m_type(in_type)
 {
 	GAME_INSTANCE.GetPhysics()->AddBoxCollider(in_type, this);      // BoxCollider‚ðPhysicsWorld‚É“o˜^
 }

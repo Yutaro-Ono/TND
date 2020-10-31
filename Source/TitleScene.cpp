@@ -43,8 +43,7 @@ TitleScene::TitleScene()
 // デストラクタ
 TitleScene::~TitleScene()
 {
-	// プレイヤーを削除
-	m_player->SetState(Actor::STATE_DEAD);
+	GAME_INSTANCE.DeadAllActor();
 	
 	delete m_environment;
 
@@ -59,15 +58,8 @@ void TitleScene::Initialize()
 		GAME_INSTANCE.GetLoadScreen()->EnableScreen();
 	}
 
-
-
 	// タイトル用UI
 	TitleScreen* hud = new TitleScreen(this);
-
-	//m_skydome = new Skydome();
-	//m_skydome->SetMesh(RENDERER->GetMesh("Data/Meshes/FC/Skydome/Skydome_Sunny.gpmesh"));
-	//m_skydome->SetPosition(Vector3::Zero);
-	//m_skydome->SetScale(1.0f);
 
 	// プレイヤー
 	m_player = new PlayerCar();
@@ -82,7 +74,6 @@ void TitleScene::Initialize()
 	// 環境生成
 	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
 	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
-	m_worldui = new WorldSpaceUI(Vector3::Zero, "Data/Interface/landmark.png", 100.0f);
 
 	// 音楽
 	m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";

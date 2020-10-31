@@ -35,6 +35,7 @@ private:
 	unsigned int m_depthMap;                 // 深度を書き込むための2Dテクスチャ
 
 	class Shader* m_depthShader;          // デプスシェーダ (影描画の前準備に使用する)
+	class Shader* m_depthSkinShader;      // デプスシェーダ (スキンメッシュ用)
 	class Shader* m_shadowShader;         // シャドウマッピングシェーダ
 	class Shader* m_skinShadowShader;     // シャドウ適用のスキンシェーダ
 

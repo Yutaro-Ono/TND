@@ -47,9 +47,19 @@ void MoveComponentHuman::MovementByController(float in_deltaTime)
 {
 	// 左スティック入力値の取得
 	Vector2 axisL = CONTROLLER_INSTANCE.GetLAxisVec();
-	// プレイヤーの前進・右方向ベクトル定義
-	Vector3 charaForwardVec = m_playerHuman->GetForward();
+	// プレイヤーの前進・右方向ベクトル定義 (カメラ基準)
+	//Vector3 charaForwardVec = m_playerHuman->GetForward();
+	Vector3 charaForwardVec = m_playerHuman->GetCamera()->GetForward();
+	charaForwardVec.z = 0.0f;
+	charaForwardVec.Normalize();
 	Vector3 charaRightVec = Vector3::Cross(Vector3::UnitZ, charaForwardVec);
+
+	// カメラの視線方向に回転させる
+	if (axisL.x != 0.0f || axisL.y != 0.0f)
+	{
+
+		m_playerHuman->RotateToNewForward(charaForwardVec);
+	}
 
 	// 前進ベクトルと右方向ベクトルから移動量を算出
 	Vector3 moveVec = Vector3::Zero;
@@ -69,9 +79,14 @@ void MoveComponentHuman::MovementByKeyboard(float in_deltaTime)
 	// キー入力値
 	Vector2 inputAxis = Vector2::Zero;
 
-	// プレイヤーの前進・右方向ベクトル定義
-	Vector3 charaForwardVec = m_playerHuman->GetForward();
+
+	// プレイヤーの前進・右方向ベクトル定義 (カメラ基準)
+	//Vector3 charaForwardVec = m_playerHuman->GetForward();
+	Vector3 charaForwardVec = m_playerHuman->GetCamera()->GetForward();
+	charaForwardVec.z = 0.0f;
+	charaForwardVec.Normalize();
 	Vector3 charaRightVec = Vector3::Cross(Vector3::UnitZ, charaForwardVec);
+
 	// 移動ベクトル
 	Vector3 moveVec = Vector3::Zero;
 
@@ -93,6 +108,12 @@ void MoveComponentHuman::MovementByKeyboard(float in_deltaTime)
 		inputAxis.y += 1.0f;
 	}
 
+	// カメラの視線方向に回転させる
+	if (inputAxis.x != 0.0f || inputAxis.y != 0.0f)
+	{
+
+		m_playerHuman->RotateToNewForward(charaForwardVec);
+	}
 	moveVec = charaForwardVec * inputAxis.x + charaRightVec * inputAxis.y;
 
 	// 最終的な座標を更新し、オーナーへセット

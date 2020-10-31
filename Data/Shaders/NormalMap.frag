@@ -70,6 +70,12 @@ void main()
 	// 法線ベクトルの範囲を[-1, +1]の範囲に復元する(タンジェントスペースに変換)
 	normal = normalize(normal * 2.0 - 1.0);
 
+		// ポリゴン表面の法線（フラグメントシェーダー上で補間されている）
+	vec3 N = normalize(fs_in.FragNormal);
+	// ポリゴン表面からライト方向へのベクトル
+	vec3 L = normalize(-uDirLight.mDirection);
+
+	float NdotL = dot(N, L);
 
 	// diffuseColor
 	vec3 color = texture(u_mat.diffuseMap, fs_in.TexCoords).rgb;
@@ -87,17 +93,8 @@ void main()
     vec3 reflectDir = reflect(-lightDir, normal);
     vec3 halfwayDir = normalize(lightDir + viewDir);  
     float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
-		// ポリゴン表面の法線（フラグメントシェーダー上で補間されている）
-	vec3 N = normalize(fs_in.FragNormal);
-	// ポリゴン表面からライト方向へのベクトル
-	vec3 L = normalize(-uDirLight.mDirection);
 
-
-	float NdotL = dot(N, L);
-
-
-	vec3 Diffuse = diff * color * max(NdotL, 0.0f);
     vec3 specular = vec3(0.2) * spec;
 	// フラグメントカラーを出力
-    out_fragColor = vec4((Diffuse + ambient), 1.0) + vec4(specular, 1.0f);
+    out_fragColor = vec4((diffuse + ambient), 1.0) + vec4(specular, 1.0f);
 }

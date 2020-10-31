@@ -42,7 +42,7 @@ void MeshComponent::Draw(Shader * in_shader)
 		in_shader->SetMatrixUniform("uWorldTransform",
 			m_owner->GetWorldTransform());
 		// Set specular power　スペキュラ強度セット
-		in_shader->SetFloatUniform("uSpecPower", 100);
+		in_shader->SetFloatUniform("uSpecPower", 32);
 
 		// 各種テクスチャをシェーダにセットする
 		// テクスチャが読み込まれていない場合は無視する
@@ -88,8 +88,6 @@ void MeshComponent::DrawShadow(Shader* in_shader)
 		// Set the world transform　ワールド変換をセット
 		in_shader->SetMatrixUniform("uWorldTransform",
 			m_owner->GetWorldTransform());
-		// Set specular power　スペキュラ強度セット
-		in_shader->SetFloatUniform("uSpecPower", 100);
 
 		// Set the mesh's vertex array as active　頂点配列をアクティブに
 		VertexArray* va = m_mesh->GetVertexArray();

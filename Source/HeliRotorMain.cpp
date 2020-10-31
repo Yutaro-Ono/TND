@@ -36,13 +36,13 @@ void HeliRotorMain::UpdateActor(float in_deltaTime)
 	SetRotation(m_owner->GetRotation());
 
 	// ƒvƒƒyƒ‰‰ñ“]
-	radian += 1.0f;
+	radian += 5.0f;
 	if (radian >= 360.0f)
 	{
 		radian = 0.0f;
 	}
 
-	SetRotation(Quaternion::Quaternion(Vector3::UnitZ, radian));
+	SetRotation(Quaternion::Quaternion(Vector3::UnitZ, Math::ToRadians(radian)));
 
 	SetWorldTransform(m_owner->GetWorldTransform());
 }

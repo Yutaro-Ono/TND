@@ -9,6 +9,7 @@
 #include "Renderer.h"
 #include "Mesh.h"
 #include "LevelBlock.h"
+#include "LevelTerrain.h"
 #include "ClientActor.h"
 #include "PatrolPoint.h"
 #include "RapidJsonHelper.h"
@@ -34,9 +35,10 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Street/Street.OBJ"));
 	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Building/0/Build11.OBJ"));
 	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Actors/Police/Helicopter/Helicopter_Body_Internal.OBJ"));
+	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Sphere/Sphere.OBJ"));
 
 
-
+	
 	//-----------------------------------------------------------------------------------------+
     // ステージデータ読み込み
     //-----------------------------------------------------------------------------------------+
@@ -86,6 +88,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	}
 
 	LevelBlock* block;
+	LevelTerrain* terrain;
 	const float blockSize = 200.0f;
 	const float floorZoffset = -20.0f;
 
@@ -101,17 +104,15 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 			// 地面オブジェクトはTiled上で16で登録されている
 			if (groundData[iy][ix] == MAP_INDEX_GROUND)
 			{
-				block = new LevelBlock();
-				block->SetMesh(m_blockMeshes[0]);
-				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset));
+				terrain = new LevelTerrain(m_blockMeshes[0], LevelTerrain::TERRAIN_TYPE::TYPE_GLASS);
+				terrain->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset));
 			}
 
 			// 道路オブジェクトはTiled上で1～11で登録されている
 			if (groundData[iy][ix] >= 1 && groundData[iy][ix] <= 11)
 			{
-				block = new LevelBlock();
-				block->SetMesh(m_blockMeshes[1]);
-				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
+				terrain = new LevelTerrain(m_blockMeshes[1], LevelTerrain::TERRAIN_TYPE::TYPE_STREET);
+				terrain->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset));
 			}
 
 		}
@@ -182,7 +183,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 
 			if (patrolPointData[iy][ix] >= 34)
 			{
-				PatrolPoint* patrol = new PatrolPoint(Vector3(ix * blockSize, offsetY - iy * blockSize, 1000.0f));
+				PatrolPoint* patrol = new PatrolPoint(Vector3(ix * blockSize, offsetY - iy * blockSize, 1200.0f));
 
 				in_world->AddPatrolPoint(patrol);
 
@@ -192,16 +193,16 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	}
 	patrolPointData.clear();
 
+
+
+	m_blockMeshes.clear();
+	m_objectMeshes.clear();
 }
 
 
 // デストラクタ
 LevelManager::~LevelManager()
 {
-	// 地形ブロックのクリア
-	m_blockMeshes.clear();
-	// オブジェクトのクリア
-	m_objectMeshes.clear();
 
 }
 

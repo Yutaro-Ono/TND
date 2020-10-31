@@ -67,6 +67,10 @@ public:
 	// 三人称カメラのゲッター
 	class ThirdPersonCamera* GetCamera() { return m_cameraComp; }
 
+	// 摩擦力のゲッター
+	float GetFrictionVal() { return m_friction; }
+
+
 private:
 
 	DRIVE_STATE m_driveState;             // 車の運転状態
@@ -94,6 +98,9 @@ private:
 	class BoxCollider* m_hitBox;
 	class BoxCollider* m_hitGroundBox;
 	class BoxCollider* m_hitHeadBox;
+
+	// 摩擦力
+	float m_friction;
 
 
 	static const std::string CAR_BODY_MESH_PATH;

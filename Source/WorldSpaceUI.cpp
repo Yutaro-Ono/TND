@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "Texture.h"
 #include "Shader.h"
+#include "CameraComponent.h"
 
 Matrix4 WorldSpaceUI::m_staticBillboardMat;
 const Vector3 adjustPos = Vector3(0.0f, 0.0f, 200.0f);
@@ -22,6 +23,7 @@ WorldSpaceUI::WorldSpaceUI(const Vector3& in_pos, const std::string& in_filePath
 // デストラクタ
 WorldSpaceUI::~WorldSpaceUI()
 {
+	RENDERER->RemoveSpriteWorld(this);
 }
 
 // 描画処理
@@ -31,7 +33,6 @@ void WorldSpaceUI::Draw(Shader* in_shader)
 	{
 		// ビルボード行列のセット
 		m_staticBillboardMat = GetBillboardMatrix();
-
 
 		// ワールド行列、スケール行列を作成する
 		Matrix4 mat, scale, projection, view;
@@ -45,8 +46,6 @@ void WorldSpaceUI::Draw(Shader* in_shader)
 		in_shader->SetMatrixUniform("u_WorldTransform", scale * m_staticBillboardMat * mat);
 		in_shader->SetMatrixUniform("u_View", view);
 		in_shader->SetMatrixUniform("u_Projection", projection);
-
-
 		//in_shader->SetMatrixUniform("u_ViewProj", view * projection);
 
 		// ブレンドのアクティブ化

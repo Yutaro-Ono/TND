@@ -19,8 +19,9 @@
 // ディレクショナルライト構造体(平行ライト:シーン全体に降り注ぐ光)
 typedef struct DirectionalLight
 {
-	Vector3 position;
-	Vector3 direction;
+	Vector3 position;      // 光源位置
+	Vector3 target;        // ターゲット(方向を割り出しやすくするため)
+	Vector3 direction;     // ターゲット - 光源位置
 	Vector3 ambient;
 	Vector3 diffuse;
 	Vector3 specular;
@@ -97,6 +98,7 @@ public:
 
 	void SetViewMatrix(const Matrix4& in_view) { m_view = in_view; }
 	void SetAmbientLight(const Vector3& in_ambientColor) { m_ambientLight = in_ambientColor; }
+	const Vector3 GetAmbientLight() { return m_ambientLight; }
 	void SetProjectionMatrix(const Matrix4& in_proj) { m_projection = in_proj; }
 
 

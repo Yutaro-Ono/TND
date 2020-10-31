@@ -555,7 +555,7 @@ void GameMain::RemoveActor(Actor * in_actor)
 	}
 }
 
-void GameMain::AllDeadActor()
+void GameMain::DeadAllActor()
 {
 	for (auto actor : m_actors)
 	{

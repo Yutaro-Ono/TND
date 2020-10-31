@@ -7,7 +7,9 @@
 // インクルードファイル
 #include "GameMain.h"
 #include "Renderer.h"
+#include "SceneBase.h"
 #include "TitleScene.h"
+#include "GameScene.h"
 #include <SDL.h>
 #include <GL/glew.h>
 #include <iostream>
@@ -23,7 +25,8 @@ int main(int argc, char** argv)
 	GAME_INSTANCE.Initialize();
 
 	// 最初のシーンのセット
-	GAME_INSTANCE.SetFirstScene(new TitleScene);
+	//GAME_INSTANCE.SetFirstScene(new GameScene(0));
+	GAME_INSTANCE.SetFirstScene(new TitleScene());
 	// 
 	GAME_INSTANCE.GetRenderer()->SetWindowTitle("TND");
 	GAME_INSTANCE.RunLoop();

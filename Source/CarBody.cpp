@@ -26,7 +26,8 @@ CarBody::CarBody(PlayerCar* in_owner, const std::string& in_meshPath)
 	//playerBox.m_max.x *= 0.6f;
 	//playerBox.m_max.y *= 0.6f;
 	playerBox.m_min.z *= 0.05f;
-	//playerBox.m_max.z *= 2.0f;
+
+	playerBox.m_max.z *= 1.0f;
 	m_owner->GetBoxCollider()->SetObjectBox(playerBox);
 }
 

@@ -60,6 +60,10 @@ void MissionBase::Update(float in_deltaTime)
 	// ミッション保留中
 	if (m_missionState == HOLD)
 	{
+
+		// 距離更新
+		CheckDistPlayer(playerPos, m_startPos);
+
 		// UI上のカーソルでこの任務が選択されている場合、ランドマークを表示
 		if (isSelected)
 		{
@@ -82,19 +86,15 @@ void MissionBase::Update(float in_deltaTime)
 			}
 		}
 
-		//if (CheckDistPlayer(playerPos, m_startPos))
-		//{
-		//	m_startActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
-		//	// 任務を受諾したとしてカウントダウン開始
-		//	m_missionState = ACTIVE;
-		//}
-
-
 	}
 
 	// ミッション受注時
 	if (m_missionState == ACTIVE)
 	{
+
+		// 距離更新
+		CheckDistPlayer(playerPos, m_goalPos);
+
 		// UI上のカーソルでこの任務が選択されている場合、ランドマークを表示
 		if (isSelected)
 		{
@@ -129,11 +129,16 @@ void MissionBase::Update(float in_deltaTime)
 			m_missionState = FAILED;
 		}
 
-		// ゴール地点にプレイヤーが接触し、ボタンを押したらミッション終了(成功)
-		if (CheckDistPlayer(playerPos, m_goalPos))
+		// プレイヤーのアクセス範囲球に依頼人が入った状態で、ボタンを押したらミッション開始
+		if (m_manager->GetPlayer()->GetSearchSphere().Contains(m_goalActor->GetPosition()))
 		{
-			m_goalActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
-			m_missionState = SUCCESS;
+			// 承諾ボタンを押したらtrue
+			if (CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_X) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E))
+			{
+				m_goalActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
+				// 任務を受諾したとしてカウントダウン開始
+				m_missionState = SUCCESS;
+			}
 		}
 
 	}
@@ -155,21 +160,10 @@ void MissionBase::SetMissionDetail(ClientActor* in_start, ClientActor* in_goal, 
 }
 
 // プレイヤーの座標～開始地点or終了地点座標の距離を求め、一定以上接近してボタンを押したら真)
-bool MissionBase::CheckDistPlayer(const Vector3& in_playerPos, const Vector3& in_missionPos)
+void MissionBase::CheckDistPlayer(const Vector3& in_playerPos, const Vector3& in_missionPos)
 {
 	// プレイヤーとの距離を測定する
 	m_playerDistance = Vector3::Distance(in_playerPos, in_missionPos);
-	// 距離が一定以上近いとき
-	if (m_playerDistance < 95.0f)
-	{
-		// 承諾ボタンを押したらtrue
-		if (CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_X) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E))
-		{
-			return true;
-		}
-	}
-
-	return false;
 }
 
 // 耐久値減少処理

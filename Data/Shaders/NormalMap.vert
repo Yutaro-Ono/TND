@@ -49,24 +49,24 @@ void main()
 	N = in_Normal;     // 法線を代入
 	T = in_Tangent;    // 接空間(TangentSpace)を代入
 
-	mat3 normalMatrix = transpose(inverse(mat3(uWorldTransform)));
-	T = normalize(normalMatrix * in_Tangent);
-	N = normalize(normalMatrix * in_Normal);
+	mat3 normalMatrix = transpose(mat3(uWorldTransform));
+	T = normalize(in_Tangent * normalMatrix);
+	N = normalize(in_Normal * normalMatrix);
 
 	// 法線に対する接空間の再直行化
 	T = normalize(T - dot(T, N) * N);
 	// 接空間ベクトルと法線ベクトルの外積から垂直ベクトルB(BiTangent)を取得
 	B = cross(N, T);
 
-	T = normalize(vec3(uWorldTransform * vec4(T, 0.0f)));
-	B = normalize(vec3(uWorldTransform * vec4(B, 0.0f)));
-	N = normalize(vec3(uWorldTransform * vec4(N, 0.0f)));
+	T = normalize(vec3(vec4(T, 0.0f) * uWorldTransform));
+	B = normalize(vec3(vec4(B, 0.0f) * uWorldTransform));
+	N = normalize(vec3(vec4(N, 0.0f) * uWorldTransform));
 
 	// TBN行列を逆行列として生成
 	mat3 TBN = transpose(mat3(T, B, N));
 
 	// 接空間内の座標定義
-	vs_out.TangentLightPos = TBN * uLightPos;                                  // 接空間における光源位置
-	vs_out.TangentViewPos = TBN * uViewPos;                                    // 接空間におけるビュー座標
-	vs_out.TangentFragPos = TBN * vec3(uWorldTransform * vec4(in_Position, 0.0f));      // 接空間における頂点座標
+	vs_out.TangentLightPos = uLightPos * TBN;                                  // 接空間における光源位置
+	vs_out.TangentViewPos = uViewPos * TBN;                                    // 接空間におけるビュー座標
+	vs_out.TangentFragPos = TBN * vec3(vec4(in_Position, 0.0f) * uWorldTransform);      // 接空間における頂点座標
 }

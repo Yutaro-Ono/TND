@@ -43,7 +43,6 @@ ThirdPersonCamera::ThirdPersonCamera(Actor* in_owner)
 	hitBox.m_max.z = 5.0f;
 	m_hitBox = new BoxCollider(m_cameraActor, PhysicsWorld::TYPE_CAMERA);
 	m_hitBox->SetObjectBox(hitBox);
-	m_hitBox->SetCamera(this);
 
 }
 
@@ -173,8 +172,8 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 	float attenRate = 3.0f;    // 減衰比率
 
 	// ピッチの最大角度・最小角度
-	const float pitchMaxDegree = 40.0f; // カメラピッチ最高角度(degree)
-	const float pitchMinDegree = -30.0f; // カメラピッチ最低角度(degree)
+	const float pitchMaxDegree = 45.0f; // カメラピッチ最高角度(degree)
+	const float pitchMinDegree = -10.0f; // カメラピッチ最低角度(degree)
 
 	//-----------------------------------------------------+
 	//
@@ -200,11 +199,11 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 			if (m_adjustForward)
 			{
 				// プレイヤーの前進ベクトルを更新
-				m_ownerForward = m_owner->GetPosition() - m_position;
-				m_ownerForward.z = 0.0f;
-				m_ownerForward.Normalize();
+				//m_ownerForward = m_owner->GetPosition() - m_position;
+				//m_ownerForward.z = 0.0f;
+				//m_ownerForward.Normalize();
 				// プレイヤーの前進ベクトル更新
-				m_owner->RotateToNewForward(m_ownerForward);
+				//m_owner->RotateToNewForward(m_ownerForward);
 			}
 		}
 
@@ -313,11 +312,11 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 			if (m_adjustForward)
 			{
 				// プレイヤーの前進ベクトルを更新
-				m_ownerForward = m_owner->GetPosition() - m_position;
-				m_ownerForward.z = 0.0f;
-				m_ownerForward.Normalize();
+			    //	m_ownerForward = m_owner->GetPosition() - m_position;
+			    //	m_ownerForward.z = 0.0f;
+		     	//	m_ownerForward.Normalize();
 				// プレイヤーの前進ベクトル更新
-				m_owner->RotateToNewForward(m_ownerForward);
+			    //m_owner->RotateToNewForward(m_ownerForward);
 			}
 		}
 

@@ -14,11 +14,13 @@ public:
 		NIGHT = 3
 	};
 
-	Environment(GAME_TIME in_gameTime);     // コンストラクタ
+	Environment(GAME_TIME in_gameTime);     // コンストラクタ1
+	Environment(class GameWorld* in_world, GAME_TIME in_gameTime);     // コンストラクタ2
 	~Environment();                         // デストラクタ
 
 	void Update();
 
+	void SetSkyBox(GAME_TIME in_gameTime);
 	void SetDirectionalLight(GAME_TIME in_gameTime);             // 時間帯ごとに平行ライトを設定する
 
 	// ゲームタイムのゲッター・セッター
@@ -31,8 +33,11 @@ private:
 
 	GAME_TIME m_gameTime;
 
-	DirectionalLight m_dirLight;
+	class GameWorld* m_world;
 
+	DirectionalLight* m_dirLight;
+
+	// 各種スカイボックス
 	class SkyBox* m_morningBox;
 	class SkyBox* m_eveningBox;
 	class SkyBox* m_nightBox;

@@ -13,6 +13,7 @@ class BoxCollider : public Component
 {
 public:
 
+
 	BoxCollider(class Actor* in_owner, PhysicsWorld::PhysicsType in_type, int in_updateOrder = 100);
 	~BoxCollider();
 
@@ -21,18 +22,21 @@ public:
 	const AABB& GetWorldBox() const { return m_worldBox; }                  // ワールド空間上での境界ボックスを取得
 	void SetArrowRotate(bool in_value) { m_rotatable = in_value; }          // 回転を許可するか
 
-	// カメラクラスのセッター・ゲッター
-	void SetCamera(class CameraComponent* in_camera) { m_camera = in_camera; }
-	class CameraComponent* GetCamera() { return m_camera; }
+	PhysicsWorld::PhysicsType GetPhysicsType() { return m_type; }
+
+	void SetTerrainPtr(class LevelTerrain* in_terrain) { m_terrain = in_terrain; }
+	class LevelTerrain* GetTerrainPtr() { return m_terrain; }
 
 private:
 
 	AABB m_objectBox;                                                       // オブジェクト空間(変換前)のボックス
 	AABB m_worldBox;                                                        // ワールド空間でのボックス
 
+	class LevelTerrain* m_terrain;                                          // 地形のポインタ
+
 	bool m_rotatable;                                                       // 回転を許可するか
 
-	class CameraComponent* m_camera;                                        // カメラに当たり判定を付けた際に用いるポインタ
+	PhysicsWorld::PhysicsType m_type;                                       // 当たり判定オブジェクトタイプ
 
 	friend class PhysicsWorld;                                              // フレンド化
 

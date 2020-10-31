@@ -38,14 +38,14 @@ GameWorld::GameWorld()
 	m_mission = new MissionManager(this);
 
 	// 環境(光源など)作成
-	//m_environment = new Environment(Environment::GAME_TIME::NIGHT);
-	m_environment = new Environment(Environment::GAME_TIME::MORNING);
+	//m_environment = new Environment(this, Environment::GAME_TIME::NIGHT);
+	m_environment = new Environment(this, Environment::GAME_TIME::MORNING);
 
 
 	// ヘリコプターを三機生成
 	for (int i = 0; i < 3; i++)
 	{
-		m_helicopters.emplace_back(new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 1000.0f)));
+		m_helicopters.emplace_back(new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 1200.0f)));
 	}
 
 
@@ -53,9 +53,13 @@ GameWorld::GameWorld()
 
 GameWorld::~GameWorld()
 {
+	for (auto heli : m_helicopters)
+	{
+		heli->SetState(Actor::STATE_DEAD);
+	}
+	m_helicopters.clear();
 	m_clients.clear();
 	m_patrolPoints.clear();
-	m_helicopters.clear();
 	delete m_player;
 	delete m_level;
 	delete m_mission;
@@ -64,14 +68,8 @@ GameWorld::~GameWorld()
 
 void GameWorld::Update(float in_deltaTime)
 {
-	// ディレクショナルライト更新
-	//playerPos = m_player->GetPosition();
-	//if (playerPos.x != tempPos.x || playerPos.y != tempPos.y)
-	//{
-	//	RENDERER->GetDirectionalLight().position += playerPos - tempPos;
-	//	tempPos = playerPos;
 
-	//}
+	m_environment->Update();
 
 	// ミッションの更新
 	m_mission->Update(in_deltaTime);

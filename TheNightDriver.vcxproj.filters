@@ -297,6 +297,15 @@
     <Filter Include="ソース ファイル\Shader\Source\Shadow\Skinned">
       <UniqueIdentifier>{982e61b7-289c-4dda-bfeb-2d47fe3e7d31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\Shadow\DepthMap\Basic">
+      <UniqueIdentifier>{f7f1adb4-044e-4786-a415-058a024b0f6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\Shadow\DepthMap\Skinned">
+      <UniqueIdentifier>{1ba746fc-ee15-412b-a061-d2b6c68b50e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Level\LevelTerrain">
+      <UniqueIdentifier>{13c1207d-e69c-43d9-99ce-162fd0768f3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -595,6 +604,9 @@
     </ClCompile>
     <ClCompile Include="Source\Canvas.cpp">
       <Filter>ソース ファイル\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LevelTerrain.cpp">
+      <Filter>ソース ファイル\Actor\Level\LevelTerrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -910,6 +922,9 @@
     <ClInclude Include="Source\Canvas.h">
       <Filter>ソース ファイル\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="Source\LevelTerrain.h">
+      <Filter>ソース ファイル\Actor\Level\LevelTerrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\DirectLine.vert">
@@ -1002,14 +1017,17 @@
     <None Include="Data\Shaders\PhongShadow.frag">
       <Filter>ソース ファイル\Shader\Source\Shadow</Filter>
     </None>
-    <None Include="Data\Shaders\DepthMap.vert">
-      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap</Filter>
-    </None>
-    <None Include="Data\Shaders\DepthMap.frag">
-      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap</Filter>
-    </None>
     <None Include="Data\Shaders\SkinnedShadow.vert">
       <Filter>ソース ファイル\Shader\Source\Shadow\Skinned</Filter>
+    </None>
+    <None Include="Data\Shaders\DepthMap.frag">
+      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Basic</Filter>
+    </None>
+    <None Include="Data\Shaders\DepthMap.vert">
+      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Basic</Filter>
+    </None>
+    <None Include="Data\Shaders\SkinnedDepth.vert">
+      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Skinned</Filter>
     </None>
   </ItemGroup>
 </Project>

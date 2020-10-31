@@ -26,7 +26,7 @@ void SkeletalMeshComponent::Draw(Shader* in_shader)                         // •
 		in_shader->SetMatrixUniforms("uMatrixPalette", &m_palette.mEntry[0],
 			MAX_SKELETON_BONES);
 		// ƒXƒyƒLƒ…ƒ‰[‹­“x‚ðƒZƒbƒg
-		in_shader->SetFloatUniform("uSpecPower", 100);
+		in_shader->SetFloatUniform("uSpecPower", 32);
 
 		// ŠeŽíƒeƒNƒXƒ`ƒƒ‚ðƒVƒF[ƒ_‚ÉƒZƒbƒg‚·‚é
 		// ƒeƒNƒXƒ`ƒƒ‚ª“Ç‚Ýž‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚Í–³Ž‹‚·‚é
@@ -53,6 +53,25 @@ void SkeletalMeshComponent::Draw(Shader* in_shader)                         // •
 			glActiveTexture(GL_TEXTURE3);
 			glBindTexture(GL_TEXTURE_2D, m_mesh->GetDepthMap()->GetTextureID());
 		}
+
+		// ƒƒbƒVƒ…‚Ì’¸“_”z—ñ‚ðƒAƒNƒeƒBƒu‚É
+		VertexArray* va = m_mesh->GetVertexArray();
+		va->SetActive();
+		// •`‰æ
+		glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
+	}
+}
+
+void SkeletalMeshComponent::DrawShadow(Shader* in_shader)
+{
+	if (m_mesh)
+	{
+		// ƒ[ƒ‹ƒh•ÏŠ·s—ñƒZƒbƒg
+		in_shader->SetMatrixUniform("uWorldTransform",
+			m_owner->GetWorldTransform());
+		// s—ñƒpƒŒƒbƒg‚ðƒZƒbƒg    
+		in_shader->SetMatrixUniforms("uMatrixPalette", &m_palette.mEntry[0],
+			MAX_SKELETON_BONES);
 
 		// ƒƒbƒVƒ…‚Ì’¸“_”z—ñ‚ðƒAƒNƒeƒBƒu‚É
 		VertexArray* va = m_mesh->GetVertexArray();

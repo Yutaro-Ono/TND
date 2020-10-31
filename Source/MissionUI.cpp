@@ -41,6 +41,7 @@ MissionUI::MissionUI(MissionBase* in_mission)
 // デストラクタ
 MissionUI::~MissionUI()
 {
+	Close();
 }
 
 // 更新処理

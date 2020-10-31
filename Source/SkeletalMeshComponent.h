@@ -9,6 +9,9 @@ public:
 	// メッシュコンポーネントの描画
 	void Draw(class Shader* in_shader);
 
+	// シャドウ用の描画
+	void DrawShadow(class Shader* in_shader);
+
 	void Update(float in_deltaTime) override;
 
 	// スケルトンのセット

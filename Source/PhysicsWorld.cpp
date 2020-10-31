@@ -44,6 +44,12 @@ void PhysicsWorld::AddBoxCollider(PhysicsType in_type, BoxCollider * in_box)
 		m_bgBoxes.push_back(in_box);
 	}
 
+	// 地形当たり判定
+	if (in_type == TYPE_TERRAIN)
+	{
+		m_terrain.push_back(in_box);
+	}
+
 	// カメラ当たり判定
 	if (in_type == TYPE_CAMERA)
 	{
@@ -56,11 +62,47 @@ void PhysicsWorld::AddBoxCollider(PhysicsType in_type, BoxCollider * in_box)
 void PhysicsWorld::RemoveBoxCollider(BoxCollider * in_box)
 {
 	// BackGround内にいるか
-	auto iter = std::find(m_bgBoxes.begin(), m_bgBoxes.end(), in_box);
+	auto box = std::find(m_bgBoxes.begin(), m_bgBoxes.end(), in_box);
 
-	if (iter != m_bgBoxes.end())
+	if (box != m_bgBoxes.end())
 	{
-		m_bgBoxes.erase(iter);
+		m_bgBoxes.erase(box);
+		return;
+	}
+
+	// 車用当たり判定配列にいるか
+	auto car = std::find(m_playerCarBoxes.begin(), m_playerCarBoxes.end(), in_box);
+
+	if (car != m_playerCarBoxes.end())
+	{
+		m_playerCarBoxes.erase(car);
+		return;
+	}
+
+	// 人間用当たり判定配列にいるか
+	auto human = std::find(m_playerHumanBoxes.begin(), m_playerHumanBoxes.end(), in_box);
+
+	if (human != m_playerHumanBoxes.end())
+	{
+		m_playerHumanBoxes.erase(human);
+		return;
+	}
+
+	// カメラ用当たり判定配列にいるか
+	auto cam = std::find(m_cameraBoxes.begin(), m_cameraBoxes.end(), in_box);
+
+	if (cam != m_cameraBoxes.end())
+	{
+		m_cameraBoxes.erase(cam);
+		return;
+	}
+
+	// 地形用当たり判定配列にあるか
+	auto terra = std::find(m_terrain.begin(), m_terrain.end(), in_box);
+
+	if (terra != m_terrain.end())
+	{
+		m_terrain.erase(terra);
 		return;
 	}
 }
@@ -111,6 +153,18 @@ void PhysicsWorld::PlayerAndBGTest()
 			}
 		}
 
+		// 地形との当たり判定
+		for (auto t : m_terrain)
+		{
+			BoxCollider* box = t;
+			if (Intersect(playerCar->GetWorldBox(), t->GetWorldBox()))
+			{
+				//プレーヤーの壁めり込み修正処理へ
+				dynamic_cast<PlayerCar*>(playerCar->GetOwner())->CollisionFix(playerCar, box);
+			}
+
+		}
+
 	}
 
 	//プレーヤー(人間)の衝突検出
@@ -123,6 +177,17 @@ void PhysicsWorld::PlayerAndBGTest()
 		{
 			BoxCollider* box = b;
 			if (Intersect(playerHuman->GetWorldBox(), b->GetWorldBox()))
+			{
+				//プレーヤーの壁めり込み修正処理へ
+				dynamic_cast<PlayerHuman*>(playerHuman->GetOwner())->CollisionFix(playerHuman, box);
+			}
+		}
+
+		// 地形との当たり判定
+		for (auto t : m_terrain)
+		{
+			BoxCollider* box = t;
+			if (Intersect(playerHuman->GetWorldBox(), t->GetWorldBox()))
 			{
 				//プレーヤーの壁めり込み修正処理へ
 				dynamic_cast<PlayerHuman*>(playerHuman->GetOwner())->CollisionFix(playerHuman, box);
@@ -142,28 +207,28 @@ void PhysicsWorld::PlayerAndBGTest()
 	}
 
 	// カメラの当たり判定
-	for (auto c : m_cameraBoxes)
-	{
-		BoxCollider* camera = c;
+	//for (auto c : m_cameraBoxes)
+	//{
+	//	BoxCollider* camera = c;
 
-		//printf("Min.x : %f, Min.y : %f, Min.z : %f\n", c->m_worldBox.m_min.x, c->m_worldBox.m_min.y, c->m_worldBox.m_min.z);
-		//printf("Max.x : %f, Max.y : %f, Max.z : %f\n", c->m_worldBox.m_max.x, c->m_worldBox.m_max.y, c->m_worldBox.m_max.z);
+	//	//printf("Min.x : %f, Min.y : %f, Min.z : %f\n", c->m_worldBox.m_min.x, c->m_worldBox.m_min.y, c->m_worldBox.m_min.z);
+	//	//printf("Max.x : %f, Max.y : %f, Max.z : %f\n", c->m_worldBox.m_max.x, c->m_worldBox.m_max.y, c->m_worldBox.m_max.z);
 
-		// 環境オブジェクトとの当たり判定
-		for (auto b : m_bgBoxes)
-		{
-			BoxCollider* box = b;
+	//	// 環境オブジェクトとの当たり判定
+	//	for (auto b : m_bgBoxes)
+	//	{
+	//		BoxCollider* box = b;
 
-			// 非表示にしているメッシュを表示状態にする
-			//b->GetOwner()->GetMeshComponent()->SetVisible(true);
+	//		// 非表示にしているメッシュを表示状態にする
+	//		//b->GetOwner()->GetMeshComponent()->SetVisible(true);
 
-			if (Intersect(camera->GetWorldBox(), b->GetWorldBox()))
-			{
-				// カメラの壁めり込み時、メッシュを非表示
-				dynamic_cast<ThirdPersonCamera*>(camera->GetCamera())->CollisionFix(camera, box);
+	//		if (Intersect(camera->GetWorldBox(), b->GetWorldBox()))
+	//		{
+	//			// カメラの壁めり込み時、メッシュを非表示
+	//			dynamic_cast<ThirdPersonCamera*>(camera->GetCamera())->CollisionFix(camera, box);
 
-			}
-		}
-	}
+	//		}
+	//	}
+	//}
 
 }

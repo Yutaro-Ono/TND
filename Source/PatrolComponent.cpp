@@ -62,7 +62,7 @@ void PatrolComponent::MoveToPatrolPos(float in_deltaTime)
 	m_owner->RotateToNewForward(forwardVec);
 
 	// ˆÚ“®—Ê‚ðŒvŽZ
-	Vector3 move = forwardVec * 360.0f * in_deltaTime;
+	Vector3 move = forwardVec * 800.0f * in_deltaTime;
 
 	// ƒwƒŠ‚ðˆÚ“®‚³‚¹‚é
 	m_owner->SetPosition(heliPos + move);

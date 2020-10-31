@@ -77,6 +77,7 @@ void main()
 	vec3 L = normalize(-u_dirLight.direction);
 	// ポリゴン表面からカメラ方向
 	vec3 V = normalize(uCameraPos - fragWorldPos);
+
 	// -L ベクトルを 法線 N に対して反射したベクトルRを求める
 	vec3 R = normalize(reflect(-L, N));
 	// フォン反射計算

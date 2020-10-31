@@ -55,6 +55,7 @@ ClientActor::ClientActor(const Vector3& in_pos)
 
 ClientActor::~ClientActor()
 {
+	delete m_landMark;
 }
 
 void ClientActor::UpdateActor(float in_deltaTime)

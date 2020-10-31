@@ -38,8 +38,10 @@ private:
 	class FollowCamera* m_camera;
 
 	std::vector<class Mesh*> m_blockMeshes;          // ブロックメッシュ
-
 	std::vector<class Mesh*> m_objectMeshes;         // オブジェクトメッシュ
+
+
+
 
 	friend class PhysicsWorld;
 

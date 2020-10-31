@@ -26,7 +26,7 @@
 #include "PlayerCar.h"
 #include "PlayerManager.h"
 #include "GameWorld.h"
-
+#include "TitleScene.h"
 #include <Windows.h>
 #include <iostream>
 
@@ -49,6 +49,15 @@ GameScene::GameScene(int in_stageNum)
 // デストラクタ
 GameScene::~GameScene()
 {
+	//delete m_world;
+	// 全てのアクターを削除
+	GAME_INSTANCE.DeadAllActor();
+	// 全てのUIをCloseに設定
+	for (auto iter : GAME_INSTANCE.GetUIStack())
+	{
+		iter->Close();
+	}
+
 	// パーティクルを全て削除
 	RENDERER->GetParticleManager()->AllDeadParticle();
 	// 音楽を停止
@@ -159,11 +168,20 @@ SceneBase * GameScene::Update()
 		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_SPACE) || CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_A))
 		{
 			// 制限時間のセット
-			m_time->SetStartTime();
+			//m_time->SetStartTime();
 
 			// カウントダウンへ
-			m_state = STATE_START;
+			//m_state = STATE_START;
 		}
+
+
+		// デバッグ用タイトルシーン
+		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_P) || CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_A))
+		{
+			return new TitleScene();
+		}
+
+
 
 		break;
 
@@ -231,17 +249,7 @@ SceneBase * GameScene::Update()
 		{
 			//m_player->AllStopSound();
 
-			// 全てのUIをCloseに設定
-			for (auto iter : GAME_INSTANCE.GetUIStack())
-			{
-				iter->Close();
-			}
 
-			// 全てのアクターを削除
-			for (auto actor : GAME_INSTANCE.GetActorStack())
-			{
-				actor->SetState(Actor::STATE_DEAD);
-			}
 
 			// 次のシーンを返す
 			//return new ResultScene(m_world->GetScore(), m_bestSpeed);

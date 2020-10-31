@@ -40,6 +40,8 @@ ShadowMap::ShadowMap()
 	// シェーダの作成
 	m_depthShader = new Shader();
 	m_depthShader->Load("Data/Shaders/DepthMap.vert", "Data/Shaders/DepthMap.frag");
+	m_depthSkinShader = new Shader();
+	m_depthSkinShader->Load("Data/Shaders/SkinnedDepth.vert", "Data/Shaders/DepthMap.frag");
 	m_shadowShader = new Shader();
 	m_shadowShader->Load("Data/Shaders/PhongShadow.vert", "Data/Shaders/PhongShadow.frag");
 	m_skinShadowShader = new Shader();
@@ -54,6 +56,7 @@ ShadowMap::~ShadowMap()
 	glDeleteTextures(1, &m_depthMap);
 	//glDeleteVertexArrays(1, &m_screenVAO);
 	m_depthShader->Delete();
+	m_depthSkinShader->Delete();
 	m_shadowShader->Delete();
 	m_skinShadowShader->Delete();
 }
@@ -73,7 +76,7 @@ void ShadowMap::RenderDepthMapFromLightView(Renderer* in_renderer, const std::ve
 	Vector3 direction = lightViewTraget - in_renderer->GetDirectionalLight().position;
 	direction.Normalize();
 
-	m_lightProj = Matrix4::CreateOrtho(35000.0f, 20000.0f, 1.0f, 35000.0f);
+	m_lightProj = Matrix4::CreateOrtho(10000.0f, 10000.0f, 1.0f, 10000.0f);
 	m_lightView = Matrix4::CreateLookAt(in_renderer->GetDirectionalLight().position, lightViewTraget, Vector3::UnitZ);
 	m_lightSpace = m_lightView * m_lightProj;
 
@@ -125,14 +128,19 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 	// ディレクショナルライト(平行)であるため、プロジェクション行列には正射影行列を使用
 
 	// ライト視点の注視点 (プレイヤーの座標を入れる予定)
-	Vector3 lightViewTraget = Vector3(12000.0f, 14000.0f, -12.0f);
-	Vector3 direction = lightViewTraget - RENDERER->GetDirectionalLight().position;
-	direction.Normalize();
+	//Vector3 lightViewTraget = Vector3(12000.0f, 14000.0f, -12.0f);
 
-	//m_lightProj = Matrix4::CreateOrtho(8000.0f, 8000.0f, 1.0f, 20000.0f);
-	m_lightProj = Matrix4::CreateOrtho(35000.0f, 20000.0f, 1.0f, 35000.0f);
+	//Vector3 direction = lightViewTraget - RENDERER->GetDirectionalLight().position;
+	//direction.Normalize();
 
-	m_lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, lightViewTraget, Vector3::UnitZ);
+	Vector3 direction = RENDERER->GetDirectionalLight().direction;
+
+	m_lightProj = Matrix4::CreateOrtho(8000.0f, 8000.0f, 1.0f, 13000.0f);
+	//m_lightProj = Matrix4::CreateOrtho(35000.0f, 20000.0f, 1.0f, 35000.0f);
+
+	//m_lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, lightViewTraget, Vector3::UnitZ);
+	m_lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, RENDERER->GetDirectionalLight().target, Vector3::UnitZ);
+
 	m_lightSpace = m_lightView * m_lightProj;
 
 	// シャドウマップはレンダリング時の解像度とは異なり、シャドウマップのサイズに合わせてViewportパラメータを変更する必要がある
@@ -150,9 +158,16 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 	{
 		mesh->DrawShadow(m_depthShader);
 	}
+
+	m_depthSkinShader->SetActive();
+	m_depthSkinShader->SetMatrixUniform("uLightSpaceMatrix", m_lightSpace);
 	for (auto skel : in_skelMesh)
 	{
-		skel->DrawShadow(m_depthShader);
+		if (skel->GetVisible())
+		{
+			skel->DrawShadow(m_depthSkinShader);
+		}
+
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -160,9 +175,6 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 	glViewport(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight());
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-
 
 }
 
@@ -187,15 +199,12 @@ void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh)
 
 void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh, const std::vector<class SkeletalMeshComponent*>& in_skelMesh)
 {
-	// ライト視点の注視点 (プレイヤーの座標を入れる予定)
-	Vector3 lightViewTraget = Vector3(12000.0f, 14000.0f, -12.0f);
-	Vector3 direction = lightViewTraget - RENDERER->GetDirectionalLight().position;
-	direction.Normalize();
 
 	// シャドウシェーダのアクティブ化・uniformへのセット
 	m_shadowShader->SetActive();
 	m_shadowShader->SetVectorUniform("uCameraPos", RENDERER->GetViewMatrix().GetTranslation());
-	m_shadowShader->SetVectorUniform("u_dirLight.direction", direction);
+	m_shadowShader->SetVectorUniform("uAmbientLight", RENDERER->GetAmbientLight());
+	m_shadowShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
 	m_shadowShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
 	m_shadowShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_shadowShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
@@ -220,7 +229,8 @@ void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh,
 	// シャドウシェーダのアクティブ化・uniformへのセット
 	m_skinShadowShader->SetActive();
 	m_skinShadowShader->SetVectorUniform("uCameraPos", RENDERER->GetViewMatrix().GetTranslation());
-	m_skinShadowShader->SetVectorUniform("u_dirLight.direction", direction);
+	m_skinShadowShader->SetVectorUniform("uAmbientLight", RENDERER->GetAmbientLight());
+	m_skinShadowShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
 	m_skinShadowShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
 	m_skinShadowShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_skinShadowShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
@@ -236,9 +246,13 @@ void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh,
 	m_skinShadowShader->SetInt("u_mat.normalMap", 2);
 	m_skinShadowShader->SetInt("u_mat.depthMap", 3);
 	// シャドウシェーダによるスキンメッシュ描画
-	for (auto mesh : in_skelMesh)
+	for (auto skel : in_skelMesh)
 	{
-		mesh->Draw(m_skinShadowShader);
+		if (skel->GetVisible())
+		{
+			skel->Draw(m_skinShadowShader);
+		}
+
 	}
 
 }

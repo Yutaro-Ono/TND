@@ -39,7 +39,7 @@ public:
 	void SetMissionDetail(class ClientActor* in_start, class ClientActor* in_goal, unsigned int in_baseScore, unsigned int in_timeLimit);
 
 	// プレイヤーの座標～開始地点or終了地点座標の距離を求め、一定以上接近してボタンを押したら真)
-	bool CheckDistPlayer(const Vector3& in_playerPos, const Vector3& in_missionPos);
+	void CheckDistPlayer(const Vector3& in_playerPos, const Vector3& in_missionPos);
 
 	// 耐久値減少処理
 	void DecraseDurableValue();

@@ -65,10 +65,7 @@ CountDownUI::CountDownUI(RuleTime * in_time)
 // デストラクタ
 CountDownUI::~CountDownUI()
 {
-	m_timeTex->Delete();
-	m_timeTexShadow->Delete();
-	m_addTimeTex->Delete();
-	m_addTimeTexShadow->Delete();
+
 }
 
 // 更新処理

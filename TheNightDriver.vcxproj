@@ -67,6 +67,7 @@
     <ClCompile Include="Source\LevelBlock.cpp" />
     <ClCompile Include="Source\LevelManager.cpp" />
     <ClCompile Include="Source\LevelObject.cpp" />
+    <ClCompile Include="Source\LevelTerrain.cpp" />
     <ClCompile Include="Source\LoadScreen.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Math.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Source\LevelBlock.h" />
     <ClInclude Include="Source\LevelManager.h" />
     <ClInclude Include="Source\LevelObject.h" />
+    <ClInclude Include="Source\LevelTerrain.h" />
     <ClInclude Include="Source\LoadScreen.h" />
     <ClInclude Include="Source\Math.h" />
     <ClInclude Include="Source\MatrixPalette.h" />
@@ -250,6 +252,7 @@
     <None Include="Data\Shaders\PhongShadow.frag" />
     <None Include="Data\Shaders\PhongShadow.vert" />
     <None Include="Data\Shaders\Skinned.vert" />
+    <None Include="Data\Shaders\SkinnedDepth.vert" />
     <None Include="Data\Shaders\SkinnedShadow.vert" />
     <None Include="Data\Shaders\SkyBox.frag" />
     <None Include="Data\Shaders\SkyBox.vert" />

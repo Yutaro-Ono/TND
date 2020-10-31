@@ -6,8 +6,10 @@
 #include "InputController.h"
 #include "Collision.h"
 #include "BoxCollider.h"
+#include "Component.h"
 #include "PhysicsWorld.h"
 #include "PlayerManager.h"
+#include "LevelTerrain.h"
 
 const std::string PlayerCar::CAR_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/SM_suv_parts_LOD1_body_Internal.gpmesh";
 const std::string PlayerCar::CAR_DOOR_LEFT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/SM_suv_parts_LOD1_left_door_Internal.OBJ";
@@ -20,6 +22,7 @@ PlayerCar::PlayerCar()
 	:m_isActive(true)
 	,m_driveState(DRIVE_IDLE)
 	,m_turnState(TURN_IDLE)
+	,m_friction(1.0f)
 {
 	// 車両操作用のMoveComponentを生成
 	m_moveComp = new MoveComponentCar(this);
@@ -47,6 +50,7 @@ PlayerCar::PlayerCar()
 
 PlayerCar::~PlayerCar()
 {
+
 }
 
 void PlayerCar::UpdateActor(float in_deltaTime)
@@ -90,10 +94,29 @@ void PlayerCar::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hitBo
 {
 	Vector3 fix = Vector3::Zero;
 
-
 	//壁とぶつかったとき
 	AABB bgBox = in_hitBox->GetWorldBox();
 	AABB playerBox = m_hitBox->GetWorldBox();
+
+
+	// 床の当たり判定ボックスなら
+	if (in_hitBox->GetPhysicsType() == PhysicsWorld::TYPE_TERRAIN)
+	{
+		if (bgBox.Contains(m_position - Vector3(0.0f, 0.0f, 10.0f)))
+		{
+			// 地形ごとに摩擦力を設定
+			if (in_hitBox->GetTerrainPtr()->GetNodeType() == LevelTerrain::TYPE_GLASS)
+			{
+				m_friction = in_hitBox->GetTerrainPtr()->GetFrictionVal();
+			}
+			if (in_hitBox->GetTerrainPtr()->GetNodeType() == LevelTerrain::TYPE_STREET)
+			{
+				m_friction = in_hitBox->GetTerrainPtr()->GetFrictionVal();
+			}
+		}
+
+	}
+
 
 	// めり込みを修正
 	CalcCollisionFixVec(playerBox, bgBox, fix);
@@ -101,10 +124,9 @@ void PlayerCar::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hitBo
 	// 補正ベクトル分戻す
 	m_position += fix;
 
-	// 壁衝突時の処理
+	// 衝突時の処理
 	if (fix.x > 5.0f || fix.x < -5.0f || fix.y > 5.0f || fix.y < -5.0f)
 	{
-
 		// アクセル減少 (衝突時直前の半分のスピードにする)
 		m_moveComp->SetAccel(m_moveComp->GetAccelValue() / 2.0f);
 	}

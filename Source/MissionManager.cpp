@@ -97,10 +97,7 @@ MissionManager::MissionManager(GameWorld* in_world)
 // デストラクタ
 MissionManager::~MissionManager()
 {
-	while (!m_missions.empty())
-	{
-		delete m_missions.back();
-	}
+	m_missions.clear();
 }
 
 // 更新処理

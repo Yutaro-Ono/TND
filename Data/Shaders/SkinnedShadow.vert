@@ -40,7 +40,6 @@ void main()
 	fragWorldPos = skinnedPos.xyz;
 	// クリップ空間へ頂点を変換し出力に渡す
 	gl_Position = skinnedPos * uViewProj;
-
 	// スキン位置の法線を算出
 	vec4 skinnedNormal = vec4(inNormal, 0.0f);
 	skinnedNormal = (skinnedNormal * uMatrixPalette[inSkinBones.x]) * inSkinWeights.x
