@@ -32,12 +32,14 @@ public:
 		ANIM_ALL_NUM
 	};
 
-	ClientActor(const Vector3& in_pos);
+	ClientActor(const Vector3& in_pos, int in_chara = 0);
 	~ClientActor();
 
 	void UpdateActor(float in_deltaTime) override;
 	
 	void SetAcceptedPlayer();      // プレイヤーにアクセスされた時の処理
+
+	void LoadMeshEachChara(int in_chara = 0);      // コンストラクタで指定された引数に応じたメッシュのロード
 
 	//--------------------------------------------------+
 	// Getter / Setter

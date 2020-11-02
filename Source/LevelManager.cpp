@@ -18,6 +18,7 @@
 #include <string>
 #include <sstream>
 
+
 const int LevelManager::MAP_INDEX_GROUND = 16;
 
 
@@ -157,6 +158,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	buildingData.clear();
 
 	// マップに登録(依頼人)
+	int count = 0;
 	for (int iy = 0; iy < sizeY; iy++)
 	{
 		for (int ix = 0; ix < sizeX; ix++)
@@ -164,8 +166,8 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 
 			if (clientData[iy][ix] >= 33)
 			{
-				ClientActor* client = new ClientActor(Vector3(ix * blockSize, offsetY - iy * blockSize, -10.0f));
-				
+				ClientActor* client = new ClientActor(Vector3(ix * blockSize, offsetY - iy * blockSize, -10.0f), count);
+				count++;
 				in_world->AddClientActor(client);
 
 			}

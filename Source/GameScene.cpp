@@ -49,7 +49,7 @@ GameScene::GameScene(int in_stageNum)
 // デストラクタ
 GameScene::~GameScene()
 {
-	//delete m_world;
+	delete m_world;
 	// 全てのアクターを削除
 	GAME_INSTANCE.DeadAllActor();
 	// 全てのUIをCloseに設定
@@ -168,17 +168,17 @@ SceneBase * GameScene::Update()
 		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_SPACE) || CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_A))
 		{
 			// 制限時間のセット
-			//m_time->SetStartTime();
+			m_time->SetStartTime();
 
 			// カウントダウンへ
-			//m_state = STATE_START;
+			m_state = STATE_START;
 		}
 
 
 		// デバッグ用タイトルシーン
 		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_P) || CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_A))
 		{
-			return new TitleScene();
+			//return new TitleScene();
 		}
 
 
@@ -252,6 +252,7 @@ SceneBase * GameScene::Update()
 
 
 			// 次のシーンを返す
+			return new TitleScene();
 			//return new ResultScene(m_world->GetScore(), m_bestSpeed);
 		}
 

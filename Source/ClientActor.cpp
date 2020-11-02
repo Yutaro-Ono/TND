@@ -6,14 +6,21 @@
 #include "SkeletalMeshComponent.h"
 #include "Texture.h"
 #include "MissionBase.h"
+#include <string>
+#include <random>
 
-
+// キャラごとのメッシュパス
 const std::string MESH_PATH_CARLA = "Data/Meshes/TND/Actors/Player/carla/rp_carla_rigged_001_ue4";
+const std::string MESH_PATH_CLAUDIA = "Data/Meshes/TND/Actors/Player/claudia/rp_claudia_rigged_002_ue4";
+const std::string MESH_PATH_ERIC = "Data/Meshes/TND/Actors/Player/eric/rp_eric_rigged_001_ue4";
+const std::string MESH_PATH_MANUEL = "Data/Meshes/TND/Actors/Player/manuel/rp_manuel_rigged_001_ue4";
+const std::string MESH_PATH_SOPHIA = "Data/Meshes/TND/Actors/Player/sophia/rp_sophia_rigged_003_ue4";
+
 
 const float AnimationSpeed = 0.5f;        // アニメーションの速度
 
 // コンストラクタ
-ClientActor::ClientActor(const Vector3& in_pos)
+ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 	:m_isSelected(false)
 	,m_isAccepted(false)
 	,m_setting(CLIENT_SETTING::NONE)
@@ -31,10 +38,7 @@ ClientActor::ClientActor(const Vector3& in_pos)
 
 
 	// 依頼人のメッシュ生成
-	Mesh* mesh = RENDERER->GetMesh(MESH_PATH_CARLA + ".gpmesh");
-	m_skelComp = new SkeletalMeshComponent(this);
-	m_skelComp->SetMesh(mesh);
-	m_skelComp->SetSkeleton(RENDERER->GetSkeleton(MESH_PATH_CARLA + ".gpskel"));
+	LoadMeshEachChara(in_chara);
 
 	// アニメーションの生成・取得
 	m_anim.resize(CLIENT_ANIM::ANIM_ALL_NUM);
@@ -75,20 +79,6 @@ void ClientActor::UpdateActor(float in_deltaTime)
 		m_landMark->SetVisible(false);
 	}
 
-	//if (m_setting == CLIENT_SETTING::NONE)
-	//{
-	//	m_landMark->SetVisible(false);
-	//}
-	//else
-	//{
-
-	//}
-
-
-
-	//
-
-
 	m_recomputeWorldTransform = true;
 }
 
@@ -110,4 +100,54 @@ void ClientActor::SetAcceptedPlayer()
 		m_isAccepted = true;
 		return;
 	}
+}
+
+// コンストラクタで指定された引数に応じたメッシュのロード
+void ClientActor::LoadMeshEachChara(int in_chara)
+{
+	int chara = in_chara;
+	std::string meshPath;
+	std::string skelPath;
+
+	if (chara < 0 || chara > 4)
+	{
+		chara = std::rand() % 4;
+	}
+
+	// CARLA(黒人女性)
+	if (chara == 0)
+	{
+		meshPath = MESH_PATH_CARLA + ".gpmesh";
+		skelPath = MESH_PATH_CARLA + ".gpskel";
+	}
+	
+	// CLAUDIA(白人女性)
+	if (chara == 1)
+	{
+		meshPath = MESH_PATH_CLAUDIA + ".gpmesh";
+		skelPath = MESH_PATH_CLAUDIA + ".gpskel";
+	}
+	// ERIC(白人男性)
+	if (chara == 2)
+	{
+		meshPath = MESH_PATH_ERIC + ".gpmesh";
+		skelPath = MESH_PATH_ERIC + ".gpskel";
+	}
+	// MANUEL(白人男性)
+	if (chara == 3)
+	{
+		meshPath = MESH_PATH_SOPHIA + ".gpmesh";
+		skelPath = MESH_PATH_SOPHIA + ".gpskel";
+	}
+	// SOPHIA(白人女性)
+	if (chara == 4)
+	{
+		meshPath = MESH_PATH_SOPHIA + ".gpmesh";
+		skelPath = MESH_PATH_SOPHIA + ".gpskel";
+	}
+
+	Mesh* mesh = RENDERER->GetMesh(meshPath);
+	m_skelComp = new SkeletalMeshComponent(this);
+	m_skelComp->SetMesh(mesh);
+	m_skelComp->SetSkeleton(RENDERER->GetSkeleton(skelPath));
 }

@@ -19,7 +19,7 @@ const std::string HELI_SPOTLIGHT_MESH_PATH = "Data/Meshes/TND/Actors/Police/Heli
 // コンストラクタ
 Helicopter::Helicopter(GameWorld* in_world, const Vector3& in_pos)
 	:m_patrolComp(nullptr)
-	,m_searchSphere(Vector3(in_pos.x, in_pos.y, 0.0f), 150.0f)
+	,m_searchSphere(Vector3(in_pos.x, in_pos.y, 0.0f), 500.0f)
 	,m_foundPlayer(false)
 {
 	// ワールドのポインタをセット
@@ -53,12 +53,20 @@ Helicopter::~Helicopter()
 // 更新処理
 void Helicopter::UpdateActor(float in_deltaTime)
 {
+	// ヘリの索敵範囲にプレイヤーが接触したかどうかの検出
+	SearchPlayer(m_world->GetPlayer());
+
+}
+
+// ヘリの索敵範囲にプレイヤーが接触したかどうかの検出
+void Helicopter::SearchPlayer(PlayerManager* in_player)
+{
 	// サーチ範囲を更新
 	m_searchSphere.m_center.x = m_position.x;
 	m_searchSphere.m_center.y = m_position.y;
 
 	// プレイヤーを発見したかどうか
-	if (m_searchSphere.ContainsSphere(m_world->GetPlayer()->GetSearchSphere()))
+	if (m_searchSphere.Contains(in_player->GetPosition()))
 	{
 		m_foundPlayer = true;
 		printf("ヘリとプレイヤー当たった！\n");
@@ -68,4 +76,14 @@ void Helicopter::UpdateActor(float in_deltaTime)
 		m_foundPlayer = false;
 	}
 
+	//// プレイヤーを発見したかどうか
+	//if (m_searchSphere.ContainsSphere(in_player->GetSearchSphere()))
+	//{
+	//	m_foundPlayer = true;
+	//	printf("ヘリとプレイヤー当たった！\n");
+	//}
+	//else
+	//{
+	//	m_foundPlayer = false;
+	//}
 }

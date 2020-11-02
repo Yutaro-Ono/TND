@@ -1,11 +1,16 @@
 #include "Canvas.h"
 #include "UIScreen.h"
+#include "GameWorld.h"
+#include "PlayerManager.h"
+#include "PlayerControlUI.h"
 
 // コンストラクタ
 Canvas::Canvas(GameWorld* in_world)
 	:m_world(in_world)
+	,m_pControlUI(nullptr)
 {
-
+	// 操作説明用UIの生成
+	m_pControlUI = new PlayerControlUI(m_world->GetPlayer());
 }
 
 // デストラクタ

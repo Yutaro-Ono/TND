@@ -21,7 +21,7 @@ CountDownUI::CountDownUI(RuleTime * in_time)
 	,m_timeTex(nullptr)
 	,m_isAdding(false)
 	,m_timer(0.0f)
-	,m_fontSize(45)
+	,m_fontSize(48)
 {
 	
 	// 制限時間(秒)
@@ -85,8 +85,8 @@ void CountDownUI::Update(float in_deltaTime)
 	if (m_time->GetCountState() == m_time->STATE_START)
 	{
 		// 更新するため解放
-		m_timeTex->Delete();
-		m_timeTexShadow->Delete();
+		if(m_timeTex != nullptr) m_timeTex->Delete();
+		if (m_timeTexShadow != nullptr) m_timeTexShadow->Delete();
 
 
 		// カウントが1秒より高ければ数字で表示、低ければテキストで「START」と表示
@@ -116,32 +116,32 @@ void CountDownUI::Update(float in_deltaTime)
 		if (tempTime > m_time->GetLimitTime() / 2.0f)
 		{
 			// 更新するため解放
-			m_timeTex->Delete();
-			m_timeTexShadow->Delete();
+			if (m_timeTex != nullptr) m_timeTex->Delete();
+			if (m_timeTexShadow != nullptr) m_timeTexShadow->Delete();
 
 			m_timeTex = m_font->RenderText(str, Vector3(1.0f, 1.0f, 1.0f), m_fontSize);
 		}
 		else if (tempTime > m_time->GetLimitTime() / 3.0f)
 		{
 			// 更新するため解放
-			m_timeTex->Delete();
-			m_timeTexShadow->Delete();
+			if (m_timeTex != nullptr) m_timeTex->Delete();
+			if (m_timeTexShadow != nullptr) m_timeTexShadow->Delete();
 
 			m_timeTex = m_font->RenderText(str, Vector3(0.0f, 1.0f, 1.0f), m_fontSize);
 		}
 		else if (tempTime > 10)
 		{
 			// 更新するため解放
-			m_timeTex->Delete();
-			m_timeTexShadow->Delete();
+			if (m_timeTex != nullptr) m_timeTex->Delete();
+			if (m_timeTexShadow != nullptr) m_timeTexShadow->Delete();
 
 			m_timeTex = m_font->RenderText(str, Vector3(0.0f, 0.6f, 1.0f), m_fontSize);
 		}
 		else
 		{
 			// 更新するため解放
-			m_timeTex->Delete();
-			m_timeTexShadow->Delete();
+			if (m_timeTex != nullptr) m_timeTex->Delete();
+			if (m_timeTexShadow != nullptr) m_timeTexShadow->Delete();
 
 			m_timeTex = m_font->RenderText(str, Vector3(0.0f, 0.2f, 1.0f), m_fontSize);
 		}
@@ -159,8 +159,8 @@ void CountDownUI::Update(float in_deltaTime)
 	if (m_time->GetCountState() == m_time->STATE_FINISH)
 	{
 		// 更新するため解放
-		m_timeTex->Delete();
-		m_timeTexShadow->Delete();
+		if (m_timeTex != nullptr) m_timeTex->Delete();
+		if (m_timeTexShadow != nullptr) m_timeTexShadow->Delete();
 
 		m_timeTex = m_font->RenderText("FINISH", Vector3(1.0f, 1.0f, 1.0f), m_fontSize);
 		// 影

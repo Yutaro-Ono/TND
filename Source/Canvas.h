@@ -18,11 +18,14 @@ public:
 
 	void AddUI(class UIScreen* in_ui) { m_interfaces.push_back(in_ui); }
 
+	class PlayerControlUI* GetPlayerControlUI() { return m_pControlUI; }
 
 private:
 
 
 	class GameWorld* m_world;      // ゲームワールド
+
+	class PlayerControlUI* m_pControlUI;
 
 	std::vector<class UIScreen*> m_interfaces;      // インターフェース
 

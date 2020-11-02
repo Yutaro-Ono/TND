@@ -18,6 +18,9 @@ public:
 
 	void Draw(class Shader* in_shader) override;
 
+	void SetFindPlayer(bool in_find) { m_findPlayer = in_find; }
+
+
 private:
 
 
@@ -30,6 +33,6 @@ private:
 	Vector2 m_accessTexPos;
 	
 	class Texture* m_dangerFontTex;            // ŠëŒ¯‚Èó‘Ô (ƒwƒŠ‚ÉŒ©‚Â‚©‚Á‚½)•\¦
-
+	bool m_findPlayer;                         // ƒwƒŠ‚ÉŒ©‚Â‚©‚Á‚½‚©‚Ç‚¤‚©
 };
 

@@ -49,8 +49,6 @@ GameWorld::GameWorld()
 
 	// UI生成
 	m_canvas = new Canvas(this);
-	PlayerControlUI* cUI = new PlayerControlUI(m_player);
-	m_canvas->AddUI(cUI);
 
 }
 
@@ -83,6 +81,24 @@ void GameWorld::Update(float in_deltaTime)
 	{
 		m_player->SearchClient(client);
 	}
+
+	// ヘリがプレイヤーを発見したかどうかを走査し、一つでもヒットしたら抜ける
+	for (auto heli : m_helicopters)
+	{
+
+		if (heli->GetFoundPlayer())
+		{
+			m_canvas->GetPlayerControlUI()->SetFindPlayer(true);
+			break;
+		}
+		else
+		{
+			m_canvas->GetPlayerControlUI()->SetFindPlayer(false);
+		}
+	}
+
+
+
 
 }
 
