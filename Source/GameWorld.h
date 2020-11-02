@@ -57,6 +57,7 @@ private:
 
 	class MissionManager* m_mission;
 
+	class Canvas* m_canvas;                     // UIƒLƒƒƒ“ƒoƒX
 
 	class Environment* m_environment;
 	Environment::GAME_TIME m_gameTime;

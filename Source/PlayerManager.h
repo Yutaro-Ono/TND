@@ -26,6 +26,8 @@ public:
 
 	void UpdateActor(float in_deltaTime) override;
 
+	void SearchCar();                                    // プレイヤーのアクセス範囲内に車があるかの検索・車の乗車・降車処理
+	void SearchClient(class ClientActor* in_client);     // プレイヤーのアクセス範囲内に依頼人がいるかを検索
 
 	//----------------------------------------------------+
 	// Getter/Setter
@@ -36,6 +38,7 @@ public:
 	void SetPlayerHumanPos(const Vector3& in_pos) { m_playerHuman->SetPosition(in_pos); }
 	// プレイヤー(車)の座標セッター
 	void SetPlayerCarPos(const Vector3& in_pos) { m_playerCar->SetPosition(in_pos); }
+	const Vector3& GetPlayerCarPos() { return m_playerCar->GetPosition(); }
 
 	// モードのゲッター・セッター
 	PLAYER_MODE GetPlayerMode() { return m_playerMode; }
@@ -43,7 +46,8 @@ public:
 
 	// 索敵範囲のセッター・ゲッター
 	Sphere GetSearchSphere() { return m_searchSphere; }
-
+	bool GetIsDetectedCar() { return m_isDetectedCar; }           // プレイヤーのアクセス範囲内に車を検出したかのゲッター
+	bool GetIsDetectedClient() { return m_isDetectedClient; }     // プレイヤーのアクセス範囲内に依頼人を検出したかのゲッター
 
 private:
 
@@ -52,6 +56,9 @@ private:
 	// プレイヤーの人間・車クラス
 	class PlayerHuman* m_playerHuman;
 	class PlayerCar* m_playerCar;
+
+	bool m_isDetectedClient;     // プレイヤーのアクセス範囲内に依頼人がいるか
+	bool m_isDetectedCar;        // プレイヤーのアクセス範囲内に車があるか
 
 	Sphere m_searchSphere;       // プレイヤーのアクセス範囲球体
 

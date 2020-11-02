@@ -37,9 +37,9 @@ TitleScreen::TitleScreen(class TitleScene* in_target)
 	m_logo = m_font->RenderText("Title Screen", Vector3(1.0f, 1.0f, 1.0f), 45);
 
 	// 選択項目関連のフォント
-	m_anyKey = m_font->RenderText("PRESS ANY KEY", Vector3(1.0f, 1.0f, 1.0f), 40);
-	m_startButton = m_font->RenderText("GAME START", Vector3(1.0f, 1.0f, 1.0f), 40);
-	m_quitButton = m_font->RenderText("QUIT TO DESKTOP", Vector3(1.0f, 1.0f, 1.0f), 40);
+	m_anyKey = m_font->RenderText("PRESS ANY KEY", Vector3(1.0f, 1.0f, 1.0f), 32);
+	m_startButton = m_font->RenderText("GAME START", Vector3(1.0f, 1.0f, 1.0f), 32);
+	m_quitButton = m_font->RenderText("QUIT TO DESKTOP", Vector3(1.0f, 1.0f, 1.0f), 32);
 
 	// チュートリアル用画像の読み込み
 	m_xpadTutorialTex = RENDERER->GetTexture("Data/Interface/Tutorial/Title/TitleScreenUI_XPad.png");

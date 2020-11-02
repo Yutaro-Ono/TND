@@ -43,13 +43,13 @@ void MissionBase::Update(float in_deltaTime)
 	// ミッションがカーソルで選択されている時
 	if (m_listNum == m_manager->GetSelectedMission())
 	{
+		m_startActor->SetIsSelected(true);
 		isSelected = true;
 	}
 	else
 	{
-		// 選択されていなければ表示しない
-		m_startActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
-		m_goalActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
+		m_startActor->SetIsSelected(false);
+		m_goalActor->SetIsSelected(false);
 	}
 
 	//---------------------------------------------------+
@@ -67,24 +67,28 @@ void MissionBase::Update(float in_deltaTime)
 		// UI上のカーソルでこの任務が選択されている場合、ランドマークを表示
 		if (isSelected)
 		{
-			m_startActor->SetClientSetting(ClientActor::CLIENT_SETTING::START);
+			m_startActor->SetIsSelected(true);
 		}
 
 
 		// 最終時刻を更新し続ける
 		m_lastTime = SDL_GetTicks();
 
+
 		// プレイヤーのアクセス範囲球に依頼人が入った状態で、ボタンを押したらミッション開始
-		if (m_manager->GetPlayer()->GetSearchSphere().Contains(m_startActor->GetPosition()))
+		if (m_startActor->GetIsAccepted())
 		{
 			// 承諾ボタンを押したらtrue
 			if (CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_X) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E))
 			{
 				m_startActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
+				m_startActor->SetIsSelected(false);
 				// 任務を受諾したとしてカウントダウン開始
 				m_missionState = ACTIVE;
 			}
 		}
+
+
 
 	}
 
@@ -98,7 +102,7 @@ void MissionBase::Update(float in_deltaTime)
 		// UI上のカーソルでこの任務が選択されている場合、ランドマークを表示
 		if (isSelected)
 		{
-			m_goalActor->SetClientSetting(ClientActor::CLIENT_SETTING::GOAL);
+			m_goalActor->SetIsSelected(true);
 		}
 
 		// 現在時刻を更新
@@ -130,16 +134,18 @@ void MissionBase::Update(float in_deltaTime)
 		}
 
 		// プレイヤーのアクセス範囲球に依頼人が入った状態で、ボタンを押したらミッション開始
-		if (m_manager->GetPlayer()->GetSearchSphere().Contains(m_goalActor->GetPosition()))
+		if (m_goalActor->GetIsAccepted())
 		{
 			// 承諾ボタンを押したらtrue
 			if (CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_X) || INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_E))
 			{
 				m_goalActor->SetClientSetting(ClientActor::CLIENT_SETTING::NONE);
+				m_goalActor->SetIsSelected(false);
 				// 任務を受諾したとしてカウントダウン開始
 				m_missionState = SUCCESS;
 			}
 		}
+
 
 	}
 
@@ -157,6 +163,10 @@ void MissionBase::SetMissionDetail(ClientActor* in_start, ClientActor* in_goal, 
 
 	m_baseScore = in_baseScore;     // ベーススコア
 	m_timeLimit = in_timeLimit;     // 制限時間
+
+	// 依頼人にthisポインタを渡す
+	in_start->SetMission(this);
+	in_goal->SetMission(this);
 }
 
 // プレイヤーの座標～開始地点or終了地点座標の距離を求め、一定以上接近してボタンを押したら真)

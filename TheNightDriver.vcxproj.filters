@@ -306,6 +306,9 @@
     <Filter Include="ソース ファイル\Actor\Level\LevelTerrain">
       <UniqueIdentifier>{13c1207d-e69c-43d9-99ce-162fd0768f3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Interface\PlayerControl">
+      <UniqueIdentifier>{728ad362-5477-4dde-bb7d-82aefa32fb0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -607,6 +610,9 @@
     </ClCompile>
     <ClCompile Include="Source\LevelTerrain.cpp">
       <Filter>ソース ファイル\Actor\Level\LevelTerrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerControlUI.cpp">
+      <Filter>ソース ファイル\Interface\PlayerControl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -924,6 +930,9 @@
     </ClInclude>
     <ClInclude Include="Source\LevelTerrain.h">
       <Filter>ソース ファイル\Actor\Level\LevelTerrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerControlUI.h">
+      <Filter>ソース ファイル\Interface\PlayerControl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

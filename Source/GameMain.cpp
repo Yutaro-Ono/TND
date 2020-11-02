@@ -33,7 +33,7 @@
 #include <rapidjson/document.h>
 
 // 標準フォント
-const std::string GameMain::FONT_FILE_PATH = "Data/Fonts/The 2K12.ttf";
+const std::string GameMain::FONT_FILE_PATH = "Data/Fonts/SackersGothicLightAT.ttf";
 
 // コンストラクタ
 GameMain::GameMain()

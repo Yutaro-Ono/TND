@@ -30,12 +30,12 @@ float LevelTerrain::SetTerrainFric(TERRAIN_TYPE in_type)
 {
 	if (in_type == TERRAIN_TYPE::TYPE_GLASS)
 	{
-		return 0.6f;
+		return 0.3f;
 	}
 
 	if (in_type == TERRAIN_TYPE::TYPE_STREET)
 	{
-		return 1.0f;
+		return 1.2f;
 	}
 
 

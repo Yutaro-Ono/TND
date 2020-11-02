@@ -3,9 +3,7 @@
 #include "GameMain.h"
 #include "Input.h"
 #include "InputController.h"
-#include "AudioManager.h"
 #include "Renderer.h"
-#include "ParticleManager.h"
 #include "LevelManager.h"
 #include "SkyBox.h"
 #include "Math.h"
@@ -13,7 +11,8 @@
 #include "PlayerManager.h"
 #include "MissionManager.h"
 #include "Helicopter.h"
-
+#include "Canvas.h"
+#include "PlayerControlUI.h"
 #include <Windows.h>
 #include <iostream>
 #include <algorithm>
@@ -38,8 +37,8 @@ GameWorld::GameWorld()
 	m_mission = new MissionManager(this);
 
 	// 環境(光源など)作成
-	//m_environment = new Environment(this, Environment::GAME_TIME::NIGHT);
-	m_environment = new Environment(this, Environment::GAME_TIME::MORNING);
+	m_environment = new Environment(this, Environment::GAME_TIME::NIGHT);
+	//m_environment = new Environment(this, Environment::GAME_TIME::MORNING);
 
 
 	// ヘリコプターを三機生成
@@ -48,6 +47,10 @@ GameWorld::GameWorld()
 		m_helicopters.emplace_back(new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 1200.0f)));
 	}
 
+	// UI生成
+	m_canvas = new Canvas(this);
+	PlayerControlUI* cUI = new PlayerControlUI(m_player);
+	m_canvas->AddUI(cUI);
 
 }
 
@@ -61,6 +64,7 @@ GameWorld::~GameWorld()
 	m_clients.clear();
 	m_patrolPoints.clear();
 	delete m_player;
+	delete m_canvas;
 	delete m_level;
 	delete m_mission;
 	delete m_environment;
@@ -73,6 +77,13 @@ void GameWorld::Update(float in_deltaTime)
 
 	// ミッションの更新
 	m_mission->Update(in_deltaTime);
+
+	// プレイヤーの依頼人サーチ
+	for (auto client : m_clients)
+	{
+		m_player->SearchClient(client);
+	}
+
 }
 
 // 依頼人アクタの登録

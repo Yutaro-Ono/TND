@@ -91,6 +91,7 @@
     <ClCompile Include="Source\PauseScreen.cpp" />
     <ClCompile Include="Source\PhysicsWorld.cpp" />
     <ClCompile Include="Source\PlayerCar.cpp" />
+    <ClCompile Include="Source\PlayerControlUI.cpp" />
     <ClCompile Include="Source\PlayerHuman.cpp" />
     <ClCompile Include="Source\PlayerManager.cpp" />
     <ClCompile Include="Source\RapidJsonHelper.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="Source\PauseScreen.h" />
     <ClInclude Include="Source\PhysicsWorld.h" />
     <ClInclude Include="Source\PlayerCar.h" />
+    <ClInclude Include="Source\PlayerControlUI.h" />
     <ClInclude Include="Source\PlayerHuman.h" />
     <ClInclude Include="Source\PlayerManager.h" />
     <ClInclude Include="Source\RapidJsonHelper.h" />

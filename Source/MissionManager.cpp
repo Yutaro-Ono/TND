@@ -38,10 +38,12 @@ MissionManager::MissionManager(GameWorld* in_world)
 		// 依頼人アクタの中から選択状態でない依頼人を探し、スタート地点アクタの番号を取得する
 		for (int j = 0; j < m_world->GetClients().size(); j++)
 		{
-			if (m_world->GetClients()[j]->GetIsSelected() != true)
+
+			if (m_world->GetClients()[j]->GetClientSetting() == ClientActor::NONE)
 			{
 				startPos[i] = j;
-				m_world->GetClients()[j]->SetIsSelected(true);
+
+				m_world->GetClients()[j]->SetClientSetting(ClientActor::START);
 			}
 			// スタート地点が変更されていたらループを抜ける
 			if (startPos[i] >= 0)
@@ -54,10 +56,12 @@ MissionManager::MissionManager(GameWorld* in_world)
 		// 依頼人アクタの中から選択状態でない依頼人を探し、ゴール地点アクタの番号を取得する
 		for (int j = 0; j < m_world->GetClients().size(); j++)
 		{
-			if (m_world->GetClients()[j]->GetIsSelected() != true)
+
+			if (m_world->GetClients()[j]->GetClientSetting() == ClientActor::NONE)
 			{
 				goalPos[i] = j;
-				m_world->GetClients()[j]->SetIsSelected(true);
+
+				m_world->GetClients()[j]->SetClientSetting(ClientActor::GOAL);
 			}
 			// ゴール地点が変更されていたらループを抜ける
 			if (goalPos[i] >= 0)
@@ -169,17 +173,20 @@ void MissionManager::Update(float in_deltaTime)
 			for (int j = m_world->GetClients().size() - 1; j >= 0; j--)
 			{
 				// 選択されていなかったらスタート地点として設定
-				if (!m_world->GetClients()[j]->GetIsSelected())
+				if (m_world->GetClients()[j]->GetClientSetting() == ClientActor::NONE)
 				{
 					startPos = j;
 					break;
 				}
 			}
+
+
+
 			// 依頼人の座標を新規のミッションスタート座標としてセット
 			for (int j = 0; j < m_world->GetClients().size(); j++)
 			{
 				// 選択されていなかったらスタート地点として設定
-				if (!m_world->GetClients()[j]->GetIsSelected())
+				if (m_world->GetClients()[j]->GetClientSetting() == ClientActor::NONE)
 				{
 					goalPos = j;
 					break;
@@ -195,8 +202,8 @@ void MissionManager::Update(float in_deltaTime)
 				m_missions.back()->SetMissionDetail(m_world->GetClients()[startPos],
 					m_world->GetClients()[goalPos], 1000, 30);
 				// クライアントをセレクト状態に
-				m_world->GetClients()[startPos]->SetIsSelected(true);
-				m_world->GetClients()[goalPos]->SetIsSelected(true);
+				m_world->GetClients()[startPos]->SetClientSetting(ClientActor::START);
+				m_world->GetClients()[goalPos]->SetClientSetting(ClientActor::GOAL);
 
 			}
 			else
@@ -207,8 +214,8 @@ void MissionManager::Update(float in_deltaTime)
 				m_missions.back()->SetMissionDetail(m_world->GetClients()[startPos],
 					m_world->GetClients()[goalPos], 1000, 30);
 				// クライアントをセレクト状態に
-				m_world->GetClients()[startPos]->SetIsSelected(true);
-				m_world->GetClients()[goalPos]->SetIsSelected(true);
+				m_world->GetClients()[startPos]->SetClientSetting(ClientActor::START);
+				m_world->GetClients()[goalPos]->SetClientSetting(ClientActor::GOAL);
 
 			}
 		}

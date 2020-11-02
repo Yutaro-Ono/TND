@@ -5,14 +5,17 @@
 #include "Skeleton.h"
 #include "SkeletalMeshComponent.h"
 #include "Texture.h"
+#include "MissionBase.h"
 
 
 const std::string MESH_PATH_CARLA = "Data/Meshes/TND/Actors/Player/carla/rp_carla_rigged_001_ue4";
 
 const float AnimationSpeed = 0.5f;        // アニメーションの速度
 
+// コンストラクタ
 ClientActor::ClientActor(const Vector3& in_pos)
 	:m_isSelected(false)
+	,m_isAccepted(false)
 	,m_setting(CLIENT_SETTING::NONE)
 	,m_landMark(nullptr)
 	,m_animState(CLIENT_ANIM::ANIM_IDLE_LOOKAROUND)
@@ -53,11 +56,13 @@ ClientActor::ClientActor(const Vector3& in_pos)
 
 }
 
+// デストラクタ
 ClientActor::~ClientActor()
 {
 	delete m_landMark;
 }
 
+// 更新処理
 void ClientActor::UpdateActor(float in_deltaTime)
 {
 	// この依頼人がミッションに設定されている時のみランドマーク表示
@@ -70,5 +75,39 @@ void ClientActor::UpdateActor(float in_deltaTime)
 		m_landMark->SetVisible(false);
 	}
 
+	//if (m_setting == CLIENT_SETTING::NONE)
+	//{
+	//	m_landMark->SetVisible(false);
+	//}
+	//else
+	//{
+
+	//}
+
+
+
+	//
+
+
 	m_recomputeWorldTransform = true;
+}
+
+
+// プレイヤーマネージャークラスで呼び出される関数
+// 
+void ClientActor::SetAcceptedPlayer()
+{
+	// 設定されたミッションが開始前の状態且つ自身が開始NPCならtrue
+	if (m_mission->GetMissionState() == MissionBase::HOLD && m_setting == CLIENT_SETTING::START)
+	{
+		m_isAccepted = true;
+		return;
+	}
+
+	// 設定されたミッションがアクティブな状態且つ自身が終了NPCならtrue
+	if (m_mission->GetMissionState() == MissionBase::ACTIVE && m_setting == CLIENT_SETTING::GOAL)
+	{
+		m_isAccepted = true;
+		return;
+	}
 }

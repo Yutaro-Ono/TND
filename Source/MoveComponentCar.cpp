@@ -62,9 +62,9 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	Vector3 DirVec(0.0f, 0.0f, 0.0f);
 
 	// アクセル限界値
-	if (m_accelValue > ACCEL_LIMIT)
+	if (m_accelValue > ACCEL_LIMIT * m_playerCar->GetFrictionVal())
 	{
-		m_accelValue = ACCEL_LIMIT;
+		m_accelValue = ACCEL_LIMIT * m_playerCar->GetFrictionVal();
 	}
 	//---------------------------------------------------------------------------------------------+
 	// プレイヤーの操作
@@ -250,7 +250,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	// Rotationから前進ベクトルを更新し、結果の座標を算出
 	charaForwardVec = Vector3::Transform(charaForwardVec, rotation);
 	Vector3 resultPos = m_owner->GetPosition();
-	resultPos += m_forwardSpeed * charaForwardVec * m_playerCar->GetFrictionVal();
+	resultPos += m_forwardSpeed * charaForwardVec;
 
 
 
