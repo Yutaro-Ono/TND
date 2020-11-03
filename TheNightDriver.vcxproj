@@ -253,8 +253,12 @@
     <None Include="Data\Shaders\Phong.vert" />
     <None Include="Data\Shaders\PhongShadow.frag" />
     <None Include="Data\Shaders\PhongShadow.vert" />
+    <None Include="Data\Shaders\ShadowNormalMap.frag" />
+    <None Include="Data\Shaders\ShadowNormalMap.vert" />
+    <None Include="Data\Shaders\ShadowSkinnedNormal.vert" />
     <None Include="Data\Shaders\Skinned.vert" />
     <None Include="Data\Shaders\SkinnedDepth.vert" />
+    <None Include="Data\Shaders\SkinnedDepthNormal.vert" />
     <None Include="Data\Shaders\SkinnedShadow.vert" />
     <None Include="Data\Shaders\SkyBox.frag" />
     <None Include="Data\Shaders\SkyBox.vert" />

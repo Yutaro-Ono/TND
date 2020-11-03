@@ -50,6 +50,8 @@ private:
 
 	class FollowCamera* m_camera;                                       // カメラ
 
+	class ClientActor* m_client;
+
 	class Environment* m_environment;                                   // 環境
 
 	int m_selectedStage;                                                // 選択中のステージ

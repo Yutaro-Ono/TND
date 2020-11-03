@@ -20,6 +20,7 @@
 #include "SkyBox.h"
 #include "Environment.h"
 #include "WorldSpaceUI.h"
+#include "ClientActor.h"
 const int TitleScene::STAGE_ALL_NUM = 1;
 
 
@@ -64,8 +65,11 @@ void TitleScene::Initialize()
 	// プレイヤー
 	m_player = new PlayerCar();
 	m_player->SetPosition(Vector3::Zero);
-	m_player->SetScale(0.5f);
+	m_player->SetScale(0.1f);
 	m_player->SetState(Actor::STATE_PAUSED);
+
+	m_client = new ClientActor(Vector3::Zero, 4);
+	m_client->SetScale(0.4f);
 
 	// カメラ
 	Camera* camera = new Camera(m_player);

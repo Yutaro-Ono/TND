@@ -37,6 +37,10 @@ VertexArray::VertexArray(const void * in_verts, unsigned int in_vertsNum, Layout
 	{
 		vertexSize = 11 * sizeof(float);
 	}
+	if (in_layout == POS_NORMAL_SKIN_TEX_TAN)
+	{
+		vertexSize = 11 * sizeof(float) + 8 * sizeof(char);
+	}
 	// 頂点バッファの作成
 	glGenBuffers(1, &m_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
@@ -99,36 +103,79 @@ VertexArray::VertexArray(const void * in_verts, unsigned int in_vertsNum, Layout
 		glEnableVertexAttribArray(3);
 		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, vertexSize, (void*)(8 * sizeof(float)));
 	}
+	else if (in_layout == POS_NORMAL_SKIN_TEX_TAN)
+	{
+		//// float 3個分　→　位置 x,y,z　位置属性をセット
+		//glEnableVertexAttribArray(0);
+		//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, 0);
+		//// 次のfloat 3個分 → 法線 nx, ny, nz　法線属性をセット
+		//glEnableVertexAttribArray(1);
+		//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize,
+		//	reinterpret_cast<void*>(sizeof(float) * 3));
+		//// 次のfloat 2個分 u, v  テクスチャ座標属性をセット
+		//glEnableVertexAttribArray(2);
+		//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, vertexSize,
+		//	reinterpret_cast<void*>(sizeof(float) * 6));
+		//// 3 : 接ベクトル (タンジェント)
+		//glEnableVertexAttribArray(3);
+		//glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, vertexSize, 
+		//	reinterpret_cast<void*>(sizeof(float) * 8));
+		////　影響受けるボーンインデックス番号  (int型をキープ)
+		//glEnableVertexAttribArray(4);
+		//glVertexAttribIPointer(4, 4, GL_UNSIGNED_BYTE, vertexSize,
+		//	reinterpret_cast<void*>(sizeof(float) * 11));
+		//// ボーンウェイト情報 (float に変換)
+		//glEnableVertexAttribArray(5);
+		//glVertexAttribPointer(5, 4, GL_UNSIGNED_BYTE, GL_TRUE, vertexSize,
+		//	reinterpret_cast<void*>(sizeof(float) * 11 + sizeof(char) * 4));
+
+		// float 3個分　→　位置 x,y,z　位置属性をセット
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, 0);
+		// 次のfloat 3個分 → 法線 nx, ny, nz　法線属性をセット
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize,
+			reinterpret_cast<void*>(sizeof(float) * 3));
+		//　影響受けるボーンインデックス番号  (int型をキープ)
+		glEnableVertexAttribArray(2);
+		glVertexAttribIPointer(2, 4, GL_UNSIGNED_BYTE, vertexSize,
+			reinterpret_cast<void*>(sizeof(float) * 6));
+		// ボーンウェイト情報 (float に変換)
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 4, GL_UNSIGNED_BYTE, GL_TRUE, vertexSize,
+			reinterpret_cast<void*>(sizeof(float) * 6 + sizeof(char) * 4));
+		// 次のfloat 2個分 u, v  テクスチャ座標属性をセット
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, vertexSize,
+			reinterpret_cast<void*>(sizeof(float) * 6 + sizeof(char) * 8));
+		// 3 : 接ベクトル (タンジェント)
+		glEnableVertexAttribArray(5);
+		glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, vertexSize,
+			reinterpret_cast<void*>(sizeof(float) * 8 + sizeof(char) * 8));
+	}
 }
 
 VertexArray::VertexArray(const float * in_verts, unsigned int in_vertsNum, const unsigned int * in_inDices, unsigned int in_numInDices)
 	:m_vertsNum(in_vertsNum)
 	,m_numInDices(in_numInDices)
 {
-	// Create vertex array
+
 	glGenVertexArrays(1, &m_VAO);
 	glBindVertexArray(m_VAO);
 
-	// Create vertex buffer
 	glGenBuffers(1, &m_VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, in_vertsNum * 8 * sizeof(float), in_verts, GL_STATIC_DRAW);
 
-	// Create index buffer
 	glGenBuffers(1, &m_indexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, in_numInDices * sizeof(unsigned int), in_inDices, GL_STATIC_DRAW);
 
-	// Specify the vertex attributes
-	// (For now, assume one vertex format)
-	// Position is 3 floats
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 0);
-	// Normal is 3 floats
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
 		reinterpret_cast<void*>(sizeof(float) * 3));
-	// Texture coordinates is 2 floats
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
 		reinterpret_cast<void*>(sizeof(float) * 6));

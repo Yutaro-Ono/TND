@@ -293,8 +293,6 @@ void Renderer::Draw()
 	ImGui::Begin("Renderer");
 	ImGui::SliderInt("MeshShader", &m_switchShader, 0, 2);
 
-	// フレームバッファ書き込み処理
-	m_frameBuffer->WriteFrameBuffer();
 
 	// 深度テストをON、ブレンドをオフ
 	glEnable(GL_DEPTH_TEST);
@@ -308,11 +306,14 @@ void Renderer::Draw()
 	//----------------------------------------------+
 	// メッシュシェーダー(phong)
 	//----------------------------------------------+
-	if (m_switchShader == 0)
+	if (m_switchShader == 2)
 	{
+		// フレームバッファ書き込み処理
+		m_frameBuffer->WriteFrameBuffer();
+
 		//メッシュシェーダーで描画する対象の変数をセット
 		m_meshShader->SetActive();
-		m_meshShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+		m_meshShader->SetMatrixUniform("u_viewProj", m_view * m_projection);
 		// ライティング変数をセット
 		SetLightUniforms(m_meshShader);
 		// 全てのメッシュコンポーネントを描画
@@ -329,7 +330,7 @@ void Renderer::Draw()
         //-----------------------------------------------------------+
 		m_skinnedShader->SetActive();
 		// ビュー・プロジェクションの合成行列をセット
-		m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+		m_skinnedShader->SetMatrixUniform("u_viewProj", m_view * m_projection);
 		// ライティング変数をセット
 		SetLightUniforms(m_skinnedShader);
 
@@ -347,14 +348,16 @@ void Renderer::Draw()
 	//-----------------------------------------------+
 	if (m_switchShader == 1)
 	{
+		// フレームバッファ書き込み処理
+		m_frameBuffer->WriteFrameBuffer();
+
 		//メッシュシェーダーで描画する対象の変数をセット
 		m_meshNormalShader->SetActive();
-		m_meshNormalShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+		m_meshNormalShader->SetMatrixUniform("u_viewProj", m_view * m_projection);
 		// ライティング変数をセット
 		SetLightUniforms(m_meshNormalShader);
-		m_meshNormalShader->SetVectorUniform("uLightPos", m_directionalLight.position);
-		m_meshNormalShader->SetVectorUniform("uViewPos", m_cameraPos);
-		m_meshNormalShader->SetVectorUniform("uCameraPos", m_cameraPos);
+		m_meshNormalShader->SetVectorUniform("u_lightPos", m_directionalLight.position);
+		m_meshNormalShader->SetVectorUniform("u_viewPos", m_view.GetTranslation());
 		// 全てのメッシュコンポーネントを描画
 		for (auto mc : m_meshComponents)
 		{
@@ -369,7 +372,7 @@ void Renderer::Draw()
         //-----------------------------------------------------------+
 		m_skinnedShader->SetActive();
 		// ビュー・プロジェクションの合成行列をセット
-		m_skinnedShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+		m_skinnedShader->SetMatrixUniform("u_viewProj", m_view * m_projection);
 		// ライティング変数をセット
 		SetLightUniforms(m_skinnedShader);
 
@@ -385,9 +388,13 @@ void Renderer::Draw()
 	//-----------------------------------------------+
     // メッシュシェーダー(shadow)
     //-----------------------------------------------+
-	if (m_switchShader == 2)
+	if (m_switchShader == 0)
 	{
 		m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents);
+
+		// フレームバッファ書き込み処理
+		m_frameBuffer->WriteFrameBuffer();
+
 		m_shadowMap->DrawShadowMesh(m_meshComponents, m_skeletalMeshComponents);
 	}
 
@@ -414,6 +421,8 @@ void Renderer::Draw()
 	{
 		spr->Draw(m_worldSpaceSpriteShader);
 	}
+	// フレームバッファ描画
+	m_frameBuffer->DrawFrameBuffer();
 
 	// Spriteの描画
 	// ブレンドのアクティブ化
@@ -442,8 +451,6 @@ void Renderer::Draw()
 		ui->Draw(m_spriteShader);
 	}
 
-	// フレームバッファ描画
-	m_frameBuffer->DrawFrameBuffer();
 
 	// ImGuiの終了処理
 	ImGui::End();
@@ -891,7 +898,7 @@ bool Renderer::LoadShaders()
 	}
 
 	m_meshShader->SetActive();
-	m_meshShader->SetMatrixUniform("uViewProj", m_view * m_projection);
+	m_meshShader->SetMatrixUniform("u_viewProj", m_view * m_projection);
 
 	// メッシュシェーダー(法線マップ)
 	m_meshNormalShader = new Shader();
@@ -900,9 +907,9 @@ bool Renderer::LoadShaders()
 		return false;
 	}
 	m_meshNormalShader->SetActive();
-	m_meshNormalShader->SetMatrixUniform("uViewProj", m_view * m_projection);
-	m_meshNormalShader->SetVectorUniform("uLightPos", m_directionalLight.position);
-	m_meshNormalShader->SetVectorUniform("uCameraPos", m_cameraPos);
+	m_meshNormalShader->SetMatrixUniform("u_viewProj", m_view * m_projection);
+	m_meshNormalShader->SetVectorUniform("u_lightPos", m_directionalLight.position);
+	m_meshNormalShader->SetVectorUniform("u_viewPos", m_cameraPos);
 	// サンプリング用テクスチャセット
 	m_meshNormalShader->SetInt("u_mat.diffuseMap", 0);
 	m_meshNormalShader->SetInt("u_mat.specularMap", 1);
@@ -941,10 +948,10 @@ void Renderer::SetLightUniforms(Shader * in_shader)
 	Matrix4 invView = m_view;
 	invView.Invert();
 	in_shader->SetVectorUniform("uCameraPos", invView.GetTranslation());
-	in_shader->SetVectorUniform("uViewPos", invView.GetTranslation());
+	in_shader->SetVectorUniform("u_viewPos", invView.GetTranslation());
 
 	// アンビエントライト
-	in_shader->SetVectorUniform("uAmbientLight", m_ambientLight);
+	in_shader->SetVectorUniform("u_ambientLight", m_ambientLight);
 
 	// ディレクショナルライト
 	in_shader->SetVectorUniform("uDirLight.mPosition", m_directionalLight.position);

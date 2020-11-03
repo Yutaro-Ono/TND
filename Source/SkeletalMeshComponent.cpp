@@ -20,13 +20,13 @@ void SkeletalMeshComponent::Draw(Shader* in_shader)                         // •
 	if (m_mesh)
 	{
 		// ƒ[ƒ‹ƒh•ÏŠ·s—ñƒZƒbƒg
-		in_shader->SetMatrixUniform("uWorldTransform",
+		in_shader->SetMatrixUniform("u_worldTransform",
 			m_owner->GetWorldTransform());
 		// s—ñƒpƒŒƒbƒg‚ğƒZƒbƒg    
-		in_shader->SetMatrixUniforms("uMatrixPalette", &m_palette.mEntry[0],
+		in_shader->SetMatrixUniforms("u_matrixPalette", &m_palette.mEntry[0],
 			MAX_SKELETON_BONES);
 		// ƒXƒyƒLƒ…ƒ‰[‹­“x‚ğƒZƒbƒg
-		in_shader->SetFloatUniform("uSpecPower", 32);
+		in_shader->SetFloatUniform("u_specPower", 32);
 
 		// ŠeíƒeƒNƒXƒ`ƒƒ‚ğƒVƒF[ƒ_‚ÉƒZƒbƒg‚·‚é
 		// ƒeƒNƒXƒ`ƒƒ‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚Í–³‹‚·‚é
@@ -67,10 +67,10 @@ void SkeletalMeshComponent::DrawShadow(Shader* in_shader)
 	if (m_mesh)
 	{
 		// ƒ[ƒ‹ƒh•ÏŠ·s—ñƒZƒbƒg
-		in_shader->SetMatrixUniform("uWorldTransform",
+		in_shader->SetMatrixUniform("u_worldTransform",
 			m_owner->GetWorldTransform());
 		// s—ñƒpƒŒƒbƒg‚ğƒZƒbƒg    
-		in_shader->SetMatrixUniforms("uMatrixPalette", &m_palette.mEntry[0],
+		in_shader->SetMatrixUniforms("u_matrixPalette", &m_palette.mEntry[0],
 			MAX_SKELETON_BONES);
 
 		// ƒƒbƒVƒ…‚Ì’¸“_”z—ñ‚ğƒAƒNƒeƒBƒu‚É

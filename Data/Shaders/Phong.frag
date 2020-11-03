@@ -9,10 +9,10 @@ in vec3 fragNormal;
 in vec3 fragWorldPos;
 
 // 出力カラー（出力ピクセルカラー）
-out vec4 outColor;
+out vec4 out_fragColor;
 
 // テクスチャサンプリング
-uniform sampler2D uTexture;
+uniform sampler2D u_texture;
 // テクスチャサンプリング用構造体
 struct Material
 {
@@ -36,11 +36,11 @@ struct DirectionalLight
 
 // ライティング用変数
 // カメラ位置（ワールド空間）
-uniform vec3 uCameraPos;
+uniform vec3 u_viewPos;
 // ポリゴン表面のスペキュラー強度
-uniform float uSpecPower;
+uniform float u_specPower;
 // アンビエントライト色
-uniform vec3 uAmbientLight;
+uniform vec3 u_ambientLight;
 
 // ディレクショナルライト
 uniform DirectionalLight uDirLight;
@@ -52,20 +52,20 @@ void main()
 	// ポリゴン表面からライト方向へのベクトル
 	vec3 L = normalize(-uDirLight.mDirection);
 	// ポリゴン表面からカメラ方向
-	vec3 V = normalize(uCameraPos - fragWorldPos);
+	vec3 V = normalize(u_viewPos - fragWorldPos);
 	// -L ベクトルを 法線 N に対して反射したベクトルRを求める
 	vec3 R = normalize(reflect(-L, N));
 
 	// フォン反射計算
-	vec3 Phong = uAmbientLight;
+	vec3 Phong = u_ambientLight;
 	float NdotL = dot(N, L);
 
 	vec3 Diffuse;
 	vec3 Specular;
 
 	Diffuse = uDirLight.mDiffuseColor * max(NdotL,0.0f);
-	Specular = uDirLight.mSpecColor * pow(max(0.0, dot(R, V)), uSpecPower);
+	Specular = uDirLight.mSpecColor * pow(max(0.0, dot(R, V)), u_specPower);
 
 	// 最終カラーを出力 (alpha = 1)
-	outColor = texture(u_mat.diffuseMap, fragTexCoord) * vec4((Diffuse + uAmbientLight),1.0f) + vec4(Specular,1.0f);
+	out_fragColor = texture(u_mat.diffuseMap, fragTexCoord) * vec4((Diffuse + u_ambientLight),1.0f) + vec4(Specular,1.0f);
 }

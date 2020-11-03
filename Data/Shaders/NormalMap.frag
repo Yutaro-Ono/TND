@@ -6,8 +6,6 @@
 
 out vec4 out_fragColor;       // 出力先：カラー
 
-uniform vec3 uCameraPos;
-
 // 頂点シェーダーからの入力受け取り
 in VS_OUT
 {
@@ -26,42 +24,12 @@ struct Material
 	sampler2D diffuseMap;     // ディフューズマップ
 	sampler2D specularMap;    // スペキュラマップ
 	sampler2D normalMap;      // 法線マップ
-	sampler2D shadowMap;
 	float     shininess;      // 反射光の強さ
 };
 
-// ライト(光源)情報構造体
-struct Light
-{
-	vec3 mPosition;
-	vec3 mDirection;
-	float cutoff;
-	float outercutoff;
-
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 mSpecColor;
-
-	float constant;
-	float linear;
-	float quadratic;
-};
-
-// ディレクショナルライト用構造体
-struct DirectionalLight
-{
-	// ライト方向
-	vec3 mDirection;
-	// ディフューズ色
-	vec3 mDiffuseColor;
-	// スペキュラー色
-	vec3 mSpecColor;
-};
 
 uniform Material u_mat;
-uniform Light u_light;
-// ディレクショナルライト
-uniform DirectionalLight uDirLight;
+
 
 void main()
 {
@@ -70,24 +38,14 @@ void main()
 	// 法線ベクトルの範囲を[-1, +1]の範囲に復元する(タンジェントスペースに変換)
 	normal = normalize(normal * 2.0 - 1.0);
 
-		// ポリゴン表面の法線（フラグメントシェーダー上で補間されている）
-	vec3 N = normalize(fs_in.FragNormal);
-	// ポリゴン表面からライト方向へのベクトル
-	vec3 L = normalize(-uDirLight.mDirection);
-
-	float NdotL = dot(N, L);
-
 	// diffuseColor
 	vec3 color = texture(u_mat.diffuseMap, fs_in.TexCoords).rgb;
 	// ambient
     vec3 ambient = 0.1 * color;
     // diffuse
-    //vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
 	vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
     float diff = max(dot(lightDir, normal), 0.0);
     vec3 diffuse = diff * color;
-	//vec3 diffuse =uDirLight.mDiffuseColor * max(dot(uDirLight.mDirection, normal), 0.0) * color;
-
     // specular
     vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
     vec3 reflectDir = reflect(-lightDir, normal);
@@ -96,5 +54,5 @@ void main()
 
     vec3 specular = vec3(0.2) * spec;
 	// フラグメントカラーを出力
-    out_fragColor = vec4((diffuse + ambient), 1.0) + vec4(specular, 1.0f);
+    out_fragColor = vec4(ambient + diffuse + specular, 1.0);
 }

@@ -309,6 +309,9 @@
     <Filter Include="ソース ファイル\Interface\PlayerControl">
       <UniqueIdentifier>{728ad362-5477-4dde-bb7d-82aefa32fb0d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\Shadow\NormalMap">
+      <UniqueIdentifier>{bc553cfa-6ffe-4fd0-b276-2517a2c31896}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -1036,6 +1039,18 @@
       <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Basic</Filter>
     </None>
     <None Include="Data\Shaders\SkinnedDepth.vert">
+      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Skinned</Filter>
+    </None>
+    <None Include="Data\Shaders\ShadowNormalMap.vert">
+      <Filter>ソース ファイル\Shader\Source\Shadow\NormalMap</Filter>
+    </None>
+    <None Include="Data\Shaders\ShadowNormalMap.frag">
+      <Filter>ソース ファイル\Shader\Source\Shadow\NormalMap</Filter>
+    </None>
+    <None Include="Data\Shaders\ShadowSkinnedNormal.vert">
+      <Filter>ソース ファイル\Shader\Source\Shadow\NormalMap</Filter>
+    </None>
+    <None Include="Data\Shaders\SkinnedDepthNormal.vert">
       <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Skinned</Filter>
     </None>
   </ItemGroup>

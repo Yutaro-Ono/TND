@@ -132,7 +132,9 @@ void FrameBuffer::WriteFrameBuffer()
 	if (m_shaderNum != 0)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 	}
 }
 
@@ -146,19 +148,21 @@ void FrameBuffer::DrawFrameBuffer()
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		// 2.フレームバッファ内容をスクリーンに描画
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		// 深度テストオフ
+		glDisable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		m_activeShader->SetActive();
 		m_activeShader->SetInt("screenTexture", 0);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_colorBuffer);
 		// VAOバインド
 		glBindVertexArray(m_VAO);
-		// 深度テストオフ
-		glDisable(GL_DEPTH_TEST);
-		glBindTexture(GL_TEXTURE_2D, m_colorBuffer);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-	}
 
+		glEnable(GL_DEPTH_TEST);
+	}
 
 
 	// Imguiデバッグ

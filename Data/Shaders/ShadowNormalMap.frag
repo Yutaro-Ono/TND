@@ -1,8 +1,6 @@
 #version 330 core
-
-// 頂点シェーダーからの入力
-
-
+// 出力カラー（出力ピクセルカラー）
+out vec4 out_fragColor;
 
 // 頂点シェーダーからの入力受け取り
 in VS_OUT
@@ -10,12 +8,14 @@ in VS_OUT
 	vec2 fragTexCoord;              // テクスチャ座標
 	vec3 fragNormal;                // 法線（ワールド空間）
 	vec3 fragWorldPos;              // 頂点位置（ワールド空間）
+	vec3 fragViewPos;               // カメラ座標
 	vec4 fragPosLightSpace;         // 頂点位置 (ライト空間)
+	vec3 TangentLightPos;
+	vec3 TangentViewPos;
+	vec3 TangentFragPos;
 
 }fs_in;
 
-// 出力カラー（出力ピクセルカラー）
-out vec4 out_fragColor;
 
 // テクスチャサンプリング用構造体
 struct Material
@@ -38,9 +38,7 @@ struct DirectionalLight
 // ディレクショナルライト
 uniform DirectionalLight u_dirLight;
 
-// ライティング用変数
-// カメラ座標
-uniform vec3 u_viewPos;
+
 // ポリゴン表面のスペキュラー強度
 uniform float u_specPower;
 
@@ -78,39 +76,39 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 
 void main()
 {
-	// ポリゴン表面の法線（フラグメントシェーダー上で補間されている）
-	vec3 N = normalize(fs_in.fragNormal);
-	// ポリゴン表面からライト方向へのベクトル
-	vec3 L = normalize(-u_dirLight.direction);
-	// ポリゴン表面からカメラ方向
-	vec3 V = normalize(u_viewPos - fs_in.fragWorldPos);
 
-	// -L ベクトルを 法線 N に対して反射したベクトルRを求める
-	vec3 R = normalize(reflect(-L, N));
-	// フォン反射計算
-	vec3 Phong = u_dirLight.ambient;
-	float NdotL = dot(N, L);
+	// 範囲[0, 19の法線マップベクトルを取得
+	vec3 normal = texture(u_mat.normalMap, fs_in.fragTexCoord).rgb;
+	// 法線ベクトルの範囲を[-1, +1]の範囲に復元する(タンジェントスペースに変換)
+	normal = normalize(normal * 2.0 - 1.0);
+
+	vec3 color = texture(u_mat.diffuseMap, fs_in.fragTexCoord).rgb;
 
 	// アンビエント計算
-	vec3 ambient = u_dirLight.ambient * vec3(texture(u_mat.diffuseMap, fs_in.fragTexCoord));
+	vec3 ambient = u_dirLight.ambient * color;
+
+
 	// ディフューズ計算
-	vec3 norm = normalize(fs_in.fragNormal);
-	float diff = max(dot(norm, -u_dirLight.direction), 0.0);
-	//float diff = max(NdotL, 0.0);
-	vec3 diffuse = u_dirLight.diffuse * diff * vec3(texture(u_mat.diffuseMap, fs_in.fragTexCoord));
+	vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
+	float diff = max(dot(lightDir, normal), 0.0);
+	vec3 diffuse = u_dirLight.diffuse * diff * texture(u_mat.diffuseMap, fs_in.fragTexCoord).rgb;
+
 
 	// スペキュラ計算
-	vec3 viewDir = normalize(u_viewPos - fs_in.fragWorldPos);
-	vec3 reflectDir = reflect(u_dirLight.direction, norm);
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-	//float spec = pow(max(0.0, dot(R, V)), uSpecPower);
-	vec3 specular = u_dirLight.specular * spec * vec3(texture(u_mat.specularMap, fs_in.fragTexCoord));
+	vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
+	vec3 reflectDir = reflect(-lightDir, normal);
+	vec3 halfwayDir = normalize(lightDir + viewDir);
+	float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+	vec3 specular = u_dirLight.specular * spec * texture(u_mat.specularMap, fs_in.fragTexCoord).rgb;
 
 	// 影成分の算出
 	float shadow = ShadowCalculation(fs_in.fragPosLightSpace);
 	// シャドウの逆数を取り、0 = 影の時にディフューズとスペキュラの値がキャンセルされる(影となる)
 	vec3 result = ambient + (1.0 - shadow) * (diffuse + specular);
 
+
 	// 最終カラーを出力
 	out_fragColor = vec4(result, 1.0);
+
+
 }

@@ -40,12 +40,20 @@ ShadowMap::ShadowMap()
 	// シェーダの作成
 	m_depthShader = new Shader();
 	m_depthShader->Load("Data/Shaders/DepthMap.vert", "Data/Shaders/DepthMap.frag");
-	m_depthSkinShader = new Shader();
-	m_depthSkinShader->Load("Data/Shaders/SkinnedDepth.vert", "Data/Shaders/DepthMap.frag");
+	//m_shadowShader = new Shader();
+	//m_shadowShader->Load("Data/Shaders/PhongShadow.vert", "Data/Shaders/PhongShadow.frag");
 	m_shadowShader = new Shader();
-	m_shadowShader->Load("Data/Shaders/PhongShadow.vert", "Data/Shaders/PhongShadow.frag");
+	m_shadowShader->Load("Data/Shaders/ShadowNormalMap.vert", "Data/Shaders/ShadowNormalMap.frag");
+	
+	//m_depthSkinShader = new Shader();
+	//m_depthSkinShader->Load("Data/Shaders/SkinnedDepth.vert", "Data/Shaders/DepthMap.frag");
+	//m_skinShadowShader = new Shader();
+	//m_skinShadowShader->Load("Data/Shaders/SkinnedShadow.vert", "Data/Shaders/PhongShadow.frag");
+	
+	m_depthSkinShader = new Shader();
+	m_depthSkinShader->Load("Data/Shaders/SkinnedDepthNormal.vert", "Data/Shaders/DepthMap.frag");
 	m_skinShadowShader = new Shader();
-	m_skinShadowShader->Load("Data/Shaders/SkinnedShadow.vert", "Data/Shaders/PhongShadow.frag");
+	m_skinShadowShader->Load("Data/Shaders/ShadowSkinnedNormal.vert", "Data/Shaders/ShadowNormalMap.frag");
 
 }
 
@@ -87,7 +95,7 @@ void ShadowMap::RenderDepthMapFromLightView(Renderer* in_renderer, const std::ve
 	glBindFramebuffer(GL_FRAMEBUFFER, m_depthMapFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	m_depthShader->SetActive();
-	m_depthShader->SetMatrixUniform("uLightSpaceMatrix", m_lightSpace);
+	m_depthShader->SetMatrixUniform("u_lightSpaceMatrix", m_lightSpace);
 
 	// デプスバッファを得るためにライトから見たシーンをレンダリングする
 	//----------------------------------------------------------------------+
@@ -104,16 +112,17 @@ void ShadowMap::RenderDepthMapFromLightView(Renderer* in_renderer, const std::ve
 
 	// シャドウシェーダのアクティブ化・uniformへのセット
 	m_shadowShader->SetActive();
-	m_shadowShader->SetVectorUniform("uCameraPos", RENDERER->GetViewMatrix().GetTranslation());
+	m_shadowShader->SetMatrixUniform("u_view", RENDERER->GetViewMatrix());
+	m_shadowShader->SetMatrixUniform("u_projection", RENDERER->GetProjectionMatrix());
+	m_shadowShader->SetMatrixUniform("u_lightSpaceMatrix", m_lightSpace);
+	m_shadowShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
+
+	m_shadowShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
 	m_shadowShader->SetVectorUniform("u_dirLight.direction", direction);
 	m_shadowShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
 	m_shadowShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_shadowShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
 
-	m_shadowShader->SetMatrixUniform("uView", RENDERER->GetViewMatrix());
-	m_shadowShader->SetMatrixUniform("uProjection", RENDERER->GetProjectionMatrix());
-	m_shadowShader->SetMatrixUniform("uViewProj", RENDERER->GetViewMatrix() * RENDERER->GetProjectionMatrix());
-	m_shadowShader->SetMatrixUniform("uLightSpaceMatrix", m_lightSpace);
 }
 
 // 
@@ -135,7 +144,7 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 
 	Vector3 direction = RENDERER->GetDirectionalLight().direction;
 
-	m_lightProj = Matrix4::CreateOrtho(8000.0f, 8000.0f, 1.0f, 13000.0f);
+	m_lightProj = Matrix4::CreateOrtho(8000.0f, 8000.0f, 1.0f, 8000.0f);
 	//m_lightProj = Matrix4::CreateOrtho(35000.0f, 20000.0f, 1.0f, 35000.0f);
 
 	//m_lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, lightViewTraget, Vector3::UnitZ);
@@ -150,7 +159,7 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 	glBindFramebuffer(GL_FRAMEBUFFER, m_depthMapFBO);
 	glClear(GL_DEPTH_BUFFER_BIT);
 	m_depthShader->SetActive();
-	m_depthShader->SetMatrixUniform("uLightSpaceMatrix", m_lightSpace);
+	m_depthShader->SetMatrixUniform("u_lightSpaceMatrix", m_lightSpace);
 
 	// デプスバッファを得るためにライトから見たシーンをレンダリングする
 	//----------------------------------------------------------------------+
@@ -160,7 +169,7 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 	}
 
 	m_depthSkinShader->SetActive();
-	m_depthSkinShader->SetMatrixUniform("uLightSpaceMatrix", m_lightSpace);
+	m_depthSkinShader->SetMatrixUniform("u_lightSpaceMatrix", m_lightSpace);
 	for (auto skel : in_skelMesh)
 	{
 		if (skel->GetVisible())
@@ -202,17 +211,17 @@ void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh,
 
 	// シャドウシェーダのアクティブ化・uniformへのセット
 	m_shadowShader->SetActive();
-	m_shadowShader->SetVectorUniform("uCameraPos", RENDERER->GetViewMatrix().GetTranslation());
-	m_shadowShader->SetVectorUniform("uAmbientLight", RENDERER->GetAmbientLight());
 	m_shadowShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
 	m_shadowShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
 	m_shadowShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_shadowShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
 
-	m_shadowShader->SetMatrixUniform("uView", RENDERER->GetViewMatrix());
-	m_shadowShader->SetMatrixUniform("uProjection", RENDERER->GetProjectionMatrix());
-	m_shadowShader->SetMatrixUniform("uViewProj", RENDERER->GetViewMatrix() * RENDERER->GetProjectionMatrix());
-	m_shadowShader->SetMatrixUniform("uLightSpaceMatrix", m_lightSpace);
+	m_shadowShader->SetMatrixUniform("u_view", RENDERER->GetViewMatrix());
+	m_shadowShader->SetMatrixUniform("u_projection", RENDERER->GetProjectionMatrix());
+	m_shadowShader->SetMatrixUniform("u_lightSpaceMatrix", m_lightSpace);
+	m_shadowShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
+	m_shadowShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
+
 	// サンプリング用テクスチャセット
 	m_shadowShader->SetInt("u_mat.diffuseMap", 0);
 	m_shadowShader->SetInt("u_mat.specularMap", 1);
@@ -228,17 +237,17 @@ void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh,
 
 	// シャドウシェーダのアクティブ化・uniformへのセット
 	m_skinShadowShader->SetActive();
-	m_skinShadowShader->SetVectorUniform("uCameraPos", RENDERER->GetViewMatrix().GetTranslation());
-	m_skinShadowShader->SetVectorUniform("uAmbientLight", RENDERER->GetAmbientLight());
+	m_skinShadowShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
 	m_skinShadowShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
 	m_skinShadowShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
 	m_skinShadowShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_skinShadowShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
 
-	m_skinShadowShader->SetMatrixUniform("uView", RENDERER->GetViewMatrix());
-	m_skinShadowShader->SetMatrixUniform("uProjection", RENDERER->GetProjectionMatrix());
-	m_skinShadowShader->SetMatrixUniform("uViewProj", RENDERER->GetViewMatrix() * RENDERER->GetProjectionMatrix());
-	m_skinShadowShader->SetMatrixUniform("uLightSpaceMatrix", m_lightSpace);
+	m_skinShadowShader->SetMatrixUniform("u_view", RENDERER->GetViewMatrix());
+	m_skinShadowShader->SetMatrixUniform("u_projection", RENDERER->GetProjectionMatrix());
+	m_skinShadowShader->SetMatrixUniform("u_lightSpaceMatrix", m_lightSpace);
+	m_skinShadowShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
+
 
 	// サンプリング用テクスチャセット
 	m_skinShadowShader->SetInt("u_mat.diffuseMap", 0);
