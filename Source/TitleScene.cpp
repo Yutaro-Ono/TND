@@ -68,7 +68,7 @@ void TitleScene::Initialize()
 	m_player->SetScale(0.1f);
 	m_player->SetState(Actor::STATE_PAUSED);
 
-	m_client = new ClientActor(Vector3::Zero, 4);
+	m_client = new ClientActor(Vector3::Zero, 2);
 	m_client->SetScale(0.4f);
 
 	// ƒJƒƒ‰

@@ -235,6 +235,7 @@
     <None Include="Data\Shaders\DepthMap.frag" />
     <None Include="Data\Shaders\DepthMap.vert" />
     <None Include="Data\Shaders\DirectLine.vert" />
+    <None Include="Data\Shaders\EnvironmentMap.vert" />
     <None Include="Data\Shaders\FB\BlurScreen.frag" />
     <None Include="Data\Shaders\FB\CernelScreen.frag" />
     <None Include="Data\Shaders\FB\FrameBufferScreen.frag" />
