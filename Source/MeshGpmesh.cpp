@@ -190,61 +190,6 @@ bool MeshGpmesh::Load(const std::string& in_filePath, Renderer* in_renderer)
 		}
 		else if(layout == VertexArray::POS_NORMAL_SKIN_TEX_TAN)// ボーンデータ入りなら　PosNormSkinTexなら
 		{
-			//Vertex v;
-			//// 頂点と法線を追加　6個分
-			//for (rapidjson::SizeType j = 0; j < 6; j++)
-			//{
-			//	v.f = static_cast<float>(vert[j].GetDouble());
-			//	vertices.emplace_back(v);
-			//}
-
-			//// Add tex coords　テクスチャ座標
-			//for (rapidjson::SizeType j = 14; j < 16; j++)
-			//{
-			//	v.f = static_cast<float>(vert[j].GetDouble());
-			//	vertices.emplace_back(v);
-			//}
-
-			//// ポリゴンを構成する頂点座標を一時保存
-			//destPos.push_back(Vector3(vertices[i * 13 + 0].f,
-			//	vertices[i * 13 + 1].f,
-			//	vertices[i * 13 + 2].f));
-			//// テクスチャ座標を一時保存
-			//uvPos.push_back(Vector2(vertices[i * 13 + 6].f,
-			//	vertices[i * 13 + 7].f));
-
-			//Vector3 tangent;
-			//// タンジェント要素を追加しておく
-			//for (int k = 0; k < 3; k++)
-			//{
-			//	v.f = 0.0f;
-			//	vertices.emplace_back(v);
-			//}
-
-			//// 3回ループしたら(8 x 3)タンジェントを計算する
-			//if (destPos.size() == 3)
-			//{
-			//	calcTangent(tangent, destPos[0], destPos[1], destPos[2], uvPos[0], uvPos[1], uvPos[2]);
-			//	for (int k = 2; k > -1; k--)
-			//	{
-
-			//		vertices[(i - k) * 13 + 8 + 0].f = static_cast<float>(tangent.x);
-			//		vertices[(i - k) * 13 + 8 + 1].f = static_cast<float>(tangent.y);
-			//		vertices[(i - k) * 13 + 8 + 2].f = static_cast<float>(tangent.z);
-			//	}
-
-			//	destPos.clear();
-			//	uvPos.clear();
-			//}
-			//// スキン情報追加（ボーン番号:unsigned charの1バイト分）
-			//for (rapidjson::SizeType j = 6; j < 14; j += 4)  //ループとしては2回転する　1回転目はボーン番号、2回転目はボーンウェイトをintとして取ってくる（使用時に浮動小数化）
-			//{
-			//	v.b[0] = vert[j].GetUint();
-			//	v.b[1] = vert[j + 1].GetUint();
-			//	v.b[2] = vert[j + 2].GetUint();
-			//	v.b[3] = vert[j + 3].GetUint();
-			//	vertices.emplace_back(v);
-			//}
 
 			Vertex v;
 			// 頂点と法線を追加　6個分
@@ -290,7 +235,7 @@ bool MeshGpmesh::Load(const std::string& in_filePath, Renderer* in_renderer)
 			// 3回ループしたら(8 x 3)タンジェントを計算する
 			if (destPos.size() == 3)
 			{
-				calcTangent(tangent, destPos[0], destPos[1], destPos[2], uvPos[0], uvPos[1], uvPos[2]);
+				calcTangent(tangent, destPos[1], destPos[2], destPos[0], uvPos[1], uvPos[2], uvPos[0]);
 				for (int k = 2; k >= 0; k--)
 				{
 

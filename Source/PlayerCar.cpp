@@ -11,10 +11,6 @@
 #include "PlayerManager.h"
 #include "LevelTerrain.h"
 
-const std::string PlayerCar::CAR_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/IncludeInterior/BodyGlassIncludeInterior_Internal.OBJ";
-const std::string PlayerCar::CAR_DOOR_LEFT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/DoorLeft/DoorFrameLeft_Internal.OBJ";
-const std::string PlayerCar::CAR_DOOR_RIGHT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/DoorRight/DoorFrameRight_Internal.OBJ";
-const std::string PlayerCar::CAR_WHEEL_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Wheel/SM_suv_parts_LOD0_wheel_Internal.OBJ";
 const std::string PlayerCar::CAR_HANDLE_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Handle/SM_suv_steering_wheel_lod1_Internal.OBJ";
 
 // コンストラクタ
@@ -34,15 +30,15 @@ PlayerCar::PlayerCar()
 	m_cameraComp->SetDistance(200.0f);
 
 	// 各パーツごとのクラスを作成
-	m_body = new CarBody(this, CAR_BODY_MESH_PATH);
-	m_door[0] = new CarDoor(this, CAR_DOOR_LEFT_MESH_PATH, true);
-	m_door[1] = new CarDoor(this, CAR_DOOR_RIGHT_MESH_PATH, false);
+	m_body = new CarBody(this);
+	m_door[0] = new CarDoor(this, CarDoor::DOOR_POS::LEFT);
+	m_door[1] = new CarDoor(this, CarDoor::DOOR_POS::RIGHT);
 	m_handle = new CarHandle(this, CAR_HANDLE_MESH_PATH);
 	// タイヤ
-	m_wheel[0] = new CarWheel(this, CAR_WHEEL_MESH_PATH, CarWheel::WHEEL_POSITION::FRONT_LEFT);
-	m_wheel[1] = new CarWheel(this, CAR_WHEEL_MESH_PATH, CarWheel::WHEEL_POSITION::FRONT_RIGHT);
-	m_wheel[2] = new CarWheel(this, CAR_WHEEL_MESH_PATH, CarWheel::WHEEL_POSITION::BACK_LEFT);
-	m_wheel[3] = new CarWheel(this, CAR_WHEEL_MESH_PATH, CarWheel::WHEEL_POSITION::BACK_RIGHT);
+	m_wheel[0] = new CarWheel(this, CarWheel::WHEEL_POSITION::FRONT_LEFT);
+	m_wheel[1] = new CarWheel(this, CarWheel::WHEEL_POSITION::FRONT_RIGHT);
+	m_wheel[2] = new CarWheel(this, CarWheel::WHEEL_POSITION::BACK_LEFT);
+	m_wheel[3] = new CarWheel(this, CarWheel::WHEEL_POSITION::BACK_RIGHT);
 
 
 

@@ -1,21 +1,38 @@
 #include "CarDoor.h"
 
+const std::string CarDoor::CAR_DOOR_LEFT_FRAME_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/DoorLeft/DoorFrameLeft_Internal.OBJ";
+const std::string CarDoor::CAR_DOOR_LEFT_GLASS_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/DoorLeft/DoorGlassLeftTransparency_Internal.OBJ";
+const std::string CarDoor::CAR_DOOR_RIGHT_FRAME_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/DoorRight/DoorFrameRight_Internal.OBJ";
+const std::string CarDoor::CAR_DOOR_RIGHT_GLASS_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/DoorRight/DoorGlassRightTransparency_Internal.OBJ";
 
 // in_leftRight = 右側のドアか左側のドアかで位置補正ベクトルを変える
 // in_leftRight = true → 左側     false → 右側
-CarDoor::CarDoor(PlayerCar* in_owner, const std::string& in_meshPath, bool in_leftRight)
+CarDoor::CarDoor(PlayerCar* in_owner, DOOR_POS in_pos)
 	:m_owner(in_owner)
 {
 
-
-
-	if (in_leftRight)
+	// 座標オフセットとメッシュのセット (左右で分岐)
+	if (in_pos == DOOR_POS::LEFT)
 	{
-		m_adjustPos = Vector3(80.0f, -100.0f, 96.8f);
+		m_adjustPos = Vector3(80.0f, -100.0f, 92.8f);
+		// 左側
+		Mesh* frame = RENDERER->GetMesh(CAR_DOOR_LEFT_FRAME_MESH_PATH);
+		MeshComponent* frameMeshComp = new MeshComponent(this);
+		frameMeshComp->SetMesh(frame);
+		Mesh* glass = RENDERER->GetMesh(CAR_DOOR_LEFT_GLASS_MESH_PATH);
+		MeshComponent* glassMeshComp = new MeshComponent(this);
+		glassMeshComp->SetMesh(glass);
 	}
-	else
+	else if(in_pos == DOOR_POS::RIGHT)
 	{
 		m_adjustPos = Vector3(80.0f, 100.0f, 96.8f);
+		// 右側
+		Mesh* frame = RENDERER->GetMesh(CAR_DOOR_RIGHT_FRAME_MESH_PATH);
+		MeshComponent* frameMeshComp = new MeshComponent(this);
+		frameMeshComp->SetMesh(frame);
+		Mesh* glass = RENDERER->GetMesh(CAR_DOOR_RIGHT_GLASS_MESH_PATH);
+		MeshComponent* glassMeshComp = new MeshComponent(this);
+		glassMeshComp->SetMesh(glass);
 	}
 
 	//// 拡大率もオーナーに合わせる
@@ -25,10 +42,7 @@ CarDoor::CarDoor(PlayerCar* in_owner, const std::string& in_meshPath, bool in_le
 
 	m_rotation = m_owner->GetRotation();
 
-	// メッシュのセット
-	Mesh* mesh = GAME_INSTANCE.GetRenderer()->GetMesh(in_meshPath);
-	m_meshComp = new MeshComponent(this);
-	m_meshComp->SetMesh(mesh);
+
 }
 
 CarDoor::~CarDoor()

@@ -3,7 +3,11 @@
 // 回転値
 static float spin = 0.0f;
 
-CarWheel::CarWheel(PlayerCar* in_owner, const std::string& in_meshPath, WHEEL_POSITION in_enumPos)
+const std::string CarWheel::CAR_WHEEL_RUBBER_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Wheel/WheelRubber_Internal.OBJ";
+const std::string CarWheel::CAR_WHEEL_STEEL_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Wheel/WheelSteel_Internal.OBJ";
+
+
+CarWheel::CarWheel(PlayerCar* in_owner, WHEEL_POSITION in_enumPos)
 	:m_owner(in_owner)
 	,m_wheelPosition(in_enumPos)
 	,m_playerRadian(m_owner->GetRadian())
@@ -12,9 +16,12 @@ CarWheel::CarWheel(PlayerCar* in_owner, const std::string& in_meshPath, WHEEL_PO
 	m_position = m_owner->GetPosition();
 
 	// メッシュのセット
-	Mesh* mesh = GAME_INSTANCE.GetRenderer()->GetMesh(in_meshPath);
-	m_meshComp = new MeshComponent(this);
-	m_meshComp->SetMesh(mesh);
+	Mesh* rubberMesh = RENDERER->GetMesh(CAR_WHEEL_RUBBER_MESH_PATH);
+	Mesh* steelMesh = RENDERER->GetMesh(CAR_WHEEL_STEEL_MESH_PATH);
+	MeshComponent* rubberMeshComp = new MeshComponent(this);
+	MeshComponent* steelMeshComp = new MeshComponent(this);
+	rubberMeshComp->SetMesh(rubberMesh);
+	steelMeshComp->SetMesh(steelMesh);
 
 	// タイヤ位置ごとの座標調整
 	switch (m_wheelPosition)

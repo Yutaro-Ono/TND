@@ -7,12 +7,16 @@ class CarDoor : public Actor
 {
 public:
 
-	CarDoor(class PlayerCar* in_owner, const std::string& in_meshPath, bool in_leftRight);
+	enum DOOR_POS
+	{
+		LEFT = 0,
+		RIGHT
+	};
+
+	CarDoor(class PlayerCar* in_owner, DOOR_POS in_pos);
 	~CarDoor();
 
 	void UpdateActor(float in_deltaTime) override;
-
-	class MeshComponent* GetMeshComponent() { return m_meshComp; }     // メッシュへのポインタゲッター
 
 
 private:
@@ -21,4 +25,8 @@ private:
 
 	Vector3 m_adjustPos;                    // ドアの位置を補正する位置ベクトル
   
+	static const std::string CAR_DOOR_RIGHT_FRAME_MESH_PATH;
+	static const std::string CAR_DOOR_RIGHT_GLASS_MESH_PATH;
+	static const std::string CAR_DOOR_LEFT_FRAME_MESH_PATH;
+	static const std::string CAR_DOOR_LEFT_GLASS_MESH_PATH;
 };

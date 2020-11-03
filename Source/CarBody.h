@@ -9,7 +9,7 @@ class CarBody : public Actor
 public:
 
 
-	CarBody(class PlayerCar* in_owner, const std::string& in_meshPath);
+	CarBody(class PlayerCar* in_owner);
 	~CarBody();
 
 	void UpdateActor(float in_deltaTime) override;
@@ -21,5 +21,7 @@ private:
 
 	class PlayerCar* m_owner;
 
-
+	static const std::string CAR_BODY_MESH_PATH;
+	static const std::string CAR_GLASS_MESH_PATH;
+	static const std::string CAR_INTERIOR_MESH_PATH;
 };

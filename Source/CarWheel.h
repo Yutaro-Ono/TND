@@ -18,11 +18,10 @@ public:
 		ALL_WHEEL_NUM
 	};
 
-	CarWheel(class PlayerCar* in_owner, const std::string& in_meshPath, WHEEL_POSITION in_enumPos);
+	CarWheel(class PlayerCar* in_owner, WHEEL_POSITION in_enumPos);
 	~CarWheel();
 	void UpdateActor(float in_deltaTime) override;
 
-	class MeshComponent* GetMeshComponent() { return m_meshComp; }     // メッシュへのポインタゲッター
 
 
 	//-------------------------------------------------+
@@ -36,10 +35,11 @@ private:
 
 	class PlayerCar* m_owner;                // オーナークラス(追従するクラス)
 
-	class MeshComponent* m_meshComp;         // メッシュコンポーネント
-
 	float m_playerRadian;                    // プレイヤーの弧度監視用
 
 	Vector3 m_adjustPos;                     // タイヤ用位置調整ベクトル
+
+	static const std::string CAR_WHEEL_RUBBER_MESH_PATH;
+	static const std::string CAR_WHEEL_STEEL_MESH_PATH;
 };
 

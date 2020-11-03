@@ -103,9 +103,8 @@ private:
 	float m_friction;
 
 
-	static const std::string CAR_BODY_MESH_PATH;
-	static const std::string CAR_DOOR_RIGHT_MESH_PATH;
-	static const std::string CAR_DOOR_LEFT_MESH_PATH;
-	static const std::string CAR_WHEEL_MESH_PATH;
+
+
+
 	static const std::string CAR_HANDLE_MESH_PATH;
 };
