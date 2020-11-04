@@ -590,7 +590,7 @@ void Renderer::SetWindowTitle(const std::string & in_title)
 // パーティクルの頂点情報をバインドしアクティブ化
 void Renderer::SetWorldSpriteVertex()
 {
-	m_particleVertex->SetActive();
+	m_particleVerts->SetActive();
 }
 
 // ディレクショナルライトのセット
@@ -855,7 +855,7 @@ void Renderer::CreateWorldSpriteVerts()
 		0, 2, 1,
 		2, 0, 3
 	};
-	m_particleVertex = new VertexArray(vertices, 4, VertexArray::POS_NORMAL_TEX, indices, 6);
+	m_particleVerts = new VertexArray(vertices, 4, VertexArray::POS_NORMAL_TEX, indices, 6);
 }
 
 // シェーダーのロード

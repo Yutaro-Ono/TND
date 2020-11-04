@@ -33,9 +33,6 @@
     <Filter Include="ソース ファイル\Camera">
       <UniqueIdentifier>{21754b1d-1f67-4271-a016-3fb445ef4c69}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Debug">
-      <UniqueIdentifier>{c66c0357-ebf9-46c3-9774-067f65e11084}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Interface">
       <UniqueIdentifier>{6497f3d4-6bde-46b6-8293-def8490335c0}</UniqueIdentifier>
     </Filter>
@@ -59,9 +56,6 @@
     </Filter>
     <Filter Include="ソース ファイル\Component\Sprite">
       <UniqueIdentifier>{6dfe4d0d-96af-4109-80eb-bacf0f681bb0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Debug\Grid">
-      <UniqueIdentifier>{4a4816b2-ee7e-43af-8764-35f5ffab8c64}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Renderer\Mesh">
       <UniqueIdentifier>{9d61469b-353b-4bd4-984a-6700fa10a6d0}</UniqueIdentifier>
@@ -315,6 +309,12 @@
     <Filter Include="ソース ファイル\Shader\Source\EnvironmentMap">
       <UniqueIdentifier>{1f0e995d-21c7-4808-b995-385c70e59616}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Interface\Debug">
+      <UniqueIdentifier>{c66c0357-ebf9-46c3-9774-067f65e11084}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Interface\Debug\Grid">
+      <UniqueIdentifier>{4a4816b2-ee7e-43af-8764-35f5ffab8c64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -342,7 +342,7 @@
       <Filter>ソース ファイル\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\DebugBox.cpp">
-      <Filter>ソース ファイル\Debug</Filter>
+      <Filter>ソース ファイル\Interface\Debug</Filter>
     </ClCompile>
     <ClCompile Include="Source\UIScreen.cpp">
       <Filter>ソース ファイル\Interface</Filter>
@@ -369,7 +369,7 @@
       <Filter>ソース ファイル\Component\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="Source\Grid.cpp">
-      <Filter>ソース ファイル\Debug\Grid</Filter>
+      <Filter>ソース ファイル\Interface\Debug\Grid</Filter>
     </ClCompile>
     <ClCompile Include="Source\LevelBlock.cpp">
       <Filter>ソース ファイル\Actor\Level\Block</Filter>
@@ -683,10 +683,10 @@
       <Filter>ソース ファイル\Actor\Level\Block</Filter>
     </ClInclude>
     <ClInclude Include="Source\DebugBox.h">
-      <Filter>ソース ファイル\Debug</Filter>
+      <Filter>ソース ファイル\Interface\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Source\Grid.h">
-      <Filter>ソース ファイル\Debug\Grid</Filter>
+      <Filter>ソース ファイル\Interface\Debug\Grid</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision.h">
       <Filter>ソース ファイル\Collision</Filter>

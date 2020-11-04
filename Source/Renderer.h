@@ -120,15 +120,40 @@ private:
 	std::unordered_map<std::string, class Skeleton*> m_skeletons;
 	std::unordered_map<std::string, class Animation*> m_animations;
 
-	std::vector<class MeshComponent*> m_meshComponents;                    // メッシュコンポーネント
-	std::vector<class CubeMapComponent*> m_skyBoxComponents;                  // スカイボックス用メッシュコンポーネント
-	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;
+	// メッシュ配列
+	std::vector<class MeshComponent*> m_meshComponents;                       // メッシュコンポーネント
+	std::vector<class CubeMapComponent*> m_skyBoxComponents;                  // スカイボックス用メッシュ(キューブマップ)
+	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;       // ボーン入りメッシュ配列
+	std::vector<class MeshComponent*> m_glassMeshComponent;                   // ガラス(環境に影響を受ける)メッシュ配列
+	
+	std::vector<class SpriteComponent*> m_spriteComponents;                // スプライト配列 (スクリーン空間)
+	std::vector<class WorldSpaceUI*> m_worldSprites;                       // スプライト配列 (ワールド空間)
+
+
+	//--------------------------------------------+
+	// シェーダオブジェクト
+	//--------------------------------------------+
+	class Shader* m_meshShader;
+	class Shader* m_meshNormalShader;
+	class Shader* m_skinnedShader;
+
+	class Shader* m_spriteShader;                                          // スプライト基本シェーダ
+	class Shader* m_worldSpaceSpriteShader;                                // ワールド空間上のスプライトシェーダ
+	class Shader* m_particleShader;
+	class Shader* m_skyboxShader;                                          // スカイボックス用シェーダ
+
+	//--------------------------------------------+
+	// 頂点配列
+	//--------------------------------------------+
+	class VertexArray* m_spriteVerts;                                      // スプライト用頂点配列
+	class VertexArray* m_particleVerts;                                    // パーティクル用頂点配列
+	class VertexArray* m_skyboxVerts;                                      // スカイボックス用頂点配列
 
 	//--------------------------------------------+
 	// ライティング関連
 	//--------------------------------------------+
 	Vector3 m_ambientLight;                                                // アンビエントライト
-	DirectionalLight m_directionalLight;                                   // ディレクショナルライト
+	DirectionalLight m_directionalLight;                                   // ディレクショナルライト構造体
 
 	//--------------------------------------------+
 	// シャドウ関連
@@ -136,35 +161,12 @@ private:
 	class ShadowMap* m_shadowMap;
 
 
-	//--------------------------------------------+
-	// Sprite関連
-	//--------------------------------------------+
-	class VertexArray* m_spriteVerts;                                      // スプライト用頂点配列
-	class Shader* m_spriteShader;                                          // スプライト基本シェーダ
-	class Shader* m_worldSpaceSpriteShader;                                // ワールド空間上のスプライトシェーダ
-	std::vector<class SpriteComponent*> m_spriteComponents;                // スプライト配列 (スクリーン空間)
-	std::vector<class WorldSpaceUI*> m_worldSprites;                       // スプライト配列 (ワールド空間)
-
-	//--------------------------------------------+
-	// メッシュ関連
-	//--------------------------------------------+
-	class Shader* m_meshShader;
-	class Shader* m_meshNormalShader;
-	class Shader* m_skinnedShader;
 	int m_switchShader;
 
 	//--------------------------------------------+
 	// パーティクル関連
 	//--------------------------------------------+
-	class Shader* m_particleShader;
-	class VertexArray* m_particleVertex;
 	class ParticleManager* m_particleManager;
-
-	//--------------------------------------------+
-	// スカイボックス関連
-	//--------------------------------------------+
-	class Shader* m_skyboxShader;          // スカイボックス用シェーダー
-	class VertexArray* m_skyboxVerts;      // スカイボックス用頂点配列
 
 	//--------------------------------------------+
 	// ポストエフェクト関連
@@ -184,7 +186,7 @@ private:
 	//AABB m_projCullingZone;   // 視錐台範囲外かどうかを検出する
 
 	//--------------------------------------------+
-	// レンダリングベース情報関連
+	// アプリケーション情報関連
 	//--------------------------------------------+
 	SDL_Window* m_window;                                                   // SDLのウィンドウハンドル
 	SDL_Renderer* m_SDLRenderer;                                            // SDLのレンダリングハンドル
