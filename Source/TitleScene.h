@@ -46,7 +46,7 @@ public:
 private:
 
 
-	class PlayerCar* m_player;                                             // プレイヤー
+	class PlayerCar* m_car;                                             // 車
 
 	class FollowCamera* m_camera;                                       // カメラ
 

@@ -19,9 +19,6 @@
 // コンストラクタ
 TitleScreen::TitleScreen(class TitleScene* in_target)
 	:m_logo(nullptr)
-	,m_anyKey(nullptr)
-	,m_startButton(nullptr)
-	,m_quitButton(nullptr)
 	,m_logoPos(0.0f, RENDERER->GetScreenHeight() / 3)
 	,m_logoJpPos(320.0f, 30.0f)
 	,m_anyKeyPos(0.0f, -275.0f)
@@ -34,12 +31,16 @@ TitleScreen::TitleScreen(class TitleScene* in_target)
 
 	// タイトルロゴの読み込み
 	//m_logo = RENDERER->GetTexture("Data/Interface/Title/Title_LogoScreen.png");
-	m_logo = m_font->RenderText("Title Screen", Vector3(1.0f, 1.0f, 1.0f), 45);
+	m_logo = m_font->RenderText("The Night Driver", Vector3(1.0f, 1.0f, 1.0f), 72);
+	m_logoPos = Vector2((-GAME_CONFIG->GetScreenWidth() / 2) + (m_logo->GetWidth() / 2) + 80, RENDERER->GetScreenHeight() / 2 - m_logo->GetHeight() - 80);
 
 	// 選択項目関連のフォント
-	m_anyKey = m_font->RenderText("PRESS ANY KEY", Vector3(1.0f, 1.0f, 1.0f), 32);
-	m_startButton = m_font->RenderText("GAME START", Vector3(1.0f, 1.0f, 1.0f), 32);
-	m_quitButton = m_font->RenderText("QUIT TO DESKTOP", Vector3(1.0f, 1.0f, 1.0f), 32);
+	for (int i = 0; i < 2; i++)
+	{
+		m_anyKey[i] = m_font->RenderText("PRESS ANY KEY", Vector3(0.0f + i, 0.0f + i, 0.0f + i), 48);
+		m_startButton[i] = m_font->RenderText("GAME START", Vector3(0.0f + i, 0.0f + i, 0.0f + i), 32);
+		m_quitButton[i] = m_font->RenderText("QUIT TO DESKTOP", Vector3(0.0f + i, 0.0f + i, 0.0f + i), 32);
+	}
 
 	// チュートリアル用画像の読み込み
 	m_xpadTutorialTex = RENDERER->GetTexture("Data/Interface/Tutorial/Title/TitleScreenUI_XPad.png");
@@ -63,9 +64,13 @@ TitleScreen::TitleScreen(class TitleScene* in_target)
 // デストラクタ
 TitleScreen::~TitleScreen()
 {
-	m_anyKey->Delete();
-	m_startButton->Delete();
-	m_quitButton->Delete();
+	for (int i = 0; i < 2; i++)
+	{
+		m_anyKey[i]->Delete();
+		m_startButton[i]->Delete();
+		m_quitButton[i]->Delete();
+	}
+
 }
 
 
@@ -114,9 +119,11 @@ void TitleScreen::Draw(Shader * in_shader)
 
 
 		// PRESS ANY KEY
-		if (m_anyKey)
+		if (m_anyKey[0] != nullptr || m_anyKey[1] != nullptr)
 		{
-			DrawTexture(in_shader, m_anyKey, m_anyKeyPos, 1.0f);
+			DrawTexture(in_shader, m_anyKey[0], m_anyKeyPos, 1.0f);
+			DrawTexture(in_shader, m_anyKey[1], m_anyKeyPos + Vector2(-3.0f, 3.0f), 1.0f);
+			
 		}
 
 		break;
@@ -125,14 +132,17 @@ void TitleScreen::Draw(Shader * in_shader)
 	case TitleScene::GAME_START:
 
 		// スタートボタン
-		if (m_startButton)
+		if (m_startButton[0] != nullptr || m_startButton[1] != nullptr)
 		{
-			DrawTexture(in_shader, m_startButton, m_startPos, 1.0f);
+			DrawTexture(in_shader, m_startButton[0], m_startPos, 1.0f);
+			DrawTexture(in_shader, m_startButton[1], m_startPos + Vector2(-3.0f, 3.0f), 1.0f);
+			
 		}
 		// 終了ボタン
-		if (m_quitButton)
+		if (m_quitButton[0] != nullptr || m_quitButton[1] != nullptr)
 		{
-			DrawTexture(in_shader, m_quitButton, m_quitPos, 0.5f);
+			DrawTexture(in_shader, m_quitButton[0], m_quitPos, 0.5f);
+			DrawTexture(in_shader, m_quitButton[1], m_quitPos + Vector2(-3.0f, 3.0f), 0.5f);
 		}
 
 
@@ -164,14 +174,17 @@ void TitleScreen::Draw(Shader * in_shader)
 	case TitleScene::GAME_QUIT:
 
 		// スタートボタン
-		if (m_startButton)
+		if (m_startButton[0] != nullptr || m_startButton[1] != nullptr)
 		{
-			DrawTexture(in_shader, m_startButton, m_startPos, 0.5f);
+			DrawTexture(in_shader, m_startButton[0], m_startPos, 0.5f);
+			DrawTexture(in_shader, m_startButton[1], m_startPos + Vector2(-3.0f, 3.0f), 0.5f);
+
 		}
 		// 終了ボタン
-		if (m_quitButton)
+		if (m_quitButton[0] != nullptr || m_quitButton[1] != nullptr)
 		{
-			DrawTexture(in_shader, m_quitButton, m_quitPos, 1.0f);
+			DrawTexture(in_shader, m_quitButton[0], m_quitPos, 1.0f);
+			DrawTexture(in_shader, m_quitButton[1], m_quitPos + Vector2(-3.0f, 3.0f), 1.0f);
 		}
 
 

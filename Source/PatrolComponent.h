@@ -16,19 +16,23 @@ public:
 	};
 
 
-	PatrolComponent(class Actor* in_owner, class GameWorld* in_world);
+	PatrolComponent(class Helicopter* in_owner, class GameWorld* in_world);
 	~PatrolComponent();
 
 	void Update(float in_deltaTime) override;      // 更新処理
 
 	void MoveToPatrolPos(float in_deltaTime);
 
+	void ChasePlayer(float in_deltaTime);          // プレイヤー追跡
+
+	void SetPatrolState(PatrolComponent::PATROL_STATE in_state) { m_patrolState = m_patrolState; }
+
 private:
 
 
 	PATROL_STATE m_patrolState;     // 巡回状態
 
-	class Actor* m_owner;
+	class Helicopter* m_heli;
 	class GameWorld* m_world;
 	
 	class PatrolPoint* m_targetPoint;     // 巡回先のポイント

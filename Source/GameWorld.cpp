@@ -44,7 +44,7 @@ GameWorld::GameWorld()
 	// ヘリコプターを三機生成
 	for (int i = 0; i < 3; i++)
 	{
-		m_helicopters.emplace_back(new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 1200.0f)));
+		m_helicopters.emplace_back(new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 1200.0f), i));
 	}
 
 	// UI生成

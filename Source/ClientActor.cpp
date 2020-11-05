@@ -15,7 +15,7 @@ const std::string MESH_PATH_CLAUDIA = "Data/Meshes/TND/Actors/Player/claudia/rp_
 const std::string MESH_PATH_ERIC = "Data/Meshes/TND/Actors/Player/eric/rp_eric_rigged_001_ue4";
 const std::string MESH_PATH_MANUEL = "Data/Meshes/TND/Actors/Player/manuel/rp_manuel_rigged_001_ue4";
 const std::string MESH_PATH_SOPHIA = "Data/Meshes/TND/Actors/Player/sophia/rp_sophia_rigged_003_ue4";
-
+const std::string MESH_PATH_NATHAN = "Data/Meshes/TND/Actors/Player/rp_nathan_rigged_003_ue4";
 
 const float AnimationSpeed = 0.5f;        // アニメーションの速度
 
@@ -109,7 +109,7 @@ void ClientActor::LoadMeshEachChara(int in_chara)
 	std::string meshPath;
 	std::string skelPath;
 
-	if (chara < 0 || chara > 4)
+	if (chara < 0 || chara > 5)
 	{
 		chara = std::rand() % 4;
 	}
@@ -144,6 +144,12 @@ void ClientActor::LoadMeshEachChara(int in_chara)
 	{
 		meshPath = MESH_PATH_SOPHIA + ".gpmesh";
 		skelPath = MESH_PATH_SOPHIA + ".gpskel";
+	}
+
+	if (chara == 5)
+	{
+		meshPath = MESH_PATH_NATHAN + ".gpmesh";
+		skelPath = MESH_PATH_NATHAN + ".gpskel";
 	}
 
 	Mesh* mesh = RENDERER->GetMesh(meshPath);

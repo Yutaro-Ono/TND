@@ -29,9 +29,9 @@ private:
 	
 	class Texture* m_logo;                        // タイトルロゴ用 テクスチャ
 
-	class Texture* m_anyKey;                      // "PUSH ANY KEY" 用フォントテクスチャ
-	class Texture* m_startButton;                 // "GAME START" 用フォントテクスチャ
-	class Texture* m_quitButton;                  // "QUIT TO DESKTOP"用 フォントテクスチャ
+	class Texture* m_anyKey[2];                      // "PUSH ANY KEY" 用フォントテクスチャ
+	class Texture* m_startButton[2];                 // "GAME START" 用フォントテクスチャ
+	class Texture* m_quitButton[2];                  // "QUIT TO DESKTOP"用 フォントテクスチャ
 
 	std::vector<class Texture*> m_stage;         // ステージ用フォントテクスチャ
 

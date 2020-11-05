@@ -63,17 +63,18 @@ void TitleScene::Initialize()
 	TitleScreen* hud = new TitleScreen(this);
 
 	// プレイヤー
-	m_player = new PlayerCar();
-	m_player->SetPosition(Vector3::Zero);
-	m_player->SetScale(0.1f);
-	m_player->SetState(Actor::STATE_PAUSED);
+	m_car = new PlayerCar();
+	m_car->SetPosition(Vector3::Zero);
+	m_car->SetScale(0.4f);
+	m_car->SetState(Actor::STATE_PAUSED);
 
-	m_client = new ClientActor(Vector3::Zero, 2);
+	m_client = new ClientActor(Vector3::Zero, 5);
+	m_client->SetPosition(Vector3(0.0f, -55.0f, 0.0f));
 	m_client->SetScale(0.4f);
 
 	// カメラ
-	Camera* camera = new Camera(m_player);
-	camera->Initialize(Vector3(0.0f, -250.0f, 0.0f), m_player->GetPosition(), Vector3::Zero);
+	Camera* camera = new Camera(m_client);
+	camera->Initialize(Vector3(-300.0f, 350.0f, 100.0f), m_car->GetPosition(), Vector3::Zero);
 
 	// 環境生成
 	m_environment = new Environment(Environment::GAME_TIME::NIGHT);

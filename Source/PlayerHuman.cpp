@@ -31,7 +31,7 @@ PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 
 	// MoveComponentの生成
 	m_moveComp = new MoveComponentHuman(this);
-
+	
 	// スケルタルメッシュのロード
 	Mesh* mesh = RENDERER->GetMesh("Data/Meshes/TND/Actors/Player/rp_nathan_rigged_003_ue4.gpmesh");
 	m_skelMeshComp = new SkeletalMeshComponent(this);

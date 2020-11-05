@@ -17,10 +17,11 @@ const std::string HELI_ROTOR_BACK_MESH_PATH = "Data/Meshes/TND/Actors/Police/Hel
 const std::string HELI_SPOTLIGHT_MESH_PATH = "Data/Meshes/TND/Actors/Police/Helicopter/Helicopter_Spotlight_Internal.OBJ";
 
 // コンストラクタ
-Helicopter::Helicopter(GameWorld* in_world, const Vector3& in_pos)
+Helicopter::Helicopter(GameWorld* in_world, const Vector3& in_pos, int in_num)
 	:m_patrolComp(nullptr)
-	,m_searchSphere(Vector3(in_pos.x, in_pos.y, 0.0f), 500.0f)
+	,m_searchSphere(Vector3(in_pos.x, in_pos.y, 0.0f), 1000.0f)
 	,m_foundPlayer(false)
+	,m_number(in_num)
 {
 	// ワールドのポインタをセット
 	m_world = in_world;
