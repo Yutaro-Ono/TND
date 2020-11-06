@@ -8,6 +8,13 @@ class Helicopter : public Actor
 
 public:
 
+	enum HELI_STATE
+	{
+		PATROL = 0,
+		CHASE,
+		STOP
+	};
+
 	Helicopter(class GameWorld* in_world, const Vector3& in_pos, int in_num);              // コンストラクタ
 	~Helicopter();                                                             // デストラクタ
 
@@ -21,9 +28,17 @@ public:
 	class GameWorld* GetWorld()  { return m_world; }
 	bool  GetFoundPlayer()       { return m_foundPlayer; }
 
+	// ステートのゲッター・セッター
+	HELI_STATE GetHeliState() { return m_state; }
+	void SetHeliState(HELI_STATE in_state) { m_state = in_state; }
+
 	int GetNumber() { return m_number; }
 
 private:
+
+
+	// ヘリのステート
+	HELI_STATE m_state;
 
 	// ワールドへのポインタ
 	class GameWorld* m_world;

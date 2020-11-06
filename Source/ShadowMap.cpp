@@ -38,22 +38,24 @@ ShadowMap::ShadowMap()
 
 
 	// シェーダの作成
+	// デプスマップシェーダ
 	m_depthShader = new Shader();
 	m_depthShader->Load("Data/Shaders/DepthMap.vert", "Data/Shaders/DepthMap.frag");
 	//m_shadowShader = new Shader();
 	//m_shadowShader->Load("Data/Shaders/PhongShadow.vert", "Data/Shaders/PhongShadow.frag");
+	// ノーマルマップ + 影シェーダ
 	m_shadowShader = new Shader();
 	m_shadowShader->Load("Data/Shaders/ShadowNormalMap.vert", "Data/Shaders/ShadowNormalMap.frag");
 	
-	//m_depthSkinShader = new Shader();
-	//m_depthSkinShader->Load("Data/Shaders/SkinnedDepth.vert", "Data/Shaders/DepthMap.frag");
-	//m_skinShadowShader = new Shader();
-	//m_skinShadowShader->Load("Data/Shaders/SkinnedShadow.vert", "Data/Shaders/PhongShadow.frag");
-	
 	m_depthSkinShader = new Shader();
-	m_depthSkinShader->Load("Data/Shaders/SkinnedDepthNormal.vert", "Data/Shaders/DepthMap.frag");
+	m_depthSkinShader->Load("Data/Shaders/SkinnedDepth.vert", "Data/Shaders/DepthMap.frag");
 	m_skinShadowShader = new Shader();
-	m_skinShadowShader->Load("Data/Shaders/ShadowSkinnedNormal.vert", "Data/Shaders/ShadowNormalMap.frag");
+	m_skinShadowShader->Load("Data/Shaders/SkinnedShadow.vert", "Data/Shaders/PhongShadow.frag");
+	
+	//m_depthSkinShader = new Shader();
+	//m_depthSkinShader->Load("Data/Shaders/SkinnedDepthNormal.vert", "Data/Shaders/DepthMap.frag");
+	//m_skinShadowShader = new Shader();
+	//m_skinShadowShader->Load("Data/Shaders/ShadowSkinnedNormal.vert", "Data/Shaders/ShadowNormalMap.frag");
 
 }
 

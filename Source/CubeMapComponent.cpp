@@ -13,12 +13,10 @@ CubeMapComponent::CubeMapComponent(Actor* in_owner)
 	,m_texture(nullptr)
 	,m_isVisible(false)
 {
-	RENDERER->AddSkyBox(this);
 }
 
 CubeMapComponent::~CubeMapComponent()
 {
-	RENDERER->RemoveSkyBox(this);
 }
 
 // テクスチャの生成
@@ -32,7 +30,7 @@ void CubeMapComponent::CreateTexture(const std::string& in_filePath)
 // キューブマップの描画処理
 void CubeMapComponent::Draw(Shader* in_shader)
 {
-
+	// 透明にしていなければ
 	if (m_isVisible)
 	{
 		// ビュー行列、プロジェクション行列を取得
@@ -55,4 +53,14 @@ void CubeMapComponent::Draw(Shader* in_shader)
 		glDepthFunc(GL_LESS);
 	}
 
+}
+
+// 環境マップオブジェクトの描画処理
+void CubeMapComponent::DrawEnvironmentMap(std::vector<class MeshComponent*> in_envMeshes)
+{
+
+	if (m_isVisible)
+	{
+
+	}
 }

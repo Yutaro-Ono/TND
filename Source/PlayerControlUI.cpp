@@ -14,6 +14,7 @@ const Vector2 ADJUST_ACCESSTEX_POS(30.0f, 0.0f);    // 受注UIの位置調整用
 PlayerControlUI::PlayerControlUI(PlayerManager* in_player)
 	:m_player(in_player)
 	,m_rideTexture(nullptr)
+	,m_chasing(nullptr)
 	,m_accessTexPos(Vector2::Zero)
 	,m_findPlayer(false)
 {
@@ -25,6 +26,9 @@ PlayerControlUI::PlayerControlUI(PlayerManager* in_player)
 
 	// "DANGER"表示用のテクスチャ生成
 	m_dangerFontTex = m_font->RenderText("DANGER", Vector3(0.0, 0.0, 1.0), 48);
+
+	// "追跡中"表示
+	m_chasing = RENDERER->GetTexture("Data/Interface/TND/Control/Chasing_Helicopter.png");
 }
 
 // デストラクタ

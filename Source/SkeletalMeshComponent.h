@@ -7,10 +7,10 @@ class SkeletalMeshComponent : public MeshComponent
 public:
 	SkeletalMeshComponent(class Actor* in_owner);
 	// メッシュコンポーネントの描画
-	void Draw(class Shader* in_shader);
+	virtual void Draw(class Shader* in_shader) override;
 
 	// シャドウ用の描画
-	void DrawShadow(class Shader* in_shader);
+	virtual void DrawShadow(class Shader* in_shader) override;
 
 	void Update(float in_deltaTime) override;
 

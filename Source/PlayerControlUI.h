@@ -33,6 +33,7 @@ private:
 	Vector2 m_accessTexPos;
 	
 	class Texture* m_dangerFontTex;            // 危険な状態 (ヘリに見つかった)表示
+	class Texture* m_chasing;                  // ヘリによる追跡中に表示するアラート
 	bool m_findPlayer;                         // ヘリに見つかったかどうか
 };
 

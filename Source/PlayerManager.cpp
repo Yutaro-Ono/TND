@@ -66,7 +66,6 @@ void PlayerManager::UpdateActor(float in_deltaTime)
 void PlayerManager::SearchCar()
 {
 
-
 	// プレイヤーのアクセス範囲に車が入っていたらフラグを立てる
 	if (m_searchSphere.Contains(m_playerCar->GetPosition()) && m_playerMode == MODE_HUMAN)
 	{
@@ -94,9 +93,6 @@ void PlayerManager::SearchCar()
 		}
 	}
 
-
-
-
 }
 
 // プレイヤーのアクセス範囲内に依頼人がいるかを検索
@@ -118,9 +114,5 @@ void PlayerManager::SearchClient(ClientActor* in_client)
 	{
 		in_client->SetIsAccepted(false);
 	}
-
-
-
-
 	
 }

@@ -60,10 +60,6 @@ public:
 	// ShadowMap
 	class ShadowMap* GetShadowMap() { return m_shadowMap; }
 
-	// SkyBox
-	void AddSkyBox(class CubeMapComponent* in_comp);
-	void RemoveSkyBox(class CubeMapComponent* in_comp);
-
 	void WindowClear() { glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); }
 	void WindowFlip() { SDL_GL_SwapWindow(m_window); }
 
@@ -101,6 +97,9 @@ public:
 	const Vector3 GetAmbientLight() { return m_ambientLight; }
 	void SetProjectionMatrix(const Matrix4& in_proj) { m_projection = in_proj; }
 
+	// アクティブスカイボックス
+	void SetActiveSkyBox(class CubeMapComponent* in_skyBox) { m_activeSkyBox = in_skyBox; }
+	class CubeMapComponent* GetSkyBox() { return m_activeSkyBox; }
 
 private:
 
@@ -122,13 +121,13 @@ private:
 
 	// メッシュ配列
 	std::vector<class MeshComponent*> m_meshComponents;                       // メッシュコンポーネント
-	std::vector<class CubeMapComponent*> m_skyBoxComponents;                  // スカイボックス用メッシュ(キューブマップ)
 	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;       // ボーン入りメッシュ配列
 	std::vector<class MeshComponent*> m_glassMeshComponent;                   // ガラス(環境に影響を受ける)メッシュ配列
 	
 	std::vector<class SpriteComponent*> m_spriteComponents;                // スプライト配列 (スクリーン空間)
 	std::vector<class WorldSpaceUI*> m_worldSprites;                       // スプライト配列 (ワールド空間)
 
+	class CubeMapComponent* m_activeSkyBox;                                // 有効な(描画する)スカイボックス
 
 	//--------------------------------------------+
 	// シェーダオブジェクト

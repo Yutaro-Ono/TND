@@ -315,6 +315,21 @@
     <Filter Include="ソース ファイル\Interface\Debug\Grid">
       <UniqueIdentifier>{4a4816b2-ee7e-43af-8764-35f5ffab8c64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Interface\HeliAlertUI">
+      <UniqueIdentifier>{e108ad52-d77e-4f60-958f-b56c5bae85eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Renderer\Mesh\Component\Mesh">
+      <UniqueIdentifier>{989bdd0c-5952-4b09-9d27-c79eb31ef09c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Renderer\Mesh\Component\CubeMap">
+      <UniqueIdentifier>{0eea475c-1eee-47e5-9d9e-bcf159cdb31e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Renderer\Mesh\Component\Skeletal">
+      <UniqueIdentifier>{29af4e36-262a-4adc-9c8a-6e9ec1a486c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Renderer\Mesh\Component\EnvironmentMap">
+      <UniqueIdentifier>{28923696-600e-46d4-bdfc-b8cc336f9ead}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -467,9 +482,6 @@
     <ClCompile Include="Source\SkeletalMeshComponent.cpp">
       <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MeshComponent.cpp">
-      <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\BoneTransform.cpp">
       <Filter>ソース ファイル\Renderer\Mesh\Skeleton</Filter>
     </ClCompile>
@@ -560,9 +572,6 @@
     <ClCompile Include="Source\MissionManager.cpp">
       <Filter>ソース ファイル\Mission</Filter>
     </ClCompile>
-    <ClCompile Include="Source\CubeMapComponent.cpp">
-      <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SkyBox.cpp">
       <Filter>ソース ファイル\Actor\Level\Sky</Filter>
     </ClCompile>
@@ -619,6 +628,15 @@
     </ClCompile>
     <ClCompile Include="Source\PlayerControlUI.cpp">
       <Filter>ソース ファイル\Interface\PlayerControl</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MeshComponent.cpp">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CubeMapComponent.cpp">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\CubeMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EnvironmentMap.cpp">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\EnvironmentMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -772,12 +790,6 @@
     <ClInclude Include="Source\Skeleton.h">
       <Filter>ソース ファイル\Renderer\Mesh\Skeleton</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SkeletalMeshComponent.h">
-      <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MeshComponent.h">
-      <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\MatrixPalette.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
@@ -880,9 +892,6 @@
     <ClInclude Include="Source\MissionManager.h">
       <Filter>ソース ファイル\Mission</Filter>
     </ClInclude>
-    <ClInclude Include="Source\CubeMapComponent.h">
-      <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SkyBox.h">
       <Filter>ソース ファイル\Actor\Level\Sky</Filter>
     </ClInclude>
@@ -939,6 +948,18 @@
     </ClInclude>
     <ClInclude Include="Source\PlayerControlUI.h">
       <Filter>ソース ファイル\Interface\PlayerControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MeshComponent.h">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CubeMapComponent.h">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\CubeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SkeletalMeshComponent.h">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\Skeletal</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EnvironmentMap.h">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\EnvironmentMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1057,6 +1078,9 @@
       <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Skinned</Filter>
     </None>
     <None Include="Data\Shaders\EnvironmentMap.vert">
+      <Filter>ソース ファイル\Shader\Source\EnvironmentMap</Filter>
+    </None>
+    <None Include="Data\Shaders\EnvironmentMap.frag">
       <Filter>ソース ファイル\Shader\Source\EnvironmentMap</Filter>
     </None>
   </ItemGroup>

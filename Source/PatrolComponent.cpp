@@ -26,6 +26,9 @@ PatrolComponent::PatrolComponent(Helicopter* in_owner, GameWorld* in_world)
 
 	// 巡回地点として選択されたことを伝える
 	m_targetPoint->SetIsSelected(true);
+
+	// 親ヘリを巡回状態にセット
+	m_heli->SetHeliState(Helicopter::HELI_STATE::PATROL);
 }
 
 // デストラクタ
@@ -40,11 +43,11 @@ void PatrolComponent::Update(float in_deltaTime)
 	// ヘリがプレイヤーを見つけたら
 	if (m_heli->GetFoundPlayer())
 	{
-		m_patrolState = PATROL_STATE::CHASE;
+		m_heli->SetHeliState(Helicopter::HELI_STATE::CHASE);
 	}
 
 	// 巡回状態時処理
-	if (m_patrolState == PATROL_STATE::PATROL)
+	if (m_heli->GetHeliState() == Helicopter::HELI_STATE::PATROL)
 	{
 		// ターゲット座標を更新
 		m_targetPos = m_targetPoint->GetPosition();
@@ -53,9 +56,8 @@ void PatrolComponent::Update(float in_deltaTime)
 	}
 
 	// プレイヤー追跡処理
-	if (m_patrolState == PATROL_STATE::CHASE)
+	if (m_heli->GetHeliState() == Helicopter::HELI_STATE::CHASE)
 	{
-		m_targetPos = m_world->GetPlayer()->GetPosition() + Vector3(0.0f, 300.0f * m_heli->GetNumber(), 600.0f + 100.0f * m_heli->GetNumber()) + m_world->GetPlayer()->GetForward() * Vector3(-300.0f, 0.0f, 0.0f);
 		ChasePlayer(in_deltaTime);
 	}
 }
@@ -99,8 +101,6 @@ void PatrolComponent::MoveToPatrolPos(float in_deltaTime)
 		}
 	}
 
-
-
 	// 巡回地点が更新されたら
 	if (m_targetPoint != tempPoint)
 	{
@@ -116,38 +116,57 @@ void PatrolComponent::MoveToPatrolPos(float in_deltaTime)
 	}
 }
 
+// プレイヤーの追尾
 void PatrolComponent::ChasePlayer(float in_deltaTime)
 {
 
 	// ヘリコプターの現在地点座標
 	Vector3 heliPos = m_owner->GetPosition();
-	// (ターゲット座標 - ヘリ座標)から前進ベクトルを割り出す
-	Vector3 forwardVec = m_targetPos - heliPos;
+	// プレイヤーの座標
+	Vector3 playerPos = m_world->GetPlayer()->GetPosition();
+	// プレイヤーとヘリの距離
+	float distance = Vector3::Distance(heliPos, playerPos);
+
+	// (プレイヤー座標 - ヘリ座標)から前進ベクトルを割り出す
+	Vector3 forwardVec = playerPos - heliPos;
+	forwardVec.Normalize();
+	// ピッチ回転はしない
+	forwardVec.z = 0.0f;
+
+	// ターゲット座標調整
+	playerPos = playerPos + Vector3(0.0f, 600.0f * m_heli->GetNumber(), 500.0f + 100.0f * m_heli->GetNumber()) + forwardVec * Vector3(-300.0f, 600.0f * m_heli->GetNumber(), 0.0f);
+	// 前進ベクトルを再更新
+	forwardVec = playerPos - heliPos;
 	forwardVec.Normalize();
 
-	float distance = Vector3::Distance(heliPos, m_targetPos);
 	// プレイヤーから一定距離離れたらポイント巡回に戻る
 	if (distance > 5001.0f)
 	{
-		m_patrolState = PATROL_STATE::PATROL;
+		m_heli->SetHeliState(Helicopter::HELI_STATE::PATROL);
 		return;
 	}
+
+	// 移動量を計算
+	Vector3 move = forwardVec * 150.0f * in_deltaTime;
 	
-	if (distance > 100.0f)
+	if (distance > 1000.0f)
 	{
-		// 移動量を計算
-		Vector3 move = forwardVec * 300.0f * in_deltaTime;
+		if (distance >= 1800.0f)
+		{
+			move = forwardVec * 400.0f * in_deltaTime;
+		}
+
 		// ヘリを移動させる
 		m_owner->SetPosition(heliPos + move);
-
-		// ヘリを巡回地点へ向かせる
 		forwardVec.z = 0.0f;
 		m_owner->RotateToNewForward(forwardVec);
 
 	}
 	else
 	{
-		
+		forwardVec.z = 0.0f;
+		m_owner->RotateToNewForward(forwardVec);
+		//m_owner->SetPosition(m_owner->GetPosition() + forwardVec * Vector3(-100.0f, 600.0f * m_heli->GetNumber(), 600.0f));
 	}
 
 }

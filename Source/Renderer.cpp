@@ -406,10 +406,7 @@ void Renderer::Draw()
 	m_skyboxShader->SetActive();
 	m_skyboxVerts->SetActive();
 
-	for (auto sky : m_skyBoxComponents)
-	{
-		sky->Draw(m_skyboxShader);
-	}
+	m_activeSkyBox->Draw(m_skyboxShader);
 
 	//----------------------------------------------------------------+
 	// パーティクル描画
@@ -566,19 +563,6 @@ void Renderer::RemoveTexture(Texture* in_texture)
 			break;
 		}
 	}
-}
-
-// skybox配列に追加する
-void Renderer::AddSkyBox(CubeMapComponent* in_comp)
-{
-	m_skyBoxComponents.emplace_back(in_comp);
-}
-
-// skybox配列からの削除
-void Renderer::RemoveSkyBox(CubeMapComponent* in_comp)
-{
-	auto iter = std::find(m_skyBoxComponents.begin(), m_skyBoxComponents.end(), in_comp);
-	m_skyBoxComponents.erase(iter);
 }
 
 // ウィンドウのタイトル

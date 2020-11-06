@@ -1,8 +1,9 @@
+//---------------------------------------------------------------+
+// フォンライティング (シャドウ有)
+//---------------------------------------------------------------+
 #version 330 core
-
-// 頂点シェーダーからの入力
-
-
+// 出力カラー
+out vec4 out_fragColor;
 
 // 頂点シェーダーからの入力受け取り
 in VS_OUT
@@ -14,9 +15,6 @@ in VS_OUT
 
 }fs_in;
 
-// 出力カラー（出力ピクセルカラー）
-out vec4 out_fragColor;
-
 // テクスチャサンプリング用構造体
 struct Material
 {
@@ -25,7 +23,6 @@ struct Material
 	sampler2D normalMap;
 	sampler2D depthMap;
 };
-uniform Material u_mat;
 
 // ディレクショナルライト用構造体
 struct DirectionalLight
@@ -35,7 +32,8 @@ struct DirectionalLight
 	vec3 diffuse;        // ディフューズ色
 	vec3 specular;       // スペキュラー色
 };
-// ディレクショナルライト
+
+uniform Material u_mat;
 uniform DirectionalLight u_dirLight;
 
 // ライティング用変数

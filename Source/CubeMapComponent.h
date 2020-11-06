@@ -1,6 +1,7 @@
 #pragma once
-#include "Component.h"
+#include "MeshComponent.h"
 #include <string>
+#include <vector>
 class CubeMapComponent : public Component
 {
 
@@ -11,7 +12,10 @@ public:
 
 	void CreateTexture(const std::string& in_filePath);
 
-	virtual void Draw(class Shader* in_shader);
+	void Draw(class Shader* in_shader);
+
+	// 環境マップオブジェクトの描画処理
+	void DrawEnvironmentMap(std::vector<class MeshComponent*> in_envMeshes);
 
 	void SetIsVisible(bool in_visible) { m_isVisible = in_visible; }
 

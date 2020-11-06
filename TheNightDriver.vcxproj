@@ -39,6 +39,7 @@
     <ClCompile Include="Source\CubeMapComponent.cpp" />
     <ClCompile Include="Source\DebugBox.cpp" />
     <ClCompile Include="Source\Environment.cpp" />
+    <ClCompile Include="Source\EnvironmentMap.cpp" />
     <ClCompile Include="Source\Font.cpp" />
     <ClCompile Include="Source\FrameBuffer.cpp" />
     <ClCompile Include="Source\GameConfig.cpp" />
@@ -143,6 +144,7 @@
     <ClInclude Include="Source\CubeMapComponent.h" />
     <ClInclude Include="Source\DebugBox.h" />
     <ClInclude Include="Source\Environment.h" />
+    <ClInclude Include="Source\EnvironmentMap.h" />
     <ClInclude Include="Source\Font.h" />
     <ClInclude Include="Source\FrameBuffer.h" />
     <ClInclude Include="Source\GameConfig.h" />
@@ -235,6 +237,7 @@
     <None Include="Data\Shaders\DepthMap.frag" />
     <None Include="Data\Shaders\DepthMap.vert" />
     <None Include="Data\Shaders\DirectLine.vert" />
+    <None Include="Data\Shaders\EnvironmentMap.frag" />
     <None Include="Data\Shaders\EnvironmentMap.vert" />
     <None Include="Data\Shaders\FB\BlurScreen.frag" />
     <None Include="Data\Shaders\FB\CernelScreen.frag" />

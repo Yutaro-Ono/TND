@@ -32,6 +32,9 @@ Environment::Environment(GameWorld* in_world, GAME_TIME in_gameTime)
 
 	playerPos = m_world->GetPlayer()->GetPosition();
 	
+	// 設定された時間帯ごとにスカイボックスをセット
+	SetSkyBox(m_gameTime);
+
 	// 環境光セット
 	SetDirectionalLight(in_gameTime);
 
@@ -39,6 +42,7 @@ Environment::Environment(GameWorld* in_world, GAME_TIME in_gameTime)
 
 Environment::~Environment()
 {
+
 }
 
 void Environment::Update()
@@ -70,18 +74,24 @@ void Environment::SetSkyBox(GAME_TIME in_gameTime)
 {
 	if (in_gameTime == GAME_TIME::MORNING || in_gameTime == GAME_TIME::AFTERNOON)
 	{
+		// レンダラーに日中のスカイボックスをセット
+		RENDERER->SetActiveSkyBox(m_morningBox->GetCubeMapComp());
 		m_morningBox->GetCubeMapComp()->SetIsVisible(true);
 		return;
 	}
 
 	if (in_gameTime == GAME_TIME::EVENING)
 	{
+		// レンダラーに夕方のスカイボックスをセット
+		RENDERER->SetActiveSkyBox(m_eveningBox->GetCubeMapComp());
 		m_eveningBox->GetCubeMapComp()->SetIsVisible(true);
 		return;
 	}
 
 	if (in_gameTime == GAME_TIME::NIGHT)
 	{
+		// レンダラーに夜のスカイボックスをセット
+		RENDERER->SetActiveSkyBox(m_nightBox->GetCubeMapComp());
 		m_nightBox->GetCubeMapComp()->SetIsVisible(true);
 		return;
 	}

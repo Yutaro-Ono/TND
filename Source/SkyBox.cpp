@@ -7,6 +7,7 @@ SkyBox::SkyBox()
 {
 	m_cubeMapComp = new CubeMapComponent(this);
 	m_cubeMapComp->CreateTexture("Data/Textures/TND/Skybox/night/");
+	
 }
 
 SkyBox::SkyBox(Environment* in_environment, Environment::GAME_TIME in_gameTime)
@@ -19,6 +20,7 @@ SkyBox::SkyBox(Environment* in_environment, Environment::GAME_TIME in_gameTime)
 
 SkyBox::~SkyBox()
 {
+
 }
 
 void SkyBox::UpdateActor(float in_deltaTime)

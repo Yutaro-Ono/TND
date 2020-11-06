@@ -16,7 +16,8 @@ public:
 	~MeshComponent();                                                       // デストラクタ
 
 	virtual void Draw(class Shader* in_shader);                             // メッシュコンポーネントの描画
-	virtual void DrawShadow(class Shader* in_shader);                       // シャドウ生成用の描画
+	virtual void DrawShadow(class Shader* in_shader);                               // シャドウ生成用の描画
+
 	virtual void SetMesh(class Mesh* in_mesh) { m_mesh = in_mesh; }         // メッシュコンポーネントで使用するメッシュのセット
 
 	void SetTextureIndex(size_t in_index) { m_textureIndex = in_index; }    // テクスチャのセット
