@@ -3,6 +3,7 @@
 #include "PhysicsWorld.h"
 #include "BoxCollider.h"
 #include "Collision.h"
+#include "EnvironmentMapComponent.h"
 
 const std::string CarBody::CAR_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/OnlyFrame/BodyOnlyFrameLessMirror_Internal.OBJ";
 const std::string CarBody::CAR_GLASS_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/IncludeInterior/BodyGlassIncludeInterior_Internal.OBJ";
@@ -22,9 +23,12 @@ CarBody::CarBody(PlayerCar* in_owner)
 	Mesh* bodyFrameMesh = RENDERER->GetMesh(CAR_BODY_MESH_PATH);
 	MeshComponent* bodyFrame = new MeshComponent(this);
 	bodyFrame->SetMesh(bodyFrameMesh);
+	// 窓ガラス (環境マッピング)
 	Mesh* glassMesh = RENDERER->GetMesh(CAR_GLASS_MESH_PATH);
-	MeshComponent* glass = new MeshComponent(this);
+	//MeshComponent* glass = new MeshComponent(this);
+	EnvironmentMapComponent* glass = new EnvironmentMapComponent(this);
 	glass->SetMesh(glassMesh);
+	// 内装メッシュ
 	Mesh* interiorMesh = RENDERER->GetMesh(CAR_INTERIOR_MESH_PATH);
 	MeshComponent* interior = new MeshComponent(this);
 	interior->SetMesh(interiorMesh);

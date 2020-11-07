@@ -1,5 +1,6 @@
 #include "MissionManager.h"
 #include "GameWorld.h"
+#include "Canvas.h"
 #include "MissionBase.h"
 #include "MissionUI.h"
 #include "ClientActor.h"
@@ -16,7 +17,6 @@ const int MissionManager::MISSION_ALL_NUM = 3;    // 同時進行する任務の限界数
 MissionManager::MissionManager(GameWorld* in_world)
 	:m_player(in_world->GetPlayer())
 	,m_world(in_world)
-	,m_scoreUI(nullptr)
 	,m_selectNum(0)
 {
 	InitRandom();
@@ -94,8 +94,7 @@ MissionManager::MissionManager(GameWorld* in_world)
 	}
 
 
-	// スコアUIを生成
-	m_scoreUI = new ScoreUI();
+
 }
 
 // デストラクタ
@@ -124,7 +123,7 @@ void MissionManager::Update(float in_deltaTime)
 		if ((*mission)->GetMissionState() == MissionBase::FAILED || (*mission)->GetMissionState() == MissionBase::SUCCESS)
 		{
 			// スコアUIにスコアをセット
-			m_scoreUI->AddScore((*mission)->GetCalcScore());
+			m_world->GetCanvas()->GetScoreUI()->AddScore((*mission)->GetCalcScore());
 			// 依頼人を非セレクト状態に
 			auto itr = std::find(m_world->GetClients().begin(), m_world->GetClients().end(), (*mission)->GetStartActor());
 			(*itr)->SetIsSelected(false);

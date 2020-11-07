@@ -37,23 +37,9 @@ ResultScreen::ResultScreen(class ResultScene* in_targetScene, int in_score, floa
 	// フォントのロード(0 = 影、1 = 本体)
 	for (int i = 0; i < 2; i++)
 	{
-		// 影
-		if (i == 0)
-		{
-			m_resultTex[i] = m_font->RenderText("RESULT", Vector3(0.0f, 0.0f, 0.0f), m_fontSize);
-			m_bestSpeedTex[i] = m_font->RenderText(strSpeed, Vector3(0.0f, 0.0f, 0.0f), m_fontSize);
-			m_restartButton[i] = m_font->RenderText("RESTART", Vector3(0.0f, 0.0f, 0.0f), m_fontSize);
-			m_quitButton[i] = m_font->RenderText("QUIT", Vector3(0.0f, 0.0f, 0.0f), m_fontSize);
-		}
-
-		// 本体
-		if (i == 1)
-		{
-			m_resultTex[i] = m_font->RenderText("RESULT", Vector3(1.0f, 1.0f, 1.0f), m_fontSize);
-			m_bestSpeedTex[i] = m_font->RenderText(strSpeed, Vector3(0.0f, 0.3f, 1.0f), m_fontSize);
-			m_restartButton[i] = m_font->RenderText("RESTART", Vector3(1.0f, 1.0f, 1.0f), m_fontSize);
-			m_quitButton[i] = m_font->RenderText("QUIT", Vector3(1.0f, 1.0f, 1.0f), m_fontSize);
-		}
+		m_resultTex[i] = m_font->RenderText("RESULT", Vector3(1.0f * i, 1.0f * i, 1.0f * i), m_fontSize);
+		m_restartButton[i] = m_font->RenderText("RESTART", Vector3(1.0f * i, 1.0f * i, 1.0f * i), m_fontSize);
+		m_quitButton[i] = m_font->RenderText("QUIT", Vector3(1.0f * i, 1.0f * i, 1.0f * i), m_fontSize);
 	}
 
 	// ランキング用ウィンドウ
@@ -75,11 +61,10 @@ ResultScreen::ResultScreen(class ResultScene* in_targetScene, int in_score, floa
 
 ResultScreen::~ResultScreen()
 {
-	//// フォントの削除
+	// フォントの削除
 	for (int i = 0; i < 2; i++)
 	{
 		m_resultTex[i]->Delete();
-		m_bestSpeedTex[i]->Delete();
 		m_restartButton[i]->Delete();
 		m_quitButton[i]->Delete();
 	}
@@ -154,23 +139,17 @@ void ResultScreen::Draw(Shader * in_shader)
 			// スコアの表示が終わったら描画
 			if (m_targetScene->GetResultState() != m_targetScene->STATE_SCORE_DISPLAY)
 			{
-				// 最高速度
-				if (m_bestSpeedTex)
-				{
-					// DrawTexture(in_shader, m_bestSpeedTex[i], Vector2(0.0f, -RENDERER->GetScreenHeight() / 2.6f) + Vector2(0.0f, -3.0f), 1.0f);
-				}
 
 				if (m_restartButton)
 				{
 					// リスタート選択時と非選択時
 					if (m_targetScene->GetResultState() == ResultScene::STATE_ONE_MORE)
 					{
-						m_restartButton[i] = m_font->RenderText("RESTART", Vector3(0.0f, 0.0f, 0.0f), 64);
+
 						DrawTexture(in_shader, m_restartButton[i], Vector2(-m_restartButton[i]->GetWidth(), -RENDERER->GetScreenHeight() / 2.9f) + Vector2(0.0f, -3.0f), 1.0f);
 					}
 					else
 					{
-						m_restartButton[i] = m_font->RenderText("RESTART", Vector3(0.0f, 0.0f, 0.0f), 64);
 						DrawTexture(in_shader, m_restartButton[i], Vector2(-m_restartButton[i]->GetWidth(), -RENDERER->GetScreenHeight() / 2.9f) + Vector2(0.0f, -3.0f), 0.5f);
 					}
 
@@ -181,12 +160,10 @@ void ResultScreen::Draw(Shader * in_shader)
 					// QUIT選択時と非選択時
 					if (m_targetScene->GetResultState() == ResultScene::STATE_GAME_QUIT)
 					{
-						m_quitButton[i] = m_font->RenderText("QUIT", Vector3(0.0f, 0.0f, 0.0f), 64);
 						DrawTexture(in_shader, m_quitButton[i], Vector2(m_quitButton[i]->GetWidth() * 1.5f, -RENDERER->GetScreenHeight() / 2.9f) + Vector2(0.0f, -3.0f), 1.0f);
 					}
 					else
 					{
-						m_quitButton[i] = m_font->RenderText("QUIT", Vector3(0.0f, 0.0f, 0.0f), 64);
 						DrawTexture(in_shader, m_quitButton[i], Vector2(m_quitButton[i]->GetWidth() * 1.5f, -RENDERER->GetScreenHeight() / 2.9f) + Vector2(0.0f, -3.0f), 0.7f);
 					}
 				}
@@ -211,23 +188,16 @@ void ResultScreen::Draw(Shader * in_shader)
 			if (m_targetScene->GetResultState() != m_targetScene->STATE_SCORE_DISPLAY)
 			{
 
-				// 最高速度
-				if (m_bestSpeedTex)
-				{
-					// DrawTexture(in_shader, m_bestSpeedTex[i], Vector2(0.0f, -RENDERER->GetScreenHeight() / 2.6f), 1.0f);
-				}
 
 				if (m_restartButton)
 				{
 					// リスタート選択時と非選択時
 					if (m_targetScene->GetResultState() == ResultScene::STATE_ONE_MORE)
 					{
-						m_restartButton[i] = m_font->RenderText("RESTART", Vector3(1.0f, 1.0f, 1.0f), 64);
 						DrawTexture(in_shader, m_restartButton[i], Vector2(-m_restartButton[i]->GetWidth(), -RENDERER->GetScreenHeight() / 2.9f), 1.0f);
 					}
 					else
 					{
-						m_restartButton[i] = m_font->RenderText("RESTART", Vector3(0.5f, 0.5f, 0.5f), 64);
 						DrawTexture(in_shader, m_restartButton[i], Vector2(-m_restartButton[i]->GetWidth(), -RENDERER->GetScreenHeight() / 2.9f), 0.5f);
 					}
 
@@ -238,12 +208,10 @@ void ResultScreen::Draw(Shader * in_shader)
 					// QUIT選択時と非選択時
 					if (m_targetScene->GetResultState() == ResultScene::STATE_GAME_QUIT)
 					{
-						m_quitButton[i] = m_font->RenderText("QUIT", Vector3(1.0f, 1.0f, 1.0f), 64);
 						DrawTexture(in_shader, m_quitButton[i], Vector2(m_quitButton[i]->GetWidth() * 1.5f, -RENDERER->GetScreenHeight() / 2.9f), 1.0f);
 					}
 					else
 					{
-						m_quitButton[i] = m_font->RenderText("QUIT", Vector3(0.5f, 0.5f, 0.5f), 64);
 						DrawTexture(in_shader, m_quitButton[i], Vector2(m_quitButton[i]->GetWidth() * 1.5f, -RENDERER->GetScreenHeight() / 2.9f), 0.7f);
 					}
 				}

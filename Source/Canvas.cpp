@@ -3,6 +3,7 @@
 #include "GameWorld.h"
 #include "PlayerManager.h"
 #include "PlayerControlUI.h"
+#include "ScoreUI.h"
 
 // コンストラクタ
 Canvas::Canvas(GameWorld* in_world)
@@ -11,6 +12,9 @@ Canvas::Canvas(GameWorld* in_world)
 {
 	// 操作説明用UIの生成
 	m_pControlUI = new PlayerControlUI(m_world->GetPlayer());
+
+	// スコアUIを生成
+	m_scoreUI = new ScoreUI();
 }
 
 // デストラクタ

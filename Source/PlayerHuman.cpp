@@ -14,7 +14,7 @@
 #include "Input.h"
 #include "InputController.h"
 
-const float cAnimationSpeed = 0.5f;          // アニメーションの速度
+const float cAnimationSpeed = 0.7f;          // アニメーションの速度
 
 PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 	:m_manager(in_manager)

@@ -11,6 +11,8 @@
 #include "SDL_syswm.h"
 #include "Texture.h"
 #include "SpriteComponent.h"
+#include <algorithm>
+#include <GL/glew.h>
 #include "Mesh.h"
 #include "MeshGpmesh.h"
 #include "MeshObj.h"
@@ -24,12 +26,12 @@
 #include "ParticleManager.h"
 #include "UIScreen.h"
 #include "FrameBuffer.h"
-#include <algorithm>
-#include <GL/glew.h>
 #include "BoxCollider.h"
 #include "Collision.h"
 #include "WorldSpaceUI.h"
 #include "ShadowMap.h"
+#include "EnvironmentMapComponent.h"
+#include "CameraComponent.h"
 
 // コンストラクタ
 Renderer::Renderer()
@@ -83,7 +85,7 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	(
 		"FlameCarrier",                                 // ウィンドウの名称
 		0,                                              // x座標のウィンドウ描画原点
-		0,                                              // y座標のウィンドウ描画原点
+		30,                                              // y座標のウィンドウ描画原点
 		m_screenWidth,              // 画面の横幅
 		m_screenHeight,             // 画面の縦幅
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
@@ -398,6 +400,20 @@ void Renderer::Draw()
 		m_shadowMap->DrawShadowMesh(m_meshComponents, m_skeletalMeshComponents);
 	}
 
+	//-----------------------------------------------+
+	// 環境マップオブジェクトの描画
+	//-----------------------------------------------+
+	// シェーダを有効化・uniformに各行列をセット
+	m_environmentMapShader->SetActive();
+	m_environmentMapShader->SetMatrixUniform("u_viewMat", m_view);
+	m_environmentMapShader->SetMatrixUniform("u_projMat", m_projection);
+	m_environmentMapShader->SetVectorUniform("u_viewPos", m_view.GetTranslation());
+	m_environmentMapShader->SetInt("u_skybox", 0);
+	for (auto env : m_envMeshComponents)
+	{
+		env->DrawEnvironmentMap(m_environmentMapShader);
+	}
+
 
 	//---------------------------------------------------------------+
 	// スカイボックスの描画
@@ -548,6 +564,19 @@ void Renderer::ShowResource()
 	{
 		printf("meshfile %s\n", i.first.c_str());
 	}
+}
+
+// 環境マップオブジェクト配列への追加
+void Renderer::AddEnvironmentComponent(EnvironmentMapComponent* in_envMesh)
+{
+	m_envMeshComponents.push_back(in_envMesh);
+}
+
+// 環境マップオブジェクト配列から削除
+void Renderer::RemoveEnvironmentComponent(EnvironmentMapComponent* in_envMesh)
+{
+	auto iter = std::find(m_envMeshComponents.begin(), m_envMeshComponents.end(), in_envMesh);
+	m_envMeshComponents.erase(iter);
 }
 
 void Renderer::RemoveTexture(Texture* in_texture)
@@ -913,6 +942,13 @@ bool Renderer::LoadShaders()
 	m_skinnedShader->SetInt("u_mat.specularMap", 1);
 	m_skinnedShader->SetInt("u_mat.normalMap", 2);
 	m_skinnedShader->SetInt("u_mat.depthMap", 3);
+
+	// 環境マップシェーダ
+	m_environmentMapShader = new Shader();
+	if (!m_environmentMapShader->Load("Data/Shaders/EnvironmentMap.vert", "Data/Shaders/EnvironmentMap.frag"))
+	{
+		return false;
+	}
 
 	// スカイボックス用シェーダー
 	m_skyboxShader = new Shader();

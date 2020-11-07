@@ -27,7 +27,11 @@ public:
 private:
 
 	
+	
+
 	class Texture* m_logo;                        // タイトルロゴ用 テクスチャ
+	class Texture* m_cursol;                      // カーソルテクスチャ
+	class Texture* m_cross;                       // 十字キーテクスチャ
 
 	class Texture* m_anyKey[2];                      // "PUSH ANY KEY" 用フォントテクスチャ
 	class Texture* m_startButton[2];                 // "GAME START" 用フォントテクスチャ

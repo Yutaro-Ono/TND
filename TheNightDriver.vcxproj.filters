@@ -222,9 +222,6 @@
     <Filter Include="ソース ファイル\Mission">
       <UniqueIdentifier>{5a47227f-fc01-40c6-8e13-6ca93442d18a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Mission\Taxi">
-      <UniqueIdentifier>{ba7bb6cf-b383-460b-a59c-a7068351bdf4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Shader\Source\FrameBuffer">
       <UniqueIdentifier>{0b912002-6a1f-4e68-870a-7946740d55dd}</UniqueIdentifier>
     </Filter>
@@ -329,6 +326,9 @@
     </Filter>
     <Filter Include="ソース ファイル\Renderer\Mesh\Component\EnvironmentMap">
       <UniqueIdentifier>{28923696-600e-46d4-bdfc-b8cc336f9ead}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\ShadowLess">
+      <UniqueIdentifier>{398ee544-4e68-4b4c-b552-6983f026c348}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -635,7 +635,7 @@
     <ClCompile Include="Source\CubeMapComponent.cpp">
       <Filter>ソース ファイル\Renderer\Mesh\Component\CubeMap</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EnvironmentMap.cpp">
+    <ClCompile Include="Source\EnvironmentMapComponent.cpp">
       <Filter>ソース ファイル\Renderer\Mesh\Component\EnvironmentMap</Filter>
     </ClCompile>
   </ItemGroup>
@@ -958,7 +958,7 @@
     <ClInclude Include="Source\SkeletalMeshComponent.h">
       <Filter>ソース ファイル\Renderer\Mesh\Component\Skeletal</Filter>
     </ClInclude>
-    <ClInclude Include="Source\EnvironmentMap.h">
+    <ClInclude Include="Source\EnvironmentMapComponent.h">
       <Filter>ソース ファイル\Renderer\Mesh\Component\EnvironmentMap</Filter>
     </ClInclude>
   </ItemGroup>
@@ -978,22 +978,7 @@
     <None Include="Data\Shaders\Neon.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Data\Shaders\NormalMap.frag">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
-    <None Include="Data\Shaders\NormalMap.vert">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
     <None Include="Data\Shaders\Particle.frag">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
-    <None Include="Data\Shaders\Phong.frag">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
-    <None Include="Data\Shaders\Phong.vert">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
-    <None Include="Data\Shaders\Skinned.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
     <None Include="Data\Shaders\SkyBox.vert">
@@ -1082,6 +1067,21 @@
     </None>
     <None Include="Data\Shaders\EnvironmentMap.frag">
       <Filter>ソース ファイル\Shader\Source\EnvironmentMap</Filter>
+    </None>
+    <None Include="Data\Shaders\NormalMap.frag">
+      <Filter>ソース ファイル\Shader\Source\ShadowLess</Filter>
+    </None>
+    <None Include="Data\Shaders\NormalMap.vert">
+      <Filter>ソース ファイル\Shader\Source\ShadowLess</Filter>
+    </None>
+    <None Include="Data\Shaders\Phong.frag">
+      <Filter>ソース ファイル\Shader\Source\ShadowLess</Filter>
+    </None>
+    <None Include="Data\Shaders\Phong.vert">
+      <Filter>ソース ファイル\Shader\Source\ShadowLess</Filter>
+    </None>
+    <None Include="Data\Shaders\Skinned.vert">
+      <Filter>ソース ファイル\Shader\Source\ShadowLess</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -15,16 +15,19 @@ out VS_OUT
 }vs_out;
 
 // 入力
-uniform mat4 u_worldTransform;
-uniform mat4 u_view;
-uniform mat4 u_projection;
+uniform mat4 u_modelMat;
+uniform mat4 u_viewMat;
+uniform mat4 u_projMat;
 
 void main()
 {
-	vec4 pos = vec4(a_pos, 1.0) * u_worldTransform;
-	
-	vs_out.normal = a_normal * mat3(transpose(inverse(u_worldTransform)));     // 正規行列で変換した法線を出力
-	vs_out.fragWorldPos = pos.xyz;                                                 // ワールド上の位置ベクトルを出力
+	vec4 pos = vec4(a_pos, 1.0) * u_modelMat;
 
-	gl_Position = pos * u_view * u_projection;
+	vs_out.normal = a_normal * mat3(transpose(u_modelMat));
+
+	vs_out.normal = vec3(vs_out.normal.y, -vs_out.normal.z, vs_out.normal.x);
+
+	vs_out.fragWorldPos = vec3(pos.y, -pos.z, pos.x);                                                 // ワールド上の位置ベクトルを出力
+
+	gl_Position = pos * u_viewMat * u_projMat;
 }

@@ -36,7 +36,6 @@ private:
 
 	class Texture* m_resultTex[2];
 	class Texture* m_scoreTex[2];
-	class Texture* m_bestSpeedTex[2];
 	class Texture* m_restartButton[2];
 	class Texture* m_quitButton[2];
 

@@ -714,12 +714,13 @@ void GameMain::InActiveCamera(CameraComponent* in_activeCam)
 
 const Vector3 & GameMain::GetViewVector()
 {
-	//if (m_activeCamera == nullptr)
-	//{
-	//	printf("Camera is inActive. return IllegalVec\n");
-	//}
-	//return m_activeCamera->GetViewVector();
-	return Vector3::Zero;
+	if (m_activeCamera == nullptr)
+	{
+		printf("Camera is inActive. return IllegalVec\n");
+		return Vector3::Zero;
+	}
+	return m_activeCamera->GetViewMatrix().GetTranslation();
+
 }
 
 

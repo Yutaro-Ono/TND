@@ -18,6 +18,7 @@ public:
 
 
 	LevelTerrain(class Mesh* in_mesh, TERRAIN_TYPE in_type);
+	~LevelTerrain();
 
 	void UpdateActor(float in_deltaTime) override;
 

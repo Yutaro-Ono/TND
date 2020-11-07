@@ -14,8 +14,7 @@ public:
 
 	void Draw(class Shader* in_shader);
 
-	// 環境マップオブジェクトの描画処理
-	void DrawEnvironmentMap(std::vector<class MeshComponent*> in_envMeshes);
+	class Texture* GetSkyBoxTexture() { return m_texture; }
 
 	void SetIsVisible(bool in_visible) { m_isVisible = in_visible; }
 

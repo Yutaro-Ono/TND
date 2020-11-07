@@ -33,10 +33,10 @@ private:
 	class MissionBase* m_mission;
 
 	// テクスチャ関連
-	class Texture* m_detailTex;            // ミッション詳細(配達かタクシーか)
-	class Texture* m_timeTex;              // 制限時間テクスチャ
-	class Texture* m_distanceTex;          // 距離表示のテクスチャ
-	class Texture* m_durableValTex;        // 耐久表示のテクスチャ
+	class Texture* m_detailTex[2];            // ミッション詳細(配達かタクシーか)
+	class Texture* m_timeTex[2];              // 制限時間テクスチャ
+	class Texture* m_distanceTex[2];          // 距離表示のテクスチャ
+	class Texture* m_durableValTex[2];        // 耐久表示のテクスチャ
 
 
 	Vector2 m_uiPos;                       // UI表示位置オフセット

@@ -41,9 +41,11 @@ public:
 
 	void ImGuiDebugWorld();
 
-
 	// 地形マネージャのポインタゲッター
 	class LevelManager* GetLevelManager() { return m_level; }
+
+	// UIキャンバスのゲッター
+	class Canvas* GetCanvas() { return m_canvas; }
 
 private:
 

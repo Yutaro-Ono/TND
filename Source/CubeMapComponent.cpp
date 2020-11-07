@@ -55,12 +55,3 @@ void CubeMapComponent::Draw(Shader* in_shader)
 
 }
 
-// 環境マップオブジェクトの描画処理
-void CubeMapComponent::DrawEnvironmentMap(std::vector<class MeshComponent*> in_envMeshes)
-{
-
-	if (m_isVisible)
-	{
-
-	}
-}

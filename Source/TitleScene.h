@@ -48,8 +48,6 @@ private:
 
 	class PlayerCar* m_car;                                             // Ô
 
-	class FollowCamera* m_camera;                                       // ƒJƒƒ‰
-
 	class ClientActor* m_client;
 
 	class Environment* m_environment;                                   // ŠÂ‹«

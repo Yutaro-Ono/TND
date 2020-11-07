@@ -89,6 +89,7 @@ void PlayerManager::SearchCar()
 		else if (m_playerMode == MODE_CAR)
 		{
 			m_playerHuman->GetCamera()->SetCameraForward(m_playerCar->GetCamera()->GetForward());
+			m_playerHuman->SetPosition(m_playerHuman->GetPosition() + Vector3(40.0f, 40.0f, 0.0f));
 			SetPlayerMode(MODE_HUMAN);
 		}
 	}

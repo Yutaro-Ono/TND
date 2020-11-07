@@ -24,6 +24,7 @@ public:
 	// Setter/Getter
 	//-------------------------------------------------+
 	void AddScore(int in_score) { m_nowScore += in_score; }     // スコアのセッター
+	int GetScore() { return m_nowScore; }
 
 private:
 

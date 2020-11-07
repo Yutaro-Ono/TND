@@ -27,6 +27,7 @@
 #include "PlayerManager.h"
 #include "GameWorld.h"
 #include "TitleScene.h"
+#include "Canvas.h"
 #include <Windows.h>
 #include <iostream>
 
@@ -148,6 +149,9 @@ void GameScene::Initialize()
 	// タイムルール
 	RuleTime* ruleTime = new RuleTime(this);
 	m_time = ruleTime;
+	// 制限時間のセット
+	m_time->SetStartTime();
+
 	CountDownUI* countUI = new CountDownUI(ruleTime);
 
 }
@@ -174,6 +178,11 @@ SceneBase * GameScene::Update()
 			m_state = STATE_START;
 		}
 
+		// 制限時間のセット
+		m_time->SetStartTime();
+
+		// カウントダウンへ
+		m_state = STATE_START;
 
 		// デバッグ用タイトルシーン
 		if (INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_P) || CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_A))
@@ -252,8 +261,8 @@ SceneBase * GameScene::Update()
 
 
 			// 次のシーンを返す
-			return new TitleScene();
-			//return new ResultScene(m_world->GetScore(), m_bestSpeed);
+			//return new TitleScene();
+			return new ResultScene(m_world->GetCanvas()->GetScoreUI()->GetScore(), m_bestSpeed);
 		}
 
 		break;

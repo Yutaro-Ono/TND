@@ -21,6 +21,10 @@ LevelTerrain::LevelTerrain(Mesh* in_mesh, TERRAIN_TYPE in_type)
 	
 }
 
+LevelTerrain::~LevelTerrain()
+{
+}
+
 void LevelTerrain::UpdateActor(float in_deltaTime)
 {
 }
@@ -35,7 +39,7 @@ float LevelTerrain::SetTerrainFric(TERRAIN_TYPE in_type)
 
 	if (in_type == TERRAIN_TYPE::TYPE_STREET)
 	{
-		return 1.2f;
+		return 2.0f;
 	}
 
 

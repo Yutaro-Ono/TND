@@ -377,22 +377,6 @@ void ThirdPersonCamera::CollisionFix(BoxCollider* in_hitCameraBox, BoxCollider* 
 	m_cameraActor->SetPosition(m_position);
 	m_cameraActor->ComputeWorldTransform();
 
-	//// ビュー行列を更新
-	//Matrix4 view = Matrix4::CreateLookAt(m_position, m_owner->GetPosition(), m_upVec);
-
-	//// 距離ベクトル
-	//Vector3 dist = Vector3(-15.0f, 35.0f, m_distance);
-	//// 距離分を加算
-	//view = view * Matrix4::CreateTranslation(dist);
-
-	//// レンダラーのビュー行列更新
-	//SetViewMatrix(view);
-
-
-	//printf("hitBoxfix : x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
-
-
-
 
 	// 位置が変わったのでボックス再計算
 	m_hitBox->OnUpdateWorldTransform();

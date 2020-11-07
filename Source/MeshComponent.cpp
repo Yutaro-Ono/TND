@@ -23,13 +23,13 @@ MeshComponent::MeshComponent(Actor * in_owner, bool in_isSkeletal)
 	,m_isSkeletal(in_isSkeletal)
 {
 	GAME_INSTANCE.GetRenderer()->AddMeshComponent(this);
-	printf("new MeshComponent : [%5d] owner->( 0x%p )\n", GetID(), in_owner);
+	//printf("new MeshComponent : [%5d] owner->( 0x%p )\n", GetID(), in_owner);
 }
 
 // デストラクタ
 MeshComponent::~MeshComponent()
 {
-	printf("Remove MeshComponent : [%5d] owner->( 0x%p )\n)", GetID(), m_owner);
+	//printf("Remove MeshComponent : [%5d] owner->( 0x%p )\n)", GetID(), m_owner);
 	GAME_INSTANCE.GetRenderer()->RemoveMeshComponent(this);
 }
 
@@ -39,8 +39,7 @@ void MeshComponent::Draw(Shader * in_shader)
 	if (m_mesh != nullptr && m_visible)
 	{
 		// ワールド変換をセット
-		in_shader->SetMatrixUniform("u_worldTransform",
-			m_owner->GetWorldTransform());
+		in_shader->SetMatrixUniform("u_worldTransform", m_owner->GetWorldTransform());
 		// スペキュラ強度セット
 		in_shader->SetFloatUniform("u_specPower", 32);
 
@@ -84,8 +83,7 @@ void MeshComponent::DrawShadow(Shader* in_shader)
 	if (m_mesh != nullptr && m_visible)
 	{
 		// ワールド変換をセット
-		in_shader->SetMatrixUniform("u_worldTransform",
-			m_owner->GetWorldTransform());
+		in_shader->SetMatrixUniform("u_worldTransform", m_owner->GetWorldTransform());
 
 		// 頂点配列をアクティブに
 		VertexArray* va = m_mesh->GetVertexArray();

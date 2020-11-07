@@ -18,6 +18,7 @@ Environment::Environment(GAME_TIME in_gameTime)
 	m_nightBox = new SkyBox(this, GAME_TIME::NIGHT);
 	// 設定された時間帯ごとにスカイボックスをセット
 	SetSkyBox(m_gameTime);
+	SetDirectionalLight(m_gameTime);
 }
 
 
@@ -47,6 +48,7 @@ Environment::~Environment()
 
 void Environment::Update()
 {
+
 
 	Vector3 framePlayerPos = m_world->GetPlayer()->GetPosition();
 

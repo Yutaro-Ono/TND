@@ -36,5 +36,5 @@ CameraComponent::~CameraComponent()
 
 void CameraComponent::SetViewMatrix(const Matrix4 & in_view)
 {
-	GAME_INSTANCE.GetRenderer()->SetViewMatrix(in_view);
+	RENDERER->SetViewMatrix(in_view);
 }

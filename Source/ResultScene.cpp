@@ -17,28 +17,29 @@
 #include "ResultScreen.h"
 #include "LoadScreen.h"
 #include "RecordScore.h"
+#include "Environment.h"
 
 
 // コンストラクタ
 ResultScene::ResultScene(int in_score, float in_bestSpeed)
 	:m_state(STATE_SCORE_DISPLAY)
 	,m_score(in_score)
+	,m_environment(nullptr)
 	,m_bestSpeed(in_bestSpeed)
 {
-	//ライティング
-	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.5f, 0.56f, 0.6f));
-	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
-	dir.direction = Vector3(0.0f, 0.0f, 1.0f);
-	dir.direction.Normalize();
-	dir.diffuse = Vector3(1.0f, 1.0f, 1.0f);
-	dir.specular = Vector3(0.8f, 0.8f, 0.8f);
+
 }
 
 
 // デストラクタ
 ResultScene::~ResultScene()
 {
-
+	GAME_INSTANCE.DeadAllActor();
+	// 全てのUIをCloseに設定
+	for (auto iter : GAME_INSTANCE.GetUIStack())
+	{
+		iter->Close();
+	}
 }
 
 
@@ -57,6 +58,7 @@ void ResultScene::Initialize()
 		RENDERER->Draw();
 	}
 
+	m_environment = new Environment(Environment::MORNING);
 
 	// ロード画面処理
 	{
@@ -78,26 +80,6 @@ void ResultScene::Initialize()
 		GAME_INSTANCE.GetLoadScreen()->AddGauge();
 		RENDERER->Draw();
 	}
-	
-
-	//------------------------------------------------------------//
-	// オブジェクトの生成
-	//-----------------------------------------------------------//
-	// 基地
-	LevelObject* m_platform = new LevelObject(RENDERER->GetMesh("Data/Meshes/FC/Objects/Result_Building/SM_Platform_A.gpmesh"));
-	m_platform->SetPosition(Vector3(0.0f, 0.0f, -220.0f));
-	m_platform->SetScale(0.6f);
-
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
-
-	// 柱
-	LevelObject* m_pillar = new LevelObject(RENDERER->GetMesh("Data/Meshes/FC/Objects/Result_Building/SM_MapRoom_Pillars.gpmesh"));
-	m_pillar->SetPosition(Vector3(0.0f, 0.0f, -220.0f));
-	m_pillar->SetScale(0.6f);
 
 	// ロード画面処理
 	{
@@ -113,9 +95,11 @@ void ResultScene::Initialize()
 	}
 
 
-
-	// カメラの生成と初期化
-	//Camera* camera = new Camera();
+	// ロード画面処理
+	{
+		GAME_INSTANCE.GetLoadScreen()->AddGauge();
+		RENDERER->Draw();
+	}
 
 	// ロード画面処理
 	{
@@ -125,9 +109,9 @@ void ResultScene::Initialize()
 
 
 	// 音楽
-	m_sound["BGM"] = "Data/Music/BGM/FC/ResultScene/townofdeath.wav";
+	//m_sound["BGM"] = "Data/Music/BGM/FC/ResultScene/townofdeath.wav";
 	m_sound["Enter"] = "Data/Music/SE/FC/System/Enter/switch01.wav";
-	AUDIO->GetMusic(m_sound["BGM"]);
+	//AUDIO->GetMusic(m_sound["BGM"]);
 	AUDIO->GetSound(m_sound["Enter"]);
 
 
@@ -136,10 +120,6 @@ void ResultScene::Initialize()
 		GAME_INSTANCE.GetLoadScreen()->AddGauge();
 		RENDERER->Draw();
 	}
-
-
-
-
 
 	// ロード画面処理
 	{
@@ -184,10 +164,10 @@ SceneBase * ResultScene::Update()
 	case STATE_ONE_MORE:
 
 		// BGM再生
-		if (AUDIO->IsPlayingMusic() == false)
-		{
-			AUDIO->PlayMusic(m_sound["BGM"]);
-		}
+		//if (AUDIO->IsPlayingMusic() == false)
+		//{
+		//	AUDIO->PlayMusic(m_sound["BGM"]);
+		//}
 
 
 		// 矢印キー右かコントローラーのDPAD右で次の項目へ

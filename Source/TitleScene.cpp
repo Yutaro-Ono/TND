@@ -29,15 +29,6 @@ TitleScene::TitleScene()
 	:m_state(PRESS_ANY_KEY)
 	,m_selectedStage(0)
 {
-	//ライティング
-	GAME_INSTANCE.GetRenderer()->SetAmbientLight(Vector3(0.5f, 0.56f, 0.6f));
-	DirectionalLight& dir = GAME_INSTANCE.GetRenderer()->GetDirectionalLight();
-	dir.position = Vector3(0.0f, 0.0f, 1000.0f);
-	dir.direction = Vector3(0.0f, 0.0f, -1.0f);
-	dir.direction.Normalize();
-	dir.ambient = Vector3(0.5f, 0.5f, 0.5f);
-	dir.diffuse = Vector3(1.0f, 1.0f, 0.6f);
-	dir.specular = Vector3(0.5f, 1.0f, 0.5f);
 }
 
 
@@ -72,10 +63,6 @@ void TitleScene::Initialize()
 	m_client->SetPosition(Vector3(0.0f, -55.0f, 0.0f));
 	m_client->SetScale(0.4f);
 
-	// カメラ
-	Camera* camera = new Camera(m_client);
-	camera->Initialize(Vector3(-300.0f, 350.0f, 100.0f), m_car->GetPosition(), Vector3::Zero);
-
 	// 環境生成
 	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
 	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
@@ -100,6 +87,8 @@ void TitleScene::Initialize()
 // 更新処理
 SceneBase * TitleScene::Update()
 {
+
+
 	// タイトルメニュー
 	switch (m_state)
 	{
@@ -153,16 +142,46 @@ SceneBase * TitleScene::Update()
 			m_state = GAME_QUIT;
 		}
 
-
-		// ステージセレクトへ( KEYBOARD : SPACE or ENTER | XINPUT : A )
+		//---------------------------------------------------------------------------+
+        // シーン遷移処理
+		//---------------------------------------------------------------------------+
+        // SPACEかENTER、Aボタンを押したら次のシーンへ
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_SPACE) || INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RETURN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_A))
 		{
 			// 決定音
 			AUDIO->PlaySoundTND(m_sound["Enter"]);
+			// 音楽をフェードアウト
+			AUDIO->FadeOutMusic(1.0f);
 
-			// ステージセレクトへ
-			m_state = STAGE_SELECT;
+			// プレイヤーのサウンドを停止
+			//m_player->AllStopSound();
+
+
+			// 全てのUIをCloseに設定
+			for (auto iter : GAME_INSTANCE.GetUIStack())
+			{
+				iter->Close();
+			}
+
+			// 全てのアクターを削除
+			for (auto actor : GAME_INSTANCE.GetActorStack())
+			{
+				actor->SetState(Actor::STATE_DEAD);
+			}
+
+			// 次のシーンを返す
+			return new GameScene(m_selectedStage);
 		}
+
+		//// ステージセレクトへ( KEYBOARD : SPACE or ENTER | XINPUT : A )
+		//if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_SPACE) || INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RETURN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_A))
+		//{
+		//	// 決定音
+		//	AUDIO->PlaySoundTND(m_sound["Enter"]);
+
+		//	// ステージセレクトへ
+		//	m_state = STAGE_SELECT;
+		//}
 
 		break;
 

@@ -9,9 +9,6 @@
 // コンストラクタ
 MissionUI::MissionUI(MissionBase* in_mission)
 	:m_mission(in_mission)
-	,m_timeTex(nullptr)
-	,m_detailTex(nullptr)
-	,m_distanceTex(nullptr)
 	,m_uiPos(Vector2::Zero)
 {
 
@@ -22,20 +19,25 @@ MissionUI::MissionUI(MissionBase* in_mission)
 	//------------------------------------------------------------------+
 	// ミッション概要フォントの生成
 	//------------------------------------------------------------------+
-	if (m_mission->GetMissionType() == MissionBase::DELIVERY)
+
+	for (int i = 0; i < 2; i++)
 	{
-		// ミッション概要テクスチャの生成
-		m_detailTex = m_font->RenderText("DELIVERY", color, fontSize);
+		if (m_mission->GetMissionType() == MissionBase::DELIVERY)
+		{
+			// ミッション概要テクスチャの生成
+			m_detailTex[i] = m_font->RenderText("DELIVERY", color * i, fontSize);
+		}
+
+		if (m_mission->GetMissionType() == MissionBase::TAXI)
+		{
+			// ミッション概要テクスチャの生成
+			m_detailTex[i] = m_font->RenderText("TAXI", color * i, fontSize);
+		}
+
+		// 耐久値のフォントテクスチャを生成
+		m_durableValTex[i] = m_font->RenderText("100%", color * i, fontSize);
 	}
 
-	if (m_mission->GetMissionType() == MissionBase::TAXI)
-	{
-		// ミッション概要テクスチャの生成
-		m_detailTex = m_font->RenderText("TAXI", color, fontSize);
-	}
-
-	// 耐久値のフォントテクスチャを生成
-	m_durableValTex = m_font->RenderText("100%", color, fontSize);
 }
 
 // デストラクタ
@@ -66,89 +68,52 @@ void MissionUI::UpdateMissionInfo()
 {
 	// 耐久値、時間などの取得用
 	std::string str;
-	std::stringstream sstream;
+	std::stringstream timestream;
+	std::stringstream durablestream;
+	std::stringstream diststream;
+
 	// レンダリングするフォントのカラー
 	Vector3 color = Vector3(1.0f, 1.0f, 1.0f);
 	// フォントサイズ
 	int fontSize = 32;
 
+	// 制限時間を文字列として取得
+	timestream << "TIME:" << m_mission->GetTimeLimit();
+	// 耐久値を文字列として取得
+	durablestream << "HP:" << m_mission->GetDurableValue();
+	// 距離を文字列として取得
+	diststream << (double)m_mission->GetPlayerDistance() / 20.0f << "m";
+
 	//-----------------------------------------------------------------------+
     // フォントテクスチャ生成処理
     //-----------------------------------------------------------------------+
-    // 配達ミッション時
-	if (m_mission->GetMissionType() == MissionBase::DELIVERY)
+	for (int i = 0; i < 2; i++)
 	{
-
 		//-------------------------------------------------+
 		// 制限時間
 		//-------------------------------------------------+
-		// 制限時間を文字列として取得
-		sstream << "TIME:" << m_mission->GetTimeLimit();
 		// 制限時間のテクスチャを削除
-		if (m_timeTex != nullptr) m_timeTex->Delete();
+		if (m_timeTex[i] != nullptr) m_timeTex[i]->Delete();
 		// 制限時間のフォントテクスチャを生成
-		m_timeTex = m_font->RenderText(sstream.str(), color, fontSize);
-		sstream.str("");
+		m_timeTex[i] = m_font->RenderText(timestream.str(), color * i, fontSize);
 
 		//-------------------------------------------------+
 		// 耐久値
 		//-------------------------------------------------+
-		// 耐久値を文字列として取得
-		sstream << "HP" << m_mission->GetDurableValue();
 		// 耐久値のテクスチャを削除
-		if (m_durableValTex != nullptr) m_durableValTex->Delete();
+		if (m_durableValTex[i] != nullptr) m_durableValTex[i]->Delete();
 		// 耐久値のフォントテクスチャを生成
-		m_durableValTex = m_font->RenderText(sstream.str(), color, fontSize);
-		sstream.str("");
+		m_durableValTex[i] = m_font->RenderText(durablestream.str(), color * i, fontSize);
 
 		//--------------------------------------------------+
 		// 距離
 		//--------------------------------------------------+
-		// 距離を文字列として取得
-		sstream << (double)m_mission->GetPlayerDistance() / 20.0f << "m";
 		// 距離のテクスチャを削除
-		if (m_distanceTex != nullptr) m_distanceTex->Delete();
+		if (m_distanceTex[i] != nullptr) m_distanceTex[i]->Delete();
 		// 距離のフォントテクスチャを生成
-		m_distanceTex = m_font->RenderText(sstream.str(), color, fontSize);
-		sstream.str("");
+		m_distanceTex[i] = m_font->RenderText(diststream.str(), color * i, fontSize);
 	}
 
-	// タクシーミッション時
-	else if (m_mission->GetMissionType() == MissionBase::TAXI)
-	{
-		//--------------------------------------------------+
-		// 制限時間
-		//--------------------------------------------------+
-		// 制限時間を文字列として取得
-		sstream << "TIME:" << m_mission->GetTimeLimit();
-		// 制限時間のテクスチャを削除
-		if (m_timeTex != nullptr) m_timeTex->Delete();
-		// 制限時間のフォントテクスチャを生成
-		m_timeTex = m_font->RenderText(sstream.str(), color, fontSize);
-		sstream.str("");
-
-		//-------------------------------------------------+
-		// 耐久値
-		//-------------------------------------------------+
-		// 耐久値を文字列として取得
-		sstream << "HP" << m_mission->GetDurableValue();
-		// 耐久値のテクスチャを削除
-		if (m_durableValTex != nullptr) m_durableValTex->Delete();
-		// 耐久値のフォントテクスチャを生成
-		m_durableValTex = m_font->RenderText(sstream.str(), color, fontSize);
-		sstream.str("");
-
-		//--------------------------------------------------+
-		// 距離
-		//--------------------------------------------------+
-		// 距離を文字列として取得
-		sstream << (double)m_mission->GetPlayerDistance() / 20.0f << "m";
-		// 距離のテクスチャを削除
-		if (m_distanceTex != nullptr) m_distanceTex->Delete();
-		// 距離のフォントテクスチャを生成
-		m_distanceTex = m_font->RenderText(sstream.str(), color, fontSize);
-		sstream.str("");
-	}
 }
 
 // 描画処理
@@ -163,30 +128,35 @@ void MissionUI::Draw(Shader* in_shader)
 		scale = 1.0f;
 	}
 
-	// ミッション概要テクスチャの描画
-	DrawTexture(in_shader, m_detailTex, m_uiPos + Vector2(0.0f, -(30 * m_mission->GetListNum())), scale);
-
-	// 制限時間の描画
-	if (m_timeTex != nullptr)
+	for (int i = 0; i < 2; i++)
 	{
-		DrawTexture(in_shader, m_timeTex, m_uiPos + Vector2(300.0f, -(30 * m_mission->GetListNum())), scale);
-	}
+		// ミッション概要テクスチャの描画
+		DrawTexture(in_shader, m_detailTex[i], m_uiPos + Vector2(0.0f - 3.0f * i, -(30 * m_mission->GetListNum()) + 5.0f * i), scale);
 
-	// 耐久値の描画
-	if (m_durableValTex != nullptr)
-	{
-	
-		// 耐久度の描画
-		DrawTexture(in_shader, m_durableValTex, m_uiPos + Vector2(500.0f, -(30 * m_mission->GetListNum())), scale);
-	}
+		// 制限時間の描画
+		if (m_timeTex[i] != nullptr)
+		{
+			DrawTexture(in_shader, m_timeTex[i], m_uiPos + Vector2(300.0f - 3.0f * i, -(30 * m_mission->GetListNum()) + 5.0f * i), scale);
+		}
+
+		// 耐久値の描画
+		if (m_durableValTex[i] != nullptr)
+		{
+
+			// 耐久度の描画
+			DrawTexture(in_shader, m_durableValTex[i], m_uiPos + Vector2(500.0f - 3.0f * i, -(30 * m_mission->GetListNum()) + 5.0f * i), scale);
+		}
 
 
-	// 距離の描画
-	if (m_distanceTex != nullptr)
-	{
 		// 距離の描画
-		DrawTexture(in_shader, m_distanceTex, m_uiPos + Vector2(900.0f, -(30 * m_mission->GetListNum())), scale);
+		if (m_distanceTex[i] != nullptr)
+		{
+			// 距離の描画
+			DrawTexture(in_shader, m_distanceTex[i], m_uiPos + Vector2(900.0f - 3.0f * i, -(30 * m_mission->GetListNum()) + 5.0f * i), scale);
+		}
 	}
+
+
 
 
 }

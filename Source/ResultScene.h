@@ -44,8 +44,7 @@ private:
 
 	ResultState m_state;                                      // リザルト画面のステート
 
-	class Skydome* m_skydome;                                 // スカイドーム
-
+	class Environment* m_environment;                         // 環境クラス
 
 	class ResultScreen* m_resultUI;                           // リザルトシーンUI
 

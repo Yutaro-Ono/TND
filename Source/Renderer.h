@@ -54,6 +54,10 @@ public:
 	void RemoveMeshComponent(class MeshComponent* in_mesh);                 // メッシュコンポーネントの削除
 	void ShowResource();
 
+	// EnvironmentMapComponent
+	void AddEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
+	void RemoveEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
+
 	// TextureComponent
 	void RemoveTexture(class Texture* in_texture);
 
@@ -123,7 +127,8 @@ private:
 	std::vector<class MeshComponent*> m_meshComponents;                       // メッシュコンポーネント
 	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;       // ボーン入りメッシュ配列
 	std::vector<class MeshComponent*> m_glassMeshComponent;                   // ガラス(環境に影響を受ける)メッシュ配列
-	
+	std::vector<class EnvironmentMapComponent*> m_envMeshComponents;          // 環境マップオブジェクト配列
+
 	std::vector<class SpriteComponent*> m_spriteComponents;                // スプライト配列 (スクリーン空間)
 	std::vector<class WorldSpaceUI*> m_worldSprites;                       // スプライト配列 (ワールド空間)
 
@@ -132,9 +137,10 @@ private:
 	//--------------------------------------------+
 	// シェーダオブジェクト
 	//--------------------------------------------+
-	class Shader* m_meshShader;
-	class Shader* m_meshNormalShader;
-	class Shader* m_skinnedShader;
+	class Shader* m_meshShader;                                            // 標準メッシュシェーダ
+	class Shader* m_meshNormalShader;                                      // 法線マップメッシュシェーダ
+	class Shader* m_skinnedShader;                                         // スキン(ボーン入り)メッシュシェーダ
+	class Shader* m_environmentMapShader;                                  // 環境マップシェーダ
 
 	class Shader* m_spriteShader;                                          // スプライト基本シェーダ
 	class Shader* m_worldSpaceSpriteShader;                                // ワールド空間上のスプライトシェーダ

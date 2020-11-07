@@ -31,8 +31,6 @@ private:
 
 	class GameWorld* m_world;                     // ワールドへのポインタ
 
-	class ScoreUI* m_scoreUI;                       // スコアUI
-
 	std::vector<class MissionBase*> m_missions;   // 任務スタック
 
 	int m_selectNum;                              // 選択しているミッションNo

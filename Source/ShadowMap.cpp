@@ -86,7 +86,7 @@ void ShadowMap::RenderDepthMapFromLightView(Renderer* in_renderer, const std::ve
 	Vector3 direction = lightViewTraget - in_renderer->GetDirectionalLight().position;
 	direction.Normalize();
 
-	m_lightProj = Matrix4::CreateOrtho(10000.0f, 10000.0f, 1.0f, 10000.0f);
+	m_lightProj = Matrix4::CreateOrtho(8000.0f, 8000.0f, 1.0f, 8000.0f);
 	m_lightView = Matrix4::CreateLookAt(in_renderer->GetDirectionalLight().position, lightViewTraget, Vector3::UnitZ);
 	m_lightSpace = m_lightView * m_lightProj;
 
@@ -137,19 +137,10 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 
 	// ライト視点用のプロジェクション行列とビュー行列を用意する
 	// ディレクショナルライト(平行)であるため、プロジェクション行列には正射影行列を使用
-
-	// ライト視点の注視点 (プレイヤーの座標を入れる予定)
-	//Vector3 lightViewTraget = Vector3(12000.0f, 14000.0f, -12.0f);
-
-	//Vector3 direction = lightViewTraget - RENDERER->GetDirectionalLight().position;
-	//direction.Normalize();
-
 	Vector3 direction = RENDERER->GetDirectionalLight().direction;
 
-	m_lightProj = Matrix4::CreateOrtho(8000.0f, 8000.0f, 1.0f, 8000.0f);
-	//m_lightProj = Matrix4::CreateOrtho(35000.0f, 20000.0f, 1.0f, 35000.0f);
+	m_lightProj = Matrix4::CreateOrtho(7000.0f, 7000.0f, 1.0f, 7000.0f);
 
-	//m_lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, lightViewTraget, Vector3::UnitZ);
 	m_lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, RENDERER->GetDirectionalLight().target, Vector3::UnitZ);
 
 	m_lightSpace = m_lightView * m_lightProj;
@@ -182,7 +173,7 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	// ビューポートを元に戻す
+	// ビューポートを画面サイズに戻す
 	glViewport(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight());
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -210,6 +201,11 @@ void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh)
 
 void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh, const std::vector<class SkeletalMeshComponent*>& in_skelMesh)
 {
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	// ビューポートを画面サイズに戻す
+	glViewport(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight());
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// シャドウシェーダのアクティブ化・uniformへのセット
 	m_shadowShader->SetActive();
