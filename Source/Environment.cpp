@@ -53,8 +53,8 @@ void Environment::Update()
 	Vector3 framePlayerPos = m_world->GetPlayer()->GetPosition();
 
 	// 影のちらつきを抑えるため4000以上の移動で平行ライトの位置をプレイヤーにスナップする
-	if (framePlayerPos.x >= playerPos.x + 2800 || framePlayerPos.x <= playerPos.x - 2800 ||
-		framePlayerPos.y >= playerPos.y + 2800 || framePlayerPos.y <= playerPos.y - 2800)
+	if (framePlayerPos.x >= playerPos.x + 2000 || framePlayerPos.x <= playerPos.x - 2000 ||
+		framePlayerPos.y >= playerPos.y + 2000 || framePlayerPos.y <= playerPos.y - 2000)
 	{
 		// プレイヤーの位置に応じて平行ライトの座標・向きを最適化
 		RENDERER->GetDirectionalLight().position = Vector3((int)framePlayerPos.x, (int)framePlayerPos.y, 0.0f);

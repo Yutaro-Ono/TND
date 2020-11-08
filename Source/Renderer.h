@@ -58,6 +58,7 @@ public:
 	void AddEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
 	void RemoveEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
 
+
 	// TextureComponent
 	void RemoveTexture(class Texture* in_texture);
 

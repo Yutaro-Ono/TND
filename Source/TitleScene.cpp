@@ -68,7 +68,7 @@ void TitleScene::Initialize()
 	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
 
 	// ‰¹Šy
-	m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";
+	//m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";
 	m_sound["Enter"] = "Data/Music/SE/FC/System/Enter/switch01.wav";
 
 	// SE

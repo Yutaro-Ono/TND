@@ -24,7 +24,7 @@ ScoreUI::ScoreUI(Canvas* in_canvas)
 	,m_score(0)
 	,m_addScore(0)
 	,m_drawSubScore(false)
-	,m_coolTime(3)
+	,m_coolTime(2)
 	,m_startSub(false)
 {
 

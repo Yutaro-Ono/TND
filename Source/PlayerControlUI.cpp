@@ -36,6 +36,7 @@ PlayerControlUI::PlayerControlUI(GameWorld* in_world)
 // デストラクタ
 PlayerControlUI::~PlayerControlUI()
 {
+
 }
 
 // 更新処理

@@ -28,7 +28,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 {
 	// マップの配置を保存したjsonへのファイルパスを生成
 	std::stringstream ssMap;
-	ssMap << "Data/Strings/map_" << in_stageNum << ".json";
+	ssMap << "Data/Strings/map_0" << in_stageNum << "1.json";
 	std::string mapPath = ssMap.str();
 
 	// ステージメッシュ読み込み
