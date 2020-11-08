@@ -105,6 +105,8 @@ void PlayerManager::SearchClient(ClientActor* in_client)
 		return;
 	}
 
+	in_client->SetDistancePlayer(Vector3::Distance(m_position, in_client->GetPosition()));   // 距離をセット
+
 	// 渡された依頼人の座標がプレイヤーのアクセス範囲内に入っているか
 	if (m_searchSphere.Contains(in_client->GetPosition()))
 	{

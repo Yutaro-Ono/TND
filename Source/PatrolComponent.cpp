@@ -3,6 +3,7 @@
 #include "PatrolPoint.h"
 #include "Helicopter.h"
 #include "PlayerManager.h"
+#include <Windows.h>
 
 // コンストラクタ
 PatrolComponent::PatrolComponent(Helicopter* in_owner, GameWorld* in_world)
@@ -140,7 +141,7 @@ void PatrolComponent::ChasePlayer(float in_deltaTime)
 	forwardVec.Normalize();
 
 	// プレイヤーから一定距離離れたらポイント巡回に戻る
-	if (distance > 5001.0f)
+	if (distance > 3001.0f)
 	{
 		m_heli->SetHeliState(Helicopter::HELI_STATE::PATROL);
 		return;

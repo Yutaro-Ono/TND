@@ -49,11 +49,8 @@ void SpriteComponent::Draw(Shader * in_shader)
 
 		Matrix4 world = scaleMat * m_owner->GetWorldTransform();
 
-		//
-		//
-
 		// WorldTransformをセット
-		in_shader->SetMatrixUniform("u_WorldTransform", world);
+		in_shader->SetMatrixUniform("u_worldTransform", world);
 		// テクスチャをアクティブ
 		m_texture->SetActive();
 

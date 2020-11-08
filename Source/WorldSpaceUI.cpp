@@ -6,7 +6,7 @@
 #include "CameraComponent.h"
 
 Matrix4 WorldSpaceUI::m_staticBillboardMat;
-const Vector3 adjustPos = Vector3(0.0f, 0.0f, 200.0f);
+const Vector3 adjustPos = Vector3(0.0f, 0.0f, 100.0f);
 
 // コンストラクタ
 WorldSpaceUI::WorldSpaceUI(const Vector3& in_pos, const std::string& in_filePath, float in_scale)

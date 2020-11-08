@@ -23,6 +23,7 @@ const float AnimationSpeed = 0.5f;        // アニメーションの速度
 ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 	:m_isSelected(false)
 	,m_isAccepted(false)
+	,m_distancePlayer(0.0f)
 	,m_setting(CLIENT_SETTING::NONE)
 	,m_landMark(nullptr)
 	,m_animState(CLIENT_ANIM::ANIM_IDLE_LOOKAROUND)
@@ -34,7 +35,7 @@ ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 	SetScale(0.265f);
 
 	// ランドマーク生成
-	m_landMark = new WorldSpaceUI(m_position, "Data/Interface/landmark.png", 300.0f);
+	m_landMark = new WorldSpaceUI(m_position, "Data/Interface/TND/Control/landMark.png", 200.0f);
 
 
 	// 依頼人のメッシュ生成
@@ -73,6 +74,18 @@ void ClientActor::UpdateActor(float in_deltaTime)
 	if (m_isSelected && (m_setting == CLIENT_SETTING::START || m_setting == CLIENT_SETTING::GOAL))
 	{
 		m_landMark->SetVisible(true);
+
+		// プレイヤーとの距離に応じたランドマークのスケール変更
+		float scale = m_distancePlayer / 10.0f;
+		if (scale < 30.0f)
+		{
+			scale = 30.0f;
+		}
+		if (scale > 3000.0f)
+		{
+			scale = 3000.0f;
+		}
+		m_landMark->SetScale(scale);
 	}
 	else
 	{
@@ -136,8 +149,8 @@ void ClientActor::LoadMeshEachChara(int in_chara)
 	// MANUEL(白人男性)
 	if (chara == 3)
 	{
-		meshPath = MESH_PATH_MANUEL + ".gpmesh";
-		skelPath = MESH_PATH_MANUEL + ".gpskel";
+		meshPath = MESH_PATH_ERIC + ".gpmesh";
+		skelPath = MESH_PATH_ERIC + ".gpskel";
 	}
 	// SOPHIA(白人女性)
 	if (chara == 4)

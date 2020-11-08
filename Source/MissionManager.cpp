@@ -78,7 +78,7 @@ MissionManager::MissionManager(GameWorld* in_world)
 			m_missions.push_back(new MissionBase(this, MissionBase::DELIVERY, i));
 			// ミッション概要セット
 			m_missions[i]->SetMissionDetail(m_world->GetClients()[startPos[i]],
-				m_world->GetClients()[goalPos[i]], 1000, 45);
+				m_world->GetClients()[goalPos[i]], 1000, 60);
 		}
 		else
 		{
@@ -86,7 +86,7 @@ MissionManager::MissionManager(GameWorld* in_world)
 			m_missions.push_back(new MissionBase(this, MissionBase::TAXI, i));
 			// ミッション概要セット
 			m_missions[i]->SetMissionDetail(m_world->GetClients()[startPos[i]],
-				m_world->GetClients()[goalPos[i]], 1000, 45);
+				m_world->GetClients()[goalPos[i]], 1000, 50);
 		}
 
 		// 依頼人アクタ配列をシャッフル
@@ -123,7 +123,7 @@ void MissionManager::Update(float in_deltaTime)
 		if ((*mission)->GetMissionState() == MissionBase::FAILED || (*mission)->GetMissionState() == MissionBase::SUCCESS)
 		{
 			// スコアUIにスコアをセット
-			m_world->GetCanvas()->GetScoreUI()->AddScore((*mission)->GetCalcScore());
+			m_world->GetCanvas()->GetScoreUI()->SetAddScore((*mission)->GetCalcScore());
 			// 依頼人を非セレクト状態に
 			auto itr = std::find(m_world->GetClients().begin(), m_world->GetClients().end(), (*mission)->GetStartActor());
 			(*itr)->SetIsSelected(false);
@@ -199,7 +199,7 @@ void MissionManager::Update(float in_deltaTime)
 				m_missions.push_back(new MissionBase(this, MissionBase::DELIVERY, i));
 				// ミッション概要セット
 				m_missions.back()->SetMissionDetail(m_world->GetClients()[startPos],
-					m_world->GetClients()[goalPos], 1000, 30);
+					m_world->GetClients()[goalPos], 1000, 60);
 				// クライアントをセレクト状態に
 				m_world->GetClients()[startPos]->SetClientSetting(ClientActor::START);
 				m_world->GetClients()[goalPos]->SetClientSetting(ClientActor::GOAL);
@@ -211,7 +211,7 @@ void MissionManager::Update(float in_deltaTime)
 				m_missions.push_back(new MissionBase(this, MissionBase::TAXI, i));
 				// ミッション概要セット
 				m_missions.back()->SetMissionDetail(m_world->GetClients()[startPos],
-					m_world->GetClients()[goalPos], 1000, 30);
+					m_world->GetClients()[goalPos], 1000, 50);
 				// クライアントをセレクト状態に
 				m_world->GetClients()[startPos]->SetClientSetting(ClientActor::START);
 				m_world->GetClients()[goalPos]->SetClientSetting(ClientActor::GOAL);

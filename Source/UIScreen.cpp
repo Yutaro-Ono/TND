@@ -8,9 +8,9 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "GameMain.h"
+#include "GameConfig.h"
 #include "Renderer.h"
 #include "Font.h"
-
 
 // コンストラクタ
 UIScreen::UIScreen()
@@ -23,6 +23,11 @@ UIScreen::UIScreen()
 	// フォントのロード
 	m_font = GAME_INSTANCE.GetFont(GAME_INSTANCE.GetFontPath());
 
+	// スクリーンサイズ格納
+	SCREEN_W = GAME_CONFIG->GetScreenWidth();
+	SCREEN_H = GAME_CONFIG->GetScreenHeight();
+	SCREEN_HALF_W = GAME_CONFIG->GetScreenWidth() / 2;
+	SCREEN_HALF_H = GAME_CONFIG->GetScreenHeight() / 2;
 }
 
 
@@ -86,7 +91,7 @@ void UIScreen::DrawTexture(Shader * in_shader, Texture * in_texture, const Vecto
 	Matrix4 world = scaleMat * transMat;
 	
 	// シェーダにワールド変換行列を送信
-	in_shader->SetMatrixUniform("u_WorldTransform", world);
+	in_shader->SetMatrixUniform("u_worldTransform", world);
 	// テクスチャをアクティブ化
 	in_texture->SetActive();
 	// 描画する

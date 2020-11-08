@@ -48,9 +48,6 @@ CountDownUI::CountDownUI(RuleTime * in_time)
 		}
 	}
 
-
-
-
 	// ŠÔ’Ç‰Á•ªƒtƒHƒ“ƒg‚ğ¶¬
 	m_addTimeTex = m_font->RenderText("+1sec", Vector3(4.0f, 1.0f, 0.0f), 34);
 	// ‰e‚ğ¶¬

@@ -55,11 +55,12 @@ protected:
 	class Font* m_font;
 	class Texture* m_texture;
 
-
-
-
 	// State
 	UIState m_state;
 
-
+	// スクリーンサイズ
+	int SCREEN_W;
+	int SCREEN_H;
+	int SCREEN_HALF_W;
+	int SCREEN_HALF_H;
 };

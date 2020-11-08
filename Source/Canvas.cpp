@@ -11,10 +11,10 @@ Canvas::Canvas(GameWorld* in_world)
 	,m_pControlUI(nullptr)
 {
 	// 操作説明用UIの生成
-	m_pControlUI = new PlayerControlUI(m_world->GetPlayer());
+	m_pControlUI = new PlayerControlUI(m_world);
 
 	// スコアUIを生成
-	m_scoreUI = new ScoreUI();
+	m_scoreUI = new ScoreUI(this);
 }
 
 // デストラクタ

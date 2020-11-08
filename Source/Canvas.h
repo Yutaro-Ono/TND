@@ -18,6 +18,8 @@ public:
 
 	void AddUI(class UIScreen* in_ui) { m_interfaces.push_back(in_ui); }
 
+	class GameWorld* GetWorld() { return m_world; }
+
 	class PlayerControlUI* GetPlayerControlUI() { return m_pControlUI; }
 
 	class ScoreUI* GetScoreUI() { return m_scoreUI; }

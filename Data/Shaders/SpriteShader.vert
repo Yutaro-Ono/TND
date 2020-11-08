@@ -12,15 +12,15 @@ layout (location = 2) in vec2 a_TexCoords;         // テクスチャ座標(UV)
 out vec2 FragTexCoords;
 
 // Uniform指定子
-uniform mat4 u_WorldTransform;     // ワールド変換行列
-uniform mat4 u_ViewProj;           // ビュー * プロジェクションの合成行列
+uniform mat4 u_worldTransform;     // ワールド変換行列
+uniform mat4 u_viewProj;           // ビュー * プロジェクションの合成行列
 
 void main()
 {
 	// 頂点座標をgl_Position用にvec4型へ変換
 	vec4 pos = vec4(a_Pos, 1.0);
 	// クリップ空間にワールド座標を変換
-	gl_Position = pos * u_WorldTransform * u_ViewProj;
+	gl_Position = pos * u_worldTransform * u_viewProj;
 
 	// テクスチャ座標をフラグメントへ出力
 	FragTexCoords = a_TexCoords;

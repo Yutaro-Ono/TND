@@ -57,20 +57,21 @@ public:
 	// ミッションのセット
 	void SetMission(class MissionBase* in_mission) { m_mission = in_mission; }
 
+	void SetDistancePlayer(float in_distance) { m_distancePlayer = in_distance; }
 
 private:
 
 	CLIENT_SETTING m_setting;                    // 依頼人が任務にどの役で割り当てられているか
 
-	bool m_isSelected;                           // 現在アクティブなミッションの座標として設定されているか
+	float m_distancePlayer;                      // プレイヤーとの距離
 
+	bool m_isSelected;                           // 現在アクティブなミッションの座標として設定されているか
 	bool m_isAccepted;                           // プレイヤーによりミッションが受諾されたか
 
 	class MissionBase* m_mission;                // 自身に設定されたミッション
 
 	CLIENT_ANIM m_animState;                     // アニメーションのステート
 	std::vector<const class Animation*> m_anim;  // アニメーション
-
 	class SkeletalMeshComponent* m_skelComp;     // スケルタルメッシュ
 
 	class BoxCollider* m_hitBox;                 // 当たり判定ボックス

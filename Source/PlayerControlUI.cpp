@@ -5,19 +5,21 @@
 #include "GameMain.h"
 #include "Renderer.h"
 #include "WorldSpaceUI.h"
-
+#include "GameWorld.h"
 
 const Vector3 ADJUST_RIDETEX_POS(-20.0f, 0.0f, 70.0f);     // 乗車UIの位置調整用
 const Vector2 ADJUST_ACCESSTEX_POS(30.0f, 0.0f);    // 受注UIの位置調整用
 
 // コンストラクタ
-PlayerControlUI::PlayerControlUI(PlayerManager* in_player)
-	:m_player(in_player)
+PlayerControlUI::PlayerControlUI(GameWorld* in_world)
+	:m_world(in_world)
 	,m_rideTexture(nullptr)
 	,m_chasing(nullptr)
 	,m_accessTexPos(Vector2::Zero)
 	,m_findPlayer(false)
 {
+	m_player = m_world->GetPlayer();
+
 	// 乗車テクスチャの生成
 	m_rideTexture = new WorldSpaceUI(m_player->GetPlayerCarPos() + ADJUST_RIDETEX_POS, "Data/Interface/TND/Control/Control_ride.png", 35.0f);
 

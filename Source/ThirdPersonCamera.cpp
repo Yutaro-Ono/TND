@@ -152,8 +152,6 @@ void ThirdPersonCamera::Update(float in_deltaTime)
 		m_hitBox->OnUpdateWorldTransform();
 	}
 
-	
-
 	//printf("Camera : x : %f, y : %f, z : %f\n", m_position.x, m_position.y, m_position.z);
 	//printf("hitBox : x : %f, y : %f, z : %f\n", m_cameraActor->GetPosition().x, m_cameraActor->GetPosition().y, m_cameraActor->GetPosition().z);
 

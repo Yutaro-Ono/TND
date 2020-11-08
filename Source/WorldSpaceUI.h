@@ -29,6 +29,8 @@ public:
 	// 表示非表示フラグのセッター
 	void SetVisible(bool in_visible) { m_isVisible = in_visible; }
 
+	void SetScale(float in_scale) { m_scale = in_scale; }
+
 private:
 
 

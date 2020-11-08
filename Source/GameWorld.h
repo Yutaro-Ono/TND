@@ -47,6 +47,8 @@ public:
 	// UIキャンバスのゲッター
 	class Canvas* GetCanvas() { return m_canvas; }
 
+	bool GetFoundPlayer() { return m_foundPlayer; }
+
 private:
 
 	std::vector<class ClientActor*> m_clients;          // 依頼者アクター
@@ -64,4 +66,7 @@ private:
 	class Environment* m_environment;
 	Environment::GAME_TIME m_gameTime;
 
+
+	// フラグ管理
+	bool m_foundPlayer;     // (一機でも)ヘリがプレイヤーを見つけたか
 };

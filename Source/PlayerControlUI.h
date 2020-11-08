@@ -11,7 +11,7 @@ class PlayerControlUI : public UIScreen
 {
 public:
 
-	PlayerControlUI(class PlayerManager* in_player);
+	PlayerControlUI(class GameWorld* in_world);
 	~PlayerControlUI();
 
 	void Update(float in_deltaTime) override;
@@ -26,6 +26,8 @@ private:
 
 
 	class PlayerManager* m_player;      // プレイヤーへのポインタ
+
+	class GameWorld* m_world;           // ワールドへのポインタ
 
 	class WorldSpaceUI* m_rideTexture;
 	

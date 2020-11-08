@@ -22,8 +22,8 @@ static Vector3 tempPos;
 
 // コンストラクタ
 GameWorld::GameWorld()
+	:m_foundPlayer(false)
 {
-
 	// プレイヤーの生成
 	m_player = new PlayerManager();
 	m_player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
@@ -32,19 +32,16 @@ GameWorld::GameWorld()
 
 	// レベルの生成
 	m_level = new LevelManager(this, 0);
-
 	// ミッションマネージャー生成
 	m_mission = new MissionManager(this);
-
 	// 環境(光源など)作成
 	//m_environment = new Environment(this, Environment::GAME_TIME::NIGHT);
 	m_environment = new Environment(this, Environment::GAME_TIME::MORNING);
 
-
 	// ヘリコプターを三機生成
 	for (int i = 0; i < 3; i++)
 	{
-		m_helicopters.emplace_back(new Helicopter(this, Vector3(600.0f * i, 800.0f * i, 1200.0f), i));
+		m_helicopters.emplace_back(new Helicopter(this, Vector3(5000.0f * (i + 1), 18000.0f * (i + 1), 1200.0f), i));
 	}
 
 	// UI生成
@@ -89,11 +86,13 @@ void GameWorld::Update(float in_deltaTime)
 		if (heli->GetFoundPlayer())
 		{
 			m_canvas->GetPlayerControlUI()->SetFindPlayer(true);
+			m_foundPlayer = true;
 			break;
 		}
 		else
 		{
 			m_canvas->GetPlayerControlUI()->SetFindPlayer(false);
+			m_foundPlayer = false;
 		}
 	}
 

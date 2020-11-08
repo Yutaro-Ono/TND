@@ -330,6 +330,12 @@
     <Filter Include="ソース ファイル\Shader\Source\ShadowLess">
       <UniqueIdentifier>{398ee544-4e68-4b4c-b552-6983f026c348}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\World\Night">
+      <UniqueIdentifier>{819bf69d-cd57-44fe-8eea-3d6e9840e6c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\World\Morning">
+      <UniqueIdentifier>{64495a5f-e733-4dcb-8cf5-887f80324521}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -1013,12 +1019,6 @@
     </None>
     <None Include="Data\Shaders\BasicMesh.frag">
       <Filter>ソース ファイル\Shader\Source\Mesh</Filter>
-    </None>
-    <None Include="Data\Shaders\Sprite.frag">
-      <Filter>ソース ファイル\Shader\Source\Sprite</Filter>
-    </None>
-    <None Include="Data\Shaders\Sprite.vert">
-      <Filter>ソース ファイル\Shader\Source\Sprite</Filter>
     </None>
     <None Include="Data\Shaders\SpriteShader.vert">
       <Filter>ソース ファイル\Shader\Source\Sprite</Filter>

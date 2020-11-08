@@ -32,7 +32,11 @@ public:
 	// Getter / Setter
 	//---------------------------------------------------+
 	const int& GetWidth() const { return m_width; }               // テクスチャの幅取得
+	const int& GetHalfWidth() const { return m_width / 2; }       // テクスチャの幅(/ 2)取得
+
 	const int& GetHeight() const { return m_height; }             // テクスチャの高さ取得
+	const int& GetHalfHeight() const { return m_height / 2; }     // テクスチャの高さ(/ 2)取得
+
 	int GetTextureID() const { return m_textureID; }              // テクスチャID
 	void SetTextureID(unsigned int in_texID) { m_textureID = in_texID; }
 

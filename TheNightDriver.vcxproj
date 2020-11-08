@@ -266,8 +266,6 @@
     <None Include="Data\Shaders\SkinnedShadow.vert" />
     <None Include="Data\Shaders\SkyBox.frag" />
     <None Include="Data\Shaders\SkyBox.vert" />
-    <None Include="Data\Shaders\Sprite.frag" />
-    <None Include="Data\Shaders\Sprite.vert" />
     <None Include="Data\Shaders\SpriteShader.frag" />
     <None Include="Data\Shaders\SpriteShader.vert" />
     <None Include="Data\Shaders\WorldSpaceSprite.frag" />

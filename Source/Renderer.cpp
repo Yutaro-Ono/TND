@@ -883,8 +883,9 @@ bool Renderer::LoadShaders()
 		return false;
 	}
 	m_spriteShader->SetActive();
+	// スクリーン用の行列を作成 (UIやスプライトは以降この行列を基準に描画)
 	Matrix4 viewProj = Matrix4::CreateSimpleViewProj(m_screenWidth, m_screenHeight);
-	m_spriteShader->SetMatrixUniform("u_ViewProj", viewProj);
+	m_spriteShader->SetMatrixUniform("u_viewProj", viewProj);
 
 	// ワールド空間用スプライトシェーダー
 	m_worldSpaceSpriteShader = new Shader();
@@ -893,7 +894,7 @@ bool Renderer::LoadShaders()
 		return false;
 	}
 	m_worldSpaceSpriteShader->SetActive();
-	m_worldSpaceSpriteShader->SetMatrixUniform("u_ViewProj", viewProj);
+	m_worldSpaceSpriteShader->SetMatrixUniform("u_viewProj", viewProj);
 
 
 	// メッシュシェーダー
