@@ -32,6 +32,7 @@
 #include "ShadowMap.h"
 #include "EnvironmentMapComponent.h"
 #include "CameraComponent.h"
+#include "RenderBloom.h"
 
 // コンストラクタ
 Renderer::Renderer()
@@ -44,6 +45,7 @@ Renderer::Renderer()
 	,m_skinnedShader(nullptr)
 	,m_skyboxShader(nullptr)
 	,m_frameBuffer(nullptr)
+	,m_bloom(nullptr)
 	,m_switchShader(0)
 	,m_cameraPos(Vector3::Zero)
 {
@@ -202,6 +204,11 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
     //--------------------------------------------+
 	m_shadowMap = new ShadowMap();
 
+	//--------------------------------------------+
+    // Bloom関連
+    //--------------------------------------------+
+	m_bloom = new RenderBloom();
+
 	// カリング
 	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
@@ -276,7 +283,7 @@ void Renderer::Delete()
 	m_skyboxShader->Delete();
 	delete m_frameBuffer;
 	delete m_shadowMap;
-
+	delete m_bloom;
 	// コンテキストの破棄
 	SDL_GL_DeleteContext(m_context);
 	// ウィンドウの破棄
@@ -390,15 +397,17 @@ void Renderer::Draw()
 	//-----------------------------------------------+
     // メッシュシェーダー(shadow)
     //-----------------------------------------------+
-	if (m_switchShader == 0)
-	{
-		m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents);
+	//if (m_switchShader == 0)
+	//{
+	//	m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents);
 
-		// フレームバッファ書き込み処理
-		m_frameBuffer->WriteFrameBuffer();
+	//	// フレームバッファ書き込み処理
+	//	m_frameBuffer->WriteFrameBuffer();
 
-		m_shadowMap->DrawShadowMesh(m_meshComponents, m_skeletalMeshComponents);
-	}
+	//	m_shadowMap->DrawShadowMesh(m_meshComponents, m_skeletalMeshComponents);
+	//}
+
+
 
 	//-----------------------------------------------+
 	// 環境マップオブジェクトの描画
@@ -415,13 +424,28 @@ void Renderer::Draw()
 	}
 
 
-	//---------------------------------------------------------------+
-	// スカイボックスの描画
-	//---------------------------------------------------------------+
-	// キューブマップシェーダをアクティブ化・キューブVAOをバインド
-	m_skyboxShader->SetActive();
-	m_cubeVerts->SetActive();
-	m_activeSkyBox->Draw(m_skyboxShader);
+
+	if (m_switchShader == 0)
+	{
+		m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents);
+
+		// フレームバッファ書き込み処理
+		m_frameBuffer->WriteFrameBuffer();
+
+		m_bloom->WriteBuffer(m_meshComponents, m_skeletalMeshComponents, m_activeSkyBox);
+
+		//---------------------------------------------------------------+
+        // スカイボックスの描画
+        //---------------------------------------------------------------+
+        // キューブマップシェーダをアクティブ化・キューブVAOをバインド
+		//m_activeSkyBox->Draw(m_skyboxShader);
+
+		m_bloom->DrawDownSampling();
+		m_bloom->DrawGaussBlur();
+		m_bloom->DrawBlendBloom();
+
+	}
+
 
 	//----------------------------------------------------------------+
 	// パーティクル描画

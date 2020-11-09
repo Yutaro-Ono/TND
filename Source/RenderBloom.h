@@ -15,19 +15,23 @@ public:
 	~RenderBloom();       // デストラクタ
 
 	// カラーバッファ・高輝度バッファへの書き込み(専用のシェーダでメッシュの全描画を行う)
-	void WriteBuffer(std::vector<class MeshComponent*> in_meshComp);
+	void WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std::vector<class SkeletalMeshComponent*> in_skelComp,
+		class CubeMapComponent* in_cubeMapComp);
 	void WriteBuffer(std::vector<class SkeletalMeshComponent*> in_skelComp);
+	
+
 
 	void DrawDownSampling();      // 高輝度バッファをダウンサンプリング計算して描画する
+	void DrawGaussBlur();         // ガウスぼかし効果を適用する
 
-
+	void DrawBlendBloom();        // Bloomを適用した最終結果を描画する
 
 private:
 
 	// バッファの生成処理
 	bool CreateHDRFBO();
 	// カラーバッファの生成
-	void CreateColorBuffer(unsigned int in_colorBuffer, const unsigned int in_attachNum);
+	void CreateColorBuffer(unsigned int& in_colorBuffer, const unsigned int in_attachNum);
 	// ダウンサンプリング・ぼかし用FBOの生成
 	void CreateBlurFBO();
 
@@ -55,6 +59,11 @@ private:
 	std::vector<unsigned int> m_blurFBO;
 	std::vector<unsigned int> m_blurBufferTex;
 
-	class Shader* m_hdrBloomShader;
-	class Shader* m_downSamplingShader;
+	class Shader* m_multiRenderTargetShader;    // HDR対応マルチターゲットシェーダ (Mesh)
+	class Shader* m_multiRenderSkinShader;      // HDR対応マルチターゲットシェーダ (SkinMesh)
+	class Shader* m_multiRenderCubeMapShader;   // HDR対応マルチターゲットシェーダ (CubeMap)
+	class Shader* m_hdrBloomShader;             // Bloomシェーダ
+	class Shader* m_downSamplingShader;         // 縮小バッファ用シェーダ
+	class Shader* m_gaussShader;                // ガウスぼかし計算用シェーダ
+
 };

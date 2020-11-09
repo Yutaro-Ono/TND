@@ -105,7 +105,7 @@ public:
 	// アクティブスカイボックス
 	void SetActiveSkyBox(class CubeMapComponent* in_skyBox) { m_activeSkyBox = in_skyBox; }
 	class CubeMapComponent* GetSkyBox() { return m_activeSkyBox; }
-
+	class VertexArray* GetCubeMapVerts() { return m_cubeVerts; }
 
 
 private:
@@ -167,6 +167,11 @@ private:
 	// シャドウ関連
 	//--------------------------------------------+
 	class ShadowMap* m_shadowMap;
+
+	//--------------------------------------------+
+    // HDR・Bloom関連
+    //--------------------------------------------+
+	class RenderBloom* m_bloom;
 
 
 	int m_switchShader;

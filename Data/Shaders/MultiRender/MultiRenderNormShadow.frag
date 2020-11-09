@@ -13,9 +13,14 @@ in VS_OUT
 	vec2 fragTexCoords;              // テクスチャ座標
 	vec3 fragNormal;                // 法線（ワールド空間）
 	vec3 fragWorldPos;              // 頂点位置（ワールド空間）
+	vec3 fragViewPos;               // カメラ座標
 	vec4 fragPosLightSpace;         // 頂点位置 (ライト空間)
+	vec3 TangentLightPos;
+	vec3 TangentViewPos;
+	vec3 TangentFragPos;
 
 }fs_in;
+
 
 // テクスチャサンプリング用構造体
 struct Material
@@ -78,33 +83,29 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 
 void main()
 {
-	// ポリゴン表面の法線（フラグメントシェーダー上で補間されている）
-	vec3 N = normalize(fs_in.fragNormal);
-	// ポリゴン表面からライト方向へのベクトル
-	vec3 L = normalize(-u_dirLight.direction);
-	// ポリゴン表面からカメラ方向
-	vec3 V = normalize(u_viewPos - fs_in.fragWorldPos);
+	// 範囲[0, 19の法線マップベクトルを取得
+	vec3 normal = texture(u_mat.normalMap, fs_in.fragTexCoords).rgb;
+	// 法線ベクトルの範囲を[-1, +1]の範囲に復元する(タンジェントスペースに変換)
+	normal = normalize(normal * 2.0 - 1.0);
 
-	// -L ベクトルを 法線 N に対して反射したベクトルRを求める
-	vec3 R = normalize(reflect(-L, N));
-	// フォン反射計算
-	vec3 Phong = u_dirLight.ambient;
-	float NdotL = dot(N, L);
+	vec3 color = texture(u_mat.diffuseMap, fs_in.fragTexCoords).rgb;
 
 	// アンビエント計算
-	vec3 ambient = u_dirLight.ambient * vec3(texture(u_mat.diffuseMap, fs_in.fragTexCoords));
+	vec3 ambient = u_dirLight.ambient * color;
+
+
 	// ディフューズ計算
-	vec3 norm = normalize(fs_in.fragNormal);
-	float diff = max(dot(norm, -u_dirLight.direction), 0.0);
-	//float diff = max(NdotL, 0.0);
-	vec3 diffuse = u_dirLight.diffuse * diff * vec3(texture(u_mat.diffuseMap, fs_in.fragTexCoords));
+	vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
+	float diff = max(dot(lightDir, normal), 0.0);
+	vec3 diffuse = u_dirLight.diffuse * diff * texture(u_mat.diffuseMap, fs_in.fragTexCoords).rgb;
+
 
 	// スペキュラ計算
-	vec3 viewDir = normalize(u_viewPos - fs_in.fragWorldPos);
-	vec3 reflectDir = reflect(u_dirLight.direction, norm);
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-	//float spec = pow(max(0.0, dot(R, V)), uSpecPower);
-	vec3 specular = u_dirLight.specular * spec * vec3(texture(u_mat.specularMap, fs_in.fragTexCoords));
+	vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
+	vec3 reflectDir = reflect(-lightDir, normal);
+	vec3 halfwayDir = normalize(lightDir + viewDir);
+	float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+	vec3 specular = u_dirLight.specular * spec * texture(u_mat.specularMap, fs_in.fragTexCoords).rgb;
 
 	// 影成分の算出
 	float shadow = ShadowCalculation(fs_in.fragPosLightSpace);
@@ -113,9 +114,10 @@ void main()
 
 
 	// 高輝度バッファへの出力値を抽出
-	float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));     // 輝度をカラー結果の内積から求める
-	
-	if(brightness > 0.5)                                              // 輝度が0.5を超えたなら
+	//float brightness = dot(result, vec3(0.2126, 0.7152, 0.0722));     // 輝度をカラー結果の内積から求める
+	float brightness = dot(result, vec3(0.1126, 0.4152, 0.522));     // 輝度をカラー結果の内積から求める
+
+	if(brightness > 0.25)                                              // 輝度が0.5を超えたなら
 	{
 		out_brightColor = vec4(result, 0.0f);
 	}

@@ -40,14 +40,18 @@ void CubeMapComponent::Draw(Shader* in_shader)
 		view.Invert();
 
 		// Uniformに行列をセット
+		in_shader->SetActive();
 		in_shader->SetMatrixUniform("u_View", view);
 		in_shader->SetMatrixUniform("u_Proj", projection);
 		// 深度設定
 		glDepthFunc(GL_LEQUAL);
 		// テクスチャバインド
+		in_shader->SetInt("skybox", 0);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture->GetTextureID());
+
 		// 描画
+		RENDERER->GetCubeMapVerts()->SetActive();
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// 念のためバインド解除

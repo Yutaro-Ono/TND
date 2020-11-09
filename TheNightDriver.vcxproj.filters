@@ -336,20 +336,41 @@
     <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\DepthMap\Skinned">
       <UniqueIdentifier>{1ba746fc-ee15-412b-a061-d2b6c68b50e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\Skinned">
-      <UniqueIdentifier>{982e61b7-289c-4dda-bfeb-2d47fe3e7d31}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap">
       <UniqueIdentifier>{bc553cfa-6ffe-4fd0-b276-2517a2c31896}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Shader\Source\SingleRender\ShadowLess">
       <UniqueIdentifier>{398ee544-4e68-4b4c-b552-6983f026c348}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\MultiRender\DownSampling">
+    <Filter Include="ソース ファイル\Shader\Source\MultiRender\Mesh">
+      <UniqueIdentifier>{4c48fea9-e334-4f7f-91b5-c305a462a076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\BasicMesh">
+      <UniqueIdentifier>{1881c055-8ab5-4f70-a7e2-d4581d8912b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\BasicMesh\Skinned">
+      <UniqueIdentifier>{982e61b7-289c-4dda-bfeb-2d47fe3e7d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap\Skinned">
+      <UniqueIdentifier>{3dedc1c0-cb11-402d-b831-4bd29790a124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\MultiRender\Mesh\Skinned">
+      <UniqueIdentifier>{3e359618-a52c-4858-9293-5447344918df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\MultiRender\HDR">
+      <UniqueIdentifier>{ac55611f-4ea2-48d6-a162-35cf223681d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\MultiRender\HDR\DownSampling">
       <UniqueIdentifier>{94dc2698-a153-46b2-9c89-768295078170}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\MultiRender\GaussBlur">
+    <Filter Include="ソース ファイル\Shader\Source\MultiRender\HDR\GaussBlur">
       <UniqueIdentifier>{087afda9-a67a-4639-bf16-8f137cb49cdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\MultiRender\HDR\Bloom">
+      <UniqueIdentifier>{f31f05f6-b389-4a58-bd92-43cad8cc83af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\MultiRender\Mesh\SkyBox">
+      <UniqueIdentifier>{4cd8a808-5347-4f18-bf7e-62bd07a88c0f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -660,7 +681,7 @@
       <Filter>ソース ファイル\Renderer\Mesh\Component\EnvironmentMap</Filter>
     </ClCompile>
     <ClCompile Include="Source\RenderBloom.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Renderer\Bloom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1047,14 +1068,8 @@
     <None Include="Data\Shaders\WorldSpaceSprite.frag">
       <Filter>ソース ファイル\Shader\Source\Sprite\WorldSpace</Filter>
     </None>
-    <None Include="Data\Shaders\PhongShadow.vert">
-      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow</Filter>
-    </None>
-    <None Include="Data\Shaders\PhongShadow.frag">
-      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow</Filter>
-    </None>
     <None Include="Data\Shaders\SkinnedShadow.vert">
-      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\Skinned</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\BasicMesh\Skinned</Filter>
     </None>
     <None Include="Data\Shaders\DepthMap.frag">
       <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\DepthMap\Basic</Filter>
@@ -1069,9 +1084,6 @@
       <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap</Filter>
     </None>
     <None Include="Data\Shaders\ShadowNormalMap.frag">
-      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap</Filter>
-    </None>
-    <None Include="Data\Shaders\ShadowSkinnedNormal.vert">
       <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap</Filter>
     </None>
     <None Include="Data\Shaders\SkinnedDepthNormal.vert">
@@ -1104,26 +1116,41 @@
     <None Include="Data\Shaders\SkyBox.vert">
       <Filter>ソース ファイル\Shader\Source\SingleRender</Filter>
     </None>
-    <None Include="Data\Shaders\MultiRender\ShadowNormalMlt.frag">
-      <Filter>ソース ファイル\Shader\Source\MultiRender</Filter>
-    </None>
-    <None Include="Data\Shaders\MultiRender\ExtractionHDRRender.vert">
-      <Filter>ソース ファイル\Shader\Source\MultiRender</Filter>
-    </None>
-    <None Include="Data\Shaders\MultiRender\ExtractionHDRRender.frag">
-      <Filter>ソース ファイル\Shader\Source\MultiRender</Filter>
-    </None>
-    <None Include="Data\Shaders\MultiRender\BloomNormShadowMesh.vert">
-      <Filter>ソース ファイル\Shader\Source\MultiRender</Filter>
-    </None>
-    <None Include="Data\Shaders\MultiRender\BloomNormShadowMesh.frag">
-      <Filter>ソース ファイル\Shader\Source\MultiRender</Filter>
-    </None>
     <None Include="Data\Shaders\MultiRender\DownSampling.frag">
-      <Filter>ソース ファイル\Shader\Source\MultiRender\DownSampling</Filter>
+      <Filter>ソース ファイル\Shader\Source\MultiRender\HDR\DownSampling</Filter>
     </None>
     <None Include="Data\Shaders\MultiRender\GaussBlur.frag">
-      <Filter>ソース ファイル\Shader\Source\MultiRender\GaussBlur</Filter>
+      <Filter>ソース ファイル\Shader\Source\MultiRender\HDR\GaussBlur</Filter>
+    </None>
+    <None Include="Data\Shaders\MultiRender\Bloom.frag">
+      <Filter>ソース ファイル\Shader\Source\MultiRender\HDR\Bloom</Filter>
+    </None>
+    <None Include="Data\Shaders\MultiRender\MultiRenderNormShadow.frag">
+      <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh</Filter>
+    </None>
+    <None Include="Data\Shaders\MultiRender\MultiRenderNormShadow.vert">
+      <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh</Filter>
+    </None>
+    <None Include="Data\Shaders\PhongShadow.vert">
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\BasicMesh</Filter>
+    </None>
+    <None Include="Data\Shaders\PhongShadow.frag">
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\BasicMesh</Filter>
+    </None>
+    <None Include="Data\Shaders\ShadowSkinnedNormal.vert">
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap\Skinned</Filter>
+    </None>
+    <None Include="Data\Shaders\MultiRender\MultiRenderNormShadowSkinned.frag">
+      <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh\Skinned</Filter>
+    </None>
+    <None Include="Data\Shaders\MultiRender\MultiRenderNormShadowSkinned.vert">
+      <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh\Skinned</Filter>
+    </None>
+    <None Include="Data\Shaders\MultiRender\MultiRenderSkyBox.frag">
+      <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh\SkyBox</Filter>
+    </None>
+    <None Include="Data\Shaders\MultiRender\MultiRenderSkyBox.vert">
+      <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh\SkyBox</Filter>
     </None>
   </ItemGroup>
 </Project>

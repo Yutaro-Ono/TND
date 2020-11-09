@@ -26,7 +26,7 @@ void SkeletalMeshComponent::Draw(Shader* in_shader)                         // •
 		in_shader->SetMatrixUniforms("u_matrixPalette", &m_palette.mEntry[0],
 			MAX_SKELETON_BONES);
 		// ƒXƒyƒLƒ…ƒ‰[‹­“x‚ðƒZƒbƒg
-		in_shader->SetFloatUniform("u_specPower", 32);
+		in_shader->SetFloatUniform("u_specPower", 12);
 
 		// ŠeŽíƒeƒNƒXƒ`ƒƒ‚ðƒVƒF[ƒ_‚ÉƒZƒbƒg‚·‚é
 		// ƒeƒNƒXƒ`ƒƒ‚ª“Ç‚Ýž‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚Í–³Ž‹‚·‚é

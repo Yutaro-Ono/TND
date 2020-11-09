@@ -1,5 +1,5 @@
 //----------------------------------------------------+
-// スキン入りメッシュ用頂点配列
+// スキン入りメッシュ用頂点シェーダ
 //----------------------------------------------------+
 #version 330 core
 // Attribute
@@ -26,7 +26,7 @@ uniform vec3 u_viewPos;
 // フラグメントへの出力
 out VS_OUT
 {
-	vec2 fragTexCoord;          // テクスチャ座標
+	vec2 fragTexCoords;          // テクスチャ座標
 	vec3 fragNormal;            // ワールドスペース上の法線
 	vec3 fragWorldPos;          // ワールドスペース上の座標
 	vec3 fragViewPos;
@@ -44,7 +44,7 @@ void main()
 	vec4 pos = vec4(a_pos, 1.0);
 	
 	// テクスチャ座標を出力
-	vs_out.fragTexCoord = a_texCoords;
+	vs_out.fragTexCoords = a_texCoords;
 	vs_out.fragViewPos = u_viewPos;
 
 	// スキン位置を算出
