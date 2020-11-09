@@ -36,7 +36,6 @@ ShadowMap::ShadowMap()
 	// フレームバッファのバインド解除
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-
 	// シェーダの作成
 	// デプスマップシェーダ
 	m_depthShader = new Shader();
@@ -137,8 +136,6 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 
 	// ライト視点用のプロジェクション行列とビュー行列を用意する
 	// ディレクショナルライト(平行)であるため、プロジェクション行列には正射影行列を使用
-	Vector3 direction = RENDERER->GetDirectionalLight().direction;
-
 	m_lightProj = Matrix4::CreateOrtho(7000.0f, 7000.0f, 1.0f, 5000.0f);
 
 	m_lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, RENDERER->GetDirectionalLight().target, Vector3::UnitZ);
@@ -232,7 +229,6 @@ void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh,
 		mesh->Draw(m_shadowShader);
 	}
 
-
 	// シャドウシェーダのアクティブ化・uniformへのセット
 	m_skinShadowShader->SetActive();
 	m_skinShadowShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
@@ -246,7 +242,6 @@ void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh,
 	m_skinShadowShader->SetMatrixUniform("u_lightSpaceMatrix", m_lightSpace);
 	m_skinShadowShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
 
-
 	// サンプリング用テクスチャセット
 	m_skinShadowShader->SetInt("u_mat.diffuseMap", 0);
 	m_skinShadowShader->SetInt("u_mat.specularMap", 1);
@@ -259,7 +254,6 @@ void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh,
 		{
 			skel->Draw(m_skinShadowShader);
 		}
-
 	}
 
 }

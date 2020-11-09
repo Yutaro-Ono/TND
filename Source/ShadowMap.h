@@ -31,7 +31,7 @@ public:
 private:
 
 
-	unsigned int m_depthMapFBO;        // デプスバッファオブジェクト
+	unsigned int m_depthMapFBO;              // デプスバッファオブジェクト
 	unsigned int m_depthMap;                 // 深度を書き込むための2Dテクスチャ
 
 	class Shader* m_depthShader;          // デプスシェーダ (影描画の前準備に使用する)

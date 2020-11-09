@@ -1,33 +1,21 @@
-// ----------------------------------------------------------------
-// From Game Programming in C++ by Sanjay Madhav
-// Copyright (C) 2017 Sanjay Madhav. All rights reserved.
-// 
-// Released under the BSD License
-// See LICENSE in root directory for full details.
-// ----------------------------------------------------------------
-
-// Request GLSL 3.3
 #version 330 core
+layout(location = 0) in vec3 a_pos;
+layout(location = 1) in vec3 a_normal;
+layout(location = 2) in vec2 a_texCoords;
 
-// Uniforms for world transform and view-proj
-uniform mat4 uWorldTransform;
-uniform mat4 uViewProj;
 
-// Attribute 0 is position, 1 is normal, 2 is tex coords.
-layout(location = 0) in vec3 inPosition;
-layout(location = 1) in vec3 inNormal;
-layout(location = 2) in vec2 inTexCoord;
+uniform mat4 u_worldTransform;
+uniform mat4 u_viewProj;
 
-// Any vertex outputs (other than position)
 out vec2 fragTexCoord;
 
 void main()
 {
 	// Convert position to homogeneous coordinates
-	vec4 pos = vec4(inPosition, 1.0);
+	vec4 pos = vec4(a_pos, 1.0);
 	// Transform to position world space, then clip space
-	gl_Position = pos * uWorldTransform * uViewProj;
+	gl_Position = pos * u_worldTransform * u_viewProj;
 
 	// Pass along the texture coordinate to frag shader
-	fragTexCoord = inTexCoord;
+	fragTexCoord = a_texCoords;
 }
