@@ -45,13 +45,15 @@ TitleScene::~TitleScene()
 // 初期化処理
 void TitleScene::Initialize()
 {
+	// 環境生成
+	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
+	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
 	// ロード画面処理
 	{
 		GAME_INSTANCE.GetLoadScreen()->EnableScreen();
+		RENDERER->Draw();
 	}
 
-	// タイトル用UI
-	TitleScreen* hud = new TitleScreen(this);
 
 	// プレイヤー
 	m_car = new PlayerCar();
@@ -63,9 +65,6 @@ void TitleScene::Initialize()
 	m_client->SetPosition(Vector3(0.0f, -55.0f, 0.0f));
 	m_client->SetScale(0.4f);
 
-	// 環境生成
-	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
-	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
 
 	// 音楽
 	//m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";
@@ -81,6 +80,8 @@ void TitleScene::Initialize()
 
 	// ロード画面の無効化
 	GAME_INSTANCE.GetLoadScreen()->DisableScreen();
+	// タイトル用UI
+	TitleScreen* hud = new TitleScreen(this);
 }
 
 

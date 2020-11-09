@@ -52,61 +52,6 @@ void ResultScene::Initialize()
 		RENDERER->Draw();
 	}
 
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
-
-	m_environment = new Environment(Environment::MORNING);
-
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
-
-
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
-
-
-
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
-
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
-
-
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
-
-
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
-
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
-
 
 	// 音楽
 	//m_sound["BGM"] = "Data/Music/BGM/FC/ResultScene/townofdeath.wav";
@@ -114,18 +59,6 @@ void ResultScene::Initialize()
 	//AUDIO->GetMusic(m_sound["BGM"]);
 	AUDIO->GetSound(m_sound["Enter"]);
 
-
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
-
-	// ロード画面処理
-	{
-		GAME_INSTANCE.GetLoadScreen()->AddGauge();
-		RENDERER->Draw();
-	}
 
 	// ロード画面の無効化
 	GAME_INSTANCE.GetLoadScreen()->DisableScreen();
