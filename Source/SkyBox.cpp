@@ -15,7 +15,6 @@ SkyBox::SkyBox(Environment* in_environment, Environment::GAME_TIME in_gameTime)
 {
 	SetSkyBox(in_gameTime);
 	m_position = Vector3(100, 100, 100);
-
 }
 
 SkyBox::~SkyBox()

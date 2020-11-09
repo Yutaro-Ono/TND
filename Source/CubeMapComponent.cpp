@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "Math.h"
 #include "SkyBox.h"
+#include "VertexArray.h"
 #include <vector>
 
 
@@ -24,7 +25,6 @@ void CubeMapComponent::CreateTexture(const std::string& in_filePath)
 {
 	m_texture = new Texture();
 	m_texture->LoadSkyBox(in_filePath);
-	
 }
 
 // キューブマップの描画処理
@@ -44,10 +44,13 @@ void CubeMapComponent::Draw(Shader* in_shader)
 		in_shader->SetMatrixUniform("u_Proj", projection);
 		// 深度設定
 		glDepthFunc(GL_LEQUAL);
-
+		// テクスチャバインド
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture->GetTextureID());
+		// 描画
 		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// 念のためバインド解除
 		glBindVertexArray(0);
 
 		glDepthFunc(GL_LESS);

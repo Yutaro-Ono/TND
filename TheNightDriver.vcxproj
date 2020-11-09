@@ -97,6 +97,7 @@
     <ClCompile Include="Source\PlayerManager.cpp" />
     <ClCompile Include="Source\RapidJsonHelper.cpp" />
     <ClCompile Include="Source\RecordScore.cpp" />
+    <ClCompile Include="Source\RenderBloom.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
     <ClCompile Include="Source\ResultScene.cpp" />
     <ClCompile Include="Source\ResultScreen.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="Source\PlayerManager.h" />
     <ClInclude Include="Source\RapidJsonHelper.h" />
     <ClInclude Include="Source\RecordScore.h" />
+    <ClInclude Include="Source\RenderBloom.h" />
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\ResultScene.h" />
     <ClInclude Include="Source\ResultScreen.h" />

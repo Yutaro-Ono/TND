@@ -21,7 +21,6 @@ public:
 
 private:
 
-
 	class Texture* m_texture;
 
 	bool m_isVisible;                // •`‰æ‚·‚é‚©‚µ‚È‚¢‚©‚Ìƒtƒ‰ƒO

@@ -106,9 +106,11 @@ public:
 	void SetActiveSkyBox(class CubeMapComponent* in_skyBox) { m_activeSkyBox = in_skyBox; }
 	class CubeMapComponent* GetSkyBox() { return m_activeSkyBox; }
 
+
+
 private:
 
-	void CreateCubeMapVerts();                                             // キューブマップ(スカイボックス用)頂点配列定義
+	void CreateCubeVerts();                                             // キューブマップ(スカイボックス用)頂点配列定義
 	void CreateSpriteVerts();                                              // スプライト用頂点配列定義
 	void CreateWorldSpriteVerts();                                            // パーティクル用頂点配列定義
 	bool LoadShaders();                                                    // シェーダーの初期化
@@ -153,7 +155,7 @@ private:
 	//--------------------------------------------+
 	class VertexArray* m_spriteVerts;                                      // スプライト用頂点配列
 	class VertexArray* m_particleVerts;                                    // パーティクル用頂点配列
-	class VertexArray* m_skyboxVerts;                                      // スカイボックス用頂点配列
+	class VertexArray* m_cubeVerts;                                        // キューブ頂点配列
 
 	//--------------------------------------------+
 	// ライティング関連

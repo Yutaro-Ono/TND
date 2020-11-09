@@ -231,9 +231,6 @@
     <Filter Include="ソース ファイル\Actor\ClientActor">
       <UniqueIdentifier>{ac54dc95-48b5-48c4-ae2e-73a27d414d1d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\Mesh">
-      <UniqueIdentifier>{d7575731-32e4-4fff-ba89-16d77d42143a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Shader\Source\Sprite">
       <UniqueIdentifier>{0d9997d8-8e55-4d91-abd3-ccafefe15b3f}</UniqueIdentifier>
     </Filter>
@@ -279,32 +276,11 @@
     <Filter Include="ソース ファイル\Interface\WorldSpace">
       <UniqueIdentifier>{33b7adf4-3564-4883-89ac-2c035e10b9eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\Shadow">
-      <UniqueIdentifier>{162cfd7d-cb1a-4dd0-905d-bd67c19344b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\Shadow\DepthMap">
-      <UniqueIdentifier>{5cc68e3a-1263-4a07-9678-8ec8c58d143c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\Shadow\Skinned">
-      <UniqueIdentifier>{982e61b7-289c-4dda-bfeb-2d47fe3e7d31}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\Shadow\DepthMap\Basic">
-      <UniqueIdentifier>{f7f1adb4-044e-4786-a415-058a024b0f6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\Shadow\DepthMap\Skinned">
-      <UniqueIdentifier>{1ba746fc-ee15-412b-a061-d2b6c68b50e6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Actor\Level\LevelTerrain">
       <UniqueIdentifier>{13c1207d-e69c-43d9-99ce-162fd0768f3f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Interface\PlayerControl">
       <UniqueIdentifier>{728ad362-5477-4dde-bb7d-82aefa32fb0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\Shadow\NormalMap">
-      <UniqueIdentifier>{bc553cfa-6ffe-4fd0-b276-2517a2c31896}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\EnvironmentMap">
-      <UniqueIdentifier>{1f0e995d-21c7-4808-b995-385c70e59616}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Interface\Debug">
       <UniqueIdentifier>{c66c0357-ebf9-46c3-9774-067f65e11084}</UniqueIdentifier>
@@ -327,14 +303,47 @@
     <Filter Include="ソース ファイル\Renderer\Mesh\Component\EnvironmentMap">
       <UniqueIdentifier>{28923696-600e-46d4-bdfc-b8cc336f9ead}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\ShadowLess">
-      <UniqueIdentifier>{398ee544-4e68-4b4c-b552-6983f026c348}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\World\Night">
       <UniqueIdentifier>{819bf69d-cd57-44fe-8eea-3d6e9840e6c8}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\World\Morning">
       <UniqueIdentifier>{64495a5f-e733-4dcb-8cf5-887f80324521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Renderer\Bloom">
+      <UniqueIdentifier>{135c4e9b-e57f-4a35-aac4-c4230f42b288}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\MultiRender">
+      <UniqueIdentifier>{30c7ed57-98b2-47b1-be64-8162ceda53d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender">
+      <UniqueIdentifier>{bd3d000d-4fa6-4835-99ea-ec2f2747cd23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\EnvironmentMap">
+      <UniqueIdentifier>{1f0e995d-21c7-4808-b995-385c70e59616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Mesh">
+      <UniqueIdentifier>{d7575731-32e4-4fff-ba89-16d77d42143a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow">
+      <UniqueIdentifier>{162cfd7d-cb1a-4dd0-905d-bd67c19344b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\DepthMap">
+      <UniqueIdentifier>{5cc68e3a-1263-4a07-9678-8ec8c58d143c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\DepthMap\Basic">
+      <UniqueIdentifier>{f7f1adb4-044e-4786-a415-058a024b0f6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\DepthMap\Skinned">
+      <UniqueIdentifier>{1ba746fc-ee15-412b-a061-d2b6c68b50e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\Skinned">
+      <UniqueIdentifier>{982e61b7-289c-4dda-bfeb-2d47fe3e7d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap">
+      <UniqueIdentifier>{bc553cfa-6ffe-4fd0-b276-2517a2c31896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\ShadowLess">
+      <UniqueIdentifier>{398ee544-4e68-4b4c-b552-6983f026c348}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -643,6 +652,9 @@
     </ClCompile>
     <ClCompile Include="Source\EnvironmentMapComponent.cpp">
       <Filter>ソース ファイル\Renderer\Mesh\Component\EnvironmentMap</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RenderBloom.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -967,6 +979,9 @@
     <ClInclude Include="Source\EnvironmentMapComponent.h">
       <Filter>ソース ファイル\Renderer\Mesh\Component\EnvironmentMap</Filter>
     </ClInclude>
+    <ClInclude Include="Source\RenderBloom.h">
+      <Filter>ソース ファイル\Renderer\Bloom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\DirectLine.vert">
@@ -985,12 +1000,6 @@
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
     <None Include="Data\Shaders\Particle.frag">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
-    <None Include="Data\Shaders\SkyBox.vert">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
-    <None Include="Data\Shaders\SkyBox.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
     <None Include="Data\Shaders\FB\BlurScreen.frag">
@@ -1015,10 +1024,10 @@
       <Filter>ソース ファイル\Shader\Source\FrameBuffer</Filter>
     </None>
     <None Include="Data\Shaders\BasicMesh.vert">
-      <Filter>ソース ファイル\Shader\Source\Mesh</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Mesh</Filter>
     </None>
     <None Include="Data\Shaders\BasicMesh.frag">
-      <Filter>ソース ファイル\Shader\Source\Mesh</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Mesh</Filter>
     </None>
     <None Include="Data\Shaders\SpriteShader.vert">
       <Filter>ソース ファイル\Shader\Source\Sprite</Filter>
@@ -1033,55 +1042,61 @@
       <Filter>ソース ファイル\Shader\Source\Sprite\WorldSpace</Filter>
     </None>
     <None Include="Data\Shaders\PhongShadow.vert">
-      <Filter>ソース ファイル\Shader\Source\Shadow</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow</Filter>
     </None>
     <None Include="Data\Shaders\PhongShadow.frag">
-      <Filter>ソース ファイル\Shader\Source\Shadow</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow</Filter>
     </None>
     <None Include="Data\Shaders\SkinnedShadow.vert">
-      <Filter>ソース ファイル\Shader\Source\Shadow\Skinned</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\Skinned</Filter>
     </None>
     <None Include="Data\Shaders\DepthMap.frag">
-      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Basic</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\DepthMap\Basic</Filter>
     </None>
     <None Include="Data\Shaders\DepthMap.vert">
-      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Basic</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\DepthMap\Basic</Filter>
     </None>
     <None Include="Data\Shaders\SkinnedDepth.vert">
-      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Skinned</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\DepthMap\Skinned</Filter>
     </None>
     <None Include="Data\Shaders\ShadowNormalMap.vert">
-      <Filter>ソース ファイル\Shader\Source\Shadow\NormalMap</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap</Filter>
     </None>
     <None Include="Data\Shaders\ShadowNormalMap.frag">
-      <Filter>ソース ファイル\Shader\Source\Shadow\NormalMap</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap</Filter>
     </None>
     <None Include="Data\Shaders\ShadowSkinnedNormal.vert">
-      <Filter>ソース ファイル\Shader\Source\Shadow\NormalMap</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap</Filter>
     </None>
     <None Include="Data\Shaders\SkinnedDepthNormal.vert">
-      <Filter>ソース ファイル\Shader\Source\Shadow\DepthMap\Skinned</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\DepthMap\Skinned</Filter>
     </None>
     <None Include="Data\Shaders\EnvironmentMap.vert">
-      <Filter>ソース ファイル\Shader\Source\EnvironmentMap</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\EnvironmentMap</Filter>
     </None>
     <None Include="Data\Shaders\EnvironmentMap.frag">
-      <Filter>ソース ファイル\Shader\Source\EnvironmentMap</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\EnvironmentMap</Filter>
     </None>
     <None Include="Data\Shaders\NormalMap.frag">
-      <Filter>ソース ファイル\Shader\Source\ShadowLess</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\ShadowLess</Filter>
     </None>
     <None Include="Data\Shaders\NormalMap.vert">
-      <Filter>ソース ファイル\Shader\Source\ShadowLess</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\ShadowLess</Filter>
     </None>
     <None Include="Data\Shaders\Phong.frag">
-      <Filter>ソース ファイル\Shader\Source\ShadowLess</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\ShadowLess</Filter>
     </None>
     <None Include="Data\Shaders\Phong.vert">
-      <Filter>ソース ファイル\Shader\Source\ShadowLess</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\ShadowLess</Filter>
     </None>
     <None Include="Data\Shaders\Skinned.vert">
-      <Filter>ソース ファイル\Shader\Source\ShadowLess</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\ShadowLess</Filter>
+    </None>
+    <None Include="Data\Shaders\SkyBox.frag">
+      <Filter>ソース ファイル\Shader\Source\SingleRender</Filter>
+    </None>
+    <None Include="Data\Shaders\SkyBox.vert">
+      <Filter>ソース ファイル\Shader\Source\SingleRender</Filter>
     </None>
   </ItemGroup>
 </Project>

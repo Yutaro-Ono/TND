@@ -187,9 +187,9 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	CreateSpriteVerts();        // スプライト用の頂点作成
 
 	//------------------------------------------------------------------+
-	// キューブマップ用頂点配列
+	// キューブ頂点配列の生成
 	//------------------------------------------------------------------+
-	CreateCubeMapVerts();
+	CreateCubeVerts();
 
 	//------------------------------------------------------------------+
 	// ポストエフェクト
@@ -272,7 +272,7 @@ void Renderer::Delete()
 	m_spriteShader->Delete();
 	m_worldSpaceSpriteShader->Delete();
 	delete m_spriteShader;
-	delete m_skyboxVerts;
+	delete m_cubeVerts;
 	m_skyboxShader->Delete();
 	delete m_frameBuffer;
 	delete m_shadowMap;
@@ -418,10 +418,9 @@ void Renderer::Draw()
 	//---------------------------------------------------------------+
 	// スカイボックスの描画
 	//---------------------------------------------------------------+
-	// シェーダーアクティブ化・スカイボックス用VAOをバインド
+	// キューブマップシェーダをアクティブ化・キューブVAOをバインド
 	m_skyboxShader->SetActive();
-	m_skyboxVerts->SetActive();
-
+	m_cubeVerts->SetActive();
 	m_activeSkyBox->Draw(m_skyboxShader);
 
 	//----------------------------------------------------------------+
@@ -765,9 +764,9 @@ ParticleManager * Renderer::GetParticleManager() const
 }
 
 // スカイボックス用頂点配列定義
-void Renderer::CreateCubeMapVerts()
+void Renderer::CreateCubeVerts()
 {
-	float skyboxVertices[] = 
+	float cubeVertices[] = 
 	{
       
 		-1.0f,  1.0f, -1.0f,
@@ -813,6 +812,8 @@ void Renderer::CreateCubeMapVerts()
 		 1.0f, -1.0f,  1.0f
 	};
 
+
+
 	unsigned int indices[] = 
 	{
 		 0,  1,  2,  0,  2,  3,    // 前面
@@ -824,10 +825,8 @@ void Renderer::CreateCubeMapVerts()
 	};
 
 
-
-
-	// VAO, VBO作成
-	m_skyboxVerts = new VertexArray(skyboxVertices, 36);
+	// 頂点配列をVAO, VBOとして登録
+	m_cubeVerts = new VertexArray(cubeVertices, 36);
 }
 
 // スプライト(2D用)の頂点配列を生成
