@@ -432,13 +432,7 @@ void Renderer::Draw()
 		// フレームバッファ書き込み処理
 		m_frameBuffer->WriteFrameBuffer();
 
-		m_bloom->WriteBuffer(m_meshComponents, m_skeletalMeshComponents, m_activeSkyBox);
-
-		//---------------------------------------------------------------+
-        // スカイボックスの描画
-        //---------------------------------------------------------------+
-        // キューブマップシェーダをアクティブ化・キューブVAOをバインド
-		//m_activeSkyBox->Draw(m_skyboxShader);
+		m_bloom->WriteBuffer(m_meshComponents, m_skeletalMeshComponents, m_activeSkyBox, m_envMeshComponents);
 
 		m_bloom->DrawDownSampling();
 		m_bloom->DrawGaussBlur();
@@ -447,12 +441,20 @@ void Renderer::Draw()
 	}
 
 
+	//---------------------------------------------------------------+
+    // スカイボックスの描画
+    //---------------------------------------------------------------+
+    // キューブマップシェーダをアクティブ化・キューブVAOをバインド
+    //m_activeSkyBox->Draw(m_skyboxShader);
+
 	//----------------------------------------------------------------+
 	// パーティクル描画
 	//----------------------------------------------------------------+
 	m_particleManager->Draw();
 	// ワールド空間上のスプライト描画
 	m_worldSpaceSpriteShader->SetActive();
+	m_worldSpaceSpriteShader->SetMatrixUniform("u_View", m_view);
+	m_worldSpaceSpriteShader->SetMatrixUniform("u_Projection", m_projection);
 	for (auto spr : m_worldSprites)
 	{
 		spr->Draw(m_worldSpaceSpriteShader);
@@ -470,8 +472,8 @@ void Renderer::Draw()
 	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 
 	// spriteシェーダーのアクティブ化
-	m_spriteShader->SetActive();
 	m_spriteVerts->SetActive();
+	m_spriteShader->SetActive();
 
 	for (auto sprite : m_spriteComponents)
 	{
@@ -916,8 +918,6 @@ bool Renderer::LoadShaders()
 	{
 		return false;
 	}
-	m_worldSpaceSpriteShader->SetActive();
-	m_worldSpaceSpriteShader->SetMatrixUniform("u_viewProj", viewProj);
 
 
 	// メッシュシェーダー

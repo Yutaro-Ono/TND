@@ -10,6 +10,7 @@
 #include "MeshComponent.h"
 #include "SkeletalMeshComponent.h"
 #include "CubeMapComponent.h"
+#include "EnvironmentMapComponent.h"
 #include "ShadowMap.h"
 #include "VertexArray.h"
 #include "Shader.h"
@@ -22,6 +23,7 @@ RenderBloom::RenderBloom()
 	:m_multiRenderTargetShader(nullptr)
 	, m_multiRenderSkinShader(nullptr)
 	, m_multiRenderCubeMapShader(nullptr)
+	, m_multiRenderEnvironmentShader(nullptr)
 	,m_hdrBloomShader(nullptr)
 	,m_downSamplingShader(nullptr)
 	,m_gaussShader(nullptr)
@@ -63,6 +65,8 @@ RenderBloom::RenderBloom()
 	m_multiRenderSkinShader->Load("Data/Shaders/MultiRender/MultiRenderNormShadowSkinned.vert", "Data/Shaders/MultiRender/MultiRenderNormShadowSkinned.frag");
 	m_multiRenderCubeMapShader = new Shader();
 	m_multiRenderCubeMapShader->Load("Data/Shaders/MultiRender/MultiRenderSkyBox.vert", "Data/Shaders/MultiRender/MultiRenderSkyBox.frag");
+	m_multiRenderEnvironmentShader = new Shader();
+	m_multiRenderEnvironmentShader->Load("Data/Shaders/MultiRender/MultiRenderEnvironmentMap.vert", "Data/Shaders/MultiRender/MultiRenderEnvironmentMap.frag");
 	// Bloomシェーダ
 	m_hdrBloomShader = new Shader();
 	m_hdrBloomShader->Load("Data/Shaders/FB/FrameBufferScreen.vert", "Data/Shaders/MultiRender/Bloom.frag");
@@ -80,6 +84,7 @@ RenderBloom::~RenderBloom()
 	delete m_multiRenderTargetShader;
 	delete m_multiRenderSkinShader;
 	delete m_multiRenderCubeMapShader;
+	delete m_multiRenderEnvironmentShader;
 	delete m_hdrBloomShader;
 	delete m_downSamplingShader;
 	delete m_gaussShader;
@@ -103,7 +108,7 @@ RenderBloom::~RenderBloom()
 }
 
 // カラーバッファ・高輝度バッファへの書き込み(専用のシェーダでメッシュの全描画を行う)
-void RenderBloom::WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std::vector<class SkeletalMeshComponent*> in_skelComp, CubeMapComponent* in_cubeMapComp)
+void RenderBloom::WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std::vector<class SkeletalMeshComponent*> in_skelComp, CubeMapComponent* in_cubeMapComp, std::vector<class EnvironmentMapComponent*> in_envComp)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_hdrFBO);
 	glEnable(GL_DEPTH_TEST);
@@ -169,6 +174,18 @@ void RenderBloom::WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std
 		skel->Draw(m_multiRenderSkinShader);
 	}
 
+	// 環境マップ
+	m_multiRenderEnvironmentShader->SetActive();
+	m_multiRenderEnvironmentShader->SetMatrixUniform("u_viewMat", RENDERER->GetViewMatrix());
+	m_multiRenderEnvironmentShader->SetMatrixUniform("u_projMat", RENDERER->GetProjectionMatrix());
+	m_multiRenderEnvironmentShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
+	m_multiRenderEnvironmentShader->SetInt("u_skybox", 0);
+	for (auto env : in_envComp)
+	{
+		env->DrawEnvironmentMap(m_multiRenderEnvironmentShader);
+	}
+
+	// スカイボックス
 	in_cubeMapComp->Draw(m_multiRenderCubeMapShader);
 
 
@@ -196,13 +213,11 @@ void RenderBloom::WriteBuffer(std::vector<class SkeletalMeshComponent*> in_skelC
 	m_multiRenderTargetShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
 	m_multiRenderTargetShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_multiRenderTargetShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
-
 	m_multiRenderTargetShader->SetMatrixUniform("u_view", RENDERER->GetViewMatrix());
 	m_multiRenderTargetShader->SetMatrixUniform("u_projection", RENDERER->GetProjectionMatrix());
 	m_multiRenderTargetShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
 	m_multiRenderTargetShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
 	m_multiRenderTargetShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
-
 	// サンプリング用テクスチャセット
 	m_multiRenderTargetShader->SetInt("u_mat.diffuseMap", 0);
 	m_multiRenderTargetShader->SetInt("u_mat.specularMap", 1);
@@ -321,6 +336,7 @@ void RenderBloom::DrawGaussBlur()
 	glViewport(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight());
 }
 
+// Bloom処理を施した画面と通常描画結果を合成して描画
 void RenderBloom::DrawBlendBloom()
 {
 
@@ -328,7 +344,7 @@ void RenderBloom::DrawBlendBloom()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	float exposure = 1.45f;
+	float exposure = 5.0f;
 
 	m_hdrBloomShader->SetActive();
 	m_hdrBloomShader->SetFloat("u_exposure", exposure);
@@ -336,11 +352,12 @@ void RenderBloom::DrawBlendBloom()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_defaultBuffer);
 
-	for (int i = 0; i < 5; i++)
+	for (unsigned int i = 0; i < 5; i++)
 	{
-		std::string s = "u_bloom" + std::to_string(i + 1);
-		m_hdrBloomShader->SetInt(s, i + 1);
-		glActiveTexture(GL_TEXTURE1 + i);
+		int num = i + 1;
+		std::string s = "u_bloom" + std::to_string(num);
+		m_hdrBloomShader->SetInt(s, num);
+		glActiveTexture(GL_TEXTURE0 + num);
 		glBindTexture(GL_TEXTURE_2D, m_blurBufferTex[i * 2 + 1]);
 	}
 

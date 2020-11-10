@@ -70,61 +70,6 @@ ShadowMap::~ShadowMap()
 	m_skinShadowShader->Delete();
 }
 
-void ShadowMap::RenderDepthMapFromLightView(Renderer* in_renderer, const std::vector<class MeshComponent*>& in_mesh)
-{
-	// 深度テスト有効化
-	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// ライト視点用のプロジェクション行列とビュー行列を用意する
-    // ディレクショナルライト(平行)であるため、プロジェクション行列には正射影行列を使用
-
-	// ライト視点の注視点 (プレイヤーの座標を入れる予定)
-	Vector3 lightViewTraget = Vector3(12000.0f, 14000.0f, -12.0f);
-	Vector3 direction = lightViewTraget - in_renderer->GetDirectionalLight().position;
-	direction.Normalize();
-
-	m_lightProj = Matrix4::CreateOrtho(8000.0f, 8000.0f, 1.0f, 8000.0f);
-	m_lightView = Matrix4::CreateLookAt(in_renderer->GetDirectionalLight().position, lightViewTraget, Vector3::UnitZ);
-	m_lightSpace = m_lightView * m_lightProj;
-
-	// シャドウマップはレンダリング時の解像度とは異なり、シャドウマップのサイズに合わせてViewportパラメータを変更する必要がある
-    // そのためglViewportを呼び出す。
-	glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-	// フレームバッファのバインド
-	glBindFramebuffer(GL_FRAMEBUFFER, m_depthMapFBO);
-	glClear(GL_DEPTH_BUFFER_BIT);
-	m_depthShader->SetActive();
-	m_depthShader->SetMatrixUniform("u_lightSpaceMatrix", m_lightSpace);
-
-	// デプスバッファを得るためにライトから見たシーンをレンダリングする
-	//----------------------------------------------------------------------+
-	for (auto mesh : in_mesh)
-	{
-		mesh->DrawShadow(m_depthShader);
-	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	// ビューポートを元に戻す
-	glViewport(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight());
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// シャドウシェーダのアクティブ化・uniformへのセット
-	m_shadowShader->SetActive();
-	m_shadowShader->SetMatrixUniform("u_view", RENDERER->GetViewMatrix());
-	m_shadowShader->SetMatrixUniform("u_projection", RENDERER->GetProjectionMatrix());
-	m_shadowShader->SetMatrixUniform("u_lightSpaceMatrix", m_lightSpace);
-	m_shadowShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
-
-	m_shadowShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
-	m_shadowShader->SetVectorUniform("u_dirLight.direction", direction);
-	m_shadowShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
-	m_shadowShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
-	m_shadowShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
-
-}
 
 // 
 void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponent*>& in_mesh, const std::vector<class SkeletalMeshComponent*> in_skelMesh)
@@ -137,9 +82,7 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 	// ライト視点用のプロジェクション行列とビュー行列を用意する
 	// ディレクショナルライト(平行)であるため、プロジェクション行列には正射影行列を使用
 	m_lightProj = Matrix4::CreateOrtho(7000.0f, 7000.0f, 1.0f, 5000.0f);
-
 	m_lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, RENDERER->GetDirectionalLight().target, Vector3::UnitZ);
-
 	m_lightSpace = m_lightView * m_lightProj;
 
 	// シャドウマップはレンダリング時の解像度とは異なり、シャドウマップのサイズに合わせてViewportパラメータを変更する必要がある

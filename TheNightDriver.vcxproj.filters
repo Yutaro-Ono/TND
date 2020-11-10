@@ -372,6 +372,9 @@
     <Filter Include="ソース ファイル\Shader\Source\MultiRender\Mesh\SkyBox">
       <UniqueIdentifier>{4cd8a808-5347-4f18-bf7e-62bd07a88c0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\MultiRender\Mesh\Environment">
+      <UniqueIdentifier>{975e5b2c-a977-4b70-b27b-b6bd652ea515}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -1151,6 +1154,12 @@
     </None>
     <None Include="Data\Shaders\MultiRender\MultiRenderSkyBox.vert">
       <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh\SkyBox</Filter>
+    </None>
+    <None Include="Data\Shaders\MultiRender\MultiRenderEnvironmentMap.vert">
+      <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh\Environment</Filter>
+    </None>
+    <None Include="Data\Shaders\MultiRender\MultiRenderEnvironmentMap.frag">
+      <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh\Environment</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -51,8 +51,11 @@ void SpriteComponent::Draw(Shader * in_shader)
 
 		// WorldTransformをセット
 		in_shader->SetMatrixUniform("u_worldTransform", world);
+		in_shader->SetInt("u_Texture", 0);
 		// テクスチャをアクティブ
-		m_texture->SetActive();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_texture->GetTextureID());
+		//m_texture->SetActive();
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	}

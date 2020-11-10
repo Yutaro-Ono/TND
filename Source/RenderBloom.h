@@ -16,7 +16,7 @@ public:
 
 	// カラーバッファ・高輝度バッファへの書き込み(専用のシェーダでメッシュの全描画を行う)
 	void WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std::vector<class SkeletalMeshComponent*> in_skelComp,
-		class CubeMapComponent* in_cubeMapComp);
+		class CubeMapComponent* in_cubeMapComp, std::vector<class EnvironmentMapComponent*> in_envComp);
 	void WriteBuffer(std::vector<class SkeletalMeshComponent*> in_skelComp);
 	
 
@@ -62,6 +62,7 @@ private:
 	class Shader* m_multiRenderTargetShader;    // HDR対応マルチターゲットシェーダ (Mesh)
 	class Shader* m_multiRenderSkinShader;      // HDR対応マルチターゲットシェーダ (SkinMesh)
 	class Shader* m_multiRenderCubeMapShader;   // HDR対応マルチターゲットシェーダ (CubeMap)
+	class Shader* m_multiRenderEnvironmentShader;      // HDR対応マルチターゲットシェーダ (EnvironmentMap)
 	class Shader* m_hdrBloomShader;             // Bloomシェーダ
 	class Shader* m_downSamplingShader;         // 縮小バッファ用シェーダ
 	class Shader* m_gaussShader;                // ガウスぼかし計算用シェーダ

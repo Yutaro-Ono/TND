@@ -169,6 +169,8 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		dir.direction.Normalize();
 		dir.ambient = Vector3(0.2f, 0.2f, 0.2f);
 		dir.diffuse = Vector3(0.15f, 0.21f, 0.41f);
+		dir.diffuse = Vector3(0.1f, 0.25f, 0.37f);
+
 		dir.specular = Vector3(0.01f, 0.15f, 0.4f);
 
 		m_nightBox->GetCubeMapComp()->SetIsVisible(true);

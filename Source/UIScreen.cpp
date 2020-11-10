@@ -92,8 +92,13 @@ void UIScreen::DrawTexture(Shader * in_shader, Texture * in_texture, const Vecto
 	
 	// シェーダにワールド変換行列を送信
 	in_shader->SetMatrixUniform("u_worldTransform", world);
+	in_shader->SetInt("u_Texture", 0);
+	//in_texture->SetActive();
+
 	// テクスチャをアクティブ化
-	in_texture->SetActive();
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, in_texture->GetTextureID());
+
 	// 描画する
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }

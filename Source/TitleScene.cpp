@@ -47,6 +47,11 @@ void TitleScene::Initialize()
 {
 	// ŠÂ‹«¶¬
 	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
+	DirectionalLight& light = RENDERER->GetDirectionalLight();
+	light.target = Vector3::Zero;
+	light.position = light.target + Vector3(2000.0f, 0.0f, 3000.0f);
+	light.direction = light.target - light.position;
+	light.direction.Normalize();
 	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
 	// ƒ[ƒh‰æ–Êˆ—
 	{

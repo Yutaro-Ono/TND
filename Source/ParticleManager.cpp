@@ -57,6 +57,7 @@ void ParticleManager::Draw()
 	// シェーダーON
 	m_shader->SetActive();
 	m_shader->SetMatrixUniform("u_ViewProj", viewProjectionMat);
+	m_shader->SetInt("uTexture", 0);
 
 	// 全てのパーティクルのビルボード行列をセット
 	(*itr)->SetBillboardMat(GetBillboardMatrix());
@@ -90,6 +91,9 @@ void ParticleManager::Draw()
 			ChangeTexture(nowTexture);
 		}
 
+		// テクスチャのアクティブ化
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, nowTexture);
 
 		// パーティクル描画
 		particles->Draw(m_shader);

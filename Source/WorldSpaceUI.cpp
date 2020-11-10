@@ -31,6 +31,12 @@ void WorldSpaceUI::Draw(Shader* in_shader)
 {
 	if (m_isVisible)
 	{
+		// ブレンドのアクティブ化
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		// 深度テストの停止
+		glDisable(GL_DEPTH_TEST);
+
 		// ビルボード行列のセット
 		m_staticBillboardMat = GetBillboardMatrix();
 
@@ -38,28 +44,25 @@ void WorldSpaceUI::Draw(Shader* in_shader)
 		Matrix4 mat, scale, projection, view;
 		scale = Matrix4::CreateScale(m_scale);
 		mat = Matrix4::CreateTranslation(m_position);
-		projection = RENDERER->GetProjectionMatrix();
-		view = RENDERER->GetViewMatrix();
+		//projection = RENDERER->GetProjectionMatrix();
+		//view = RENDERER->GetViewMatrix();
 
 		
 		// シェーダのユニフォームへワールド合成行列・アルファ値をセット
 		in_shader->SetMatrixUniform("u_WorldTransform", scale * m_staticBillboardMat * mat);
-		in_shader->SetMatrixUniform("u_View", view);
-		in_shader->SetMatrixUniform("u_Projection", projection);
-		//in_shader->SetMatrixUniform("u_ViewProj", view * projection);
+		in_shader->SetInt("u_Texture", 0);
+		//in_shader->SetMatrixUniform("u_View", view);
+		//in_shader->SetMatrixUniform("u_Projection", projection);
 
-		// ブレンドのアクティブ化
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		// 深度テストの停止
-		glDisable(GL_DEPTH_TEST);
+
+		// テクスチャのバインド
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_texture->GetTextureID());
+		//m_texture->SetActive();
+
 
 		// スプライト用のVAOをバインド
 		RENDERER->SetWorldSpriteVertex();
-
-		// テクスチャのバインド
-		m_texture->SetActive();
-
 		// キューブ描画
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 	}

@@ -251,6 +251,8 @@
     <None Include="Data\Shaders\Line.frag" />
     <None Include="Data\Shaders\Line.vert" />
     <None Include="Data\Shaders\MultiRender\Bloom.frag" />
+    <None Include="Data\Shaders\MultiRender\MultiRenderEnvironmentMap.frag" />
+    <None Include="Data\Shaders\MultiRender\MultiRenderEnvironmentMap.vert" />
     <None Include="Data\Shaders\MultiRender\MultiRenderNormShadow.frag" />
     <None Include="Data\Shaders\MultiRender\MultiRenderNormShadow.vert" />
     <None Include="Data\Shaders\MultiRender\DownSampling.frag" />
