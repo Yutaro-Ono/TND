@@ -375,6 +375,9 @@
     <Filter Include="ソース ファイル\Shader\Source\MultiRender\Mesh\Environment">
       <UniqueIdentifier>{975e5b2c-a977-4b70-b27b-b6bd652ea515}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Renderer\DefferedRenderer">
+      <UniqueIdentifier>{6b292e15-8a5f-4e36-9677-1f30405702ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -685,6 +688,9 @@
     </ClCompile>
     <ClCompile Include="Source\RenderBloom.cpp">
       <Filter>ソース ファイル\Renderer\Bloom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SandSmoke.cpp">
+      <Filter>ソース ファイル\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1011,6 +1017,15 @@
     </ClInclude>
     <ClInclude Include="Source\RenderBloom.h">
       <Filter>ソース ファイル\Renderer\Bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GBuffer.h">
+      <Filter>ソース ファイル\Renderer\DefferedRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DefferedRenderer.h">
+      <Filter>ソース ファイル\Renderer\DefferedRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SandSmoke.h">
+      <Filter>ソース ファイル\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

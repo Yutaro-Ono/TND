@@ -9,6 +9,7 @@
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "MoveComponentCar.h"
+#include "LevelTerrain.h"
 #include <string>
 
 class PlayerCar : public Actor
@@ -29,6 +30,13 @@ public:
 		TURN_IDLE,
 		TURN_LEFT,
 		TURN_RIGHT
+	};
+
+	// 現在立っている地形の種類
+	enum ON_TERRAIN_TYPE
+	{
+		ON_STREET,
+		ON_GLASS
 	};
 
 	PlayerCar();
@@ -53,6 +61,10 @@ public:
 	// 車の旋回状態
 	void SetTurnState(TURNING_STATE in_state) { m_turnState = in_state; }          // 車の旋回状態セット
 	TURNING_STATE GetTurnState() { return m_turnState; }                           // 車の運転状態取得
+	// 現在立っている地形のタイプ
+	void SetOnTerrainType(LevelTerrain::TERRAIN_TYPE in_type) { m_terrainType = in_type; }
+	LevelTerrain::TERRAIN_TYPE GetOnTerrainType() { return m_terrainType; }
+
 	// ボックスコライダーのゲッターセッター
 	void SetBoxCollider(class BoxCollider* in_hitBox) { m_hitBox = in_hitBox; }
 	class BoxCollider* GetBoxCollider() { return m_hitBox; }
@@ -74,8 +86,8 @@ public:
 private:
 
 	DRIVE_STATE m_driveState;             // 車の運転状態
-
 	TURNING_STATE m_turnState;            // 車の旋回状態(どちらの向きに曲がろうとしているか)
+	LevelTerrain::TERRAIN_TYPE m_terrainType;          // 現在立っている地形のタイプ
 
 	bool m_isActive;      // 車両操作がアクティブの時、更新処理をする
 	

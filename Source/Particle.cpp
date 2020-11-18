@@ -46,7 +46,7 @@ void Particle::Draw(Shader * in_shader)
 	scale = Matrix4::CreateScale(m_scale);
 	mat = Matrix4::CreateTranslation(m_position);
 
-	in_shader->SetMatrixUniform("uWorldTransform", scale * m_staticBillboardMat * mat);
+	in_shader->SetMatrixUniform("u_worldTransform", scale * m_staticBillboardMat * mat);
 	in_shader->SetFloatUniform("uAlpha", m_alpha);
 	in_shader->SetVectorUniform("uColor", m_color);
 
@@ -99,7 +99,7 @@ Matrix4 GetBillboardMatrix()
 	ret = RENDERER->GetViewMatrix();
 	ret.mat[3][0] = ret.mat[3][1] = ret.mat[3][2] = 0.0f;
 	ret.Transpose();
-	ret.mat[1][1] *= -1;
+	//ret.mat[1][1] *= -1;
 	ret.mat[2][2] *= -1;
 
 	Matrix4 Rot;

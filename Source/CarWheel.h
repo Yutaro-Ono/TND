@@ -9,7 +9,7 @@ class CarWheel : public Actor
 public:
 
 	// 車体におけるタイヤの位置
-	typedef enum WHEEL_POSITION
+	enum WHEEL_POSITION
 	{
 		FRONT_LEFT = 0,
 		FRONT_RIGHT,
@@ -27,13 +27,15 @@ public:
 	//-------------------------------------------------+
 	// Getter/Setter
 	//-------------------------------------------------+
-
+	class PlayerCar* GetCarPtr() { return m_owner; }
 
 private:
 
 	WHEEL_POSITION m_wheelPosition;          // タイヤが車体のどの位置にあるか
 
 	class PlayerCar* m_owner;                // オーナークラス(追従するクラス)
+
+	class SandSmoke* m_smoke;                // 砂煙クラス (パーティクル)
 
 	float m_playerRadian;                    // プレイヤーの弧度監視用
 

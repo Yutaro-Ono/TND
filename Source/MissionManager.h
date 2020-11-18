@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-
+#include "Math.h"
 
 class MissionManager
 {
@@ -14,6 +14,8 @@ public:
 	void Update(float in_deltaTime);
 	void InitRandom();
 	void ChangeSelectNum();                  // 何番目のミッションを指しているか
+
+	float CalcScoreForDistance(const Vector3& in_pPos, const Vector3& in_cPos1, const Vector3& in_cPos2);     // 距離に応じたミッションごとのスコア算出
 
 	//------------------------------------------+
 	// Getter / Setter

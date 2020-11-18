@@ -69,8 +69,13 @@ void Helicopter::SearchPlayer(PlayerManager* in_player)
 	// プレイヤーを発見したかどうか
 	if (m_searchSphere.Contains(in_player->GetPosition()))
 	{
-		m_foundPlayer = true;
-		printf("ヘリとプレイヤー当たった！\n");
+		// プレイヤーが車を運転していたら
+		if (in_player->GetPlayerCar()->GetDriveState() != PlayerCar::DRIVE_IDLE)
+		{
+			m_foundPlayer = true;
+			printf("ヘリとプレイヤー当たった！\n");
+		}
+
 	}
 	else
 	{

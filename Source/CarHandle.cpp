@@ -20,9 +20,12 @@ void CarHandle::UpdateActor(float in_deltaTime)
 {
 	// オーナーの拡大率・座標・回転行列に合わせておく
 	m_scale = m_owner->GetScale();
-	m_position = m_owner->GetPosition();
+	m_position = m_owner->GetPosition() + Vector3(20.0f, 0.0f, 30.0f);
 	m_rotation = m_owner->GetRotation();
+
+	Matrix4 handleMat = Matrix4::CreateScale(m_scale) * Matrix4::CreateFromQuaternion(m_rotation) * Matrix4::CreateTranslation(m_position);
+
 	// オーナーに合わせるためワールド座標を取得し続ける
-	m_worldTransform = m_owner->GetWorldTransform();
+	m_worldTransform = handleMat;
 
 }

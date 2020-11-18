@@ -12,6 +12,7 @@
 #include "CubeMapComponent.h"
 #include "EnvironmentMapComponent.h"
 #include "ShadowMap.h"
+#include "ParticleManager.h"
 #include "VertexArray.h"
 #include "Shader.h"
 #include <iostream>
@@ -191,45 +192,17 @@ void RenderBloom::WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std
 
 }
 
-// カラーバッファ・高輝度バッファへの書き込み(専用のシェーダでメッシュの全描画を行う)
-void RenderBloom::WriteBuffer(std::vector<class SkeletalMeshComponent*> in_skelComp)
+// パーティクルの描画
+void RenderBloom::WriteBuffer(ParticleManager* in_particle)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_hdrFBO);
-	// ビューポートを画面サイズに戻す
-	glViewport(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight());
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 
-	// ライト空間の各行列を定義
-	Matrix4 lightSpace, lightView, lightProj;
-	lightProj = Matrix4::CreateOrtho(7000.0f, 7000.0f, 1.0f, 5000.0f);
-	lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, RENDERER->GetDirectionalLight().target, Vector3::UnitZ);
-	lightSpace = lightView * lightProj;
+	in_particle->Draw();
 
-	// シャドウシェーダのアクティブ化・uniformへのセット
-	m_multiRenderTargetShader->SetActive();
-	m_multiRenderTargetShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
-	m_multiRenderTargetShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
-	m_multiRenderTargetShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
-	m_multiRenderTargetShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
-	m_multiRenderTargetShader->SetMatrixUniform("u_view", RENDERER->GetViewMatrix());
-	m_multiRenderTargetShader->SetMatrixUniform("u_projection", RENDERER->GetProjectionMatrix());
-	m_multiRenderTargetShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
-	m_multiRenderTargetShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
-	m_multiRenderTargetShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
-	// サンプリング用テクスチャセット
-	m_multiRenderTargetShader->SetInt("u_mat.diffuseMap", 0);
-	m_multiRenderTargetShader->SetInt("u_mat.specularMap", 1);
-	m_multiRenderTargetShader->SetInt("u_mat.normalMap", 2);
-	m_multiRenderTargetShader->SetInt("u_mat.depthMap", 3);
-
-	// シャドウシェーダによるメッシュ描画
-	for (auto mesh : in_skelComp)
-	{
-		mesh->Draw(m_multiRenderTargetShader);
-	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+
 
 // 高輝度バッファをダウンサンプリング計算して描画する
 void RenderBloom::DrawDownSampling()

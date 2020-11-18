@@ -1,4 +1,5 @@
 #include "CarWheel.h"
+#include "SandSmoke.h"
 
 // 回転値
 static float spin = 0.0f;
@@ -9,6 +10,7 @@ const std::string CarWheel::CAR_WHEEL_STEEL_MESH_PATH = "Data/Meshes/TND/Actors/
 
 CarWheel::CarWheel(PlayerCar* in_owner, WHEEL_POSITION in_enumPos)
 	:m_owner(in_owner)
+	,m_smoke(nullptr)
 	,m_wheelPosition(in_enumPos)
 	,m_playerRadian(m_owner->GetRadian())
 {
@@ -56,6 +58,9 @@ CarWheel::CarWheel(PlayerCar* in_owner, WHEEL_POSITION in_enumPos)
 
 		break;
 	}
+
+	// 砂煙パーティクル生成
+	m_smoke = new SandSmoke(this);
 }
 
 CarWheel::~CarWheel()
@@ -68,8 +73,6 @@ void CarWheel::UpdateActor(float in_deltaTime)
 	m_scale = m_owner->GetScale();
 	m_position = m_owner->GetPosition() + m_adjustPos;
 	m_rotation = m_owner->GetRotation();
-
-
 
 	//static float dir = 0.0f;
 	Vector3 dir = Vector3::Zero;

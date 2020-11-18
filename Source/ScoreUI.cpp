@@ -164,9 +164,18 @@ void ScoreUI::Draw(Shader * in_shader)
 // 加算用スコアをスコアに追加する(+10ずつ)
 void ScoreUI::AddScore()
 {
+	// スコアを10ずつ加算 (追加分が10を下回っていたら、そのままスコアに加算し0に)
+	if (m_addScore >= 10)
+	{
+		m_score += 10;
+		m_addScore -= 10;
+	}
+	else
+	{
+		m_score += m_addScore;
+		m_addScore = 0;
+	}
 
-	m_score += 10;
-	m_addScore -= 10;
 
 
 	// 加算分は0を下回らない

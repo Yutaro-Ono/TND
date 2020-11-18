@@ -7,8 +7,10 @@
 #include "Input.h"
 #include "InputController.h"
 #include "ScoreUI.h"
+#include "PlayerManager.h"
 #include <stdio.h>
 #include <time.h>
+
 
 const int MissionManager::MISSION_ALL_NUM = 3;    // 同時進行する任務の限界数
 
@@ -70,6 +72,10 @@ MissionManager::MissionManager(GameWorld* in_world)
 			}
 		}
 
+		// プレイヤーの現在地・スタート地点とゴール地点の距離からスコアを算出
+		float score = CalcScoreForDistance(m_player->GetPosition(),
+			                               m_world->GetClients()[startPos[i]]->GetPosition(), 
+			                               m_world->GetClients()[goalPos[i]]->GetPosition());
 
 		// ミッションタイプごとにミッション内容を設定
 		if (missionType == 1)
@@ -78,7 +84,7 @@ MissionManager::MissionManager(GameWorld* in_world)
 			m_missions.push_back(new MissionBase(this, MissionBase::DELIVERY, i));
 			// ミッション概要セット
 			m_missions[i]->SetMissionDetail(m_world->GetClients()[startPos[i]],
-				m_world->GetClients()[goalPos[i]], 1000, 60);
+				m_world->GetClients()[goalPos[i]], score, 60);
 		}
 		else
 		{
@@ -86,7 +92,7 @@ MissionManager::MissionManager(GameWorld* in_world)
 			m_missions.push_back(new MissionBase(this, MissionBase::TAXI, i));
 			// ミッション概要セット
 			m_missions[i]->SetMissionDetail(m_world->GetClients()[startPos[i]],
-				m_world->GetClients()[goalPos[i]], 1000, 50);
+				m_world->GetClients()[goalPos[i]], score, 50);
 		}
 
 		// 依頼人アクタ配列をシャッフル
@@ -192,6 +198,10 @@ void MissionManager::Update(float in_deltaTime)
 				}
 			}
 
+			// プレイヤーの現在地・スタート地点とゴール地点の距離からスコアを算出
+			float score = CalcScoreForDistance(m_player->GetPosition(), m_world->GetClients()[startPos]->GetPosition(),
+				                               m_world->GetClients()[goalPos]->GetPosition());
+
 			// ミッションタイプごとにミッション内容を設定
 			if (missionType == 1)
 			{
@@ -199,7 +209,7 @@ void MissionManager::Update(float in_deltaTime)
 				m_missions.push_back(new MissionBase(this, MissionBase::DELIVERY, i));
 				// ミッション概要セット
 				m_missions.back()->SetMissionDetail(m_world->GetClients()[startPos],
-					m_world->GetClients()[goalPos], 1000, 60);
+					m_world->GetClients()[goalPos], score, 60);
 				// クライアントをセレクト状態に
 				m_world->GetClients()[startPos]->SetClientSetting(ClientActor::START);
 				m_world->GetClients()[goalPos]->SetClientSetting(ClientActor::GOAL);
@@ -211,7 +221,7 @@ void MissionManager::Update(float in_deltaTime)
 				m_missions.push_back(new MissionBase(this, MissionBase::TAXI, i));
 				// ミッション概要セット
 				m_missions.back()->SetMissionDetail(m_world->GetClients()[startPos],
-					m_world->GetClients()[goalPos], 1000, 50);
+					m_world->GetClients()[goalPos], score, 50);
 				// クライアントをセレクト状態に
 				m_world->GetClients()[startPos]->SetClientSetting(ClientActor::START);
 				m_world->GetClients()[goalPos]->SetClientSetting(ClientActor::GOAL);
@@ -256,4 +266,17 @@ void MissionManager::ChangeSelectNum()
 		}
 	}
 
+}
+
+// 距離に応じたスコア計算
+float MissionManager::CalcScoreForDistance(const Vector3& in_pPos, const Vector3& in_cPos1, const Vector3& in_cPos2)
+{
+	// ベーススコアポイント
+	float baseScore = 1000.0f;
+	float score = 0.0f;
+
+	// 1.プレイヤーとスタート地点クライアントの距離 + スタート地点とゴール地点の距離の合計からボーナススコアを算出
+	score = (Vector3::Distance(in_pPos, in_cPos1) / 20.0f /10.0f) + (Vector3::Distance(in_cPos1, in_cPos2) / 20.0f / 10.0f);
+
+	return baseScore + score;
 }

@@ -103,6 +103,7 @@
     <ClCompile Include="Source\ResultScreen.cpp" />
     <ClCompile Include="Source\RuleScore.cpp" />
     <ClCompile Include="Source\RuleTime.cpp" />
+    <ClCompile Include="Source\SandSmoke.cpp" />
     <ClCompile Include="Source\ScoreUI.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\ShadowMap.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Source\CountDownUI.h" />
     <ClInclude Include="Source\CubeMapComponent.h" />
     <ClInclude Include="Source\DebugBox.h" />
+    <ClInclude Include="Source\DefferedRenderer.h" />
     <ClInclude Include="Source\Environment.h" />
     <ClInclude Include="Source\EnvironmentMapComponent.h" />
     <ClInclude Include="Source\Font.h" />
@@ -152,6 +154,7 @@
     <ClInclude Include="Source\GameMain.h" />
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GameWorld.h" />
+    <ClInclude Include="Source\GBuffer.h" />
     <ClInclude Include="Source\Grid.h" />
     <ClInclude Include="Source\HeliBody.h" />
     <ClInclude Include="Source\Helicopter.h" />
@@ -212,6 +215,7 @@
     <ClInclude Include="Source\ResultScreen.h" />
     <ClInclude Include="Source\RuleScore.h" />
     <ClInclude Include="Source\RuleTime.h" />
+    <ClInclude Include="Source\SandSmoke.h" />
     <ClInclude Include="Source\SceneBase.h" />
     <ClInclude Include="Source\ScoreUI.h" />
     <ClInclude Include="Source\Shader.h" />
@@ -402,7 +406,7 @@ xcopy "$(ProjectDir)Library\LOGI\lib\x86\*.dll" "$(OutDir)" /i /s /y</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir).\Library\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Library\GLEW\include;$(SolutionDir)Library\SDL\include;$(SolutionDir)Library\rapidjson\include;$(SolutionDir)Library\LOGI\include;$(SolutionDir)Library\DirectX\include\;$(SolutionDir)Library\include\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -410,9 +414,8 @@ xcopy "$(ProjectDir)Library\LOGI\lib\x86\*.dll" "$(OutDir)" /i /s /y</Command>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;LogitechSteeringWheelLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Library\SDL\lib\win\x86\;$(SolutionDir)Library\GLEW\lib\win\x86\;$(SolutionDir)Library\LOGI\lib\x86\;$(SolutionDir)Library\DirectX\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>LogitechSteeringWheelLib.lib;opengl32.lib;SDL2.lib;SDL2main.lib;SDL2_ttf.lib;SDL2_mixer.lib;SDL2_image.lib;glew32.lib;dinput8.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>

@@ -9,15 +9,16 @@
 #include "Component.h"
 #include "PhysicsWorld.h"
 #include "PlayerManager.h"
-#include "LevelTerrain.h"
 
-const std::string PlayerCar::CAR_HANDLE_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Handle/SM_suv_steering_wheel_lod1_Internal.OBJ";
+
+const std::string PlayerCar::CAR_HANDLE_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Handle/SM_suv_steering_wheel_lod0_Internal.OBJ";
 
 // コンストラクタ
 PlayerCar::PlayerCar()
 	:m_isActive(true)
 	,m_driveState(DRIVE_IDLE)
 	,m_turnState(TURN_IDLE)
+	,m_terrainType(LevelTerrain::TYPE_STREET)
 	,m_friction(1.0f)
 {
 	// 車両操作用のMoveComponentを生成
@@ -100,12 +101,14 @@ void PlayerCar::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hitBo
 	{
 		if (bgBox.Contains(m_position - Vector3(0.0f, 0.0f, 10.0f)))
 		{
+			// 現在の地形タイプを格納
+			SetOnTerrainType(in_hitBox->GetTerrainPtr()->GetNodeType());
 			// 地形ごとに摩擦力を設定
-			if (in_hitBox->GetTerrainPtr()->GetNodeType() == LevelTerrain::TYPE_GLASS)
+			if (m_terrainType == LevelTerrain::TYPE_GLASS)
 			{
 				m_friction = in_hitBox->GetTerrainPtr()->GetFrictionVal();
 			}
-			if (in_hitBox->GetTerrainPtr()->GetNodeType() == LevelTerrain::TYPE_STREET)
+			if (m_terrainType == LevelTerrain::TYPE_STREET)
 			{
 				m_friction = in_hitBox->GetTerrainPtr()->GetFrictionVal();
 			}

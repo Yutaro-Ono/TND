@@ -433,6 +433,7 @@ void Renderer::Draw()
 		m_frameBuffer->WriteFrameBuffer();
 
 		m_bloom->WriteBuffer(m_meshComponents, m_skeletalMeshComponents, m_activeSkyBox, m_envMeshComponents);
+		m_bloom->WriteBuffer(m_particleManager);
 
 		m_bloom->DrawDownSampling();
 		m_bloom->DrawGaussBlur();
@@ -450,7 +451,8 @@ void Renderer::Draw()
 	//----------------------------------------------------------------+
 	// パーティクル描画
 	//----------------------------------------------------------------+
-	m_particleManager->Draw();
+	//glEnable(GL_DEPTH_TEST);
+	//m_particleManager->Draw();
 	// ワールド空間上のスプライト描画
 	m_worldSpaceSpriteShader->SetActive();
 	m_worldSpaceSpriteShader->SetMatrixUniform("u_View", m_view);

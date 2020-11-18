@@ -13,8 +13,6 @@ class GameWorld
 public:
 
 
-
-
 	GameWorld();             // コンストラクタ
 	~GameWorld();            // デストラクタ
 

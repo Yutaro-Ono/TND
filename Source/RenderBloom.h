@@ -17,7 +17,7 @@ public:
 	// カラーバッファ・高輝度バッファへの書き込み(専用のシェーダでメッシュの全描画を行う)
 	void WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std::vector<class SkeletalMeshComponent*> in_skelComp,
 		class CubeMapComponent* in_cubeMapComp, std::vector<class EnvironmentMapComponent*> in_envComp);
-	void WriteBuffer(std::vector<class SkeletalMeshComponent*> in_skelComp);
+	void WriteBuffer(class ParticleManager* in_particle);
 	
 
 
