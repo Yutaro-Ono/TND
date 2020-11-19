@@ -5,7 +5,7 @@
 #include "PlayerCar.h"
 
 const float MoveComponentCar::HAND_BRAKE_VALUE = 8.0f;            // ハンドブレーキ操作時のブレーキ値
-const float MoveComponentCar::ACCEL_LIMIT = 80.0f;                // 最大速度の上限値(現在の基準：150km/h)
+const float MoveComponentCar::ACCEL_LIMIT = 120.0f;                // 最大速度の上限値(現在の基準：150km/h)
 const float MoveComponentCar::BRAKE_LIMIT = 35.0f;
 
 // コンストラクタ
@@ -53,7 +53,7 @@ void MoveComponentCar::Update(float in_deltaTime)
 void MoveComponentCar::MovementByController(float in_deltaTime)
 {
 	//キャラ入力
-	const float speed = 5.0f;
+	const float speed = 2.0f;
 	Vector3 forwardVec = Vector3(60.0f, 0.0f, 0.0f);
 	Vector3 rightVec = Vector3(0.0f, 1.0f, 0.0f);
 	Vector3 charaForwardVec = m_owner->GetForward();
@@ -90,7 +90,8 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 		// アクセルの最大値を上回っていなければ更新し、上回っていたら最大値を正規化
 		if (m_accelValue < m_accelLimit)
 		{
-			m_accelValue += speed * (triggerR * in_deltaTime);
+			//m_accelValue += speed * (triggerR * in_deltaTime);
+			m_accelValue += speed * triggerR;
 		}
 		else
 		{
@@ -113,7 +114,8 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 		// ブレーキの最大値を上回っていなければ更新し、上回っていれば最大値を正規化
 		if (m_brakeValue < m_brakeLimit)
 		{
-			m_brakeValue += speed * (triggerL * in_deltaTime);
+			//m_brakeValue += speed * (triggerL * in_deltaTime);
+			m_brakeValue += speed * triggerL;
 		}
 		else
 		{
@@ -186,7 +188,9 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 			// 左右回転
 			DirVec.y += rightVec.y * axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 5.0f) * in_deltaTime;
 			// Z軸回転
-			m_radian += axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 100.0f) * in_deltaTime;
+			//m_radian += axisL.x * (m_accelValue / m_accelLimit) * (m_accelLimit / 150.0f) * in_deltaTime;
+			m_radian += axisL.x * (m_accelValue / m_accelLimit) * 0.5f * in_deltaTime;
+
 		}
 		// バック時
 		if (m_playerCar->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_BRAKE)

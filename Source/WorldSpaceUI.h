@@ -12,10 +12,12 @@ class WorldSpaceUI
 public:
 
 	WorldSpaceUI(const Vector3& in_pos, const std::string& in_filePath, float in_scale = 1.0f);
+	WorldSpaceUI(const Vector3& in_pos, class Texture* in_texture, float in_scale = 1.0f);
 	~WorldSpaceUI();
 
 
 	void SetPosition(const Vector3& in_pos) { m_position = in_pos; }
+	void SetTexture(class Texture* in_tex) { m_texture = in_tex; }
 	int GetTextureID() { return m_textureID; }
 
 	void Draw(class Shader* in_shader);

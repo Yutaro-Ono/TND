@@ -76,6 +76,8 @@ private:
 
 	class BoxCollider* m_hitBox;                 // 当たり判定ボックス
 
-	class WorldSpaceUI* m_landMark;              // 位置表示用
+	class WorldSpaceUI* m_landMark;              // 位置を示すランドマークテクスチャ
 
+	class Texture* m_distanceTex;
+	class WorldSpaceUI* m_distanceWorld;              // 距離を示すテクスチャ
 };

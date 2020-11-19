@@ -16,6 +16,8 @@ MissionUI::MissionUI(MissionBase* in_mission)
 	Vector3 color = Vector3(1.0f, 1.0f, 1.0f);
 	// フォントサイズ
 	int fontSize = 32;
+	// 制限時間を文字列として取得
+	std::stringstream timestream;
 	//------------------------------------------------------------------+
 	// ミッション概要フォントの生成
 	//------------------------------------------------------------------+
@@ -36,6 +38,13 @@ MissionUI::MissionUI(MissionBase* in_mission)
 
 		// 耐久値のフォントテクスチャを生成
 		m_durableValTex[i] = m_font->RenderText("100%", color * i, fontSize);
+
+
+		timestream << "TIME:" << m_mission->GetTimeLimit();
+		// 制限時間のフォントテクスチャを生成
+		m_timeTex[i] = m_font->RenderText(timestream.str(), color * i, fontSize);
+
+		m_distanceTex[i] = nullptr;
 	}
 
 }

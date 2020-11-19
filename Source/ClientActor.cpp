@@ -6,7 +6,9 @@
 #include "SkeletalMeshComponent.h"
 #include "Texture.h"
 #include "MissionBase.h"
+#include "Font.h"
 #include <string>
+#include <sstream>
 #include <random>
 
 // キャラごとのメッシュパス
@@ -26,6 +28,8 @@ ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 	,m_distancePlayer(0.0f)
 	,m_setting(CLIENT_SETTING::NONE)
 	,m_landMark(nullptr)
+	,m_distanceTex(nullptr)
+	,m_distanceWorld(nullptr)
 	,m_animState(CLIENT_ANIM::ANIM_IDLE_LOOKAROUND)
 	,m_hitBox(nullptr)
 {
@@ -35,8 +39,15 @@ ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 	SetScale(0.265f);
 
 	// ランドマーク生成
-	m_landMark = new WorldSpaceUI(m_position, "Data/Interface/TND/Control/landMark.png", 200.0f);
+	m_landMark = new WorldSpaceUI(m_position + Vector3(0.0f, 0.0f, -30.0f), "Data/Interface/TND/Control/landMark.png", 200.0f);
+	m_landMark->SetVisible(false);
 
+	// 距離テクスチャ生成
+	std::stringstream distStream;
+	distStream << (double)m_distancePlayer << "m";
+	m_distanceTex = GAME_INSTANCE.GetFont(GAME_INSTANCE.GetFontPath())->RenderText(distStream.str());
+	m_distanceWorld = new WorldSpaceUI(m_position + Vector3(0.0f, 30.0f, -30.0f), m_distanceTex, 200.0f);
+	m_distanceWorld->SetVisible(false);
 
 	// 依頼人のメッシュ生成
 	LoadMeshEachChara(in_chara);
@@ -65,31 +76,51 @@ ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 ClientActor::~ClientActor()
 {
 	delete m_landMark;
+	delete m_distanceWorld;
 }
 
 // 更新処理
 void ClientActor::UpdateActor(float in_deltaTime)
 {
+
 	// この依頼人がミッションに設定されている時のみランドマーク表示
 	if (m_isSelected && (m_setting == CLIENT_SETTING::START || m_setting == CLIENT_SETTING::GOAL))
 	{
 		m_landMark->SetVisible(true);
+		m_distanceWorld->SetVisible(true);
 
 		// プレイヤーとの距離に応じたランドマークのスケール変更
-		float scale = m_distancePlayer / 10.0f;
+		float scale = m_distancePlayer / 15.0f;
 		if (scale < 30.0f)
 		{
 			scale = 30.0f;
 		}
-		if (scale > 3000.0f)
+		if (scale > 2000.0f)
 		{
-			scale = 3000.0f;
+			scale = 2000.0f;
 		}
+		// 距離更新
+		if (m_distanceTex != nullptr) { m_distanceTex->Delete(); }
+		std::stringstream distStream;
+		
+		distStream << (long)m_distancePlayer / 20 << "m";
+		m_distanceTex = GAME_INSTANCE.GetFont(GAME_INSTANCE.GetFontPath())->RenderText(distStream.str(), Vector3(1.0f, 1.0f, 1.0f), 72);
+		m_distanceWorld->SetTexture(m_distanceTex);
+		m_distanceWorld->SetPosition(m_position + Vector3(0.0f, 0.0f, scale / 10.0f * 10.0f));
+		if (scale <= 300.0f)
+		{
+			m_distanceWorld->SetVisible(false);
+		}
+
+
+
 		m_landMark->SetScale(scale);
+		m_distanceWorld->SetScale(scale);
 	}
 	else
 	{
 		m_landMark->SetVisible(false);
+		m_distanceWorld->SetVisible(false);
 	}
 
 	m_recomputeWorldTransform = true;

@@ -24,7 +24,7 @@ LoadScreen::LoadScreen()
 		// ファイルパス
 		ssGauge << "Data/Interface/System/Load/Loading_UI_" << i << ".png";
 
-		m_loadGauge[i] = RENDERER->GetTexture(ssGauge.str());
+		//m_loadGauge[i] = RENDERER->GetTexture(ssGauge.str());
 
 	}
 
@@ -70,7 +70,7 @@ void LoadScreen::Draw(Shader * in_shader)
 		// 操作説明
 		if (m_tutorialMsg && m_isGame == true)
 		{
-			DrawTexture(in_shader, m_tutorialMsg, Vector2(0.0f, 0.0f), 1.0f);
+			//DrawTexture(in_shader, m_tutorialMsg, Vector2(0.0f, 0.0f), 1.0f);
 		}
 
 		if (m_loading)
@@ -79,13 +79,13 @@ void LoadScreen::Draw(Shader * in_shader)
 		}
 
 		// ロードゲージの描画
-		for (int i = 0; i < m_gaugeNum; i++)
-		{
-			if (m_loadGauge[i])
-			{
-				DrawTexture(in_shader, m_loadGauge[i], m_loadGaugePos, 0.25f);
-			}
-		}
+		//for (int i = 0; i < m_gaugeNum; i++)
+		//{
+		//	if (m_loadGauge[i])
+		//	{
+		//		//DrawTexture(in_shader, m_loadGauge[i], m_loadGaugePos, 0.25f);
+		//	}
+		//}
 	}
 
 

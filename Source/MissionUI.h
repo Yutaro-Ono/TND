@@ -38,7 +38,6 @@ private:
 	class Texture* m_distanceTex[2];          // 距離表示のテクスチャ
 	class Texture* m_durableValTex[2];        // 耐久表示のテクスチャ
 
-
 	Vector2 m_uiPos;                       // UI表示位置オフセット
 
 

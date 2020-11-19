@@ -75,9 +75,9 @@ void SandSmoke::UpdateActor(float in_deltaTime)
 		// ランダムな値を設定
 		Vector3 randV((rand() % 100) / 10.0f, (rand() % 100) / 10.0f, (rand() % 100) / 10.0f);
 		Vector3 Velocity = randV * 0.1f;
-		Velocity.x += -0.5f;
-		Velocity.y += -0.0f;
-		Velocity.z += 2.5f;
+		Velocity.x += -0.0f;
+		Velocity.y = 0.0f;
+		Velocity.z += 0.5f;
 
 		// パーティクル発生
 		// 3フレームに1回　パーティクル発生

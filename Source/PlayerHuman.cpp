@@ -14,7 +14,7 @@
 #include "Input.h"
 #include "InputController.h"
 
-const float cAnimationSpeed = 0.7f;          // アニメーションの速度
+const float cAnimationSpeed = 14.0f;          // アニメーションの速度
 
 PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 	:m_manager(in_manager)
@@ -53,7 +53,7 @@ PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 	m_animTypes[ANIM_LANDING] = RENDERER->GetAnimation("Data/Animation/Player/ThirdPersonJump_End.gpanim", false);
 
 	// アイドル時のアニメーションをセットしておく
-	m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed);
+	m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed * GAME_INSTANCE.GetDeltaTime());
 
 	// 当たり判定ボックスのセット
 	AABB playerBox = mesh->GetCollisionBox();
@@ -110,7 +110,7 @@ void PlayerHuman::UpdateActor(float in_deltaTime)
 		}
 
 		//キャラ状態遷移
-		ChangeState();
+		ChangeState(in_deltaTime);
 
 		// ジャンプ終了時はキー入力受け付けない
 		if (m_animState == ANIM_LANDING)
@@ -129,13 +129,13 @@ void PlayerHuman::UpdateActor(float in_deltaTime)
 		m_moveComp->SetActive(false);
 		m_skelMeshComp->SetVisible(false);
 		// アイドル時のアニメーションをセット
-		m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed);
+		m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed * in_deltaTime);
 	}
 
 	printf("Player x : %f, y : %f, z : %f\n", m_position.x, m_position.y, m_position.z);
 }
 
-void PlayerHuman::ChangeState()
+void PlayerHuman::ChangeState(float in_deltaTime)
 {
 	//前回の当たり判定処理で下に地面がなかったらジャンプ中へ移行する
 	if (!m_isJump && !m_onGround && m_position.z > 0.0)
@@ -206,13 +206,13 @@ void PlayerHuman::ChangeState()
 		{
 			if (!m_skelMeshComp->IsPlaying())
 			{
-				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed);
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed * in_deltaTime);
 				m_animState = ANIM_IDLE;
 			}
 		}
 		else if ((m_animState != ANIM_IDLE))
 		{
-			m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed);
+			m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed * in_deltaTime);
 			m_animState = ANIM_IDLE;
 		}
 	}
@@ -223,7 +223,7 @@ void PlayerHuman::ChangeState()
 		{
 			if (!m_skelMeshComp->IsPlaying())
 			{
-				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_RUNNING], cAnimationSpeed);
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_RUNNING], cAnimationSpeed * in_deltaTime);
 				m_animState = ANIM_RUNNING;
 			}
 		}
@@ -236,13 +236,13 @@ void PlayerHuman::ChangeState()
 			// 正面
 			if (m_animState != ANIM_WALKING_FWD && axisL.y < -0.1f && axisL.y > -0.65f)
 			{
-				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_FWD], cAnimationSpeed);
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_FWD], cAnimationSpeed * in_deltaTime);
 				m_animState = ANIM_WALKING_FWD;
 			}
 			// RUNアニメ開始
 			if (m_animState != ANIM_RUNNING && axisL.y <= -0.65f)
 			{
-				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_RUNNING], cAnimationSpeed);
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_RUNNING], cAnimationSpeed * in_deltaTime);
 				m_animState = ANIM_RUNNING;
 			}
 		}
@@ -250,7 +250,7 @@ void PlayerHuman::ChangeState()
 		// 後方
 		if (m_animState != ANIM_WALKING_BWD && axisL.y > 0.1f)
 		{
-			m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_BWD], cAnimationSpeed);
+			m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_BWD], cAnimationSpeed * in_deltaTime);
 			m_animState = ANIM_WALKING_BWD;
 		}
 
@@ -259,13 +259,13 @@ void PlayerHuman::ChangeState()
 			// 左側
 			if (m_animState != ANIM_WALKING_LEFT && axisL.x < -0.1f)
 			{
-				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_LEFT], cAnimationSpeed);
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_LEFT], cAnimationSpeed * in_deltaTime);
 				m_animState = ANIM_WALKING_LEFT;
 			}
 			// 右側
 			if (m_animState != ANIM_WALKING_RIGHT && axisL.x > 0.1f)
 			{
-				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_RIGHT], cAnimationSpeed);
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_WALKING_RIGHT], cAnimationSpeed * in_deltaTime);
 				m_animState = ANIM_WALKING_RIGHT;
 			}
 		}

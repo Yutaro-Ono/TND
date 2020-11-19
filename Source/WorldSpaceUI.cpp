@@ -20,6 +20,16 @@ WorldSpaceUI::WorldSpaceUI(const Vector3& in_pos, const std::string& in_filePath
 	RENDERER->AddSpriteWorld(this);
 }
 
+WorldSpaceUI::WorldSpaceUI(const Vector3& in_pos, Texture* in_texture, float in_scale)
+	:m_position(in_pos + adjustPos)
+	, m_scale(in_scale)
+	, m_texture(nullptr)
+	, m_isVisible(true)
+{
+	m_texture = in_texture;
+	RENDERER->AddSpriteWorld(this);
+}
+
 // デストラクタ
 WorldSpaceUI::~WorldSpaceUI()
 {

@@ -34,7 +34,7 @@ public:
 
 	void UpdateActor(float in_deltaTime) override;     // 更新処理
 
-	void ChangeState();                                // ステートの変更処理
+	void ChangeState(float in_deltaTime);                                // ステートの変更処理
 
 	void CollisionFix(class BoxCollider* in_hitPlayerBox, class BoxCollider* in_hitBox);
 
