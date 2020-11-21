@@ -59,7 +59,6 @@ void TitleScene::Initialize()
 		RENDERER->Draw();
 	}
 
-
 	// プレイヤー
 	m_car = new PlayerCar();
 	m_car->SetPosition(Vector3::Zero);
@@ -69,7 +68,6 @@ void TitleScene::Initialize()
 	m_client = new ClientActor(Vector3::Zero, 5);
 	m_client->SetPosition(Vector3(0.0f, -55.0f, 0.0f));
 	m_client->SetScale(0.4f);
-
 
 	// 音楽
 	//m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";
@@ -82,7 +80,6 @@ void TitleScene::Initialize()
 	//AUDIO->GetMusic(m_sound["BGM"]);
 	//AUDIO->PlayMusic(m_sound["BGM"]);
 
-
 	// ロード画面の無効化
 	GAME_INSTANCE.GetLoadScreen()->DisableScreen();
 	// タイトル用UI
@@ -94,12 +91,9 @@ void TitleScene::Initialize()
 SceneBase * TitleScene::Update()
 {
 
-
 	// タイトルメニュー
 	switch (m_state)
 	{
-
-
 
 	//----------------------------------------------------------------------+
 	// "PRESS ANY KEY"
@@ -120,9 +114,6 @@ SceneBase * TitleScene::Update()
 
 		break;
 
-
-
-
 	//----------------------------------------------------------------------+
 	// "GAME START"
 	//----------------------------------------------------------------------+
@@ -137,7 +128,6 @@ SceneBase * TitleScene::Update()
 			m_state = PRESS_ANY_KEY;
 			break;
 		}
-
 
 		// 下キーかDPAD下で選択
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_DOWN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
@@ -190,8 +180,6 @@ SceneBase * TitleScene::Update()
 		//}
 
 		break;
-
-
 
 
 	//-----------------------------------------------------------------------------------+
@@ -283,9 +271,6 @@ SceneBase * TitleScene::Update()
 
 		break;
 
-
-
-
 	//----------------------------------------------------------------------+
 	// "QUIT TO DESKTOP"
 	//----------------------------------------------------------------------+
@@ -324,13 +309,9 @@ SceneBase * TitleScene::Update()
 
 		break;
 
-
-
-
 	default:
 
 		break;
-
 
 	}
 

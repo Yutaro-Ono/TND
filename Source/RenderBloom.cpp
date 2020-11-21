@@ -319,6 +319,7 @@ void RenderBloom::DrawBlendBloom()
 
 	float exposure = 5.0f;
 
+
 	m_hdrBloomShader->SetActive();
 	m_hdrBloomShader->SetFloat("u_exposure", exposure);
 	m_hdrBloomShader->SetInt("u_scene", 0);

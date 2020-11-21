@@ -37,5 +37,5 @@ void main()
 	}
 
 	// 通常カラーバッファへの出力
-	out_fragColor = vec4(result, 1.0);
+	out_fragColor = vec4(result, 0.8);
 }

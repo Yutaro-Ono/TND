@@ -11,9 +11,7 @@
 #include <stdio.h>
 #include <time.h>
 
-
 const int MissionManager::MISSION_ALL_NUM = 3;    // 同時進行する任務の限界数
-
 
 // コンストラクタ
 MissionManager::MissionManager(GameWorld* in_world)
@@ -99,8 +97,6 @@ MissionManager::MissionManager(GameWorld* in_world)
 		m_world->ShuffleClientActor();
 	}
 
-
-
 }
 
 // デストラクタ
@@ -184,8 +180,6 @@ void MissionManager::Update(float in_deltaTime)
 					break;
 				}
 			}
-
-
 
 			// 依頼人の座標を新規のミッションスタート座標としてセット
 			for (int j = 0; j < m_world->GetClients().size(); j++)
@@ -272,11 +266,11 @@ void MissionManager::ChangeSelectNum()
 float MissionManager::CalcScoreForDistance(const Vector3& in_pPos, const Vector3& in_cPos1, const Vector3& in_cPos2)
 {
 	// ベーススコアポイント
-	float baseScore = 1000.0f;
+	float baseScore = 100.0f;
 	float score = 0.0f;
 
 	// 1.プレイヤーとスタート地点クライアントの距離 + スタート地点とゴール地点の距離の合計からボーナススコアを算出
-	score = (Vector3::Distance(in_pPos, in_cPos1) / 20.0f /10.0f) + (Vector3::Distance(in_cPos1, in_cPos2) / 20.0f / 10.0f);
+	score = (Vector3::Distance(in_pPos, in_cPos1) / 20) + (Vector3::Distance(in_cPos1, in_cPos2) / 20);
 
 	return baseScore + score;
 }

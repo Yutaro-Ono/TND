@@ -40,9 +40,6 @@ void PlayerManager::UpdateActor(float in_deltaTime)
 	// 毎フレーム依頼人発見フラグはオフにする(true時の上書きを防ぐため)
 	m_isDetectedClient = false;
 
-
-	
-
 	if (m_playerMode == PLAYER_MODE::MODE_HUMAN)
 	{
 		m_playerHuman->SetState(STATE_ACTIVE);
@@ -86,7 +83,8 @@ void PlayerManager::SearchCar()
 			m_playerCar->OnChange();
 			SetPlayerMode(MODE_CAR);
 		}
-		else if (m_playerMode == MODE_CAR)
+		// 車から降りる条件は一定以下の速度であること
+		else if (m_playerMode == MODE_CAR && m_playerCar->GetAccelValue() <= 35.0f)
 		{
 			m_playerHuman->GetCamera()->SetCameraForward(m_playerCar->GetCamera()->GetForward());
 			m_playerHuman->SetPosition(m_playerHuman->GetPosition() + Vector3(40.0f, 40.0f, 0.0f));

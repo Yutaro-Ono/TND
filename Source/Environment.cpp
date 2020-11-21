@@ -53,7 +53,7 @@ void Environment::Update()
 	Vector3 framePlayerPos = m_world->GetPlayer()->GetPosition();
 
 	// 影のちらつきを抑えるため4000以上の移動で平行ライトの位置をプレイヤーにスナップする
-	if (framePlayerPos.x >= playerPos.x + 2000 || framePlayerPos.x <= playerPos.x - 2000 ||
+	if (framePlayerPos.x >= playerPos.x + 2000 || framePlayerPos.x <= playerPos.x - 1000 ||
 		framePlayerPos.y >= playerPos.y + 2000 || framePlayerPos.y <= playerPos.y - 2000)
 	{
 		// プレイヤーの位置に応じて平行ライトの座標・向きを最適化
@@ -168,8 +168,8 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		dir.direction = dir.target - dir.position;
 		dir.direction.Normalize();
 		dir.ambient = Vector3(0.2f, 0.2f, 0.2f);
-		dir.diffuse = Vector3(0.15f, 0.21f, 0.41f);
-		dir.diffuse = Vector3(0.1f, 0.25f, 0.37f);
+		dir.diffuse = Vector3(0.4f, 0.46f, 0.66f);
+		//dir.diffuse = Vector3(0.1f, 0.25f, 0.37f);
 
 		dir.specular = Vector3(0.01f, 0.15f, 0.4f);
 

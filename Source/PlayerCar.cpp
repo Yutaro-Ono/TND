@@ -136,3 +136,4 @@ void PlayerCar::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hitBo
 
 	// printf("[%f, %f, %f]\n", m_position.x, m_position.y, m_position.z);
 }
+

@@ -85,9 +85,9 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	// SDLウィンドウの作成
 	m_window = SDL_CreateWindow
 	(
-		"FlameCarrier",                                 // ウィンドウの名称
-		0,                                              // x座標のウィンドウ描画原点
-		30,                                              // y座標のウィンドウ描画原点
+		"TheNightDriver",                                 // ウィンドウの名称
+		0,                                                // x座標のウィンドウ描画原点
+		30,                                               // y座標のウィンドウ描画原点
 		m_screenWidth,              // 画面の横幅
 		m_screenHeight,             // 画面の縦幅
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE

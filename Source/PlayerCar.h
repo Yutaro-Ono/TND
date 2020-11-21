@@ -79,6 +79,11 @@ public:
 	// 三人称カメラのゲッター
 	class ThirdPersonCamera* GetCamera() { return m_cameraComp; }
 
+	// アクセル値のゲッター
+	float GetAccelValue() { return m_moveComp->GetAccelValue(); }
+	// ブレーキ値のゲッター
+	float GetBrakeValue() { return m_moveComp->GetBrakeValue(); }
+
 	// 摩擦力のゲッター
 	float GetFrictionVal() { return m_friction; }
 

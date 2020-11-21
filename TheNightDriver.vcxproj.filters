@@ -378,6 +378,9 @@
     <Filter Include="ソース ファイル\Renderer\DefferedRenderer">
       <UniqueIdentifier>{6b292e15-8a5f-4e36-9677-1f30405702ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Interface\MiniMapHUD">
+      <UniqueIdentifier>{3189e609-349a-40ec-9878-61ffc3da7a95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -691,6 +694,9 @@
     </ClCompile>
     <ClCompile Include="Source\SandSmoke.cpp">
       <Filter>ソース ファイル\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MiniMapHUD.cpp">
+      <Filter>ソース ファイル\Interface\MiniMapHUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1026,6 +1032,12 @@
     </ClInclude>
     <ClInclude Include="Source\SandSmoke.h">
       <Filter>ソース ファイル\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MissionListUI.h">
+      <Filter>ソース ファイル\Interface\Mission</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MiniMapHUD.h">
+      <Filter>ソース ファイル\Interface\MiniMapHUD</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

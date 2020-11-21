@@ -76,6 +76,7 @@
     <ClCompile Include="Source\MeshComponent.cpp" />
     <ClCompile Include="Source\MeshGpmesh.cpp" />
     <ClCompile Include="Source\MeshObj.cpp" />
+    <ClCompile Include="Source\MiniMapHUD.cpp" />
     <ClCompile Include="Source\MissionBase.cpp" />
     <ClCompile Include="Source\MissionManager.cpp" />
     <ClCompile Include="Source\MissionUI.cpp" />
@@ -188,7 +189,9 @@
     <ClInclude Include="Source\MeshComponent.h" />
     <ClInclude Include="Source\MeshGpmesh.h" />
     <ClInclude Include="Source\MeshObj.h" />
+    <ClInclude Include="Source\MiniMapHUD.h" />
     <ClInclude Include="Source\MissionBase.h" />
+    <ClInclude Include="Source\MissionListUI.h" />
     <ClInclude Include="Source\MissionManager.h" />
     <ClInclude Include="Source\MissionUI.h" />
     <ClInclude Include="Source\Mouse.h" />

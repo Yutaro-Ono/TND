@@ -72,6 +72,7 @@ public:
 
 	// スコアの計算・ゲッター
 	int GetCalcScore();
+	int GetBaseScore() { return m_baseScore; }
 
 protected:
 

@@ -36,6 +36,7 @@ void main()
     // ガンマコレクション
     //const float gamma = 2.2;
     const float gamma = 0.25;
+
     mapped = pow(mapped, vec3(1.0 / gamma));  
     out_fragColor = vec4(mapped, 1.0);
 }

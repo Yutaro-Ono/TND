@@ -33,7 +33,7 @@ ScoreUI::ScoreUI(Canvas* in_canvas)
 	std::stringstream ssSub;
 	// ルールのスコアをテキストに変換する
 	ssScore << "$" << std::to_string(m_score);
-	ssSub << "-$" << "10";
+	ssSub << "-$" << "50";
 	// スコア用のフォントを生成 (0 = 影, 1 = 本体)
 	for (int i = 0; i < 2; i++)
 	{
@@ -123,8 +123,6 @@ void ScoreUI::Update(float in_deltaTime)
 		m_drawSubScore = false;
 		m_time = SDL_GetTicks() / 1000;
 	}
-
-
 	
 }
 
@@ -176,8 +174,6 @@ void ScoreUI::AddScore()
 		m_addScore = 0;
 	}
 
-
-
 	// 加算分は0を下回らない
 	if (m_addScore < 0)
 	{
@@ -190,7 +186,7 @@ void ScoreUI::SubScore()
 	// 3秒ごとに減算
 	if (SDL_GetTicks() / 1000 > m_time + m_coolTime)
 	{
-		m_score -= 10;
+		m_score -= 50;
 		m_drawSubScore = true;
 		m_time = SDL_GetTicks() / 1000;
 	}
@@ -200,7 +196,6 @@ void ScoreUI::SubScore()
 		m_drawSubScore = false;
 	}
 
-	
 	// スコアは0を下回らない
 	if (m_score < 0)
 	{

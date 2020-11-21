@@ -30,7 +30,6 @@ ResultScene::ResultScene(int in_score, float in_bestSpeed)
 
 }
 
-
 // デストラクタ
 ResultScene::~ResultScene()
 {
@@ -52,13 +51,13 @@ void ResultScene::Initialize()
 		RENDERER->Draw();
 	}
 
-
 	// 音楽
 	//m_sound["BGM"] = "Data/Music/BGM/FC/ResultScene/townofdeath.wav";
 	m_sound["Enter"] = "Data/Music/SE/FC/System/Enter/switch01.wav";
 	//AUDIO->GetMusic(m_sound["BGM"]);
 	AUDIO->GetSound(m_sound["Enter"]);
 
+	m_environment = new Environment(Environment::MORNING);
 
 	// ロード画面の無効化
 	GAME_INSTANCE.GetLoadScreen()->DisableScreen();
@@ -101,7 +100,6 @@ SceneBase * ResultScene::Update()
 		//{
 		//	AUDIO->PlayMusic(m_sound["BGM"]);
 		//}
-
 
 		// 矢印キー右かコントローラーのDPAD右で次の項目へ
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RIGHT) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_RIGHT))

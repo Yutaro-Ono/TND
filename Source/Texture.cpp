@@ -97,12 +97,12 @@ bool Texture::LoadSkyBox(const std::string& in_filePath)
 	// 各スカイボックス用画像のパス
 	std::string faces[] =
 	{
-		in_filePath + "right.jpg",
-		in_filePath + "left.jpg",
-		in_filePath + "top.jpg",
-		in_filePath + "bottom.jpg",
-		in_filePath + "front.jpg",
-		in_filePath + "back.jpg"
+		in_filePath + "right.png",
+		in_filePath + "left.png",
+		in_filePath + "top.png",
+		in_filePath + "bottom.png",
+		in_filePath + "front.png",
+		in_filePath + "back.png"
 	};
 
 	for (int i = 0; i < 6; i++)

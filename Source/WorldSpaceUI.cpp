@@ -54,16 +54,20 @@ void WorldSpaceUI::Draw(Shader* in_shader)
 		Matrix4 mat, scale, projection, view;
 		scale = Matrix4::CreateScale(m_scale);
 		mat = Matrix4::CreateTranslation(m_position);
-		//projection = RENDERER->GetProjectionMatrix();
-		//view = RENDERER->GetViewMatrix();
+		projection = RENDERER->GetProjectionMatrix();
+		view = RENDERER->GetViewMatrix();
 
-		
+		Matrix4 simpleViewProj = Matrix4::CreateSimpleViewProj(1920, 1080);
+		in_shader->SetMatrixUniform("u_ViewProj", simpleViewProj);
+
 		// シェーダのユニフォームへワールド合成行列・アルファ値をセット
 		in_shader->SetMatrixUniform("u_WorldTransform", scale * m_staticBillboardMat * mat);
 		in_shader->SetInt("u_Texture", 0);
 		//in_shader->SetMatrixUniform("u_View", view);
 		//in_shader->SetMatrixUniform("u_Projection", projection);
 
+		Matrix4 gousei = scale * m_staticBillboardMat * mat * view * projection;
+		printf("x : %f, y : %f, z : %f\n", gousei.GetXAxis().x, gousei.GetYAxis().y, gousei.GetZAxis().z);
 
 		// テクスチャのバインド
 		glActiveTexture(GL_TEXTURE0);

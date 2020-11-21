@@ -2,7 +2,7 @@
 #include "GameMain.h"
 #include "GameScene.h"
 
-const float RuleTime::START_TIME = 40.0f;
+const float RuleTime::START_TIME = 20.0f;
 const float RuleTime::LIMIT_TIME = 300.0f;
 const float RuleTime::FINISH_TIME = 2.0f;
 

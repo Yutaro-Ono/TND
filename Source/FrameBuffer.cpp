@@ -123,7 +123,6 @@ bool FrameBuffer::CreateFrameBuffer()
 	// フレームバッファ解除
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-
 }
 
 // フレームバッファへの書き込み処理 (この直後にメッシュなどの通常描画処理を行う)
@@ -164,7 +163,6 @@ void FrameBuffer::DrawFrameBuffer()
 		glEnable(GL_DEPTH_TEST);
 	}
 
-
 	// Imguiデバッグ
 	DebugFrameBuffer();
 }
@@ -179,7 +177,6 @@ void FrameBuffer::DebugFrameBuffer()
 	ImGui::SliderInt("PostProcessShader", &m_shaderNum, 0, ALL_NUM - 1);
 	// 指定したポストエフェクトをアクティブシェーダとして更新
 	m_activeShader = m_postEffectShaders[m_shaderNum];
-
 
 #endif //  _DEBUG
 

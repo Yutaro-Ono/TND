@@ -26,6 +26,11 @@ void EnvironmentMapComponent::DrawEnvironmentMap(Shader* in_envShader)
 
 	if (m_isVisible)
 	{
+		// GLのアルファブレンド・αテストをON
+		glEnable(GL_BLEND);
+		glEnable(GL_ALPHA_TEST);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		in_envShader->SetMatrixUniform("u_modelMat", m_owner->GetWorldTransform());
 		// 頂点配列オブジェクトを取得し、バインド
 		VertexArray* vao = m_mesh->GetVertexArray();
@@ -34,5 +39,8 @@ void EnvironmentMapComponent::DrawEnvironmentMap(Shader* in_envShader)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, RENDERER->GetSkyBox()->GetSkyBoxTexture()->GetTextureID());
 		glDrawElements(GL_TRIANGLES, vao->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
+		glDisable(GL_BLEND);
+		glDisable(GL_ALPHA_TEST);
+
 	}
 }

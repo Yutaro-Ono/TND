@@ -12,7 +12,7 @@ const float ThirdPersonCamera::MAX_TARGET_DISTANCE = 200.0f;
 
 ThirdPersonCamera::ThirdPersonCamera(Actor* in_owner)
 	:CameraComponent(in_owner)
-	, m_offset(DEFAULT_DISTANCE_OFFSET)
+	, m_offset(Vector3(50.0f, -30.0f, 10.0f))
 	, m_upVec(Vector3::UnitZ)
 	, m_ownerForward(m_owner->GetForward())
 	, m_yaw(0.0f)

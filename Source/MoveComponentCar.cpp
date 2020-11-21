@@ -5,7 +5,7 @@
 #include "PlayerCar.h"
 
 const float MoveComponentCar::HAND_BRAKE_VALUE = 8.0f;            // ハンドブレーキ操作時のブレーキ値
-const float MoveComponentCar::ACCEL_LIMIT = 120.0f;                // 最大速度の上限値(現在の基準：150km/h)
+const float MoveComponentCar::ACCEL_LIMIT = 150.0f;                // 最大速度の上限値(現在の基準：150km/h)
 const float MoveComponentCar::BRAKE_LIMIT = 35.0f;
 
 // コンストラクタ
