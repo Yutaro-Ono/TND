@@ -33,6 +33,16 @@ bool DefferedRenderer::Initialize()
 
 void DefferedRenderer::Draw()
 {
+	// 描画先をGBufferとしてバインドする
+	glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);
+	glClearColor(0.0, 0.0, 0.0, 1.0);     // カラーのクリア
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
+
+	// GBufferのバインド解除
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
 

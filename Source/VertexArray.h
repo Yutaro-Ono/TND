@@ -20,10 +20,14 @@ public:
 		POS_NORMAL_SKIN_TEX_TAN          // 位置、法線、スキン用の影響ボーンと重み情報、テクスチャUV, 法線マップ用タンジェント情報
 	};
 
+	VertexArray();
 	VertexArray(const void* in_verts, unsigned int in_vertsNum, Layout in_layout, const unsigned int* in_inDices, unsigned int in_numInDices);     // 頂点配列コンストラクタ
 	VertexArray(const float* in_verts, unsigned int in_vertsNum, const unsigned int* in_inDices, unsigned int in_numInDices);
-	// スカイボックス用頂点アレイオブジェクト
 	VertexArray(const float* in_verts, unsigned int in_vertsNum);
+	// スカイボックス用頂点配列オブジェクトの作成
+	void CreateCubeVerts();
+	// スクリーン用頂点配列オブジェクトの作成
+	void CreateScreenVerts();
 
 	~VertexArray();                                                        // デストラクタ
 

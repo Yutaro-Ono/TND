@@ -115,12 +115,17 @@ public:
 	class CubeMapComponent* GetSkyBox() { return m_activeSkyBox; }
 	class VertexArray* GetCubeMapVerts() { return m_cubeVerts; }
 
+	// スクリーン用頂点配列クラスのゲッター
+	class VertexArray* GetScreenVAO() { return m_screenVerts; }
+
 
 private:
 
 	void CreateCubeVerts();                                                // キューブマップ(スカイボックス用)頂点配列定義
 	void CreateSpriteVerts();                                              // スプライト用頂点配列定義
 	void CreateWorldSpriteVerts();                                         // パーティクル用頂点配列定義
+	void CreateScreenVerts();                                              // スクリーン用四角形頂点配列
+
 	bool LoadShaders();                                                    // シェーダーの初期化
 	void SetLightUniforms(class Shader* in_shader);                        // ライト値をシェーダーにセット
 
@@ -164,6 +169,7 @@ private:
 	class VertexArray* m_spriteVerts;                                      // スプライト用頂点配列
 	class VertexArray* m_particleVerts;                                    // パーティクル用頂点配列
 	class VertexArray* m_cubeVerts;                                        // キューブ頂点配列
+	class VertexArray* m_screenVerts;                                      // スクリーン全体を覆う四角形
 
 	//--------------------------------------------+
 	// ライティング関連

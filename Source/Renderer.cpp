@@ -623,65 +623,8 @@ ParticleManager * Renderer::GetParticleManager() const
 // スカイボックス用頂点配列定義
 void Renderer::CreateCubeVerts()
 {
-	float cubeVertices[] = 
-	{
-      
-		-1.0f,  1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		-1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f, -1.0f,
-		 1.0f,  1.0f,  1.0f,
-		 1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f, -1.0f,
-		 1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		 1.0f, -1.0f,  1.0f
-	};
-
-	unsigned int indices[] = 
-	{
-		 0,  1,  2,  0,  2,  3,    // 前面
-		 4,  5,  6,  4,  6,  7,    // 背面
-		 8,  9, 10,  8, 10, 11,    // 上面
-		12, 13, 14, 12, 14, 15,    // 底面
-		16, 17, 18, 16, 18, 19,    // 右側面
-		20, 21, 22, 20, 22, 23     // 左側面
-	};
-
-
-	// 頂点配列をVAO, VBOとして登録
-	m_cubeVerts = new VertexArray(cubeVertices, 36);
+	m_cubeVerts = new VertexArray();
+	m_cubeVerts->CreateCubeVerts();
 }
 
 // スプライト(2D用)の頂点配列を生成
@@ -722,6 +665,12 @@ void Renderer::CreateWorldSpriteVerts()
 		2, 0, 3
 	};
 	m_particleVerts = new VertexArray(vertices, 4, VertexArray::POS_NORMAL_TEX, indices, 6);
+}
+
+void Renderer::CreateScreenVerts()
+{
+	m_screenVerts = new VertexArray();
+	m_screenVerts->CreateScreenVerts();
 }
 
 // シェーダーのロード

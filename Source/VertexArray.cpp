@@ -7,6 +7,11 @@
 #include "VertexArray.h"
 #include <GL/glew.h>
 
+// 標準コンストラクタ
+VertexArray::VertexArray()
+{
+}
+
 //-------------------------------------------------------------------------------------------------------------------+
 // 頂点レイアウト
 // PosNormTex = 8 * sizeof(float) = 32 bytes
@@ -181,21 +186,104 @@ VertexArray::VertexArray(const float * in_verts, unsigned int in_vertsNum, const
 		reinterpret_cast<void*>(sizeof(float) * 6));
 }
 
-// スカイボックス用頂点配列オブジェクト
-VertexArray::VertexArray(const float* in_verts, unsigned int in_vertsNum)
-	:m_vertsNum(in_vertsNum)
+// キューブマップ用頂点配列
+void VertexArray::CreateCubeVerts()
 {
+	float cubeVertices[] =
+	{
+
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f, -1.0f,
+		 1.0f,  1.0f,  1.0f,
+		 1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f, -1.0f,
+		 1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		 1.0f, -1.0f,  1.0f
+	};
+
+	unsigned int indices[] =
+	{
+		 0,  1,  2,  0,  2,  3,    // 前面
+		 4,  5,  6,  4,  6,  7,    // 背面
+		 8,  9, 10,  8, 10, 11,    // 上面
+		12, 13, 14, 12, 14, 15,    // 底面
+		16, 17, 18, 16, 18, 19,    // 右側面
+		20, 21, 22, 20, 22, 23     // 左側面
+	};
+
 	glGenVertexArrays(1, &m_VAO);
 	glGenBuffers(1, &m_VBO);
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, in_vertsNum * 8 * sizeof(float), in_verts, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 36 * 8 * sizeof(float), cubeVertices, GL_STATIC_DRAW);
 	// アトリビュートへのセット(頂点座標のみ)
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
 }
 
+// スクリーン描画用頂点配列
+void VertexArray::CreateScreenVerts()
+{
+	// スクリーン全体の四角形用頂点配列
+	float quadVertices[] = 
+	{
+		// ポジション   // テクスチャ座標
+		-1.0f,  1.0f,  0.0f, 1.0f,
+		-1.0f, -1.0f,  0.0f, 0.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+
+		 -1.0f,  1.0f,  0.0f, 1.0f,
+		 1.0f, -1.0f,  1.0f, 0.0f,
+		 1.0f,  1.0f,  1.0f, 1.0f
+	};
+
+	// スクリーン全体を描く四角形用 VAO
+	glGenVertexArrays(1, &m_VAO);
+	glGenBuffers(1, &m_VBO);
+	glBindVertexArray(m_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+}
+
+// デストラクタ
 VertexArray::~VertexArray()
 {
 	glDeleteBuffers(1, &m_VBO);

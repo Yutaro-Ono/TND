@@ -384,6 +384,9 @@
     <Filter Include="ソース ファイル\Renderer\ForwardRenderer">
       <UniqueIdentifier>{b9c01a35-416c-4728-97be-1bb4128c4ecf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer">
+      <UniqueIdentifier>{e01ad695-5e0b-43c5-b651-9c96c5b89df8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">

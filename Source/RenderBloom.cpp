@@ -36,28 +36,6 @@ RenderBloom::RenderBloom()
 	}
 	CreateBlurFBO();
 
-	// スクリーンを覆うための頂点配列作成
-	float quadVertices[] = {
-		// ポジション   // テクスチャ座標
-		-1.0f,  1.0f,  0.0f, 1.0f,
-		-1.0f, -1.0f,  0.0f, 0.0f,
-		 1.0f, -1.0f,  1.0f, 0.0f,
-		-1.0f,  1.0f,  0.0f, 1.0f,
-		 1.0f, -1.0f,  1.0f, 0.0f,
-		 1.0f,  1.0f,  1.0f, 1.0f
-	};
-	// 頂点オブジェクトの作成
-	glGenVertexArrays(1, &m_vao);
-	glGenBuffers(1, &m_vbo);
-	glBindVertexArray(m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-	// アトリビュート指定
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
 
 	// シェーダのロード
 	m_multiRenderTargetShader = new Shader();
@@ -104,8 +82,6 @@ RenderBloom::~RenderBloom()
 
 	glDeleteFramebuffers(1, &m_hdrFBO);
 	glDeleteRenderbuffers(1, &m_rbo);
-	glDeleteVertexArrays(1, &m_vao);
-	glDeleteBuffers(1, &m_vbo);
 }
 
 // カラーバッファ・高輝度バッファへの書き込み(専用のシェーダでメッシュの全描画を行う)
@@ -233,7 +209,7 @@ void RenderBloom::DrawDownSampling()
 		m_downSamplingShader->SetInt("u_screenTex", 0);
 
 		// 描画する
-		glBindVertexArray(m_vao);
+		RENDERER->GetScreenVAO()->SetActive();
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		renderSource = m_blurBufferTex[i * 2 + 1];
@@ -297,7 +273,7 @@ void RenderBloom::DrawGaussBlur()
 					m_gaussShader->SetVectorUniform(s.c_str(), offset[i]);
 				}
 
-				glBindVertexArray(m_vao);
+				RENDERER->GetScreenVAO();
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 				renderSource = m_blurBufferTex[i * 2 + horizontal];
 			}
@@ -335,7 +311,7 @@ void RenderBloom::DrawBlendBloom()
 		glBindTexture(GL_TEXTURE_2D, m_blurBufferTex[i * 2 + 1]);
 	}
 
-	glBindVertexArray(m_vao);
+	RENDERER->GetScreenVAO()->SetActive();
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 }

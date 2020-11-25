@@ -46,10 +46,6 @@ private:
 	unsigned int m_hdrFBO;              // HDR(HighDynamicRange)対応のフレームバッファ (色値を浮動小数点型にすることで、色域を精細化する)
 	unsigned int m_rbo;                 // 描画バッファ
 
-	// 頂点配列用オブジェクト
-	unsigned int m_vao;
-	unsigned int m_vbo;
-
 	// マルチレンダーターゲット
 	unsigned int m_defaultBuffer;       // 通常のカラーバッファ(HDR対応)
 	unsigned int m_brightBuffer;        // 高輝度域を保存するバッファ

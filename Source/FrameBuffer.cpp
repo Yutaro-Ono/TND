@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include "GameMain.h"
 #include "Shader.h"
+#include "VertexArray.h"
 
 // コンストラクタ
 FrameBuffer::FrameBuffer()
@@ -33,8 +34,6 @@ FrameBuffer::~FrameBuffer()
 {
 	glDeleteFramebuffers(1, &m_FBO);
 	glDeleteRenderbuffers(1, &m_RBO);
-	glDeleteVertexArrays(1, &m_VAO);
-	glDeleteBuffers(1, &m_VBO);
 
 	for (auto shader : m_postEffectShaders)
 	{
@@ -46,27 +45,6 @@ FrameBuffer::~FrameBuffer()
 
 bool FrameBuffer::CreateFrameBuffer()
 {
-	// スクリーンを覆うための頂点配列作成
-	float quadVertices[] = {
-		// ポジション   // テクスチャ座標
-		-1.0f,  1.0f,  0.0f, 1.0f,
-		-1.0f, -1.0f,  0.0f, 0.0f,
-		 1.0f, -1.0f,  1.0f, 0.0f,
-		-1.0f,  1.0f,  0.0f, 1.0f,
-		 1.0f, -1.0f,  1.0f, 0.0f,
-		 1.0f,  1.0f,  1.0f, 1.0f
-	};
-	// 頂点オブジェクトの作成
-	glGenVertexArrays(1, &m_VAO);
-	glGenBuffers(1, &m_VBO);
-	glBindVertexArray(m_VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-	// アトリビュート指定
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
 	//----------------------------------------------------------------------+
     //
@@ -157,7 +135,7 @@ void FrameBuffer::DrawFrameBuffer()
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_colorBuffer);
 		// VAOバインド
-		glBindVertexArray(m_VAO);
+		RENDERER->GetScreenVAO()->SetActive();
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		glEnable(GL_DEPTH_TEST);

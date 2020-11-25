@@ -13,7 +13,7 @@ public:
 	DefferedRenderer(class Renderer* in_renderer);
 	~DefferedRenderer();
 
-	bool Initialize();
+	bool Initialize();                // 初期化処理 (各種フレームバッファを作成する)
 
 	void Draw();                      // Rendererクラスに登録されているオブジェクトの描画
 
