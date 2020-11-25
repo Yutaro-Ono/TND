@@ -1,14 +1,17 @@
-//-----------------------------------------------------------------------+
+//----------------------------------------------------------------------------------------------+
 // レンダラークラス
-// 機能：描画に関わる全ての情報を保有し、描画処理も行う
+// 機能：描画に関わる全ての情報を保有する。描画はForwardかDefferedレンダラークラスを使用する
 // 特性：なし
 // copyright (C) 2020 Yutaro Ono. all rights reserved.
-//-----------------------------------------------------------------------+
+//----------------------------------------------------------------------------------------------+
 #pragma once
-#include <string>
 #include <Windows.h>
+#include <string>
+#include <algorithm>
 #include <unordered_map>
 #include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_syswm.h>
 #include <GL/glew.h>
 #include "Math.h"
 #include "imgui/imconfig.h"
@@ -34,6 +37,12 @@ class Renderer
 
 public:
 
+	enum RENDER_MODE
+	{
+		FORWARD = 0,
+		DEFFERED
+	};
+
 	Renderer();
 	~Renderer();
 
@@ -44,7 +53,6 @@ public:
 	// SpriteComponent
 	void AddSprite(class SpriteComponent* in_sprite);
 	void RemoveSprite(class SpriteComponent* in_sprite);
-	const std::vector<class SpriteComponent*>& GetSpriteStack() const { return m_spriteComponents; }
 	// Sprite (ワールド空間)
 	void AddSpriteWorld(class WorldSpaceUI* in_sprite);
 	void RemoveSpriteWorld(class WorldSpaceUI* in_sprite);
@@ -172,8 +180,6 @@ private:
     // HDR・Bloom関連
     //--------------------------------------------+
 	class RenderBloom* m_bloom;
-
-
 	int m_switchShader;
 
 	//--------------------------------------------+
@@ -195,7 +201,7 @@ private:
 	// 基本行列関連
 	//--------------------------------------------+
 	Matrix4 m_view;
-	Matrix4 m_projection;     // プロジェクション(視錐台)
+	Matrix4 m_projection;       // プロジェクション(視錐台)
 	//AABB m_projCullingZone;   // 視錐台範囲外かどうかを検出する
 
 	//--------------------------------------------+
@@ -206,4 +212,12 @@ private:
 	SDL_GLContext m_context;                                                // OpenGLコンテキスト (内部状態管理)
 	HWND m_hwnd;                                                            // ウィンドウハンドル  
 
+	// フォワード・ディファードレンダリングクラス (描画はどちらかで行う)
+	class ForwardRenderer* m_fRenderer;
+	class DefferedRenderer* m_dRenderer;
+	RENDER_MODE m_renderMode;             // レンダリングモード (フォワードかディファードか)
+
+	// フレンドクラス (フォワード・ディファードクラスはレンダラーに直接アクセス可能)
+	friend class ForwardRenderer;
+	friend class DefferedRenderer;
 };

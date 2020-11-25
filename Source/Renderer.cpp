@@ -6,13 +6,8 @@
 //-----------------------------------------------------------------------+
 #include "Renderer.h"
 #include "GameMain.h"
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_syswm.h"
 #include "Texture.h"
 #include "SpriteComponent.h"
-#include <algorithm>
-#include <GL/glew.h>
 #include "Mesh.h"
 #include "MeshGpmesh.h"
 #include "MeshObj.h"
@@ -33,6 +28,8 @@
 #include "EnvironmentMapComponent.h"
 #include "CameraComponent.h"
 #include "RenderBloom.h"
+#include "ForwardRenderer.h"
+#include "DefferedRenderer.h"
 
 // コンストラクタ
 Renderer::Renderer()
@@ -48,6 +45,9 @@ Renderer::Renderer()
 	,m_bloom(nullptr)
 	,m_switchShader(0)
 	,m_cameraPos(Vector3::Zero)
+	,m_fRenderer(nullptr)
+	,m_dRenderer(nullptr)
+	,m_renderMode(RENDER_MODE::FORWARD)
 {
 }
 
@@ -184,7 +184,7 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	m_particleManager = new ParticleManager;
 
 	//------------------------------------------------------------------+
-	// スクリーン空間用のSprite関連
+	// スクリーン空間用Sprite
 	//------------------------------------------------------------------+
 	CreateSpriteVerts();        // スプライト用の頂点作成
 
@@ -200,14 +200,21 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	m_frameBuffer->CreateFrameBuffer();
 
 	//--------------------------------------------+
-    // シャドウマップ関連
+    // シャドウマップ
     //--------------------------------------------+
 	m_shadowMap = new ShadowMap();
 
 	//--------------------------------------------+
-    // Bloom関連
+    // Bloom
     //--------------------------------------------+
 	m_bloom = new RenderBloom();
+
+	//--------------------------------------------+
+	// Forward・DeferedRenderer
+	//--------------------------------------------+
+	m_fRenderer = new ForwardRenderer(this);
+	m_dRenderer = new DefferedRenderer(this);
+	//return m_dRenderer->Initialize();
 
 	// カリング
 	glFrontFace(GL_CCW);
@@ -226,7 +233,6 @@ void Renderer::Delete()
 	for (auto i : m_textures)
 	{
 		printf("Textures Release : %s\n", i.first.c_str());
-
 		if (i.second != nullptr)
 		{
 			i.second->Delete();
@@ -240,7 +246,6 @@ void Renderer::Delete()
 		{
 			break;
 		}
-
 	}
 	m_textures.clear();
 
@@ -284,6 +289,8 @@ void Renderer::Delete()
 	delete m_frameBuffer;
 	delete m_shadowMap;
 	delete m_bloom;
+	delete m_fRenderer;
+	delete m_dRenderer;
 	// コンテキストの破棄
 	SDL_GL_DeleteContext(m_context);
 	// ウィンドウの破棄
@@ -302,195 +309,17 @@ void Renderer::Draw()
 	ImGui::Begin("Renderer");
 	ImGui::SliderInt("MeshShader", &m_switchShader, 0, 2);
 
-
-	// 深度テストをON、ブレンドをオフ
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_BLEND);
-	// 画面をクリア
-	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	// カラーバッファのクリア
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
-	//----------------------------------------------+
-	// メッシュシェーダー(phong)
-	//----------------------------------------------+
-	if (m_switchShader == 2)
+	//------------------------------------------------+
+	// レンダリング (Forward か Deffered)
+	//------------------------------------------------+
+	if (m_renderMode == RENDER_MODE::FORWARD)
 	{
-		// フレームバッファ書き込み処理
-		m_frameBuffer->WriteFrameBuffer();
-
-		//メッシュシェーダーで描画する対象の変数をセット
-		m_meshShader->SetActive();
-		m_meshShader->SetMatrixUniform("u_viewProj", m_view * m_projection);
-		// ライティング変数をセット
-		SetLightUniforms(m_meshShader);
-		// 全てのメッシュコンポーネントを描画
-		for (auto mc : m_meshComponents)
-		{
-			if (mc->GetVisible())
-			{
-				mc->Draw(m_meshShader);
-			}
-		}
-
-		//-----------------------------------------------------------+
-        // ボーン入りメッシュの描画
-        //-----------------------------------------------------------+
-		m_skinnedShader->SetActive();
-		// ビュー・プロジェクションの合成行列をセット
-		m_skinnedShader->SetMatrixUniform("u_viewProj", m_view * m_projection);
-		// ライティング変数をセット
-		SetLightUniforms(m_skinnedShader);
-
-		for (auto sk : m_skeletalMeshComponents)
-		{
-			if (sk->GetVisible())
-			{
-				sk->Draw(m_skinnedShader);
-			}
-		}
+		m_fRenderer->Draw();
 	}
-
-	//-----------------------------------------------+
-	// メッシュシェーダー(normal)
-	//-----------------------------------------------+
-	if (m_switchShader == 1)
+	else if (m_renderMode == RENDER_MODE::DEFFERED)
 	{
-		// フレームバッファ書き込み処理
-		m_frameBuffer->WriteFrameBuffer();
-
-		//メッシュシェーダーで描画する対象の変数をセット
-		m_meshNormalShader->SetActive();
-		m_meshNormalShader->SetMatrixUniform("u_viewProj", m_view * m_projection);
-		// ライティング変数をセット
-		SetLightUniforms(m_meshNormalShader);
-		m_meshNormalShader->SetVectorUniform("u_lightPos", m_directionalLight.position);
-		m_meshNormalShader->SetVectorUniform("u_viewPos", m_view.GetTranslation());
-		// 全てのメッシュコンポーネントを描画
-		for (auto mc : m_meshComponents)
-		{
-			if (mc->GetVisible())
-			{
-				mc->Draw(m_meshNormalShader);
-			}
-		}
-
-		//-----------------------------------------------------------+
-        // ボーン入りメッシュの描画
-        //-----------------------------------------------------------+
-		m_skinnedShader->SetActive();
-		// ビュー・プロジェクションの合成行列をセット
-		m_skinnedShader->SetMatrixUniform("u_viewProj", m_view * m_projection);
-		// ライティング変数をセット
-		SetLightUniforms(m_skinnedShader);
-
-		for (auto sk : m_skeletalMeshComponents)
-		{
-			if (sk->GetVisible())
-			{
-				sk->Draw(m_skinnedShader);
-			}
-		}
+		//m_dRenderer->Draw();
 	}
-
-	//-----------------------------------------------+
-    // メッシュシェーダー(shadow)
-    //-----------------------------------------------+
-	//if (m_switchShader == 0)
-	//{
-	//	m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents);
-
-	//	// フレームバッファ書き込み処理
-	//	m_frameBuffer->WriteFrameBuffer();
-
-	//	m_shadowMap->DrawShadowMesh(m_meshComponents, m_skeletalMeshComponents);
-	//}
-
-
-
-	//-----------------------------------------------+
-	// 環境マップオブジェクトの描画
-	//-----------------------------------------------+
-	// シェーダを有効化・uniformに各行列をセット
-	m_environmentMapShader->SetActive();
-	m_environmentMapShader->SetMatrixUniform("u_viewMat", m_view);
-	m_environmentMapShader->SetMatrixUniform("u_projMat", m_projection);
-	m_environmentMapShader->SetVectorUniform("u_viewPos", m_view.GetTranslation());
-	m_environmentMapShader->SetInt("u_skybox", 0);
-	for (auto env : m_envMeshComponents)
-	{
-		env->DrawEnvironmentMap(m_environmentMapShader);
-	}
-
-
-
-	if (m_switchShader == 0)
-	{
-		m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents);
-
-		// フレームバッファ書き込み処理
-		m_frameBuffer->WriteFrameBuffer();
-
-		m_bloom->WriteBuffer(m_meshComponents, m_skeletalMeshComponents, m_activeSkyBox, m_envMeshComponents);
-		m_bloom->WriteBuffer(m_particleManager);
-
-		m_bloom->DrawDownSampling();
-		m_bloom->DrawGaussBlur();
-		m_bloom->DrawBlendBloom();
-
-	}
-
-
-	//---------------------------------------------------------------+
-    // スカイボックスの描画
-    //---------------------------------------------------------------+
-    // キューブマップシェーダをアクティブ化・キューブVAOをバインド
-    //m_activeSkyBox->Draw(m_skyboxShader);
-
-	//----------------------------------------------------------------+
-	// パーティクル描画
-	//----------------------------------------------------------------+
-	//glEnable(GL_DEPTH_TEST);
-	//m_particleManager->Draw();
-	// ワールド空間上のスプライト描画
-	m_worldSpaceSpriteShader->SetActive();
-	m_worldSpaceSpriteShader->SetMatrixUniform("u_View", m_view);
-	m_worldSpaceSpriteShader->SetMatrixUniform("u_Projection", m_projection);
-	for (auto spr : m_worldSprites)
-	{
-		spr->Draw(m_worldSpaceSpriteShader);
-	}
-	// フレームバッファ描画
-	m_frameBuffer->DrawFrameBuffer();
-
-	// Spriteの描画
-	// ブレンドのアクティブ化
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	// 深度テストの停止
-	glDisable(GL_DEPTH_TEST);
-	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-
-	// spriteシェーダーのアクティブ化
-	m_spriteVerts->SetActive();
-	m_spriteShader->SetActive();
-
-	for (auto sprite : m_spriteComponents)
-	{
-		if (sprite->GetVisible())
-		{
-			sprite->Draw(m_spriteShader);
-		}
-	}
-
-	// 全てのUIを更新
-	for (auto ui : GAME_INSTANCE.GetUIStack())
-	{
-		ui->Draw(m_spriteShader);
-	}
-
 
 	// ImGuiの終了処理
 	ImGui::End();
@@ -498,7 +327,7 @@ void Renderer::Draw()
 	glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	// 
+	// 画面のスワップ
 	SDL_GL_SwapWindow(m_window);
 
 }
@@ -840,8 +669,6 @@ void Renderer::CreateCubeVerts()
 		 1.0f, -1.0f,  1.0f
 	};
 
-
-
 	unsigned int indices[] = 
 	{
 		 0,  1,  2,  0,  2,  3,    // 前面
@@ -867,7 +694,6 @@ void Renderer::CreateSpriteVerts()
 		 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 右上頂点
 		 0.5f,-0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, // 右下頂点
 		-0.5f,-0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f  // 左下頂点
-
 	};
 
 	unsigned int indices[] = 
