@@ -36,8 +36,8 @@ void HeliRotorMain::UpdateActor(float in_deltaTime)
 	SetRotation(m_owner->GetRotation());
 
 	// ƒvƒƒyƒ‰‰ñ“]
-	radian += 5.0f;
-	if (radian >= 360.0f)
+	radian += 30.0f * Math::Pi * in_deltaTime;
+	if (radian >= 360000.0f)
 	{
 		radian = 0.0f;
 	}

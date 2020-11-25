@@ -23,6 +23,6 @@ private:
 	unsigned int m_mapTex;
 	unsigned int m_rbo;
 
-	Matrix4 m_lowerViewProj;    // 下向きのビュー&プロジェクション合成行列
+	//Matrix4 m_lowerViewProj;    // 下向きのビュー&プロジェクション合成行列
 
 };

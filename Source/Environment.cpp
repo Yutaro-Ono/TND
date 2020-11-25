@@ -6,7 +6,8 @@
 #include "PlayerManager.h"
 
 static Vector3 playerPos = Vector3::Zero;
-static const Vector3 ADJUST_POS = Vector3(2000.0f, 0.0f, 3000.0f);
+//static const Vector3 ADJUST_POS = Vector3(2000.0f, 0.0f, 3000.0f);
+static const Vector3 ADJUST_POS = Vector3(600.0f, 0.0f, 700.0f);
 
 Environment::Environment(GAME_TIME in_gameTime)
 	:m_gameTime(in_gameTime)

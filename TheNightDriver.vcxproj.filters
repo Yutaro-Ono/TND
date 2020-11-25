@@ -381,6 +381,9 @@
     <Filter Include="ソース ファイル\Interface\MiniMapHUD">
       <UniqueIdentifier>{3189e609-349a-40ec-9878-61ffc3da7a95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Renderer\ForwardRenderer">
+      <UniqueIdentifier>{b9c01a35-416c-4728-97be-1bb4128c4ecf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -529,9 +532,6 @@
     </ClCompile>
     <ClCompile Include="Source\Skeleton.cpp">
       <Filter>ソース ファイル\Renderer\Mesh\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SkeletalMeshComponent.cpp">
-      <Filter>ソース ファイル\Renderer\Mesh\Component</Filter>
     </ClCompile>
     <ClCompile Include="Source\BoneTransform.cpp">
       <Filter>ソース ファイル\Renderer\Mesh\Skeleton</Filter>
@@ -697,6 +697,15 @@
     </ClCompile>
     <ClCompile Include="Source\MiniMapHUD.cpp">
       <Filter>ソース ファイル\Interface\MiniMapHUD</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DefferedRenderer.cpp">
+      <Filter>ソース ファイル\Renderer\DefferedRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SkeletalMeshComponent.cpp">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\Skeletal</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ForwardRenderer.cpp">
+      <Filter>ソース ファイル\Renderer\ForwardRenderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1024,9 +1033,6 @@
     <ClInclude Include="Source\RenderBloom.h">
       <Filter>ソース ファイル\Renderer\Bloom</Filter>
     </ClInclude>
-    <ClInclude Include="Source\GBuffer.h">
-      <Filter>ソース ファイル\Renderer\DefferedRenderer</Filter>
-    </ClInclude>
     <ClInclude Include="Source\DefferedRenderer.h">
       <Filter>ソース ファイル\Renderer\DefferedRenderer</Filter>
     </ClInclude>
@@ -1038,6 +1044,9 @@
     </ClInclude>
     <ClInclude Include="Source\MiniMapHUD.h">
       <Filter>ソース ファイル\Interface\MiniMapHUD</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ForwardRenderer.h">
+      <Filter>ソース ファイル\Renderer\ForwardRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

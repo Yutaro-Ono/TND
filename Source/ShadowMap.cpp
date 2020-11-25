@@ -81,7 +81,9 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 
 	// ライト視点用のプロジェクション行列とビュー行列を用意する
 	// ディレクショナルライト(平行)であるため、プロジェクション行列には正射影行列を使用
-	m_lightProj = Matrix4::CreateOrtho(7000.0f, 7000.0f, 1.0f, 5000.0f);
+	//m_lightProj = Matrix4::CreateOrtho(7000.0f, 7000.0f, 1.0f, 5000.0f);
+	m_lightProj = Matrix4::CreateOrtho(7000.0f, 7000.0f, -10.0f, 5000.0f);
+
 	m_lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, RENDERER->GetDirectionalLight().target, Vector3::UnitZ);
 	m_lightSpace = m_lightView * m_lightProj;
 

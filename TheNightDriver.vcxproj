@@ -38,9 +38,11 @@
     <ClCompile Include="Source\CountDownUI.cpp" />
     <ClCompile Include="Source\CubeMapComponent.cpp" />
     <ClCompile Include="Source\DebugBox.cpp" />
+    <ClCompile Include="Source\DefferedRenderer.cpp" />
     <ClCompile Include="Source\Environment.cpp" />
     <ClCompile Include="Source\EnvironmentMapComponent.cpp" />
     <ClCompile Include="Source\Font.cpp" />
+    <ClCompile Include="Source\ForwardRenderer.cpp" />
     <ClCompile Include="Source\FrameBuffer.cpp" />
     <ClCompile Include="Source\GameConfig.cpp" />
     <ClCompile Include="Source\GameMain.cpp" />
@@ -150,12 +152,12 @@
     <ClInclude Include="Source\Environment.h" />
     <ClInclude Include="Source\EnvironmentMapComponent.h" />
     <ClInclude Include="Source\Font.h" />
+    <ClInclude Include="Source\ForwardRenderer.h" />
     <ClInclude Include="Source\FrameBuffer.h" />
     <ClInclude Include="Source\GameConfig.h" />
     <ClInclude Include="Source\GameMain.h" />
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GameWorld.h" />
-    <ClInclude Include="Source\GBuffer.h" />
     <ClInclude Include="Source\Grid.h" />
     <ClInclude Include="Source\HeliBody.h" />
     <ClInclude Include="Source\Helicopter.h" />

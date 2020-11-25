@@ -8,7 +8,6 @@ MiniMapHUD::MiniMapHUD(GameWorld* in_world)
 {
 	Vector3 viewPos = RENDERER->GetViewMatrix().GetTranslation();
 	Matrix4 view = Matrix4::CreateLookAt(Vector3(viewPos.x, viewPos.y, 500.0f), in_world->GetPlayer()->GetPosition(), Vector3::UnitX);
-	Matrix4 projection = Matrix4::
 }
 
 MiniMapHUD::~MiniMapHUD()

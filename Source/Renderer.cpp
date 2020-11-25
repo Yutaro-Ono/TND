@@ -308,7 +308,7 @@ void Renderer::Draw()
 	glDisable(GL_BLEND);
 	// 画面をクリア
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	// Clear the color buffer
+	// カラーバッファのクリア
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -498,7 +498,7 @@ void Renderer::Draw()
 	glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	// Swap the buffers
+	// 
 	SDL_GL_SwapWindow(m_window);
 
 }

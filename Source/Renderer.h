@@ -110,9 +110,9 @@ public:
 
 private:
 
-	void CreateCubeVerts();                                             // キューブマップ(スカイボックス用)頂点配列定義
+	void CreateCubeVerts();                                                // キューブマップ(スカイボックス用)頂点配列定義
 	void CreateSpriteVerts();                                              // スプライト用頂点配列定義
-	void CreateWorldSpriteVerts();                                            // パーティクル用頂点配列定義
+	void CreateWorldSpriteVerts();                                         // パーティクル用頂点配列定義
 	bool LoadShaders();                                                    // シェーダーの初期化
 	void SetLightUniforms(class Shader* in_shader);                        // ライト値をシェーダーにセット
 
