@@ -387,6 +387,9 @@
     <Filter Include="ソース ファイル\Shader\Source\GBuffer">
       <UniqueIdentifier>{e01ad695-5e0b-43c5-b651-9c96c5b89df8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Actor\Light">
+      <UniqueIdentifier>{1c3528e5-ed53-456c-baff-7831ae4d8452}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -1050,6 +1053,9 @@
     </ClInclude>
     <ClInclude Include="Source\ForwardRenderer.h">
       <Filter>ソース ファイル\Renderer\ForwardRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>ソース ファイル\Actor\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

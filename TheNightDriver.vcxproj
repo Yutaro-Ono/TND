@@ -184,6 +184,7 @@
     <ClInclude Include="Source\LevelManager.h" />
     <ClInclude Include="Source\LevelObject.h" />
     <ClInclude Include="Source\LevelTerrain.h" />
+    <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadScreen.h" />
     <ClInclude Include="Source\Math.h" />
     <ClInclude Include="Source\MatrixPalette.h" />
