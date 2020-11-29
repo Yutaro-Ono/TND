@@ -420,6 +420,9 @@
     <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\PointLight">
       <UniqueIdentifier>{e7158a4f-b137-4a9d-9638-6cad0629ca99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\DirectionalLight">
+      <UniqueIdentifier>{3db4df89-c9b2-4b77-90fb-6a265c53c0f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -1256,6 +1259,12 @@
     </None>
     <None Include="Data\Shaders\GBuffer\PointLight.frag">
       <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\PointLight</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\DirectionalLight.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\DirectionalLight</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\DirectionalLight.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\DirectionalLight</Filter>
     </None>
   </ItemGroup>
 </Project>

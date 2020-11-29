@@ -1,18 +1,17 @@
 #version 330 core
-
-// 頂点シェーダーからの入力
-// テクスチャ座標
-in vec2 fragTexCoord;
-// 法線（ワールド空間）
-in vec3 fragNormal;
-// 頂点位置（ワールド空間）
-in vec3 fragWorldPos;
-
 // 出力カラー（出力ピクセルカラー）
 out vec4 out_fragColor;
 
-// テクスチャサンプリング
-uniform sampler2D u_texture;
+// 頂点シェーダーからの入力
+// フラグメントへの出力
+in VS_OUT
+{
+	vec2 fragTexCoords;          // テクスチャ座標
+	vec3 fragNormal;             // ワールドスペース上の法線
+	vec3 fragWorldPos;           // ワールドスペース上の座標
+}fs_in;
+
+
 // テクスチャサンプリング用構造体
 struct Material
 {
@@ -34,6 +33,8 @@ struct DirectionalLight
 	vec3 mSpecColor;
 };
 
+// テクスチャサンプリング
+uniform sampler2D u_texture;
 // ライティング用変数
 // カメラ位置（ワールド空間）
 uniform vec3 u_viewPos;
@@ -48,11 +49,11 @@ uniform DirectionalLight uDirLight;
 void main()
 {
 	// ポリゴン表面の法線（フラグメントシェーダー上で補間されている）
-	vec3 N = normalize(fragNormal);
+	vec3 N = normalize(fs_in.fragNormal);
 	// ポリゴン表面からライト方向へのベクトル
 	vec3 L = normalize(-uDirLight.mDirection);
 	// ポリゴン表面からカメラ方向
-	vec3 V = normalize(u_viewPos - fragWorldPos);
+	vec3 V = normalize(u_viewPos - fs_in.fragWorldPos);
 	// -L ベクトルを 法線 N に対して反射したベクトルRを求める
 	vec3 R = normalize(reflect(-L, N));
 
@@ -67,5 +68,5 @@ void main()
 	Specular = uDirLight.mSpecColor * pow(max(0.0, dot(R, V)), u_specPower);
 
 	// 最終カラーを出力 (alpha = 1)
-	out_fragColor = texture(u_mat.diffuseMap, fragTexCoord) * vec4((Diffuse + u_ambientLight),1.0f) + vec4(Specular,1.0f);
+	out_fragColor = texture(u_mat.diffuseMap, fs_in.fragTexCoords) * vec4((Diffuse + u_ambientLight),1.0f) + vec4(Specular,1.0f);
 }

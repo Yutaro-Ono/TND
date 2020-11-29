@@ -70,7 +70,11 @@ ShadowMap::~ShadowMap()
 }
 
 
-// 
+/// <summary>
+/// ライト視点からオブジェクトを描画し、深度マップを得る
+/// </summary>
+/// <param name="in_mesh"></param>     シャドウを適用するメッシュ配列
+/// <param name="in_skelMesh"></param> シャドウを適用するスキンメッシュ配列
 void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponent*>& in_mesh, const std::vector<class SkeletalMeshComponent*> in_skelMesh)
 {
 	// 深度テスト有効化

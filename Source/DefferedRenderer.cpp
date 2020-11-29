@@ -71,7 +71,7 @@ bool DefferedRenderer::Initialize()
 	}
 	// ディレクショナルライトシェーダ
 	m_directionalLightShader = new Shader();
-	if (!m_directionalLightShader->Load("Data/Shaders/FB/FrameBufferScreen.vert", "Data/Shaders/FB/FrameBufferScreen.frag"))
+	if (!m_directionalLightShader->Load("Data/Shaders/GBuffer/DirectionalLight.vert", "Data/Shaders/GBuffer/DirectionalLight.frag"))
 	{
 		return false;
 	}
@@ -158,10 +158,10 @@ void DefferedRenderer::DrawLightPass()
 	m_pointLightShader->SetMatrixUniform("u_view", m_renderer->GetViewMatrix());
 	m_pointLightShader->SetMatrixUniform("u_projection", m_renderer->GetProjectionMatrix());
 	m_pointLightShader->SetVectorUniform("u_viewPos", m_renderer->GetViewMatrix().GetTranslation());
-	m_pointLightShader->SetInt("u_gPos", 0);
-	m_pointLightShader->SetInt("u_gNormal", 1);
-	m_pointLightShader->SetInt("u_gAlbedoSpec", 2);
-	// gBufferの各テクスチャをバインドしておく
+	m_pointLightShader->SetInt("u_gBuffer.gPos", 0);
+	m_pointLightShader->SetInt("u_gBuffer.gNormal", 1);
+	m_pointLightShader->SetInt("u_gBuffer.gAlbedoSpec", 2);
+	// gBufferの各テクスチャをバインド
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_gPos);
 	glActiveTexture(GL_TEXTURE1);
@@ -172,12 +172,54 @@ void DefferedRenderer::DrawLightPass()
 	// ポイントライトの描画
 	for (auto pl : m_renderer->m_pointLights)
 	{
-		pl->Draw(m_pointLightShader);
+		//pl->Draw(m_pointLightShader);
 	}
+
+
+	m_screenShader->SetActive();
+	m_screenShader->SetInt("u_screenTexture", 0);
+	// GBufferテクスチャセット
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+	// スクリーンに描画
+	m_renderer->m_screenVerts->SetActive();
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	//-----------------------------------------------+
+	// ディレクショナルライトパス
+	//-----------------------------------------------+
+	glDisable(GL_DEPTH_TEST);
+	// 輝度定義
+	float intensity = 1.0f;
+	// シェーダのセット
+	m_directionalLightShader->SetActive();
+	m_directionalLightShader->SetVectorUniform("u_viewPos", m_renderer->GetViewMatrix().GetTranslation());
+	m_directionalLightShader->SetVectorUniform("u_dirLight.direction", m_renderer->m_directionalLight.direction);
+	m_directionalLightShader->SetVectorUniform("u_dirLight.ambientColor", m_renderer->m_directionalLight.ambient);
+	m_directionalLightShader->SetVectorUniform("u_dirLight.color", m_renderer->m_directionalLight.diffuse);
+	m_directionalLightShader->SetVectorUniform("u_dirLight.specular", m_renderer->m_directionalLight.specular);
+	m_directionalLightShader->SetFloat("u_dirLight.intensity", intensity);
+	m_directionalLightShader->SetInt("u_gBuffer.gPos", 0);
+	m_directionalLightShader->SetInt("u_gBuffer.gNormal", 1);
+	m_directionalLightShader->SetInt("u_gBuffer.gAlbedoSpec", 2);
+
+	// gBufferの各テクスチャをバインド
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_gPos);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_gNormal);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+	// スクリーン全体に描画
+	m_renderer->GetScreenVAO()->SetActive();
+	//glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	// カリングとブレンドを停止する
 	glDisable(GL_CULL_FACE);
 	glDisablei(GL_BLEND, 0);
+
+
+
 
 	// gBufferの内容をライトバッファへコピーし、gBufferの深度値に基づいた描画を行う
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_gBuffer);       // gBufferを読み取りフレームバッファとして指定
@@ -196,9 +238,10 @@ void DefferedRenderer::Draw()
 	// GBufferへの書き込み
 	DrawGBuffer();
 
-	// ライトパス
+	// ライトバッファへの書き込み
 	DrawLightPass();
 
+	// 最終出力結果を描画
 	// ライトFBOへの書き込みを止める
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	// GBufferに書き込まれた要素をスクリーンに描画
@@ -211,8 +254,8 @@ void DefferedRenderer::Draw()
 
 	// GBufferテクスチャセット
 	glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
-	glBindTexture(GL_TEXTURE_2D, m_lightHDR);
+	glBindTexture(GL_TEXTURE_2D, m_gPos);
+	//glBindTexture(GL_TEXTURE_2D, m_lightHDR);
 
 	// スクリーンに描画
 	m_renderer->m_screenVerts->SetActive();

@@ -261,6 +261,8 @@
     <None Include="Data\Shaders\FB\GreyScaleScreen.frag" />
     <None Include="Data\Shaders\FB\InvertColorScreen.frag" />
     <None Include="Data\Shaders\FB\SharpEdgeScreen.frag" />
+    <None Include="Data\Shaders\GBuffer\DirectionalLight.frag" />
+    <None Include="Data\Shaders\GBuffer\DirectionalLight.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_Basic.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_Basic.vert" />
     <None Include="Data\Shaders\GBuffer\PointLight.frag" />

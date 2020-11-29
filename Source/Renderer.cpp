@@ -47,7 +47,7 @@ Renderer::Renderer()
 	,m_cameraPos(Vector3::Zero)
 	,m_fRenderer(nullptr)
 	,m_dRenderer(nullptr)
-	,m_renderMode(RENDER_MODE::DEFFERED)
+	,m_renderMode(RENDER_MODE::FORWARD)
 {
 }
 

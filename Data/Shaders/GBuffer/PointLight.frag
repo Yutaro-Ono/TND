@@ -20,11 +20,19 @@ struct PointLight
 	float linear;       // 線形項
 	float quadratic;    // 2乗項
 };
-uniform PointLight u_pointLight;
 
-uniform sampler2D u_gPos;
-uniform sampler2D u_gNormal;
-uniform sampler2D u_gAlbedoSpec;
+// GBuffer構造体
+struct GBuffer
+{
+	sampler2D gPos;
+	sampler2D gNormal;
+	sampler2D gAlbedoSpec;
+};
+
+// uniform
+uniform PointLight u_pointLight;
+uniform GBuffer u_gBuffer;
+
 uniform vec3 u_viewPos;        // カメラ座標
 
 
@@ -32,10 +40,10 @@ uniform vec3 u_viewPos;        // カメラ座標
 void main()
 {
 	// GBufferの各要素をサンプリングして色情報を取り出す
-	vec3 Position = texture(u_gPos, TexCoords).xyz;
-	vec3 Normal = texture(u_gNormal, TexCoords).xyz;
+	vec3 Position = texture(u_gBuffer.gPos, TexCoords).xyz;
+	vec3 Normal = texture(u_gBuffer.gNormal, TexCoords).xyz;
 	// アルベドとスペキュラを分けて保存
-	vec4 AlbedoSpec = texture(u_gAlbedoSpec, TexCoords);
+	vec4 AlbedoSpec = texture(u_gBuffer.gAlbedoSpec, TexCoords);
 	vec3 Albedo = AlbedoSpec.rgb;
 	float Spec_p = AlbedoSpec.a;
 
