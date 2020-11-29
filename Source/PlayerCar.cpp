@@ -25,7 +25,7 @@ PlayerCar::PlayerCar()
 	m_moveComp = new MoveComponentCar(this);
 	m_moveComp->SetActive(false);
 	// カメラコンポーネントを生成
-	m_cameraComp = new ThirdPersonCamera(this);
+	m_cameraComp = new ThirdPersonCarCamera(this);
 	m_cameraComp->SetAdjustForward(false);
 	m_cameraComp->SetChaseOwnerForward(false);
 	m_cameraComp->SetDistance(200.0f);
@@ -57,16 +57,6 @@ void PlayerCar::UpdateActor(float in_deltaTime)
 	if (m_manager->GetPlayerMode() == PlayerManager::PLAYER_MODE::MODE_CAR)
 	{
 
-
-		// 速度が一定以上かつアクセルを踏んでいる時、カメラの追従をオンにする
-		if (m_moveComp->GetAccelValue() >= 30.0f)
-		{
-			//m_cameraComp->SetChaseOwnerForward(true);
-		}
-		else
-		{
-			m_cameraComp->SetChaseOwnerForward(false);
-		}
 	}
 	else
 	{

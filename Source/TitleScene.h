@@ -52,6 +52,8 @@ private:
 
 	class Environment* m_environment;                                   // 環境
 
+	class PointLight* m_pointLight;
+
 	int m_selectedStage;                                                // 選択中のステージ
 	std::vector<int> m_stage;                                           // ステージ番号
 

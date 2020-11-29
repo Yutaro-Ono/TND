@@ -387,8 +387,38 @@
     <Filter Include="ソース ファイル\Shader\Source\GBuffer">
       <UniqueIdentifier>{e01ad695-5e0b-43c5-b651-9c96c5b89df8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh">
+      <UniqueIdentifier>{4fd624cd-09f8-4458-957c-4f6587facefb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh\Basic">
+      <UniqueIdentifier>{d4026ac6-f27e-4842-828d-fd26bc59eb7b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ソース ファイル\Actor\Light">
       <UniqueIdentifier>{1c3528e5-ed53-456c-baff-7831ae4d8452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Light\LightComponent">
+      <UniqueIdentifier>{374953e5-7f5f-4525-8381-65af12edcd85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Light\LightComponent\PointLight">
+      <UniqueIdentifier>{9a79c6fb-2506-4ee2-9e2c-e46623f23de4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Light\LightComponent\DirectionalLight">
+      <UniqueIdentifier>{09af1951-72b4-4387-927f-cd45179f69ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Light\PointLight">
+      <UniqueIdentifier>{78225aa9-dfd7-4a42-b430-093853d001ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Light\DirectionalLight">
+      <UniqueIdentifier>{3cf493a2-3c4e-4d45-a49f-68952d365f00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Light\SpotLight">
+      <UniqueIdentifier>{90d18e8a-9ddb-45f8-bbda-5a83fb87c42c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting">
+      <UniqueIdentifier>{c1743245-5b0c-4e85-9c0f-2e5cbef4b924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\PointLight">
+      <UniqueIdentifier>{e7158a4f-b137-4a9d-9638-6cad0629ca99}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -712,6 +742,12 @@
     </ClCompile>
     <ClCompile Include="Source\ForwardRenderer.cpp">
       <Filter>ソース ファイル\Renderer\ForwardRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PointLightComponent.cpp">
+      <Filter>ソース ファイル\Actor\Light\LightComponent\PointLight</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PointLight.cpp">
+      <Filter>ソース ファイル\Actor\Light\PointLight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1054,8 +1090,11 @@
     <ClInclude Include="Source\ForwardRenderer.h">
       <Filter>ソース ファイル\Renderer\ForwardRenderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Light.h">
-      <Filter>ソース ファイル\Actor\Light</Filter>
+    <ClInclude Include="Source\PointLightComponent.h">
+      <Filter>ソース ファイル\Actor\Light\LightComponent\PointLight</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PointLight.h">
+      <Filter>ソース ファイル\Actor\Light\PointLight</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1205,6 +1244,18 @@
     </None>
     <None Include="Data\Shaders\MultiRender\MultiRenderEnvironmentMap.frag">
       <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh\Environment</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_Basic.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\Basic</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_Basic.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\Basic</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\PointLight.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\PointLight</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\PointLight.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\PointLight</Filter>
     </None>
   </ItemGroup>
 </Project>

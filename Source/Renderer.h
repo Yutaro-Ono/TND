@@ -56,16 +56,16 @@ public:
 	// Sprite (ワールド空間)
 	void AddSpriteWorld(class WorldSpaceUI* in_sprite);
 	void RemoveSpriteWorld(class WorldSpaceUI* in_sprite);
-
 	// MeshComponent
 	void AddMeshComponent(class MeshComponent* in_mesh);                    // メッシュコンポーネントの追加
 	void RemoveMeshComponent(class MeshComponent* in_mesh);                 // メッシュコンポーネントの削除
 	void ShowResource();
-
 	// EnvironmentMapComponent
 	void AddEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
 	void RemoveEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
-
+	// PointLightComponent
+	void AddPointLightComponent(class PointLightComponent* in_pointL);
+	void RemovePointLightComponent(class PointLightComponent* in_pointL);
 
 	// TextureComponent
 	void RemoveTexture(class Texture* in_texture);
@@ -92,7 +92,7 @@ public:
 	class Mesh* GetMesh(const  std::string& in_fileName);                   // 指定したファイル名のメッシュを返す
 	const class Skeleton* GetSkeleton(const std::string& in_fileName);             // 指定したファイル名のスケルタルメッシュの取得
 	const class Animation* GetAnimation(const char* in_fileName, bool in_loop);
-																			// スクリーンサイズ
+	// スクリーンサイズ
 	float GetScreenWidth() { return static_cast<float>(m_screenWidth); }
 	float GetScreenHeight() { return static_cast<float>(m_screenHeight); }
 	// ディレクショナルライト
@@ -144,11 +144,16 @@ private:
 	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;       // ボーン入りメッシュ配列
 	std::vector<class MeshComponent*> m_glassMeshComponent;                   // ガラス(環境に影響を受ける)メッシュ配列
 	std::vector<class EnvironmentMapComponent*> m_envMeshComponents;          // 環境マップオブジェクト配列
-
+	// スプライト配列
 	std::vector<class SpriteComponent*> m_spriteComponents;                // スプライト配列 (スクリーン空間)
 	std::vector<class WorldSpaceUI*> m_worldSprites;                       // スプライト配列 (ワールド空間)
-
+	
 	class CubeMapComponent* m_activeSkyBox;                                // 有効な(描画する)スカイボックス
+
+	// ライト関連配列
+	std::vector<class PointLightComponent*> m_pointLights;                           // ポイントライト配列
+
+
 
 	//--------------------------------------------+
 	// シェーダオブジェクト

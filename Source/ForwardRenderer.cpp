@@ -155,14 +155,15 @@ void ForwardRenderer::Draw()
 
 	if (m_renderer->m_switchShader == 0)
 	{
+		// シャドウ描画用の深度マップにライト視点から見た空間で書き込む
 		m_renderer->m_shadowMap->RenderDepthMapFromLightView(m_renderer->m_meshComponents, m_renderer->m_skeletalMeshComponents);
 
 		// フレームバッファ書き込み処理
 		m_renderer->m_frameBuffer->WriteFrameBuffer();
 
+		// マルチレンダリングで高輝度バッファを抽出し、ガウスぼかしを行う
 		m_renderer->m_bloom->WriteBuffer(m_renderer->m_meshComponents, m_renderer->m_skeletalMeshComponents, m_renderer->m_activeSkyBox, m_renderer->m_envMeshComponents);
 		m_renderer->m_bloom->WriteBuffer(m_renderer->m_particleManager);
-
 		m_renderer->m_bloom->DrawDownSampling();
 		m_renderer->m_bloom->DrawGaussBlur();
 		m_renderer->m_bloom->DrawBlendBloom();
@@ -218,8 +219,5 @@ void ForwardRenderer::Draw()
 	{
 		ui->Draw(m_renderer->m_spriteShader);
 	}
-
-
-
 
 }

@@ -63,7 +63,6 @@ bool FrameBuffer::CreateFrameBuffer()
 
 	}
 
-
 	//-----------------------------------------------------------------------+
 	//
 	// テクスチャカラーバッファの作成
@@ -129,7 +128,7 @@ void FrameBuffer::DrawFrameBuffer()
 		glDisable(GL_DEPTH_TEST);
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
-
+		// シェーダの有効化
 		m_activeShader->SetActive();
 		m_activeShader->SetInt("screenTexture", 0);
 		glActiveTexture(GL_TEXTURE0);

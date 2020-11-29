@@ -22,7 +22,7 @@ MeshComponent::MeshComponent(Actor * in_owner, bool in_isSkeletal)
 	,m_visible(true)
 	,m_isSkeletal(in_isSkeletal)
 {
-	GAME_INSTANCE.GetRenderer()->AddMeshComponent(this);
+	RENDERER->AddMeshComponent(this);
 	//printf("new MeshComponent : [%5d] owner->( 0x%p )\n", GetID(), in_owner);
 }
 
@@ -30,7 +30,7 @@ MeshComponent::MeshComponent(Actor * in_owner, bool in_isSkeletal)
 MeshComponent::~MeshComponent()
 {
 	//printf("Remove MeshComponent : [%5d] owner->( 0x%p )\n)", GetID(), m_owner);
-	GAME_INSTANCE.GetRenderer()->RemoveMeshComponent(this);
+	RENDERER->RemoveMeshComponent(this);
 }
 
 // •`‰æˆ—

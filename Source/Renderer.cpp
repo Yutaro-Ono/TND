@@ -47,7 +47,7 @@ Renderer::Renderer()
 	,m_cameraPos(Vector3::Zero)
 	,m_fRenderer(nullptr)
 	,m_dRenderer(nullptr)
-	,m_renderMode(RENDER_MODE::FORWARD)
+	,m_renderMode(RENDER_MODE::DEFFERED)
 {
 }
 
@@ -214,7 +214,11 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	//--------------------------------------------+
 	m_fRenderer = new ForwardRenderer(this);
 	m_dRenderer = new DefferedRenderer(this);
-	//return m_dRenderer->Initialize();
+	if (!m_dRenderer->Initialize())
+	{
+		return false;
+	}
+	CreateScreenVerts();
 
 	// カリング
 	glFrontFace(GL_CCW);
@@ -233,45 +237,30 @@ void Renderer::Delete()
 	for (auto i : m_textures)
 	{
 		printf("Textures Release : %s\n", i.first.c_str());
-		if (i.second != nullptr)
-		{
-			i.second->Delete();
-
-			delete i.second;
-
-			i.second = nullptr;
-		}
-
-		if (i.second == nullptr)
-		{
-			break;
-		}
+		i.second->Delete();
+		delete i.second;
 	}
 	m_textures.clear();
-
 	// メッシュの解放
 	for (auto i : m_meshes)
 	{
 		printf("Meshes Release : %s\n", i.first.c_str());
-
 		i.second->Delete();
 		delete i.second;
 	}
 	m_meshes.clear();
-
 	// スケルトンの破棄
 	for (auto sk : m_skeletons)
 	{
 		delete sk.second;
 	}
+	m_skeletons.clear();
 	// アニメーションの破棄
 	for (auto anim : m_animations)
 	{
 		delete anim.second;
 	}
-
-	// シェーダーの解放
-	m_meshShader->Delete();
+	m_animations.clear();
 
 	// スプライトの解放
 	for (auto sprite : m_worldSprites)
@@ -279,18 +268,31 @@ void Renderer::Delete()
 		delete sprite;
 	}
 	m_worldSprites.clear();
+	// スプライトの解放
+	for (auto sprite : m_spriteComponents)
+	{
+		delete sprite;
+	}
+	m_spriteComponents.clear();
+	// ポイントライト配列の解放
+	for (auto light : m_pointLights)
+	{
+		delete light;
+	}
+
+	// シェーダーの解放
+	delete m_spriteShader;
+	delete m_meshShader;
+	delete m_worldSpaceSpriteShader;
+	delete m_skyboxShader;
 
 	delete m_spriteVerts;
-	m_spriteShader->Delete();
-	m_worldSpaceSpriteShader->Delete();
-	delete m_spriteShader;
 	delete m_cubeVerts;
-	m_skyboxShader->Delete();
+	delete m_fRenderer;
+	delete m_dRenderer;
 	delete m_frameBuffer;
 	delete m_shadowMap;
 	delete m_bloom;
-	delete m_fRenderer;
-	delete m_dRenderer;
 	// コンテキストの破棄
 	SDL_GL_DeleteContext(m_context);
 	// ウィンドウの破棄
@@ -318,7 +320,7 @@ void Renderer::Draw()
 	}
 	else if (m_renderMode == RENDER_MODE::DEFFERED)
 	{
-		//m_dRenderer->Draw();
+		m_dRenderer->Draw();
 	}
 
 	// ImGuiの終了処理
@@ -435,9 +437,22 @@ void Renderer::RemoveEnvironmentComponent(EnvironmentMapComponent* in_envMesh)
 	m_envMeshComponents.erase(iter);
 }
 
+void Renderer::AddPointLightComponent(PointLightComponent* in_pointL)
+{
+	m_pointLights.push_back(in_pointL);
+}
+
+void Renderer::RemovePointLightComponent(PointLightComponent* in_pointL)
+{
+	auto iter = std::find(m_pointLights.begin(), m_pointLights.end(), in_pointL);
+	m_pointLights.erase(iter);
+}
+
+// 指定したテクスチャの削除
 void Renderer::RemoveTexture(Texture* in_texture)
 {
-	// auto iter = std::find(m_textures.begin(), m_textures.end(), in_texture);
+	//auto iter = std::find(m_textures.begin(), m_textures.end(), in_texture);
+	//m_textures.erase(iter);
 
 	for (auto iter : m_textures)
 	{

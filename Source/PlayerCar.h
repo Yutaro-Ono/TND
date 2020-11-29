@@ -77,7 +77,8 @@ public:
 	void SetPlayerManager(class PlayerManager* in_manager) { m_manager = in_manager; }
 
 	// 三人称カメラのゲッター
-	class ThirdPersonCamera* GetCamera() { return m_cameraComp; }
+	//class ThirdPersonCamera* GetCamera() { return m_cameraComp; }
+	class ThirdPersonCarCamera* GetCamera() { return m_cameraComp; }
 
 	// アクセル値のゲッター
 	float GetAccelValue() { return m_moveComp->GetAccelValue(); }
@@ -109,7 +110,9 @@ private:
 	class MoveComponentCar* m_moveComp;
 
 	// CameraComponent
-	class ThirdPersonCamera* m_cameraComp;
+	//class ThirdPersonCamera* m_cameraComp;
+	class ThirdPersonCarCamera* m_cameraComp;
+
 
 	// 当たり判定ボックス
 	class BoxCollider* m_hitBox;

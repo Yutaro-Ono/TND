@@ -21,6 +21,7 @@
 #include "Environment.h"
 #include "WorldSpaceUI.h"
 #include "ClientActor.h"
+#include "PointLight.h"
 const int TitleScene::STAGE_ALL_NUM = 1;
 
 
@@ -68,6 +69,9 @@ void TitleScene::Initialize()
 	m_client = new ClientActor(Vector3::Zero, 5);
 	m_client->SetPosition(Vector3(0.0f, -55.0f, 0.0f));
 	m_client->SetScale(0.4f);
+
+	m_pointLight = new PointLight();
+	m_pointLight->SetPosition(Vector3(0.0f, 0.0f, 50.0f));
 
 	// ‰¹Šy
 	//m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";

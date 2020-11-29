@@ -63,11 +63,10 @@ ShadowMap::~ShadowMap()
 
 	glDeleteFramebuffers(1, &m_depthMapFBO);
 	glDeleteTextures(1, &m_depthMap);
-	//glDeleteVertexArrays(1, &m_screenVAO);
-	m_depthShader->Delete();
-	m_depthSkinShader->Delete();
-	m_shadowShader->Delete();
-	m_skinShadowShader->Delete();
+	delete m_depthShader;
+	delete m_depthSkinShader;
+	delete m_shadowShader;
+	delete m_skinShadowShader;
 }
 
 

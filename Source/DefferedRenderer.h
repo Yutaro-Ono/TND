@@ -15,7 +15,9 @@ public:
 
 	bool Initialize();                // 初期化処理 (各種フレームバッファを作成する)
 
-	void Draw();                      // Rendererクラスに登録されているオブジェクトの描画
+	void DrawGBuffer();               // GBufferへの書き込み処理
+	void DrawLightPass();             // GBufferからライティング計算を行う
+	void Draw();                      // GBufferに書き込まれた情報の描画
 
 private:
 
@@ -23,10 +25,19 @@ private:
 	bool CreateLightBuffer();         // ライトバッファの作成
 
 
+
 	//-----------------------------+
 	// メンバ変数
 	//-----------------------------+
 	class Renderer* m_renderer;           // レンダラークラスへのポインタ
+
+	class Shader* m_gBufferShader;        // GBuffer用シェーダ
+	class Shader* m_gBufferSkinShader;    // GBuffer用スキンシェーダ
+	class Shader* m_screenShader;         // GBuffer描画用スクリーンシェーダ
+
+	class Shader* m_pointLightShader;
+	class Shader* m_directionalLightShader;
+	class Shader* m_spotLightShader;
 
 	// GBuffer
 	unsigned int m_gBuffer;               // G-Buffer (3要素を持つフレームバッファ)

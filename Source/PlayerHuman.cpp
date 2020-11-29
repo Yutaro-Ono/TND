@@ -334,6 +334,10 @@ void PlayerHuman::SetActive(bool in_active)
 
 	if (m_isActive)
 	{
+		delete m_cameraComp;
+		m_cameraComp = new ThirdPersonCamera(this);
+		m_cameraComp->SetAdjustForward(true);
+		m_cameraComp->SetChaseOwnerForward(false);
 		GAME_INSTANCE.SetCamera(m_cameraComp);
 	}
 

@@ -5,7 +5,7 @@
 #include "InputController.h"
 #include "Mouse.h"
 
-const float ThirdPersonCarCamera::CAMERA_SENSITIVITY = 25.0f;
+const float ThirdPersonCarCamera::CAMERA_SENSITIVITY = 65.0f;
 const Vector3 ThirdPersonCarCamera::DEFAULT_DISTANCE_OFFSET = Vector3(-150.0f, 0.0f, 70.0f);
 const float ThirdPersonCarCamera::MIN_TARGET_DISTANCE = -80.0f;
 const float ThirdPersonCarCamera::MAX_TARGET_DISTANCE = 300.0f;
@@ -32,18 +32,21 @@ ThirdPersonCarCamera::~ThirdPersonCarCamera()
 void ThirdPersonCarCamera::Update(float in_deltaTime)
 {
 
-	// 最終的にレンダラーにセットするビュー行列
-	Matrix4 view;
-
-	// 入力に関する処理
+	// 入力処理
 	ProcessInput(in_deltaTime);
 
 	// オーナーアクタの座標を取得
 	Vector3 targetPos = m_owner->GetPosition();
+	// ビュー行列
+	Matrix4 view;
 
-	// プレイヤーの車が走っていない時のみ、軌道カメラ操作を行う
-	if (m_playerCar->GetMoveComponent()->GetAccelValue() >= 30.0f && CONTROLLER_INSTANCE.GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) >= 0.5f ||
-		INPUT_INSTANCE.IsKeyPressed(SDL_SCANCODE_W))
+	float height = -35.0f;      // カメラの高さ
+
+
+	//----------------------------------------------------+
+	// カメラ追従あり
+	//----------------------------------------------------+
+	if (m_chaseOwnerForward)
 	{
 		// ばね定数
 		const float springConstant = 128.0f;
@@ -72,24 +75,14 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 
 
 		view = Matrix4::CreateLookAt(m_position, targetPos, m_upVec);
-
-		// 右スティック押し込み時は後ろを見る
-		if (CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_RIGHTSTICK))
-		{
-
-			//targetPos = m_owner->GetPosition() + m_owner->GetForward() * DEFAULT_DISTANCE_OFFSET.x;
-			//m_offset = m_position - m_owner->GetPosition();
-			m_position = m_owner->GetPosition() - m_owner->GetForward() * DEFAULT_DISTANCE_OFFSET.x;
-			view = Matrix4::CreateLookAt(m_position, targetPos, Vector3::UnitZ);
-			printf("%f %f %f\n", targetPos.x - m_position.x, targetPos.y - m_position.y, targetPos.z - m_position.z);
-
-		}
-
-		//printf("%f %f %f\n", m_offset.x, m_offset.y, m_offset.z);
 	}
+
+
+	//---------------------------------------------------------+
+	// カメラ追従無し
+	//---------------------------------------------------------+
 	else
 	{
-
 		// ヨーのクォータニオンをワールド変換行列の上方ベクトルから生成
 		Quaternion yaw(Vector3::UnitZ, m_yaw * in_deltaTime);
 
@@ -99,68 +92,43 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 		m_upVec = Vector3::Transform(m_upVec, yaw);
 
 		// カメラの前進ベクトルをオフセットから算出
-		Vector3 forwardVec = -1.0f * m_offset;
-		forwardVec.Normalize();
+		m_forwardVec = -1.0f * m_offset;
+		m_forwardVec.Normalize();
 
 		// 右方向ベクトルを上方ベクトルと前進ベクトルから算出
-		Vector3 rightVec = Vector3::Cross(m_upVec, forwardVec);
+		Vector3 rightVec = Vector3::Cross(m_upVec, m_forwardVec);
 		rightVec.Normalize();
 
 
 		// カメラの右方向ベクトルからピッチのクォータニオンを生成
 		Quaternion pitch(rightVec, m_pitch * in_deltaTime);
 
-		// オフセットにピッチの値を入れて更新
-		m_offset = Vector3::Transform(m_offset, pitch);
 		// カメラの情報ベクトルもピッチから更新
 		m_upVec = Vector3::Transform(m_upVec, pitch);
 
+		// オフセットにピッチの値を入れて更新
+		m_offset = Vector3::Transform(m_offset, pitch);
+
+
 		// ワールド座標をターゲットの座標とオフセットから算出
-		m_position = Vector3::Lerp(m_position, targetPos + m_offset, 2.0f * in_deltaTime);
+		//m_position = Vector3::Lerp(m_position, targetPos + m_offset, 2.0f * in_deltaTime);
 
-		//m_position = targetPos + m_offset;
-
+		Vector3 pos = targetPos + m_offset;
+		//m_position = Vector3::Lerp(m_position, pos, attenRate * in_deltaTime);
+		m_position = targetPos + m_offset;
+		//printf("position.x : %f, position.y : %f, position.z : %f\n", m_position.x, m_position.y, m_position.z);
 		// ビュー行列を更新
 		view = Matrix4::CreateLookAt(m_position, targetPos, m_upVec);
 
 		// 距離ベクトル
-		Vector3 dist = Vector3(0.0f, 0.0f, m_distance);
+		Vector3 dist = Vector3(0.0f, 0.0, m_distance);
 		// 距離分を加算
 		view = view * Matrix4::CreateTranslation(dist);
 
-		//printf("%f %f %f\n", m_offset.x, m_offset.y, m_offset.z);
-		//printf("%f %f %f\n", m_position.x, m_position.y, m_position.z);
-		//printf("%f %f %f\n", targetPos.x - m_position.x, targetPos.y - m_position.y, targetPos.z - m_position.z);
-
-			// 右スティック押し込み時は後ろを見る
-		if (CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_RIGHTSTICK))
-		{
-
-			//targetPos = m_owner->GetPosition() + m_owner->GetForward() * DEFAULT_DISTANCE_OFFSET.x;
-			//m_offset = m_position - m_owner->GetPosition();
-			
-			// カメラの右方向ベクトルからピッチのクォータニオンを生成
-			m_pitch = 0.0f;
-			Quaternion pitch(rightVec, m_pitch * in_deltaTime);
-
-			// オフセットにピッチの値を入れて更新
-			m_offset = Vector3::Transform(m_offset, pitch);
-			// カメラの情報ベクトルもピッチから更新
-			m_upVec = Vector3::Transform(m_upVec, pitch);
-
-
-			m_position = targetPos - m_offset;
-			view = Matrix4::CreateLookAt(m_position, targetPos, m_upVec);
-
-		}
-
 	}
 
-
-
-	// ビュー行列のセット
+	// レンダラーのビュー行列更新
 	SetViewMatrix(view);
-
 
 }
 
@@ -169,6 +137,7 @@ void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 {
 
 	const float maxOrbitSpeed = Math::Pi * 8;
+	float attenRate = 3.0f;    // 減衰比率
 
 	// コントローラ接続時と未接続時で処理を分岐
 	if (CONTROLLER_INSTANCE.IsAvailable())
@@ -176,9 +145,20 @@ void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 		// 右スティックの入力値を格納する変数
 		Vector2 axisR;
 		axisR = CONTROLLER_INSTANCE.GetRAxisVec();
+
+		m_chaseOwnerForward = true;
+		if (axisR.x >= 1.0f || axisR.x <= -1.0f)
+		{
+			m_chaseOwnerForward = false;
+		}
+
 		// ヨー速度、ピッチ速度
 		float yawSpeed, pitchSpeed;
 		yawSpeed = pitchSpeed = 0.0f;
+
+		// ピッチの最大角度・最小角度
+		const float pitchMaxDegree = 45.0f; // カメラピッチ最高角度(degree)
+		const float pitchMinDegree = -10.0f; // カメラピッチ最低角度(degree)
 
 		// ターゲットまでの距離を変更 (backボタンを押している時)
 		if (CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_BACK))
@@ -213,14 +193,24 @@ void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 
 		}
 
-			// ヨー計算
-			yawSpeed = axisR.x / CAMERA_SENSITIVITY;
-			yawSpeed *= maxOrbitSpeed;
-			// ヨーをメンバにセット
-			SetYaw(yawSpeed);
-			// ピッチをメンバにセット
-			SetPitch(pitchSpeed);
+		// ヨー計算
+		// ピッチ計算
+		pitchSpeed = axisR.y / CAMERA_SENSITIVITY;
+		pitchSpeed *= maxOrbitSpeed;
+		m_pitch = Math::Lerp(m_pitch, (axisR.y / CAMERA_SENSITIVITY * maxOrbitSpeed), attenRate * in_deltaTime);
+		// ヨー計算
+		m_yaw = Math::Lerp(m_yaw, (axisR.x / CAMERA_SENSITIVITY * maxOrbitSpeed), attenRate * in_deltaTime);
 
+
+		// ピッチの最大・最小角度を調整
+		if (axisR.y > 0.0f && m_offset.z + m_pitch > pitchMaxDegree)
+		{
+			m_pitch = 0.0f;
+		}
+		if (axisR.y < 0.0f && m_offset.z + m_pitch < pitchMinDegree)
+		{
+			m_pitch = 0.0f;
+		}
 			//printf("distance = %f\n", m_offset.x);
 
 
@@ -258,13 +248,13 @@ void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 		yawSpeed -= xoffset;
 		//yawSpeed *= maxOrbitSpeed;
 		// メンバにセット
-		SetYaw(yawSpeed);
+		//SetYaw(yawSpeed);
 
 		// ピッチ計算
 		pitchSpeed -= yoffset;
 		//pitchSpeed *= maxOrbitSpeed;
 		// メンバにセット
-		SetPitch(pitchSpeed);
+		//SetPitch(pitchSpeed);
 
 		if (m_mousePos.x != 1919.0f && m_mousePos.x > 0.0f)
 		{
@@ -277,6 +267,10 @@ void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 	}
 }
 
+
+void ThirdPersonCarCamera::SetDistance(float in_dist)
+{
+}
 
 // オーナーの後方から一定距離にカメラを合わせる
 const Vector3& ThirdPersonCarCamera::ComputeCameraPos() const

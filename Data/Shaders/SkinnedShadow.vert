@@ -1,5 +1,5 @@
 //----------------------------------------------------+
-// スキン入りメッシュ用頂点配列
+// スキンメッシュ頂点シェーダ (シャドウ用)
 //----------------------------------------------------+
 #version 330 core
 // Attribute
@@ -23,9 +23,9 @@ uniform mat4 u_lightSpaceMatrix;
 out VS_OUT
 {
 	vec2 fragTexCoords;          // テクスチャ座標
-	vec3 fragNormal;            // ワールドスペース上の法線
-	vec3 fragWorldPos;          // ワールドスペース上の座標
-	vec4 fragPosLightSpace;     // ライトスペース上の座標
+	vec3 fragNormal;             // ワールドスペース上の法線
+	vec3 fragWorldPos;           // ワールドスペース上の座標
+	vec4 fragPosLightSpace;      // ライトスペース上の座標
 }vs_out;
 
 void main()

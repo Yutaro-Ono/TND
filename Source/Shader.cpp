@@ -9,7 +9,7 @@
 #include <SDL.h>
 #include <fstream>
 #include <sstream>
-
+#include <iostream>
 // コンストラクタ
 Shader::Shader()
 	:m_shaderProgram(0)
@@ -22,6 +22,7 @@ Shader::Shader()
 // デストラクタ
 Shader::~Shader()
 {
+	Delete();
 }
 
 // シェーダーの読み込み
@@ -31,6 +32,7 @@ bool Shader::Load(const std::string & in_vertName, const std::string & in_fragNa
 	if (!CompileShader(in_vertName, GL_VERTEX_SHADER, m_vertexShader) ||
 		!CompileShader(in_fragName, GL_FRAGMENT_SHADER, m_fragShader))
 	{
+		std::cout << "ERROR::SHADER::LOAD::" << "VERTEX : " << in_vertName <<std::endl << "FRAGMENT : " << in_fragName << std::endl;
 		return false;
 	}
 
@@ -43,6 +45,7 @@ bool Shader::Load(const std::string & in_vertName, const std::string & in_fragNa
 	// リンクが失敗
 	if (!IsValidProgram())
 	{
+		std::cout << "ERROR::SHADER::LINK::" << "VERTEX : " << in_vertName << std::endl << "FRAGMENT : " << in_fragName << std::endl;
 		return false;
 	}
 

@@ -71,7 +71,7 @@ public:
 
 protected:
 
-	Actor::State m_state;                                  // ステート(状態)
+	Actor::State m_state;                           // ステート(状態)
 
 	Vector3 m_position;                             // ポジション
 	Matrix4 m_worldTransform;                       // ワールド変換行列

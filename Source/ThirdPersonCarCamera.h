@@ -1,52 +1,67 @@
-// 車操作用カメラ
-
 #pragma once
 #include "CameraComponent.h"
 
 
 class ThirdPersonCarCamera : public CameraComponent
 {
-
 public:
 
-
-	ThirdPersonCarCamera(class PlayerCar* in_target);
+	ThirdPersonCarCamera(class PlayerCar* in_owner);
 	~ThirdPersonCarCamera();
 
+	void Update(float in_deltaTime) override;           // 更新処理
 
-	void Update(float in_deltaTime) override;
+	void ProcessInput(float in_deltaTime) override;     // 入力処理
 
-	void ProcessInput(float in_deltaTime) override;
+	// 当たり判定処理
+	void CollisionFix(class BoxCollider* in_hitCameraBox, class BoxCollider* in_hitBox);
 
 
-	//--------------------------------------------+
-	// Getter / Setter
-	//--------------------------------------------+
+	//-----------------------------------------------------------+
+	// Getter/Setter
+	//-----------------------------------------------------------+
+	// ピッチのゲッター
 	float GetPitch() const { return m_pitch; }
-	void SetPitch(float in_pitch) { m_pitch = in_pitch; }
-
+	// ヨーのゲッター
 	float GetYaw() const { return m_yaw; }
-	void SetYaw(float in_yaw) { m_yaw = in_yaw; }
 
+	// ピッチ速度のセット
+	void SetPitchSpeed(float in_speed) { m_pitchSpeed = in_speed; }
+	// ピッチの最大速度のセット
+	void SetMaxPitch(float in_maxSpeed) { m_maxPitch = in_maxSpeed; }
 
+	// カメラ距離のセッター
+	void SetDistance(float in_dist);
+
+	// 前進ベクトルをオーナーと合わせるかどうかのセッター
+	void SetAdjustForward(bool in_adjust) { m_adjustForward = in_adjust; }
+	// カメラ追従処理を行うかどうかのセッター
+	void SetChaseOwnerForward(bool in_chase) { m_chaseOwnerForward = in_chase; }
+
+	// カメラ前進ベクトルのゲッター・セッター
+	const Vector3& GetForward() { return m_forwardVec; }
+	void SetCameraForward(const Vector3& in_forward) { m_forwardVec = in_forward; }
 
 private:
 
-
+	// オーナーの後方から一定距離にカメラ位置を調整し、その座標を返す
 	const Vector3& ComputeCameraPos() const;
 
-	class PlayerCar* m_playerCar;      // プレイヤーへのポインタ
+	Vector3 m_offset;        // 三人称視点時ターゲットからの距離オフセット
 
-	Vector3 m_offset;          // ターゲットからの距離オフセット
-
-
+	Vector3 m_forwardVec;      // カメラの前進ベクトル
 	Vector3 m_upVec;           // カメラの上方ベクトル
 
 	// カメラ加速度
 	Vector3 m_velocity;
 
-	// ピッチ速度(/秒)
+	// オーナーアクタの移動時に使用する前進ベクトル(カメラ基準)
+	Vector3 m_ownerForward;
+
+	// ピッチ関連
 	float m_pitch;
+	float m_pitchSpeed;
+	float m_maxPitch;
 
 	// ヨー速度(/秒)
 	float m_yaw;
@@ -54,7 +69,16 @@ private:
 	// ターゲットまでの距離
 	float m_distance;
 
-	// マウス
+	// カメラの前進ベクトルとオーナーアクタの向きを合わせるか (デフォルト：ON)
+	bool m_adjustForward;
+	// カメラの前進ベクトルをオーナーアクタの前進ベクトルへ追従させるか (デフォルト：OFF)
+	bool m_chaseOwnerForward;
+
+	// 当たり判定
+	class BoxCollider* m_hitBox;
+	class PlayerCar* m_playerCar;
+
+	// マウス入力
 	Vector2 m_mousePos;                    // マウスの座標
 	Vector2 m_frameMousePos;               // マウスの前フレームの座標
 

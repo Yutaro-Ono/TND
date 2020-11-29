@@ -2,6 +2,7 @@
 #include "Input.h"
 #include "InputController.h"
 #include "ThirdPersonCamera.h"
+#include "ThirdPersonCarCamera.h"
 #include "PhysicsWorld.h"
 #include "ClientActor.h"
 

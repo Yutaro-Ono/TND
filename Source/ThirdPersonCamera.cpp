@@ -180,6 +180,8 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 	//-----------------------------------------------------+
 	if (CONTROLLER_INSTANCE.IsAvailable())
 	{
+		
+
 		// 右スティックの入力値を格納する変数
 		Vector2 axisR;
 		axisR = CONTROLLER_INSTANCE.GetRAxisVec();
@@ -187,6 +189,8 @@ void ThirdPersonCamera::ProcessInput(float in_deltaTime)
 		// backボタンを押していない時
 		if (!CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_BACK))
 		{
+			
+
 			// カメラが引きすぎている場合に自動補正
 			if (m_distance > MAX_TARGET_DISTANCE / 2)
 			{

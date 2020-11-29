@@ -98,6 +98,8 @@
     <ClCompile Include="Source\PlayerControlUI.cpp" />
     <ClCompile Include="Source\PlayerHuman.cpp" />
     <ClCompile Include="Source\PlayerManager.cpp" />
+    <ClCompile Include="Source\PointLight.cpp" />
+    <ClCompile Include="Source\PointLightComponent.cpp" />
     <ClCompile Include="Source\RapidJsonHelper.cpp" />
     <ClCompile Include="Source\RecordScore.cpp" />
     <ClCompile Include="Source\RenderBloom.cpp" />
@@ -184,7 +186,6 @@
     <ClInclude Include="Source\LevelManager.h" />
     <ClInclude Include="Source\LevelObject.h" />
     <ClInclude Include="Source\LevelTerrain.h" />
-    <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadScreen.h" />
     <ClInclude Include="Source\Math.h" />
     <ClInclude Include="Source\MatrixPalette.h" />
@@ -213,6 +214,8 @@
     <ClInclude Include="Source\PlayerControlUI.h" />
     <ClInclude Include="Source\PlayerHuman.h" />
     <ClInclude Include="Source\PlayerManager.h" />
+    <ClInclude Include="Source\PointLight.h" />
+    <ClInclude Include="Source\PointLightComponent.h" />
     <ClInclude Include="Source\RapidJsonHelper.h" />
     <ClInclude Include="Source\RecordScore.h" />
     <ClInclude Include="Source\RenderBloom.h" />
@@ -258,6 +261,10 @@
     <None Include="Data\Shaders\FB\GreyScaleScreen.frag" />
     <None Include="Data\Shaders\FB\InvertColorScreen.frag" />
     <None Include="Data\Shaders\FB\SharpEdgeScreen.frag" />
+    <None Include="Data\Shaders\GBuffer\gBuffer_Basic.frag" />
+    <None Include="Data\Shaders\GBuffer\gBuffer_Basic.vert" />
+    <None Include="Data\Shaders\GBuffer\PointLight.frag" />
+    <None Include="Data\Shaders\GBuffer\PointLight.vert" />
     <None Include="Data\Shaders\Line.frag" />
     <None Include="Data\Shaders\Line.vert" />
     <None Include="Data\Shaders\MultiRender\Bloom.frag" />

@@ -26,7 +26,7 @@ Texture::Texture()
 // デストラクタ
 Texture::~Texture()
 {
-	// 処理なし
+	//RENDERER->RemoveTexture(this);
 }
 
 // テクスチャのロード
@@ -170,8 +170,6 @@ bool Texture::LoadSkyBox(const std::string& in_filePath)
 // テクスチャ解放処理
 void Texture::Delete()
 {
-	RENDERER->RemoveTexture(this);
-
 	glDeleteTextures(1, &m_textureID);
 }
 
