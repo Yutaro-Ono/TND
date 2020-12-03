@@ -48,6 +48,7 @@
     <ClCompile Include="Source\GameMain.cpp" />
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameWorld.cpp" />
+    <ClCompile Include="Source\glad.c" />
     <ClCompile Include="Source\Grid.cpp" />
     <ClCompile Include="Source\HeliBody.cpp" />
     <ClCompile Include="Source\Helicopter.cpp" />
@@ -385,7 +386,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Library\GLEW\include;$(SolutionDir)Library\SDL\include;$(SolutionDir)Library\rapidjson\include;$(SolutionDir)Library\LOGI\include;$(SolutionDir)Library\DirectX\include\;$(SolutionDir)Library\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Library\SDL\include;$(SolutionDir)Library\rapidjson\include;$(SolutionDir)Library\LOGI\include;$(SolutionDir)Library\DirectX\include\;$(SolutionDir)Library\include\;$(SolutionDir)Library\glad\include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)Library\SDL\lib\win\x86\;$(SolutionDir)Library\GLEW\lib\win\x86\;$(SolutionDir)Library\LOGI\lib\x86\;$(SolutionDir)Library\DirectX\lib\</AdditionalLibraryDirectories>

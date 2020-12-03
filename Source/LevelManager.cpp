@@ -14,6 +14,7 @@
 #include "PatrolPoint.h"
 #include "RapidJsonHelper.h"
 #include "GameWorld.h"
+#include "PointLight.h"
 #include <vector>
 #include <string>
 #include <sstream>
@@ -28,7 +29,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 {
 	// マップの配置を保存したjsonへのファイルパスを生成
 	std::stringstream ssMap;
-	ssMap << "Data/Strings/map_0" << in_stageNum << "1.json";
+	ssMap << "Data/Strings/map_" << in_stageNum << ".json";
 	std::string mapPath = ssMap.str();
 
 	// ステージメッシュ読み込み
@@ -83,10 +84,20 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	std::vector<std::vector<int>> patrolPointData;
 	if (!ReadTiledJson(patrolPointData, mapPath.c_str(), "layer_patrolPoint"))
 	{
-		printf("<Level> client Data Load : Failed\n");
+		printf("<Level> patrolPoint Data Load : Failed\n");
 		GAME_INSTANCE.SetShutDown();
 		return;
 	}
+
+	// ポイントライト
+	std::vector<std::vector<int>> pointLightData;
+	if (!ReadTiledJson(pointLightData, mapPath.c_str(), "layer_pointLight"))
+	{
+		printf("<Level> pointLight Data Load : Failed\n");
+		GAME_INSTANCE.SetShutDown();
+		return;
+	}
+
 
 	LevelBlock* block;
 	LevelTerrain* terrain;
@@ -195,7 +206,21 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	}
 	patrolPointData.clear();
 
+	// マップに登録 (ポイントライト)
+	for (int iy = 0; iy < sizeY; iy++)
+	{
+		for (int ix = 0; ix < sizeX; ix++)
+		{
 
+			if (pointLightData[iy][ix] == 32)
+			{
+				PointLight* pLight = new PointLight();
+				pLight->SetPosition(Vector3(ix* blockSize, offsetY - iy * blockSize, 0.0f));
+			}
+
+		}
+	}
+	pointLightData.clear();
 
 	m_blockMeshes.clear();
 	m_objectMeshes.clear();

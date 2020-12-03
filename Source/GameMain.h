@@ -12,7 +12,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_types.h>
-#include "GL/glew.h"
 #include "Math.h"
 #include "Input.h"
 #include "InputController.h"

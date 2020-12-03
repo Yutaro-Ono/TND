@@ -5,7 +5,7 @@
 // copyright (C) 2019 Yutaro Ono. all rights reserved.
 //------------------------------------------------------------------------------+
 #include "VertexArray.h"
-#include <GL/glew.h>
+#include <glad/glad.h>
 
 // 標準コンストラクタ
 VertexArray::VertexArray()

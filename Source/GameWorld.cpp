@@ -13,6 +13,7 @@
 #include "Helicopter.h"
 #include "Canvas.h"
 #include "PlayerControlUI.h"
+#include "PointLight.h"
 #include <Windows.h>
 #include <iostream>
 #include <algorithm>
@@ -28,6 +29,8 @@ GameWorld::GameWorld()
 	m_player = new PlayerManager();
 	m_player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
 	m_player->SetScale(0.3f);
+	PointLight* light = new PointLight();
+	light->SetPosition(m_player->GetPosition());
 	tempPos = playerPos = m_player->GetPosition();
 
 	// ƒŒƒxƒ‹‚Ì¶¬

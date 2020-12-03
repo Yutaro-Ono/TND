@@ -15,6 +15,10 @@
 #include "SpriteComponent.h"
 #include "WorldSpaceUI.h"
 #include "UIScreen.h"
+#include <stdlib.h>
+#include <iostream>
+#include <glad/glad.h>
+
 DefferedRenderer::DefferedRenderer(Renderer* in_renderer)
 	:m_renderer(in_renderer)
 	,m_gBufferShader(nullptr)
@@ -107,6 +111,7 @@ void DefferedRenderer::DrawGBuffer()
 	m_gBufferShader->SetMatrixUniform("u_projection", m_renderer->m_projection);
 	m_gBufferShader->SetInt("u_mat.diffuseMap", 0);
 	m_gBufferShader->SetInt("u_mat.specularMap", 1);
+	m_gBufferShader->SetInt("u_mat.normalMap", 2);
 	// メッシュ描画 (ここでGBufferの各要素に情報が書き込まれる)
 	for (auto mesh : m_renderer->m_meshComponents)
 	{
@@ -122,6 +127,7 @@ void DefferedRenderer::DrawGBuffer()
 	m_gBufferSkinShader->SetMatrixUniform("u_projection", m_renderer->m_projection);
 	m_gBufferSkinShader->SetInt("u_mat.diffuseMap", 0);
 	m_gBufferSkinShader->SetInt("u_mat.specularMap", 1);
+	m_gBufferSkinShader->SetInt("u_mat.normalMap", 2);
 	// メッシュ描画 (ここでGBufferの各要素に情報が書き込まれる)
 	for (auto skel : m_renderer->m_skeletalMeshComponents)
 	{
@@ -138,9 +144,11 @@ void DefferedRenderer::DrawLightPass()
 {
 	// ライトバッファをバインド
 	glBindFramebuffer(GL_FRAMEBUFFER, m_lightFBO);
+
 	glEnablei(GL_BLEND, 0);                                          // 加算合成を行うためブレンドを有効化
 	glBlendFuncSeparatei(0, GL_ONE, GL_ONE, GL_ONE, GL_ONE);         // 加算合成のブレンドを指定
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 
 	// 深度テストをオフ
@@ -158,9 +166,10 @@ void DefferedRenderer::DrawLightPass()
 	m_pointLightShader->SetMatrixUniform("u_view", m_renderer->GetViewMatrix());
 	m_pointLightShader->SetMatrixUniform("u_projection", m_renderer->GetProjectionMatrix());
 	m_pointLightShader->SetVectorUniform("u_viewPos", m_renderer->GetViewMatrix().GetTranslation());
-	m_pointLightShader->SetInt("u_gBuffer.gPos", 0);
-	m_pointLightShader->SetInt("u_gBuffer.gNormal", 1);
-	m_pointLightShader->SetInt("u_gBuffer.gAlbedoSpec", 2);
+	m_pointLightShader->SetInt("u_gBuffer.position", 0);
+	m_pointLightShader->SetInt("u_gBuffer.normal", 1);
+	m_pointLightShader->SetInt("u_gBuffer.albedoSpec", 2);
+
 	// gBufferの各テクスチャをバインド
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_gPos);
@@ -172,25 +181,14 @@ void DefferedRenderer::DrawLightPass()
 	// ポイントライトの描画
 	for (auto pl : m_renderer->m_pointLights)
 	{
-		//pl->Draw(m_pointLightShader);
+		pl->Draw(m_pointLightShader);
 	}
-
-
-	m_screenShader->SetActive();
-	m_screenShader->SetInt("u_screenTexture", 0);
-	// GBufferテクスチャセット
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
-	// スクリーンに描画
-	m_renderer->m_screenVerts->SetActive();
-	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	//-----------------------------------------------+
 	// ディレクショナルライトパス
 	//-----------------------------------------------+
-	glDisable(GL_DEPTH_TEST);
 	// 輝度定義
-	float intensity = 1.0f;
+	float intensity = 0.001f;
 	// シェーダのセット
 	m_directionalLightShader->SetActive();
 	m_directionalLightShader->SetVectorUniform("u_viewPos", m_renderer->GetViewMatrix().GetTranslation());
@@ -199,9 +197,9 @@ void DefferedRenderer::DrawLightPass()
 	m_directionalLightShader->SetVectorUniform("u_dirLight.color", m_renderer->m_directionalLight.diffuse);
 	m_directionalLightShader->SetVectorUniform("u_dirLight.specular", m_renderer->m_directionalLight.specular);
 	m_directionalLightShader->SetFloat("u_dirLight.intensity", intensity);
-	m_directionalLightShader->SetInt("u_gBuffer.gPos", 0);
-	m_directionalLightShader->SetInt("u_gBuffer.gNormal", 1);
-	m_directionalLightShader->SetInt("u_gBuffer.gAlbedoSpec", 2);
+	m_directionalLightShader->SetInt("u_gBuffer.position", 0);
+	m_directionalLightShader->SetInt("u_gBuffer.normal", 1);
+	m_directionalLightShader->SetInt("u_gBuffer.albedoSpec", 2);
 
 	// gBufferの各テクスチャをバインド
 	glActiveTexture(GL_TEXTURE0);
@@ -210,25 +208,30 @@ void DefferedRenderer::DrawLightPass()
 	glBindTexture(GL_TEXTURE_2D, m_gNormal);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+
 	// スクリーン全体に描画
 	m_renderer->GetScreenVAO()->SetActive();
-	//glDrawArrays(GL_TRIANGLES, 0, 6);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	// カリングとブレンドを停止する
 	glDisable(GL_CULL_FACE);
 	glDisablei(GL_BLEND, 0);
 
 
-
-
 	// gBufferの内容をライトバッファへコピーし、gBufferの深度値に基づいた描画を行う
-	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_gBuffer);       // gBufferを読み取りフレームバッファとして指定
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_gBuffer);              // gBufferを読み取りフレームバッファとして指定
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_lightFBO);             // 書き込みバッファをライトバッファに指定
 	// 深度情報をスクリーン側の深度バッファへコピーする
 	glBlitFramebuffer(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	// ライトバッファ描画へ戻す
 	glBindFramebuffer(GL_FRAMEBUFFER, m_lightFBO);
-	
+
+	// 深度テストをオン
+	glEnable(GL_DEPTH_TEST);
+
+
+	// ライトFBOへの書き込みを止める
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 // 本描画処理
@@ -241,63 +244,29 @@ void DefferedRenderer::Draw()
 	// ライトバッファへの書き込み
 	DrawLightPass();
 
+
+	//----------------------------------------------------------------+
 	// 最終出力結果を描画
-	// ライトFBOへの書き込みを止める
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//----------------------------------------------------------------+
 	// GBufferに書き込まれた要素をスクリーンに描画
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_DEPTH_TEST);
-
+	// スクリーンシェーダのuniformセット
 	m_screenShader->SetActive();
 	m_screenShader->SetInt("u_screenTexture", 0);
 
 	// GBufferテクスチャセット
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_gPos);
-	//glBindTexture(GL_TEXTURE_2D, m_lightHDR);
+	glBindTexture(GL_TEXTURE_2D, m_lightHDR);
+	//glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+	//glBindTexture(GL_TEXTURE_2D, m_gPos);
+
 
 	// スクリーンに描画
 	m_renderer->m_screenVerts->SetActive();
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
-
-
-	// ワールド空間上のスプライト描画
-	m_renderer->m_worldSpaceSpriteShader->SetActive();
-	m_renderer->m_worldSpaceSpriteShader->SetMatrixUniform("u_View", m_renderer->m_view);
-	m_renderer->m_worldSpaceSpriteShader->SetMatrixUniform("u_Projection", m_renderer->m_projection);
-	for (auto spr : m_renderer->m_worldSprites)
-	{
-		spr->Draw(m_renderer->m_worldSpaceSpriteShader);
-	}
-
-	// Spriteの描画
-	// ブレンドのアクティブ化
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	// 深度テストの停止
-	glDisable(GL_DEPTH_TEST);
-	glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
-	glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-
-	// spriteシェーダーのアクティブ化
-	m_renderer->m_spriteVerts->SetActive();
-	m_renderer->m_spriteShader->SetActive();
-
-	for (auto sprite : m_renderer->m_spriteComponents)
-	{
-		if (sprite->GetVisible())
-		{
-			sprite->Draw(m_renderer->m_spriteShader);
-		}
-	}
-
-	// 全てのUIを更新
-	for (auto ui : GAME_INSTANCE.GetUIStack())
-	{
-		ui->Draw(m_renderer->m_spriteShader);
-	}
 }
 
 
@@ -322,7 +291,7 @@ bool DefferedRenderer::CreateGBuffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_gPos, 0);
 	// 法線ベクトルバッファ (浮動小数点バッファ/カラー1番目として登録)
-	glGenFramebuffers(1, &m_gNormal);
+	glGenTextures(1, &m_gNormal);
 	glBindTexture(GL_TEXTURE_2D, m_gNormal);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -335,10 +304,11 @@ bool DefferedRenderer::CreateGBuffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_gAlbedoSpec, 0);
-
 	// 各テクスチャをGBufferの描画先としてGL側に明示する
-	unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
-	glDrawBuffers(3, attachments);
+	m_attachments[0] = { GL_COLOR_ATTACHMENT0 };
+	m_attachments[1] = { GL_COLOR_ATTACHMENT1 };
+	m_attachments[2] = { GL_COLOR_ATTACHMENT2 };
+	glDrawBuffers(3, m_attachments);
 
 	// レンダーバッファの作成 (ステンシルバッファとして定義)
 	glGenRenderbuffers(1, &m_gRBO);

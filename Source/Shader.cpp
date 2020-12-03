@@ -10,6 +10,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+
 // コンストラクタ
 Shader::Shader()
 	:m_shaderProgram(0)

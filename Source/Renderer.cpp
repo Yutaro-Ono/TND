@@ -47,7 +47,7 @@ Renderer::Renderer()
 	,m_cameraPos(Vector3::Zero)
 	,m_fRenderer(nullptr)
 	,m_dRenderer(nullptr)
-	,m_renderMode(RENDER_MODE::FORWARD)
+	,m_renderMode(RENDER_MODE::DEFFERED)
 {
 }
 
@@ -87,7 +87,7 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	(
 		"TheNightDriver",                                 // ウィンドウの名称
 		0,                                                // x座標のウィンドウ描画原点
-		30,                                               // y座標のウィンドウ描画原点
+		0,                                               // y座標のウィンドウ描画原点
 		m_screenWidth,              // 画面の横幅
 		m_screenHeight,             // 画面の縦幅
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
@@ -108,7 +108,6 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 			return false;
 		}
 	}
-	glViewport(0, 0, m_screenWidth, m_screenHeight);
 
 	// wminfo構造体
 	SDL_SysWMinfo wminfo;
@@ -124,15 +123,17 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	SDL_GL_MakeCurrent(m_window, m_context);
 
 	//----------------------------------------------------------------+
-    // GLEW初期化
+    // GLAD初期化
     //----------------------------------------------------------------+
-	glewExperimental = GL_TRUE;
+	gladLoadGL();
+	const int version = GL_TRUE;
 	// 初期化に失敗したら
-	if (glewInit() != GLEW_OK)
+	if (version == 0)
 	{
-		SDL_Log("GLEW Initialize : Failed");
+		SDL_Log("GLAD Initialize : Failed");
 		return false;
 	}
+	glViewport(0, 0, m_screenWidth, m_screenHeight);
 
 	//-----------------------------------------------------------------+
 	// SDLレンダラーの作成
@@ -221,8 +222,8 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	CreateScreenVerts();
 
 	// カリング
-	glFrontFace(GL_CCW);
-	glEnable(GL_CULL_FACE);
+	//glFrontFace(GL_CCW);
+	//glEnable(GL_CULL_FACE);
 
 	// 初期化に成功
 	return true;

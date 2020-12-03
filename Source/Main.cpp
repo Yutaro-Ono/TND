@@ -11,7 +11,7 @@
 #include "TitleScene.h"
 #include "GameScene.h"
 #include <SDL.h>
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <iostream>
 #include <string>
 

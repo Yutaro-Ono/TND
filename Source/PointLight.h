@@ -9,8 +9,7 @@ public:
 	~PointLight();
 
 	void SetLightParameter(float in_constant, float in_linear, float in_quadratic);     // ライトパラメータのセット
-	void SetLightColor(const Vector3& in_diffuse, const Vector3& in_ambient, 
-		               const Vector3& in_specular);                                     // ライトカラーのセット
+	void SetLightColor(const Vector3& in_diffuse, const Vector3& in_specular);                                     // ライトカラーのセット
 
 	void SwitchLighting();                                                              // 点灯状態ON・OFF
 

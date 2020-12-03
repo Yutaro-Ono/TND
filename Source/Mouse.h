@@ -3,7 +3,7 @@
 #include "Math.h"
 #include "GameMain.h"
 #include "Renderer.h"
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include "imgui/imconfig.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl3.h"

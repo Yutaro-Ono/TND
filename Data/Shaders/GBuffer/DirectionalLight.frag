@@ -20,9 +20,9 @@ struct DirectionalLight
 // GBuffer構造体
 struct GBuffer
 {
-	sampler2D gPos;
-	sampler2D gNormal;
-	sampler2D gAlbedoSpec;
+	sampler2D position;
+	sampler2D normal;
+	sampler2D albedoSpec;
 };
 
 
@@ -35,10 +35,10 @@ uniform vec3 u_viewPos;      // カメラ位置
 void main()
 {
 	// Gbufferの各要素をサンプリングして色情報を取り出す
-	vec3 Position = texture(u_gBuffer.gPos, TexCoords).xyz;
-	vec3 Normal = texture(u_gBuffer.gNormal, TexCoords).xyz;
+	vec3 Position = texture(u_gBuffer.position, TexCoords).xyz;
+	vec3 Normal = texture(u_gBuffer.normal, TexCoords).xyz;
 	// アルベドとスペキュラを分けて保存
-	vec4 AlbedoSpec = texture(u_gBuffer.gAlbedoSpec, TexCoords);
+	vec4 AlbedoSpec = texture(u_gBuffer.albedoSpec, TexCoords);
 	vec3 Albedo = AlbedoSpec.rgb;
 	float Spec_p = AlbedoSpec.a;
 
@@ -58,6 +58,6 @@ void main()
 	float spec = pow(max(dot(Normal, halfVec), 0.0), 32);
 	vec3 specular = u_dirLight.specular * u_dirLight.intensity * spec * Spec_p;
 
-	vec3 result = diffuse + specular + ambient;
+	vec3 result = ambient + diffuse + specular;
 	out_fragColor = vec4(result, 1.0f);
 }

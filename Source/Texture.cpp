@@ -9,7 +9,7 @@
 #include "Texture.h"
 #include "GameMain.h"
 #include "Renderer.h"
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <stb_image.h>

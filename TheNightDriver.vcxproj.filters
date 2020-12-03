@@ -423,6 +423,9 @@
     <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\DirectionalLight">
       <UniqueIdentifier>{3db4df89-c9b2-4b77-90fb-6a265c53c0f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh\CubeMap">
+      <UniqueIdentifier>{0e746bce-76b8-4a1c-afc7-a4381b46e96d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -751,6 +754,9 @@
     </ClCompile>
     <ClCompile Include="Source\PointLight.cpp">
       <Filter>ソース ファイル\Actor\Light\PointLight</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\glad.c">
+      <Filter>リソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

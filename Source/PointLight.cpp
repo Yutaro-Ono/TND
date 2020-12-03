@@ -5,19 +5,18 @@
 
 PointLight::PointLight()
 	:m_lighting(true)
-	,m_constant(1.0f)
-	,m_linear(0.7f)
-	,m_quadratic(0.8f)
-	,m_diffuse(Vector3(1.0f, 1.0f, 1.0f))
-	,m_ambient(Vector3(0.5f, 0.5f, 0.5f))
+	,m_constant(0.01f)
+	,m_linear(0.05f)
+	,m_quadratic(0.01f)
+	,m_diffuse(Vector3(0.3f, 0.6f, 1.0f))
+	,m_ambient(m_diffuse * 0.2f)
 	,m_specular(Vector3(1.0f, 1.0f, 1.0f))
 	,m_lightComp(nullptr)
 {
 	CalcLightRadius();
 	m_lightComp = new PointLightComponent(this);
-	m_meshComp = new MeshComponent(this);
-	m_meshComp->SetMesh(RENDERER->GetMesh("Data/Meshes/TND/Light/PointLight/PointLight_Sphere.OBJ"));
-	SetScale(1000.0f);
+	//m_meshComp = new MeshComponent(this);
+	//m_meshComp->SetMesh(RENDERER->GetMesh("Data/Meshes/TND/Light/PointLight/PointLight_Sphere.OBJ"));
 }
 
 PointLight::~PointLight()
@@ -36,10 +35,10 @@ void PointLight::SetLightParameter(float in_constant, float in_linear, float in_
 }
 
 // ライトカラーのセット
-void PointLight::SetLightColor(const Vector3& in_diffuse, const Vector3& in_ambient, const Vector3& in_specular)
+void PointLight::SetLightColor(const Vector3& in_diffuse, const Vector3& in_specular)
 {
 	m_diffuse = in_diffuse;
-	m_ambient = in_ambient;
+	m_ambient = in_diffuse * 0.2f;
 	m_specular = in_specular;
 }
 

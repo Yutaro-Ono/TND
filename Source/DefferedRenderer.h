@@ -36,6 +36,7 @@ private:
 	class Shader* m_screenShader;         // GBuffer描画用スクリーンシェーダ
 
 	class Shader* m_pointLightShader;
+	class Shader* m_lightSphereShader;
 	class Shader* m_directionalLightShader;
 	class Shader* m_spotLightShader;
 
@@ -46,6 +47,7 @@ private:
 	unsigned int m_gNormal;               // 法線ベクトル
 	unsigned int m_gAlbedoSpec;           // アルベド(RGB)＆スペキュラ(A)
 	unsigned int m_gRBO;                  // G-Bufferに紐付ける描画バッファ
+	unsigned int m_attachments[3];
 
 	// ライトバッファ (光源処理用)
 	unsigned int m_lightFBO;              // ライトバッファ
