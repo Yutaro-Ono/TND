@@ -143,7 +143,7 @@ void PlayerHuman::ChangeState(float in_deltaTime)
 		m_isJump = true;
 		if (m_animState != ANIM_JUMPLOOP)
 		{
-			m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_JUMPLOOP], cAnimationSpeed);
+			m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_JUMPLOOP], cAnimationSpeed * in_deltaTime);
 			m_animState = ANIM_JUMPLOOP;
 		}
 		return;
@@ -155,7 +155,7 @@ void PlayerHuman::ChangeState(float in_deltaTime)
 		{
 			if (!(m_skelMeshComp->IsPlaying()))
 			{
-				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_JUMPLOOP], cAnimationSpeed);
+				m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_JUMPLOOP], cAnimationSpeed * in_deltaTime);
 				m_animState = ANIM_JUMPLOOP;
 			}
 		}

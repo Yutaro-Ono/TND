@@ -29,6 +29,7 @@ void PointLightComponent::Draw(Shader* in_shader)
 	in_shader->SetFloat("u_pl.constant", m_light->GetConstant());
 	in_shader->SetFloat("u_pl.linear", m_light->GetLinear());
 	in_shader->SetFloat("u_pl.quadratic", m_light->GetQuadratic());
+	in_shader->SetFloat("u_pl.radius", m_light->GetLightRadius());
 	// カラーのセット
 	in_shader->SetVectorUniform("u_pl.diffuse", m_light->GetDiffuseColor());
 	in_shader->SetVectorUniform("u_pl.ambient", m_light->GetAmbientColor());

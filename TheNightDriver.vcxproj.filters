@@ -417,14 +417,47 @@
     <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting">
       <UniqueIdentifier>{c1743245-5b0c-4e85-9c0f-2e5cbef4b924}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\PointLight">
-      <UniqueIdentifier>{e7158a4f-b137-4a9d-9638-6cad0629ca99}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh\SkyBox">
+      <UniqueIdentifier>{0e746bce-76b8-4a1c-afc7-a4381b46e96d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\DirectionalLight">
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh\Environment">
+      <UniqueIdentifier>{4d5eb8c4-bc0d-47cb-bc7a-07f56d3ea0d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh\Shadow">
+      <UniqueIdentifier>{86f93852-9154-4575-b0db-8b6a99a1ab32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh\ShadowBloom">
+      <UniqueIdentifier>{104487f0-4ef7-4514-92c2-641ea417479b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh\NormalShadow">
+      <UniqueIdentifier>{c0919be5-e9c2-4b9c-8f6c-eb54a20c5907}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Basic">
+      <UniqueIdentifier>{25853f89-d71b-4242-a084-3e74088d2f03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\DirectionalLight">
       <UniqueIdentifier>{3db4df89-c9b2-4b77-90fb-6a265c53c0f3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh\CubeMap">
-      <UniqueIdentifier>{0e746bce-76b8-4a1c-afc7-a4381b46e96d}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\PointLight">
+      <UniqueIdentifier>{e7158a4f-b137-4a9d-9638-6cad0629ca99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom">
+      <UniqueIdentifier>{85bc25b0-ad93-4333-8db3-078c81ac3ae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\DirectionalLight">
+      <UniqueIdentifier>{4b8f55c2-ed4f-4c4f-a32c-4ff13df748bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\PointLight">
+      <UniqueIdentifier>{ad8e5ee2-d946-4bf7-808c-00fee1164205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\Sprite">
+      <UniqueIdentifier>{a79922f7-5c1a-400a-9dfb-36357661810f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\Particle">
+      <UniqueIdentifier>{a28543f9-c8a8-40b9-8726-395222b3b0a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\Sprite\WorldSpace">
+      <UniqueIdentifier>{406482d1-cc1f-4bde-9cf3-d8350d8c4cab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1116,12 +1149,6 @@
     <None Include="Data\Shaders\Line.vert">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
-    <None Include="Data\Shaders\Neon.frag">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
-    <None Include="Data\Shaders\Neon.vert">
-      <Filter>ソース ファイル\Shader\Source</Filter>
-    </None>
     <None Include="Data\Shaders\Particle.frag">
       <Filter>ソース ファイル\Shader\Source</Filter>
     </None>
@@ -1261,16 +1288,67 @@
       <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\Basic</Filter>
     </None>
     <None Include="Data\Shaders\GBuffer\PointLight.vert">
-      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\PointLight</Filter>
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\PointLight</Filter>
     </None>
     <None Include="Data\Shaders\GBuffer\PointLight.frag">
-      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\PointLight</Filter>
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\PointLight</Filter>
     </None>
     <None Include="Data\Shaders\GBuffer\DirectionalLight.vert">
-      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\DirectionalLight</Filter>
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\DirectionalLight</Filter>
     </None>
     <None Include="Data\Shaders\GBuffer\DirectionalLight.frag">
-      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\DirectionalLight</Filter>
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\DirectionalLight</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_SkyBox.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\SkyBox</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_SkyBox.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\SkyBox</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_EnvironmentMap.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\Environment</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_EnvironmentMap.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\Environment</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_NormShadow.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\NormalShadow</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_NormShadow.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\NormalShadow</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\PointLight_Bloom.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\PointLight</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\PointLight_Bloom.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\PointLight</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\DirectionalLight_Bloom.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\DirectionalLight</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\DirectionalLight_Bloom.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\DirectionalLight</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\SpriteShader_Bloom.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\Sprite</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\SpriteShader_Bloom.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\Sprite</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\Particle_Bloom.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\Particle</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_SkinNormShadow.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\NormalShadow</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_Shadow.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\Shadow</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\Particle_Bloom.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\Particle</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\WorldSpaceSprite_Bloom.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\Sprite\WorldSpace</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@
 #include "Actor.h"
 #include "GameMain.h"
 #include "Renderer.h"
+#include "ShadowMap.h"
 #include "Texture.h"
 #include "VertexArray.h"
 #include <typeinfo>
@@ -66,7 +67,7 @@ void MeshComponent::Draw(Shader * in_shader)
 		if (m_mesh->GetDepthMap() != nullptr)
 		{
 			glActiveTexture(GL_TEXTURE3);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetDepthMap()->GetTextureID());
+			glBindTexture(GL_TEXTURE_2D, RENDERER->GetShadowMap()->GetDepthMap());
 		}
 
 		// 頂点配列をアクティブに

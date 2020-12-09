@@ -118,6 +118,7 @@ public:
 	// スクリーン用頂点配列クラスのゲッター
 	class VertexArray* GetScreenVAO() { return m_screenVerts; }
 
+	class RenderBloom* GetBloom() { return m_bloom; }
 
 private:
 
@@ -158,6 +159,7 @@ private:
 	//--------------------------------------------+
 	// シェーダオブジェクト
 	//--------------------------------------------+
+	std::unordered_map<std::string, class Shader*> m_shaders;
 	class Shader* m_meshShader;                                            // 標準メッシュシェーダ
 	class Shader* m_meshNormalShader;                                      // 法線マップメッシュシェーダ
 	class Shader* m_skinnedShader;                                         // スキン(ボーン入り)メッシュシェーダ

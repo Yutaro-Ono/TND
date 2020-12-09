@@ -9,6 +9,8 @@
 #include "PatrolComponent.h"
 #include "GameWorld.h"
 #include "PlayerManager.h"
+#include "PointLight.h"
+#include "InputController.h"
 
 // 各種パーツのメッシュパス
 const std::string HELI_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Police/Helicopter/Helicopter_Body_Internal.OBJ";
@@ -40,7 +42,18 @@ Helicopter::Helicopter(GameWorld* in_world, const Vector3& in_pos, int in_num)
 
 	// 巡回コンポーネントを生成・追加
 	m_patrolComp = new PatrolComponent(this, m_world);
-	
+
+
+	// ポイントライト
+	m_pLight[0] = new PointLight();
+	m_pLight[0]->SetPosition(Vector3(m_position.x, m_position.y, 0.0f));
+	m_pLight[0]->SetLightParameter(0.01f, 0.21f, 0.01f);
+
+	Vector3 color = Vector3(1.0f, 1.0f, 1.0f);
+	m_pLight[1] = new PointLight();
+	m_pLight[1]->SetLightColor(color, color);
+	m_pLight[1]->SetPosition(Vector3(m_position.x, m_position.y, m_position.z - 10.0f));
+	m_pLight[1]->SetLightParameter(0.01f, 0.21f, 0.01f);
 }
 
 // デストラクタ
@@ -57,6 +70,12 @@ void Helicopter::UpdateActor(float in_deltaTime)
 		// ヘリの索敵範囲にプレイヤーが接触したかどうかの検出
 		SearchPlayer(m_world->GetPlayer());
 	}
+
+	// ポイントライトの追従処理
+	Vector3 lightPos = Vector3(m_position.x, m_position.y, m_position.z);
+	m_pLight[0]->SetPosition(lightPos * Vector3(1.0f, 1.0f, 0.0f));
+	Vector3 trns = Vector3::Transform(Vector3(50.0f, 0.0f, -10.0f), m_rotation);
+	m_pLight[1]->SetPosition(lightPos + trns);
 }
 
 // ヘリの索敵範囲にプレイヤーが接触したかどうかの検出

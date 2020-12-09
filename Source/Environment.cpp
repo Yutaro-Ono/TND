@@ -169,7 +169,7 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		dir.direction = dir.target - dir.position;
 		dir.direction.Normalize();
 		dir.ambient = Vector3(0.2f, 0.2f, 0.2f);
-		dir.diffuse = Vector3(0.4f, 0.46f, 0.66f);
+		dir.diffuse = Vector3(0.1f, 0.485f, 0.66f);
 		//dir.diffuse = Vector3(0.1f, 0.25f, 0.37f);
 
 		dir.specular = Vector3(0.01f, 0.15f, 0.4f);

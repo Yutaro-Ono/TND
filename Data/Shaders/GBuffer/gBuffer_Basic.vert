@@ -8,7 +8,7 @@ uniform mat4 u_worldTransform;
 uniform mat4 u_view;
 uniform mat4 u_projection;
 
-// 頂点シェーダーへの出力
+// フラグメントへの出力
 out VS_OUT
 {
 	vec2 fragTexCoords;              // テクスチャ座標

@@ -222,8 +222,8 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	CreateScreenVerts();
 
 	// カリング
-	//glFrontFace(GL_CCW);
-	//glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
+	glEnable(GL_CULL_FACE);
 
 	// 初期化に成功
 	return true;
@@ -304,17 +304,23 @@ void Renderer::Delete()
 void Renderer::Draw()
 {
 
-	// ImGuiフレームを開始
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(GAME_INSTANCE.GetRenderer()->GetSDLWindow());
-	ImGui::NewFrame();
-	// ImGui更新
-	ImGui::Begin("Renderer");
-	ImGui::SliderInt("MeshShader", &m_switchShader, 0, 2);
+	//// ImGuiフレームを開始
+	//ImGui_ImplOpenGL3_NewFrame();
+	//ImGui_ImplSDL2_NewFrame(GAME_INSTANCE.GetRenderer()->GetSDLWindow());
+	//ImGui::NewFrame();
+	//// ImGui更新
+	//ImGui::Begin("Renderer");
+	//ImGui::SliderInt("MeshShader", &m_switchShader, 0, 2);
+
+	//m_renderMode = FORWARD;
 
 	//------------------------------------------------+
 	// レンダリング (Forward か Deffered)
 	//------------------------------------------------+
+	// 共通処理
+	// シャドウ描画用の深度マップにライト視点から見た空間で書き込む
+	m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents);
+	// ここから分岐
 	if (m_renderMode == RENDER_MODE::FORWARD)
 	{
 		m_fRenderer->Draw();
@@ -325,10 +331,10 @@ void Renderer::Draw()
 	}
 
 	// ImGuiの終了処理
-	ImGui::End();
-	ImGui::Render();
-	glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//ImGui::End();
+	//ImGui::Render();
+	//glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
+	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	// 画面のスワップ
 	SDL_GL_SwapWindow(m_window);

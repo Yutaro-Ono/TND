@@ -45,6 +45,7 @@ GameWorld::GameWorld()
 	for (int i = 0; i < 3; i++)
 	{
 		m_helicopters.emplace_back(new Helicopter(this, Vector3(5000.0f * (i + 1), 18000.0f * (i + 1), 1200.0f), i));
+		//m_helicopters.emplace_back(new Helicopter(this, Vector3(1800.0f, 2400.0f, 1200.0f), i));
 	}
 
 	// UI¶¬

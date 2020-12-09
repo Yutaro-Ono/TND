@@ -31,7 +31,7 @@ void EnvironmentMapComponent::DrawEnvironmentMap(Shader* in_envShader)
 		glEnable(GL_ALPHA_TEST);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		in_envShader->SetMatrixUniform("u_modelMat", m_owner->GetWorldTransform());
+		in_envShader->SetMatrixUniform("u_worldTransform", m_owner->GetWorldTransform());
 		// 頂点配列オブジェクトを取得し、バインド
 		VertexArray* vao = m_mesh->GetVertexArray();
 		vao->SetActive();

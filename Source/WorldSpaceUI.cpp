@@ -58,11 +58,11 @@ void WorldSpaceUI::Draw(Shader* in_shader)
 		view = RENDERER->GetViewMatrix();
 
 		Matrix4 simpleViewProj = Matrix4::CreateSimpleViewProj(1920, 1080);
-		in_shader->SetMatrixUniform("u_ViewProj", simpleViewProj);
+		in_shader->SetMatrixUniform("u_viewProj", simpleViewProj);
 
 		// シェーダのユニフォームへワールド合成行列・アルファ値をセット
-		in_shader->SetMatrixUniform("u_WorldTransform", scale * m_staticBillboardMat * mat);
-		in_shader->SetInt("u_Texture", 0);
+		in_shader->SetMatrixUniform("u_worldTransform", scale * m_staticBillboardMat * mat);
+		in_shader->SetInt("u_texture", 0);
 		//in_shader->SetMatrixUniform("u_View", view);
 		//in_shader->SetMatrixUniform("u_Projection", projection);
 

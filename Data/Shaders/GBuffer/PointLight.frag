@@ -18,6 +18,7 @@ struct PointLight
 	float constant;    // 定数
 	float linear;      // 線形項
 	float quadratic;   // 2乗項
+	float radius;
 };
 
 // GBuffer構造体
@@ -47,7 +48,7 @@ void main()
 	// 距離
 	float l_distance = length(u_pl.position - Position);
 	// 減衰率の算出
-	float attenuation = 1.0 / (u_pl.constant + u_pl.linear * l_distance + u_pl.quadratic * (l_distance * l_distance));
+	float attenuation = u_pl.radius / (u_pl.constant + u_pl.linear * l_distance + u_pl.quadratic * (l_distance * l_distance));
 
 	// ディフューズ
 	vec3 norm = normalize(Normal);

@@ -142,8 +142,8 @@ void ForwardRenderer::Draw()
 	//-----------------------------------------------+
 	// シェーダを有効化・uniformに各行列をセット
 	m_renderer->m_environmentMapShader->SetActive();
-	m_renderer->m_environmentMapShader->SetMatrixUniform("u_viewMat", view);
-	m_renderer->m_environmentMapShader->SetMatrixUniform("u_projMat", proj);
+	m_renderer->m_environmentMapShader->SetMatrixUniform("u_view", view);
+	m_renderer->m_environmentMapShader->SetMatrixUniform("u_projection", proj);
 	m_renderer->m_environmentMapShader->SetVectorUniform("u_viewPos", view.GetTranslation());
 	m_renderer->m_environmentMapShader->SetInt("u_skybox", 0);
 	for (auto env : m_renderer->m_envMeshComponents)
@@ -155,18 +155,15 @@ void ForwardRenderer::Draw()
 
 	if (m_renderer->m_switchShader == 0)
 	{
-		// シャドウ描画用の深度マップにライト視点から見た空間で書き込む
-		m_renderer->m_shadowMap->RenderDepthMapFromLightView(m_renderer->m_meshComponents, m_renderer->m_skeletalMeshComponents);
-
 		// フレームバッファ書き込み処理
 		m_renderer->m_frameBuffer->WriteFrameBuffer();
 
 		// マルチレンダリングで高輝度バッファを抽出し、ガウスぼかしを行う
 		m_renderer->m_bloom->WriteBuffer(m_renderer->m_meshComponents, m_renderer->m_skeletalMeshComponents, m_renderer->m_activeSkyBox, m_renderer->m_envMeshComponents);
 		m_renderer->m_bloom->WriteBuffer(m_renderer->m_particleManager);
-		m_renderer->m_bloom->DrawDownSampling();
+		m_renderer->m_bloom->DrawDownSampling(m_renderer->GetBloom()->GetBrightBuffer());
 		m_renderer->m_bloom->DrawGaussBlur();
-		m_renderer->m_bloom->DrawBlendBloom();
+		m_renderer->m_bloom->DrawBlendBloom(m_renderer->GetBloom()->GetColorBuffer());
 
 	}
 
@@ -184,8 +181,8 @@ void ForwardRenderer::Draw()
 	//m_particleManager->Draw();
 	// ワールド空間上のスプライト描画
 	m_renderer->m_worldSpaceSpriteShader->SetActive();
-	m_renderer->m_worldSpaceSpriteShader->SetMatrixUniform("u_View", view);
-	m_renderer->m_worldSpaceSpriteShader->SetMatrixUniform("u_Projection", proj);
+	m_renderer->m_worldSpaceSpriteShader->SetMatrixUniform("u_view", view);
+	m_renderer->m_worldSpaceSpriteShader->SetMatrixUniform("u_projection", proj);
 	for (auto spr : m_renderer->m_worldSprites)
 	{
 		spr->Draw(m_renderer->m_worldSpaceSpriteShader);

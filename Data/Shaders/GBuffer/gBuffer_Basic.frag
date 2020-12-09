@@ -27,14 +27,10 @@ void main()
 {
     // フラグメントの座標をgBufferに保存
     gPosition = fs_in.fragWorldPos;
-
     // フラグメントごとの法線ベクトルをgBufferに保存
     gNormal = normalize(fs_in.fragNormal);
-
     // ディフューズカラーをアルベドのrgbに保存
     gAlbedoSpec.rgb = texture(u_mat.diffuseMap, fs_in.fragTexCoords).rgb;
-
     // スペキュラ強度をアルベドのa要素に保存
     gAlbedoSpec.a = texture(u_mat.specularMap, fs_in.fragTexCoords).r;
-
 }

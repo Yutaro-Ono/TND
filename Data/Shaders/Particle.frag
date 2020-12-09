@@ -5,14 +5,13 @@
 // GLSL 3.3 を要求
 #version 330 core
 
-// 頂点シェーダーからの入力
-// テクスチャ座標
-in vec2 fragTexCoord;
-// 法線（ワールド空間）
-in vec3 fragNormal;
-// 頂点位置（ワールド空間）
-in vec3 fragWorldPos;
-
+// 頂点シェーダからの入力
+in VS_OUT
+{
+	vec2 fragTexCoords;          // テクスチャ座標
+	vec3 fragNormal;             // ワールドスペース上の法線
+	vec3 fragWorldPos;           // ワールドスペース上の座標
+}fs_in;
 
 // 出力カラー（出力ピクセルカラー）
 out vec4 outColor;
@@ -24,7 +23,7 @@ uniform vec3      uColor;
 
 void main()
 {
-    vec4 col = texture(uTexture, fragTexCoord);
+    vec4 col = texture(uTexture, fs_in.fragTexCoords);
 	outColor.rgb = col.rgb * uColor;
 	outColor.a = col.a * uAlpha;
 }

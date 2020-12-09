@@ -37,7 +37,7 @@ public:
 	//-----------------------------------------------------------------------------------+
 	// ポジション
 	const Vector3& GetPosition() const { return m_position; }
-	void SetPosition(const Vector3& in_pos) { m_position = in_pos; }
+	void SetPosition(const Vector3& in_pos) { m_position = in_pos; m_recomputeWorldTransform = true; }
 	// スケール
 	float GetScale() const { return m_scale; }
 	void SetScale(float in_scale) { m_scale = in_scale; m_recomputeWorldTransform = true; }

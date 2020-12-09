@@ -28,6 +28,8 @@ public:
 	const Vector3& GetAmbientColor() { return m_ambient; }
 	const Vector3& GetSpecularColor() { return m_specular; }
 
+	void SetLightRadius(float in_radius) { m_lightRadius = in_radius; }
+
 private:
 
 	void CalcLightRadius();       // ƒ‰ƒCƒg‚ÌŒ¸Š”¼ŒaŒvZ

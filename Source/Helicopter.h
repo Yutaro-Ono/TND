@@ -52,6 +52,8 @@ private:
 	class HeliRotorBack* m_backRotor;      // バックローター
 	class HeliSpotLight* m_spotLight;      // ライト
 
+	class PointLight* m_pLight[2];         // ポイントライト
+
 	int m_number;                          // ワールド上でのヘリの番号
 
 	bool m_foundPlayer;                    // プレイヤーを見つけたかどうか

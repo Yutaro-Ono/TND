@@ -21,6 +21,7 @@ ThirdPersonCarCamera::ThirdPersonCarCamera(PlayerCar* in_target)
 	,m_distance(0.0f)
 	,m_mousePos(MOUSE_INSTANCE.GetPosition())
 	,m_frameMousePos(MOUSE_INSTANCE.GetPosition())
+	,m_chaseOwnerForward(false)
 {
 
 }
@@ -146,8 +147,8 @@ void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 		Vector2 axisR;
 		axisR = CONTROLLER_INSTANCE.GetRAxisVec();
 
-		m_chaseOwnerForward = true;
-		if (axisR.x >= 1.0f || axisR.x <= -1.0f)
+		//m_chaseOwnerForward = true;
+		if (axisR.x >= 0.9f || axisR.x <= -0.9f || axisR.y >= 0.9f || axisR.y <= -0.9f)
 		{
 			m_chaseOwnerForward = false;
 		}

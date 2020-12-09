@@ -28,6 +28,7 @@ RenderBloom::RenderBloom()
 	,m_hdrBloomShader(nullptr)
 	,m_downSamplingShader(nullptr)
 	,m_gaussShader(nullptr)
+	,m_exposure(5.0f)
 {
 	// Bloom用FBOとテクスチャを生成
 	if (!CreateHDRFBO())
@@ -99,6 +100,9 @@ void RenderBloom::WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std
 	lightProj = Matrix4::CreateOrtho(7000.0f, 7000.0f, 1.0f, 5000.0f);
 	lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, RENDERER->GetDirectionalLight().target, Vector3::UnitZ);
 	lightSpace = lightView * lightProj;
+	// 変換用行列の取得
+	Matrix4 view = RENDERER->GetViewMatrix();
+	Matrix4 projection = RENDERER->GetProjectionMatrix();
 
 	// シャドウシェーダのアクティブ化・uniformへのセット
 	m_multiRenderTargetShader->SetActive();
@@ -107,10 +111,10 @@ void RenderBloom::WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std
 	m_multiRenderTargetShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_multiRenderTargetShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
 
-	m_multiRenderTargetShader->SetMatrixUniform("u_view", RENDERER->GetViewMatrix());
-	m_multiRenderTargetShader->SetMatrixUniform("u_projection", RENDERER->GetProjectionMatrix());
-	m_multiRenderTargetShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
+	m_multiRenderTargetShader->SetMatrixUniform("u_view", view);
+	m_multiRenderTargetShader->SetMatrixUniform("u_projection", projection);
 	m_multiRenderTargetShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
+	m_multiRenderTargetShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
 	m_multiRenderTargetShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
 
 	// サンプリング用テクスチャセット
@@ -133,8 +137,8 @@ void RenderBloom::WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std
 	m_multiRenderSkinShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_multiRenderSkinShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
 
-	m_multiRenderSkinShader->SetMatrixUniform("u_view", RENDERER->GetViewMatrix());
-	m_multiRenderSkinShader->SetMatrixUniform("u_projection", RENDERER->GetProjectionMatrix());
+	m_multiRenderSkinShader->SetMatrixUniform("u_view", view);
+	m_multiRenderSkinShader->SetMatrixUniform("u_projection", projection);
 	m_multiRenderSkinShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
 	m_multiRenderSkinShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
 	m_multiRenderSkinShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
@@ -153,8 +157,8 @@ void RenderBloom::WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std
 
 	// 環境マップ
 	m_multiRenderEnvironmentShader->SetActive();
-	m_multiRenderEnvironmentShader->SetMatrixUniform("u_viewMat", RENDERER->GetViewMatrix());
-	m_multiRenderEnvironmentShader->SetMatrixUniform("u_projMat", RENDERER->GetProjectionMatrix());
+	m_multiRenderEnvironmentShader->SetMatrixUniform("u_view", view);
+	m_multiRenderEnvironmentShader->SetMatrixUniform("u_projection", projection);
 	m_multiRenderEnvironmentShader->SetVectorUniform("u_viewPos", RENDERER->GetViewMatrix().GetTranslation());
 	m_multiRenderEnvironmentShader->SetInt("u_skybox", 0);
 	for (auto env : in_envComp)
@@ -163,6 +167,13 @@ void RenderBloom::WriteBuffer(std::vector<class MeshComponent*> in_meshComp, std
 	}
 
 	// スカイボックス
+	m_multiRenderCubeMapShader->SetActive();
+	// Uniformに行列をセット
+	Matrix4 InvView = view;
+	InvView.Invert();
+	m_multiRenderCubeMapShader->SetMatrixUniform("u_view", InvView);
+	m_multiRenderCubeMapShader->SetMatrixUniform("u_projection", projection);
+	m_multiRenderCubeMapShader->SetInt("u_skybox", 0);
 	in_cubeMapComp->Draw(m_multiRenderCubeMapShader);
 
 
@@ -181,11 +192,11 @@ void RenderBloom::WriteBuffer(ParticleManager* in_particle)
 
 
 // 高輝度バッファをダウンサンプリング計算して描画する
-void RenderBloom::DrawDownSampling()
+void RenderBloom::DrawDownSampling(unsigned int in_brightBuffer)
 {
 	glDisable(GL_DEPTH_TEST);
 
-	unsigned int renderSource = m_brightBuffer;   // ダウンサンプリングターゲット (高輝度バッファ)
+	unsigned int renderSource = in_brightBuffer;   // ダウンサンプリングターゲット (高輝度バッファ)
 
 	int reduceX = GAME_CONFIG->GetScreenWidth();
 	int reduceY = GAME_CONFIG->GetScreenHeight();
@@ -286,21 +297,18 @@ void RenderBloom::DrawGaussBlur()
 }
 
 // Bloom処理を施した画面と通常描画結果を合成して描画
-void RenderBloom::DrawBlendBloom()
+void RenderBloom::DrawBlendBloom(unsigned int in_colorBuffer)
 {
 
 	glDisable(GL_DEPTH_TEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	float exposure = 5.0f;
-
-
 	m_hdrBloomShader->SetActive();
-	m_hdrBloomShader->SetFloat("u_exposure", exposure);
+	m_hdrBloomShader->SetFloat("u_exposure", m_exposure);
 	m_hdrBloomShader->SetInt("u_scene", 0);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_defaultBuffer);
+	glBindTexture(GL_TEXTURE_2D, in_colorBuffer);
 
 	for (unsigned int i = 0; i < 5; i++)
 	{

@@ -10,6 +10,7 @@ public:
 	// 巡回状態
 	enum PATROL_STATE
 	{
+		NONE,       // 何もしない
 		PATROL,     // 通常巡回
 		SEARCH,     // プレイヤーの索敵
 		CHASE       // プレイヤーの追尾

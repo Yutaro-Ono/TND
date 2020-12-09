@@ -8,12 +8,12 @@ layout (location = 1) out vec4 out_brightColor;
 
 in vec3 TexCoords;
 
-uniform samplerCube skybox;
+uniform samplerCube u_skybox;
 
 void main()
 {
     // スカイボックス用テクスチャをサンプリング
-	vec4 result = texture(skybox, TexCoords);
+	vec4 result = texture(u_skybox, TexCoords);
 	// 通常カラーバッファへの出力
 	out_fragColor = result;
 	

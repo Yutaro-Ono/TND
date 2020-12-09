@@ -37,6 +37,8 @@ ParticleManager::~ParticleManager()
 // 描画処理
 void ParticleManager::Draw()
 {
+
+
 	if (m_particles.size() == 0)
 	{
 		return;
@@ -62,6 +64,7 @@ void ParticleManager::Draw()
 	// 全てのパーティクルのビルボード行列をセット
 	(*itr)->SetBillboardMat(GetBillboardMatrix());
 
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
 	glDepthMask(GL_FALSE);
 

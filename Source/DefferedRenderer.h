@@ -31,14 +31,23 @@ private:
 	//-----------------------------+
 	class Renderer* m_renderer;           // レンダラークラスへのポインタ
 
-	class Shader* m_gBufferShader;        // GBuffer用シェーダ
-	class Shader* m_gBufferSkinShader;    // GBuffer用スキンシェーダ
-	class Shader* m_screenShader;         // GBuffer描画用スクリーンシェーダ
+	// メッシュシェーダ
+	class Shader* m_gBufferShader;        // GBuffer対応シェーダ
+	class Shader* m_gBufferSkinShader;    // GBuffer対応スキンシェーダ
+	class Shader* m_gBufferSkyBoxShader;  // GBuffer対応スカイボックスシェーダ
+	class Shader* m_gBufferEnvShader;     // GBuffer対応環境マップシェーダ
 
+
+	// ライトシェーダ
 	class Shader* m_pointLightShader;
 	class Shader* m_lightSphereShader;
 	class Shader* m_directionalLightShader;
 	class Shader* m_spotLightShader;
+
+	class Shader* m_bloomSpriteShader;
+	class Shader* m_bloomWorldSpriteShader;
+
+	class Shader* m_screenShader;         // スクリーン出力用シェーダ
 
 	// GBuffer
 	unsigned int m_gBuffer;               // G-Buffer (3要素を持つフレームバッファ)
@@ -53,5 +62,8 @@ private:
 	unsigned int m_lightFBO;              // ライトバッファ
 	// ライトバッファに関連付ける出力
 	unsigned int m_lightHDR;              // 光源処理用のHDR対応バッファ (浮動小数点)
+	unsigned int m_lightBrightBuffer;     // ライト用高輝度バッファ
 	unsigned int m_lightRBO;              // ライト用レンダーバッファ
+	unsigned int m_lightAttachments[2];
+
 };
