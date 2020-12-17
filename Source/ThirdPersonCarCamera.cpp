@@ -13,7 +13,7 @@ const float ThirdPersonCarCamera::MAX_TARGET_DISTANCE = 300.0f;
 ThirdPersonCarCamera::ThirdPersonCarCamera(PlayerCar* in_target)
 	:CameraComponent(in_target)
 	,m_playerCar(in_target)
-	, m_offset(DEFAULT_DISTANCE_OFFSET)
+	, m_offset(Vector3(150.0f, -30.0f, 50.0f))
 	, m_upVec(Vector3::UnitZ)
 	,m_velocity(Vector3::Zero)
 	,m_pitch(0.0f)
@@ -42,6 +42,13 @@ void ThirdPersonCarCamera::Update(float in_deltaTime)
 	Matrix4 view;
 
 	float height = -35.0f;      // カメラの高さ
+
+
+	// カメラが背後を追従するかしないか
+	if (CONTROLLER_INSTANCE.GetAxisValue(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) != 0.0f)
+	{
+		m_chaseOwnerForward = true;
+	}
 
 
 	//----------------------------------------------------+
@@ -147,7 +154,7 @@ void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 		Vector2 axisR;
 		axisR = CONTROLLER_INSTANCE.GetRAxisVec();
 
-		//m_chaseOwnerForward = true;
+		
 		if (axisR.x >= 0.9f || axisR.x <= -0.9f || axisR.y >= 0.9f || axisR.y <= -0.9f)
 		{
 			m_chaseOwnerForward = false;
@@ -158,8 +165,8 @@ void ThirdPersonCarCamera::ProcessInput(float in_deltaTime)
 		yawSpeed = pitchSpeed = 0.0f;
 
 		// ピッチの最大角度・最小角度
-		const float pitchMaxDegree = 45.0f; // カメラピッチ最高角度(degree)
-		const float pitchMinDegree = -10.0f; // カメラピッチ最低角度(degree)
+		const float pitchMaxDegree = 80.0f; // カメラピッチ最高角度(degree)
+		const float pitchMinDegree = 20.0f; // カメラピッチ最低角度(degree)
 
 		// ターゲットまでの距離を変更 (backボタンを押している時)
 		if (CONTROLLER_INSTANCE.IsPressed(SDL_CONTROLLER_BUTTON_BACK))

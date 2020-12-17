@@ -14,6 +14,7 @@
 #include "Canvas.h"
 #include "PlayerControlUI.h"
 #include "PointLight.h"
+#include "LandMarkIndicator.h"
 #include <Windows.h>
 #include <iostream>
 #include <algorithm>
@@ -51,6 +52,7 @@ GameWorld::GameWorld()
 	// UI¶¬
 	m_canvas = new Canvas(this);
 
+	LandMarkIndicator* ind = new LandMarkIndicator(m_player->GetPlayerCar());
 }
 
 GameWorld::~GameWorld()

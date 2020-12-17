@@ -78,7 +78,8 @@ void Shader::SetBool(const std::string& in_variableName, bool in_value) const
 // Int型Uniformセッター
 void Shader::SetInt(const std::string& in_variableName, int in_value) const
 {
-	glUniform1i(glGetUniformLocation(m_shaderProgram, in_variableName.c_str()), in_value);
+	GLuint loc = glGetUniformLocation(m_shaderProgram, in_variableName.c_str());
+	glUniform1i(loc, in_value);
 }
 
 // Float型Uniformセッター

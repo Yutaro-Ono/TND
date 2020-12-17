@@ -65,7 +65,7 @@ void main()
 	//float brightness = dot(result, vec3(0.1126, 0.4152, 0.522));     // ‹P“x‚ðƒJƒ‰[Œ‹‰Ê‚Ì“àÏ‚©‚ç‹‚ß‚é
 	float brightness = dot(result, vec3(0.0326, 0.2352, 0.342));
 
-	if(brightness > 0.5)                                              // ‹P“x‚ª0.4‚ð’´‚¦‚½‚È‚ç
+	if(brightness > 0.3)                                              // ‹P“x‚ª0.4‚ð’´‚¦‚½‚È‚ç
 	{
 		out_brightColor = vec4(result, 0.0f);
 	}

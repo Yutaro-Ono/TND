@@ -158,10 +158,6 @@ void DefferedRenderer::DrawLightPass()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// 深度テストをオフ
 	glDisable(GL_DEPTH_TEST);
-	// カリング設定：ライトはメッシュの裏側のみ描画する
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-	glFrontFace(GL_CW);
 	//-----------------------------------------------+
 	// ディレクショナルライトパス
 	//-----------------------------------------------+
@@ -175,7 +171,7 @@ void DefferedRenderer::DrawLightPass()
 	m_directionalLightShader->SetVectorUniform("u_dirLight.color",        m_renderer->m_directionalLight.diffuse);
 	m_directionalLightShader->SetVectorUniform("u_dirLight.specular",     m_renderer->m_directionalLight.specular);
 	m_directionalLightShader->SetFloat("u_dirLight.intensity", intensity);
-	m_directionalLightShader->SetInt("u_gBuffer.position", 0);
+	m_directionalLightShader->SetInt("u_gBuffer.pos", 0);
 	m_directionalLightShader->SetInt("u_gBuffer.normal", 1);
 	m_directionalLightShader->SetInt("u_gBuffer.albedoSpec", 2);
 	// gBufferの各テクスチャをバインド
@@ -189,6 +185,10 @@ void DefferedRenderer::DrawLightPass()
 	m_renderer->GetScreenVAO()->SetActive();
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
+	// カリング設定：ライトはメッシュの裏側のみ描画する
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW);
 	//------------------------------------------------------+
 	// ポイントライト
 	//------------------------------------------------------+
@@ -197,7 +197,7 @@ void DefferedRenderer::DrawLightPass()
 	m_pointLightShader->SetMatrixUniform("u_view",       m_renderer->GetViewMatrix());
 	m_pointLightShader->SetMatrixUniform("u_projection", m_renderer->GetProjectionMatrix());
 	m_pointLightShader->SetVectorUniform("u_viewPos",    m_renderer->GetViewMatrix().GetTranslation());
-	m_pointLightShader->SetInt("u_gBuffer.position",     0);
+	m_pointLightShader->SetInt("u_gBuffer.pos",     0);
 	m_pointLightShader->SetInt("u_gBuffer.normal",       1);
 	m_pointLightShader->SetInt("u_gBuffer.albedoSpec",   2);
 
@@ -214,9 +214,10 @@ void DefferedRenderer::DrawLightPass()
 	{
 		pl->Draw(m_pointLightShader);
 	}
-
-
-
+	// カリングのオフ
+	glDisable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CCW);
 
 	// Spriteの描画
 	// ブレンドのアクティブ化
@@ -259,8 +260,7 @@ void DefferedRenderer::DrawLightPass()
 
 
 
-	// カリングとブレンドを停止する
-	glDisable(GL_CULL_FACE);
+	// ブレンドを停止する
 	glDisablei(GL_BLEND, 0);
 	// gBufferの深度情報をライトバッファへコピーする
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_gBuffer);              // gBufferを読み取りフレームバッファとして指定
@@ -302,7 +302,7 @@ void DefferedRenderer::Draw()
 	//----------------------------------------------------------------+
 	// 最終出力結果を描画
 	//----------------------------------------------------------------+
-	//// GBufferに書き込まれた要素をスクリーンに描画
+	// GBufferに書き込まれた要素をスクリーンに描画
 	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glDisable(GL_DEPTH_TEST);
@@ -312,9 +312,9 @@ void DefferedRenderer::Draw()
 
 	//// GBufferテクスチャセット
 	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, m_lightHDR);
+	////glBindTexture(GL_TEXTURE_2D, m_lightHDR);
 	////glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
-	////glBindTexture(GL_TEXTURE_2D, m_gPos);
+	//glBindTexture(GL_TEXTURE_2D, m_gPos);
 	////glBindTexture(GL_TEXTURE_2D, m_gBrightBuffer);
 
 	//// スクリーンに描画

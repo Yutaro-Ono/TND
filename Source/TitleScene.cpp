@@ -24,24 +24,23 @@
 #include "PointLight.h"
 const int TitleScene::STAGE_ALL_NUM = 1;
 
-
 // コンストラクタ
 TitleScene::TitleScene()
 	:m_state(PRESS_ANY_KEY)
 	,m_selectedStage(0)
+	,m_car(nullptr)
+	,m_client(nullptr)
+	,m_environment(nullptr)
+	,m_pointLight(nullptr)
 {
 }
-
 
 // デストラクタ
 TitleScene::~TitleScene()
 {
 	GAME_INSTANCE.DeadAllActor();
-	
 	delete m_environment;
-
 }
-
 
 // 初期化処理
 void TitleScene::Initialize()
@@ -70,8 +69,8 @@ void TitleScene::Initialize()
 	m_client->SetPosition(Vector3(0.0f, -55.0f, 0.0f));
 	m_client->SetScale(0.4f);
 
-	m_pointLight = new PointLight();
-	m_pointLight->SetPosition(Vector3(0.0f, 0.0f, 40.0f));
+	//m_pointLight = new PointLight();
+	//m_pointLight->SetPosition(Vector3(0.0f, 0.0f, 40.0f));
 
 	// 音楽
 	//m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";
@@ -89,7 +88,6 @@ void TitleScene::Initialize()
 	// タイトル用UI
 	TitleScreen* hud = new TitleScreen(this);
 }
-
 
 // 更新処理
 SceneBase * TitleScene::Update()

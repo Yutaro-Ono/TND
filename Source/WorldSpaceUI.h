@@ -36,17 +36,19 @@ public:
 private:
 
 
-	Vector3 m_position;            // 座標
+	Vector3 m_position;                      // 座標
 
-	float m_scale;                 // 拡大率
+	float m_scale;                           // 拡大率
 
-	class Texture* m_texture;      // テクスチャ
-	int m_textureID;               // テクスチャID
+	class Texture* m_texture;                // テクスチャ
+	int m_textureID;                         // テクスチャID
 
-	bool m_isVisible;              // 表示(false), 非表示(true)フラグ
+	bool m_isVisible;                        // 表示(false), 非表示(true)フラグ
 
-	// ビルボード行列 (カメラと平行になるように配置するための行列)
-	static Matrix4 m_staticBillboardMat;
+
+	Matrix4 m_worldTransform;                // ワールド変換行列
+	
+	static Matrix4 m_staticBillboardMat;     // ビルボード行列 (カメラと平行になるように配置するための行列)
 
 
 };

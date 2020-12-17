@@ -19,13 +19,14 @@ struct PointLight
 	float constant;    // 定数
 	float linear;      // 線形項
 	float quadratic;   // 2乗項
-	float radius;
+
+	float luminance;   // ポイントライト輝度
 };
 
 // GBuffer構造体
 struct GBuffer
 {
-	sampler2D position;
+	sampler2D pos;
 	sampler2D normal;
 	sampler2D albedoSpec;
 };
@@ -40,7 +41,7 @@ uniform vec3 u_viewPos;            // カメラ座標
 void main()
 {
 	// gBufferから各要素を得る
-	vec3  Position   = texture(u_gBuffer.position, TexCoords).xyz;
+	vec3  Position   = texture(u_gBuffer.pos, TexCoords).xyz;
 	vec3  Normal     = texture(u_gBuffer.normal, TexCoords).xyz;
 	vec4  albedoSpec = texture(u_gBuffer.albedoSpec, TexCoords);
 	vec3  Albedo     = albedoSpec.rgb;
@@ -49,19 +50,19 @@ void main()
 	// 距離
 	float l_distance = length(u_pl.position - Position);
 	// 減衰率の算出
-	float attenuation = u_pl.radius / (u_pl.constant + u_pl.linear * l_distance + u_pl.quadratic * (l_distance * l_distance));
+	float attenuation = 1.0f / (u_pl.constant + u_pl.linear * l_distance + u_pl.quadratic * (l_distance * l_distance));
 
 	// ディフューズ
 	vec3 norm = normalize(Normal);
 	vec3 lightDir = normalize(u_pl.position - Position);
 	float diff = max(dot(norm, lightDir), 0.0);
-	vec3 diffuse = u_pl.diffuse * diff * Albedo;
+	vec3 diffuse = u_pl.diffuse * diff * Albedo * u_pl.luminance;
 
 	// スペキュラ
 	vec3 viewDir = normalize(u_viewPos - Position);
 	vec3 halfDir = normalize(lightDir + viewDir);
-	float spec = pow(max(dot(norm, halfDir), 0.0), 32);
-	vec3 specular = u_pl.specular * spec * Spec_p;
+	float spec = pow(max(dot(norm, halfDir), 0.0), 128);
+	vec3 specular = u_pl.specular * spec * Spec_p * u_pl.luminance;
 
 	// アンビエント
 	vec3 ambient = u_pl.ambient * Albedo;
@@ -75,7 +76,7 @@ void main()
 	// 高輝度バッファへの出力値を抽出
 	float brightness = dot(result, vec3(0.1326, 0.3352, 0.442));
 
-	if(brightness > 0.1)                                              // 輝度が0.4を超えたなら
+	if(brightness > 2.0)                                              // 輝度が0.4を超えたなら
 	{
 		out_brightColor = vec4(result, 0.0f);
 	}

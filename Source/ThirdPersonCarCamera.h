@@ -25,16 +25,10 @@ public:
 	// ヨーのゲッター
 	float GetYaw() const { return m_yaw; }
 
-	// ピッチ速度のセット
-	void SetPitchSpeed(float in_speed) { m_pitchSpeed = in_speed; }
-	// ピッチの最大速度のセット
-	void SetMaxPitch(float in_maxSpeed) { m_maxPitch = in_maxSpeed; }
 
 	// カメラ距離のセッター
 	void SetDistance(float in_dist);
 
-	// 前進ベクトルをオーナーと合わせるかどうかのセッター
-	void SetAdjustForward(bool in_adjust) { m_adjustForward = in_adjust; }
 	// カメラ追従処理を行うかどうかのセッター
 	void SetChaseOwnerForward(bool in_chase) { m_chaseOwnerForward = in_chase; }
 
@@ -60,8 +54,6 @@ private:
 
 	// ピッチ関連
 	float m_pitch;
-	float m_pitchSpeed;
-	float m_maxPitch;
 
 	// ヨー速度(/秒)
 	float m_yaw;
@@ -69,13 +61,10 @@ private:
 	// ターゲットまでの距離
 	float m_distance;
 
-	// カメラの前進ベクトルとオーナーアクタの向きを合わせるか (デフォルト：ON)
-	bool m_adjustForward;
 	// カメラの前進ベクトルをオーナーアクタの前進ベクトルへ追従させるか (デフォルト：OFF)
 	bool m_chaseOwnerForward;
 
-	// 当たり判定
-	class BoxCollider* m_hitBox;
+
 	class PlayerCar* m_playerCar;
 
 	// マウス入力

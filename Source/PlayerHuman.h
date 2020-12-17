@@ -55,12 +55,15 @@ public:
 
 private:
 
-	PLAYER_POV m_pov;       // 視点モード
+	PLAYER_POV m_pov;                                    // 視点モード
 
-	class ThirdPersonCamera* m_cameraComp;        // カメラ
-	class MoveComponentHuman* m_moveComp;
+	class ThirdPersonCamera* m_cameraComp;               // カメラ
+	class MoveComponentHuman* m_moveComp;                // 移動用コンポーネント
 
-	class PlayerManager* m_manager;     // ステート制御のマネージメントクラス
+	class PointLight* m_faceLight;                       // プレイヤーフェイス用ライト
+
+
+	class PlayerManager* m_manager;                      // ステート制御のマネージメントクラス
 
 	class SkeletalMeshComponent* m_skelMeshComp;         // スケルタルメッシュ
 	

@@ -87,9 +87,9 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	(
 		"TheNightDriver",                                 // ウィンドウの名称
 		0,                                                // x座標のウィンドウ描画原点
-		0,                                               // y座標のウィンドウ描画原点
-		m_screenWidth,              // 画面の横幅
-		m_screenHeight,             // 画面の縦幅
+		0,                                                // y座標のウィンドウ描画原点
+		m_screenWidth,                                    // 画面の横幅
+		m_screenHeight,                                   // 画面の縦幅
 		SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
 	);
 	// ウィンドウの作成に失敗したら
@@ -221,9 +221,9 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	}
 	CreateScreenVerts();
 
-	// カリング
-	glFrontFace(GL_CCW);
-	glEnable(GL_CULL_FACE);
+	//// カリング
+	//glFrontFace(GL_CCW);
+	//glEnable(GL_CULL_FACE);
 
 	// 初期化に成功
 	return true;
@@ -304,7 +304,8 @@ void Renderer::Delete()
 void Renderer::Draw()
 {
 
-	//// ImGuiフレームを開始
+//#ifdef _DEBUG
+	// ImGuiフレームを開始
 	//ImGui_ImplOpenGL3_NewFrame();
 	//ImGui_ImplSDL2_NewFrame(GAME_INSTANCE.GetRenderer()->GetSDLWindow());
 	//ImGui::NewFrame();
@@ -313,6 +314,8 @@ void Renderer::Draw()
 	//ImGui::SliderInt("MeshShader", &m_switchShader, 0, 2);
 
 	//m_renderMode = FORWARD;
+
+//#endif
 
 	//------------------------------------------------+
 	// レンダリング (Forward か Deffered)
@@ -330,14 +333,19 @@ void Renderer::Draw()
 		m_dRenderer->Draw();
 	}
 
+//#ifdef _DEBUG
+
 	// ImGuiの終了処理
 	//ImGui::End();
 	//ImGui::Render();
 	//glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
 	//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+//#endif
+
 	// 画面のスワップ
 	SDL_GL_SwapWindow(m_window);
+
 
 }
 
@@ -414,6 +422,23 @@ void Renderer::RemoveMeshComponent(MeshComponent * in_mesh)
 		m_meshComponents.erase(iter);
 	}
 
+}
+/// <summary>
+/// 車メッシュ格納
+/// </summary>
+/// <param name="in_carMesh">追加する車用メッシュコンポーネント</param>
+void Renderer::AddCarMeshComponent(CarMeshComponent* in_carMesh)
+{
+	m_carMeshComponents.emplace_back(in_carMesh);
+}
+/// <summary>
+/// 車メッシュ削除
+/// </summary>
+/// <param name="in_carMesh">削除する車用メッシュコンポーネント</param>
+void Renderer::RemoveCarMeshComponent(CarMeshComponent* in_carMesh)
+{
+	auto iter = std::find(m_carMeshComponents.begin(), m_carMeshComponents.end(), in_carMesh);
+	m_carMeshComponents.erase(iter);
 }
 
 void Renderer::ShowResource()

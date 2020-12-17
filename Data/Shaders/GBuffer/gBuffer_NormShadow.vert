@@ -37,8 +37,8 @@ out VS_OUT
 void main()
 {
 	vec4 pos = vec4(a_pos, 1.0) * u_worldTransform;
-	vs_out.fragWorldPos     = pos.xyz;
 	gl_Position = pos * u_view * u_projection;
+	vs_out.fragWorldPos     = pos.xyz;
 	vs_out.fragNormal      =  a_normal * mat3(transpose(inverse(u_worldTransform)));
 	vs_out.fragTexCoords   = a_texCoords;
 	vs_out.fragViewPos = u_viewPos;

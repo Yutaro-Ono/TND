@@ -15,6 +15,9 @@ PlayerControlUI::PlayerControlUI(GameWorld* in_world)
 	:m_world(in_world)
 	,m_rideTexture(nullptr)
 	,m_chasing(nullptr)
+	,m_accessTex(nullptr)
+	,m_completeTex(nullptr)
+	,m_controlPanel(nullptr)
 	,m_accessTexPos(Vector2::Zero)
 	,m_findPlayer(false)
 {
@@ -25,9 +28,13 @@ PlayerControlUI::PlayerControlUI(GameWorld* in_world)
 
 	// ミッション受注UI
 	m_accessTex = RENDERER->GetTexture("Data/Interface/TND/Control/Control_AccessMission.png");
+	// ミッション完了UI
+	m_completeTex = RENDERER->GetTexture("Data/Interface/TND/Control/Control_MissionComplete2.png");
+	// 操作説明用パネル
+	m_controlPanel = RENDERER->GetTexture("Data/Interface/TND/Control/Control_Panel2.png");
 
 	// "DANGER"表示用のテクスチャ生成
-	m_dangerFontTex = m_font->RenderText("DANGER", Vector3(0.0, 0.0, 1.0), 48);
+	m_dangerFontTex = RENDERER->GetTexture("Data/Interface/TND/Control/Chasing_Helicopter.png");
 
 	// "追跡中"表示
 	m_chasing = RENDERER->GetTexture("Data/Interface/TND/Control/Chasing_Helicopter.png");
@@ -60,5 +67,11 @@ void PlayerControlUI::Draw(Shader* in_shader)
 	if (m_findPlayer)
 	{
 		DrawTexture(in_shader, m_dangerFontTex, Vector2(0.0f, GAME_CONFIG->GetScreenHeight() / 2.5), 1.0);
+	}
+
+	// 車乗車時に操作パネルを表示する
+	if (m_player->GetPlayerMode() == PlayerManager::MODE_CAR)
+	{
+		DrawTexture(in_shader, m_controlPanel, Vector2(-GAME_CONFIG->GetScreenWidth() / 2 + m_controlPanel->GetWidth(), 0.0f), 0.6f);
 	}
 }

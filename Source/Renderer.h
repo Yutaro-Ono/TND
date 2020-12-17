@@ -59,16 +59,19 @@ public:
 	// MeshComponent
 	void AddMeshComponent(class MeshComponent* in_mesh);                    // メッシュコンポーネントの追加
 	void RemoveMeshComponent(class MeshComponent* in_mesh);                 // メッシュコンポーネントの削除
-	void ShowResource();
+	// CarMeshComponent
+	void AddCarMeshComponent(class CarMeshComponent* in_carMesh);
+	void RemoveCarMeshComponent(class CarMeshComponent* in_carMesh);
 	// EnvironmentMapComponent
 	void AddEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
 	void RemoveEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
 	// PointLightComponent
 	void AddPointLightComponent(class PointLightComponent* in_pointL);
 	void RemovePointLightComponent(class PointLightComponent* in_pointL);
-
 	// TextureComponent
 	void RemoveTexture(class Texture* in_texture);
+
+	void ShowResource();
 
 	// ShadowMap
 	class ShadowMap* GetShadowMap() { return m_shadowMap; }
@@ -143,7 +146,8 @@ private:
 	// メッシュ配列
 	std::vector<class MeshComponent*> m_meshComponents;                       // メッシュコンポーネント
 	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;       // ボーン入りメッシュ配列
-	std::vector<class MeshComponent*> m_glassMeshComponent;                   // ガラス(環境に影響を受ける)メッシュ配列
+	std::vector<class CarMeshComponent*> m_carMeshComponents;
+	std::vector<class MeshComponent*> m_glassMeshComponents;                   // ガラス(環境に影響を受ける)メッシュ配列
 	std::vector<class EnvironmentMapComponent*> m_envMeshComponents;          // 環境マップオブジェクト配列
 	// スプライト配列
 	std::vector<class SpriteComponent*> m_spriteComponents;                // スプライト配列 (スクリーン空間)
@@ -159,7 +163,6 @@ private:
 	//--------------------------------------------+
 	// シェーダオブジェクト
 	//--------------------------------------------+
-	std::unordered_map<std::string, class Shader*> m_shaders;
 	class Shader* m_meshShader;                                            // 標準メッシュシェーダ
 	class Shader* m_meshNormalShader;                                      // 法線マップメッシュシェーダ
 	class Shader* m_skinnedShader;                                         // スキン(ボーン入り)メッシュシェーダ

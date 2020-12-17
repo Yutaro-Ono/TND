@@ -11,10 +11,6 @@
 #include <SDL_log.h>
 #include "Math.h"
 
-
-
-
-
 Mesh::Mesh()
 	:m_vertexArray(nullptr)
 	,m_radius(0.0f)

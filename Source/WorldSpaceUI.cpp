@@ -14,6 +14,7 @@ WorldSpaceUI::WorldSpaceUI(const Vector3& in_pos, const std::string& in_filePath
 	, m_scale(in_scale)
 	, m_texture(nullptr)
 	, m_isVisible(true)
+	,m_worldTransform(Matrix4::Identity)
 {
 	// テクスチャの取得・生成
 	m_texture = RENDERER->GetTexture(in_filePath);
@@ -73,8 +74,6 @@ void WorldSpaceUI::Draw(Shader* in_shader)
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_texture->GetTextureID());
 		//m_texture->SetActive();
-
-
 		// スプライト用のVAOをバインド
 		RENDERER->SetWorldSpriteVertex();
 		// キューブ描画

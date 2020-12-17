@@ -38,7 +38,6 @@ ParticleManager::~ParticleManager()
 void ParticleManager::Draw()
 {
 
-
 	if (m_particles.size() == 0)
 	{
 		return;

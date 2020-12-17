@@ -459,6 +459,18 @@
     <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\Sprite\WorldSpace">
       <UniqueIdentifier>{406482d1-cc1f-4bde-9cf3-d8350d8c4cab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\SpotLight">
+      <UniqueIdentifier>{b501af91-0dfa-4071-8e75-2f32d8a65e9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Indicator">
+      <UniqueIdentifier>{6efc99e7-34e2-4d19-846c-1fc09be03395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Renderer\Mesh\Component\Mesh\Basic">
+      <UniqueIdentifier>{538eea35-f491-4406-8682-992dde7488c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Renderer\Mesh\Component\Mesh\CarMesh">
+      <UniqueIdentifier>{3a3a3304-6634-4837-b00b-6a64373d98ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -755,9 +767,6 @@
     <ClCompile Include="Source\PlayerControlUI.cpp">
       <Filter>ソース ファイル\Interface\PlayerControl</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MeshComponent.cpp">
-      <Filter>ソース ファイル\Renderer\Mesh\Component\Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="Source\CubeMapComponent.cpp">
       <Filter>ソース ファイル\Renderer\Mesh\Component\CubeMap</Filter>
     </ClCompile>
@@ -790,6 +799,18 @@
     </ClCompile>
     <ClCompile Include="Source\glad.c">
       <Filter>リソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShaderManager.cpp">
+      <Filter>ソース ファイル\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LandMarkIndicator.cpp">
+      <Filter>ソース ファイル\Actor\Indicator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MeshComponent.cpp">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\Mesh\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CarMeshComponent.cpp">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\Mesh\CarMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1102,9 +1123,6 @@
     <ClInclude Include="Source\PlayerControlUI.h">
       <Filter>ソース ファイル\Interface\PlayerControl</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MeshComponent.h">
-      <Filter>ソース ファイル\Renderer\Mesh\Component\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="Source\CubeMapComponent.h">
       <Filter>ソース ファイル\Renderer\Mesh\Component\CubeMap</Filter>
     </ClInclude>
@@ -1137,6 +1155,18 @@
     </ClInclude>
     <ClInclude Include="Source\PointLight.h">
       <Filter>ソース ファイル\Actor\Light\PointLight</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShaderManager.h">
+      <Filter>ソース ファイル\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LandMarkIndicator.h">
+      <Filter>ソース ファイル\Actor\Indicator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MeshComponent.h">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\Mesh\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CarMeshComponent.h">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\Mesh\CarMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

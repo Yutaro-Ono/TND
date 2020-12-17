@@ -1,6 +1,7 @@
 #include "CarWheel.h"
 #include "SandSmoke.h"
 
+
 // 回転値
 static float spin = 0.0f;
 
@@ -13,6 +14,7 @@ CarWheel::CarWheel(PlayerCar* in_owner, WHEEL_POSITION in_enumPos)
 	,m_smoke(nullptr)
 	,m_wheelPosition(in_enumPos)
 	,m_playerRadian(m_owner->GetRadian())
+	,m_spin(false)
 {
 
 	m_position = m_owner->GetPosition();
@@ -95,12 +97,12 @@ void CarWheel::UpdateActor(float in_deltaTime)
 	}
 	// オーナーであるPlayerCarクラスの運転状態がアクセル状態であれば
 	// タイヤを前方に回す
-	if (m_owner->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_ACCEL)
+	if (m_owner->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_ACCEL && m_spin == true)
 	{
 		spin += m_owner->GetMoveComponent()->GetAccelValue() * 3.0f * in_deltaTime;
 	}
 	// ブレーキ状態なら後ろに回す
-	if (m_owner->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_BRAKE)
+	if (m_owner->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_BRAKE && m_spin == true)
 	{
 		spin -= m_owner->GetMoveComponent()->GetBrakeValue() * 3.0f * in_deltaTime;
 	}

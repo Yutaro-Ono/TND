@@ -141,8 +141,8 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 			if (wallData[iy][ix] == 19)
 			{
 				block = new LevelBlock();
-				block->SetMesh(m_blockMeshes[2]);
-				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
+				block->SetMesh(m_blockMeshes[0]);
+				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 25.0f));
 				block->SetMeshVisible();
 			}
 

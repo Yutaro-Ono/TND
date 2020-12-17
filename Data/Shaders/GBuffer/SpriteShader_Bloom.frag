@@ -24,7 +24,7 @@ void main()
 	// 高輝度バッファへの出力値を抽出
 	float brightness = dot(result, vec3(0.0231, 0.11, 0.51));
 
-	if(brightness > 0.31)                                              // 輝度が0.4を超えたなら
+	if(brightness > 0.51)                                              // 輝度が0.4を超えたなら
 	{
 		out_brightColor = out_color * 0.6f;
 	}

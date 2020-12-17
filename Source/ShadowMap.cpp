@@ -7,8 +7,8 @@
 #include "MeshComponent.h"
 #include "SkeletalMeshComponent.h"
 
-const int ShadowMap::SHADOW_WIDTH = 8192;
-const int ShadowMap::SHADOW_HEIGHT = 8192;
+const int ShadowMap::SHADOW_WIDTH = 16384;
+const int ShadowMap::SHADOW_HEIGHT = 16384;
 
 // コンストラクタ
 ShadowMap::ShadowMap()

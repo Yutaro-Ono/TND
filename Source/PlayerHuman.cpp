@@ -13,6 +13,7 @@
 #include "Collision.h"
 #include "Input.h"
 #include "InputController.h"
+#include "PointLight.h"
 
 const float cAnimationSpeed = 14.0f;          // アニメーションの速度
 
@@ -20,14 +21,13 @@ PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 	:m_manager(in_manager)
 	,m_pov(POV_THIRD_PERSON)
 	,m_jumpVec(Vector3(0.0f, 0.0f, 0.0f))
+	,m_faceLight(nullptr)
 	,m_isActive(true)
 {
-
 	// カメラの生成
 	m_cameraComp = new ThirdPersonCamera(this);
 	m_cameraComp->SetAdjustForward(true);
 	m_cameraComp->SetChaseOwnerForward(false);
-
 
 	// MoveComponentの生成
 	m_moveComp = new MoveComponentHuman(this);
@@ -37,6 +37,10 @@ PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 	m_skelMeshComp = new SkeletalMeshComponent(this);
 	m_skelMeshComp->SetMesh(mesh);
 	m_skelMeshComp->SetSkeleton(RENDERER->GetSkeleton("Data/Meshes/TND/Actors/Player/rp_nathan_rigged_003_ue4.gpskel"));
+
+	// フェイスライト
+	m_faceLight = new PointLight();
+	m_faceLight->SetPosition(m_position);
 
 	// アニメーション取得
 	m_animTypes.resize(PLAYER_ANIM::ANIM_ALL_NUM);
@@ -131,6 +135,9 @@ void PlayerHuman::UpdateActor(float in_deltaTime)
 		// アイドル時のアニメーションをセット
 		m_skelMeshComp->PlayAnimation(m_animTypes[ANIM_IDLE], cAnimationSpeed * in_deltaTime);
 	}
+
+	// ライトの追従
+	m_faceLight->SetPosition(m_position);
 
 	printf("Player x : %f, y : %f, z : %f\n", m_position.x, m_position.y, m_position.z);
 }
@@ -304,14 +311,7 @@ void PlayerHuman::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hit
 
 	// めり込みを修正
 	CalcCollisionFixVec(playerBox, bgBox, fix);
-
-	// 重力分z値を追加 (将来的には重力コンポーネントから重力値を取得したい)
-	//if (fix.z != 0.0f)
-	//{
-	//	fix.z = 5.0f * 2.0f;
-	//}
 	
-
 	// 補正ベクトル分戻す
 	m_position += fix;
 

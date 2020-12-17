@@ -1,3 +1,7 @@
+//-------------------------------------------------+
+// ポイントライトアクター
+// 2020 YutaroOno.
+//-------------------------------------------------+
 #pragma once
 #include "Actor.h"
 
@@ -5,11 +9,20 @@ class PointLight : public Actor
 {
 public:
 
-	PointLight();
+	// ライトボリューム (ライト影響範囲)
+	enum LIGHT_VOLUME
+	{
+		VL_SMALL = 0,
+		VL_MEDIUM,
+		VL_BIG
+	};
+
+	PointLight(LIGHT_VOLUME in_vol = VL_MEDIUM);
 	~PointLight();
 
-	void SetLightParameter(float in_constant, float in_linear, float in_quadratic);     // ライトパラメータのセット
-	void SetLightColor(const Vector3& in_diffuse, const Vector3& in_specular);                                     // ライトカラーのセット
+	void SetLightColor(const Vector3& in_diffuse, const Vector3& in_specular);          // ライトカラーのセット
+
+	void UpdateActor(float in_deltaTime) override;
 
 	void SwitchLighting();                                                              // 点灯状態ON・OFF
 
@@ -17,36 +30,37 @@ public:
 	//-------------------------------------------+
 	// Setter / Getter
 	//-------------------------------------------+
-	// ライトボリューム用半径の取得
-	float GetLightRadius() { return m_lightRadius; }
-	// 各種減衰パラメータの取得
-	float GetConstant() { return m_constant; }
-	float GetLinear() { return m_linear; }
-	float GetQuadratic() { return m_quadratic; }
 	// 各種カラーの取得
 	const Vector3& GetDiffuseColor() { return m_diffuse; }
 	const Vector3& GetAmbientColor() { return m_ambient; }
 	const Vector3& GetSpecularColor() { return m_specular; }
+	
+	LIGHT_VOLUME GetLightVolume() { return m_lightVolume; }     // ライト影響範囲のゲッター
 
-	void SetLightRadius(float in_radius) { m_lightRadius = in_radius; }
+	void SetLuminance(float in_luminance) { m_luminance = in_luminance; }
+	float GetLuminance() { return m_luminance; }
+
+	void SetFlash(bool in_flash) { m_flash = in_flash; }        // 点滅させるかさせないかの切り替え
 
 private:
 
-	void CalcLightRadius();       // ライトの減衰半径計算
 
-	bool m_lighting;        // 点灯状態
+	LIGHT_VOLUME m_lightVolume;                                 // ライト影響範囲 (ポイントライトコンポーネントにて使用)
 
-	float m_lightRadius;    // ライト半径 (スケール値)
-
-	// 減衰パラメータ
-	float m_constant;
-	float m_linear;
-	float m_quadratic;
+	bool m_lighting;              // 点灯状態
 
 	// カラー情報
 	Vector3 m_diffuse;
 	Vector3 m_ambient;
 	Vector3 m_specular;
+
+	// 輝度情報
+	float m_luminance;
+
+	bool m_calcRadius;       // 半径を再計算するか
+
+	bool m_flash;            // 点滅させるか
+	float m_flashOffset;     // フラッシュの間隔
 
 	// ポイントライトコンポーネント
 	class PointLightComponent* m_lightComp;

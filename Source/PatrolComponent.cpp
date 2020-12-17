@@ -154,7 +154,7 @@ void PatrolComponent::ChasePlayer(float in_deltaTime)
 	{
 		if (distance >= 1800.0f)
 		{
-			move = forwardVec * 400.0f * in_deltaTime;
+			move = forwardVec * 350.0f * in_deltaTime;
 		}
 
 		// ƒwƒŠ‚ðˆÚ“®‚³‚¹‚é

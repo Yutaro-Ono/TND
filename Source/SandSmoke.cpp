@@ -33,7 +33,7 @@ void SandSmoke::UpdateActor(float in_deltaTime)
 
 
 	// 車がアクセル状態・ブレーキ状態のときにアクティブ
-	if (m_target->GetCarPtr()->GetDriveState() != PlayerCar::DRIVE_IDLE)
+	if (m_target->GetCarPtr()->GetDriveState() != PlayerCar::DRIVE_IDLE && m_target->GetSpin() == true)
 	{
 		// パーティクル発生をアクティブに
 		m_state = ACTIVE;

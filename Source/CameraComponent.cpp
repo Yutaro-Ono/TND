@@ -13,7 +13,7 @@ CameraComponent::CameraComponent(Actor * in_target, int updateOrder)
 	Matrix4 projection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(75.0f),
 		static_cast<float>(GAME_CONFIG->GetScreenWidth()),
 		static_cast<float>(GAME_CONFIG->GetScreenHeight()),
-		1.0f, 100000.0f);
+		1.0f, 40000.0f);
 	RENDERER->SetProjectionMatrix(projection);
 
 	//AABB cullingBox;

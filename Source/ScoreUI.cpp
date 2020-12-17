@@ -147,9 +147,8 @@ void ScoreUI::Draw(Shader * in_shader)
 			DrawTexture(in_shader, m_addScoreTex[i], m_addScoreTexPos + Vector2(3.0f, 3.0f) * i, 1.0f);
 		}
 	}
-
 	// Œ¸ŽZ•ª‚ÌƒXƒRƒA
-	if (m_drawSubScore)
+	else if (m_drawSubScore)
 	{
 		for (int i = 0; i < 2; i++)
 		{

@@ -4,11 +4,11 @@
 #include "BoxCollider.h"
 #include "Collision.h"
 #include "EnvironmentMapComponent.h"
-
+#include "PointLight.h"
+// メッシュパス
 const std::string CarBody::CAR_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/OnlyFrame/BodyOnlyFrameLessMirror_Internal.OBJ";
 const std::string CarBody::CAR_GLASS_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/IncludeInterior/BodyGlassIncludeInterior_Internal.OBJ";
 const std::string CarBody::CAR_INTERIOR_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Interior/InteriorGlassLess_Internal.OBJ";
-
 
 // コンストラクタ
 CarBody::CarBody(PlayerCar* in_owner)
@@ -45,6 +45,20 @@ CarBody::CarBody(PlayerCar* in_owner)
 
 	playerBox.m_max.z *= 1.0f;
 	m_owner->GetBoxCollider()->SetObjectBox(playerBox);
+
+	// フロントライト・バックライトのセット
+	for (int i = 0; i < 2; i++)
+	{
+		m_frontLight[i] = nullptr;
+		m_frontLight[i] = new PointLight(PointLight::VL_SMALL);
+		m_frontLight[i]->SetLightColor(Vector3(1.0f, 1.0f, 0.7f), Vector3(1.0f, 1.0f, 1.0f));
+		m_frontLight[i]->SetPosition(Vector3(m_position.x + 50.0f, m_position.y + (30.0f * (i + 1)), m_position.z));
+
+		m_backLight[i] = nullptr;
+		m_backLight[i] = new PointLight(PointLight::VL_SMALL);
+		m_backLight[i]->SetLightColor(Vector3(1.0f, 0.1f, 0.1f), Vector3(1.0f, 1.0f, 1.0f));
+		m_backLight[i]->SetPosition(Vector3(m_position.x - 50.0f, m_position.y + (30.0f * (i + 1)), m_position.z));
+	}
 }
 
 // デストラクタ
@@ -61,4 +75,11 @@ void CarBody::UpdateActor(float in_deltaTime)
 
 	// オーナーに合わせるためワールド座標を取得し続ける
 	m_worldTransform = m_owner->GetWorldTransform();
+
+	// フロントライト・バックライトの座標調整
+	for (int i = 0; i < 2; i++)
+	{
+		m_frontLight[i]->SetWorldTransform(Matrix4::CreateTranslation(Vector3(50.0f, i * 10.0f, 0.0f)) * m_worldTransform);
+		m_backLight[i]->SetWorldTransform(Matrix4::CreateTranslation(Vector3(-50.0f, i * 10.0f, 0.0f)) * m_worldTransform);
+	}
 }

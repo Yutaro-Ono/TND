@@ -21,6 +21,9 @@ private:
 
 	class PlayerCar* m_owner;
 
+	class PointLight* m_frontLight[2];
+	class PointLight* m_backLight[2];
+
 	static const std::string CAR_BODY_MESH_PATH;
 	static const std::string CAR_GLASS_MESH_PATH;
 	static const std::string CAR_INTERIOR_MESH_PATH;

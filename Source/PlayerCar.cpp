@@ -20,13 +20,15 @@ PlayerCar::PlayerCar()
 	,m_turnState(TURN_IDLE)
 	,m_terrainType(LevelTerrain::TYPE_STREET)
 	,m_friction(1.0f)
+	,m_hitBox(nullptr)
+	,m_hitGroundBox(nullptr)
+	,m_hitHeadBox(nullptr)
 {
 	// 車両操作用のMoveComponentを生成
 	m_moveComp = new MoveComponentCar(this);
 	m_moveComp->SetActive(false);
 	// カメラコンポーネントを生成
 	m_cameraComp = new ThirdPersonCarCamera(this);
-	m_cameraComp->SetAdjustForward(false);
 	m_cameraComp->SetChaseOwnerForward(false);
 	m_cameraComp->SetDistance(200.0f);
 
@@ -40,8 +42,6 @@ PlayerCar::PlayerCar()
 	m_wheel[1] = new CarWheel(this, CarWheel::WHEEL_POSITION::FRONT_RIGHT);
 	m_wheel[2] = new CarWheel(this, CarWheel::WHEEL_POSITION::BACK_LEFT);
 	m_wheel[3] = new CarWheel(this, CarWheel::WHEEL_POSITION::BACK_RIGHT);
-
-
 
 }
 
@@ -61,6 +61,10 @@ void PlayerCar::UpdateActor(float in_deltaTime)
 	else
 	{
 		m_moveComp->SetActive(false);
+		for (int i = 0; i < 4; i++)
+		{
+			m_wheel[i]->SetSpin(false);
+		}
 	}
 
 
@@ -74,6 +78,10 @@ void PlayerCar::OnChange()
 	GAME_INSTANCE.SetCamera(m_cameraComp);
 	m_cameraComp->SetDistance(200.0f);
 	m_moveComp->SetActive(true);
+	for (int i = 0; i < 4; i++)
+	{
+		m_wheel[i]->SetSpin(true);
+	}
 }
 
 // 衝突時の押し出し処理
