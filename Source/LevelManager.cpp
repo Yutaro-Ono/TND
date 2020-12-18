@@ -15,6 +15,7 @@
 #include "RapidJsonHelper.h"
 #include "GameWorld.h"
 #include "PointLight.h"
+#include "LoadScreen.h"
 #include <vector>
 #include <string>
 #include <sstream>
@@ -62,6 +63,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 		return;
 	}
 
+
 	// 建物
 	std::vector<std::vector<int>> buildingData;
 	if (!ReadTiledJson(buildingData, mapPath.c_str(), "layer_Building"))
@@ -70,6 +72,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 		GAME_INSTANCE.SetShutDown();
 		return;
 	}
+
 
 	// 依頼人
 	std::vector< std::vector<int>> clientData;
@@ -80,6 +83,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 		return;
 	}
 
+
 	// ヘリ巡回ポイント
 	std::vector<std::vector<int>> patrolPointData;
 	if (!ReadTiledJson(patrolPointData, mapPath.c_str(), "layer_patrolPoint"))
@@ -88,6 +92,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 		GAME_INSTANCE.SetShutDown();
 		return;
 	}
+
 
 	// ポイントライト
 	std::vector<std::vector<int>> pointLightData;
@@ -131,6 +136,8 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	}
 	groundData.clear();
 
+	// ロード処理
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
 	// マップブロックを登録(壁)
 	for (int iy = 0; iy < sizeY; iy++)
@@ -143,12 +150,16 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				block = new LevelBlock();
 				block->SetMesh(m_blockMeshes[0]);
 				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 25.0f));
+				block->SetScale(1.1f);
 				block->SetMeshVisible();
 			}
 
 		}
 	}
 	wallData.clear();
+
+	// ロード処理
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
 	// マップブロックを登録(建物)
 	for (int iy = 0; iy < sizeY; iy++)
@@ -162,11 +173,16 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				block->SetMesh(m_blockMeshes[2]);
 				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
 				block->SetScale(5.0f);
+
+
 			}
 
 		}
 	}
 	buildingData.clear();
+
+	// ロード処理
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
 	// マップに登録(依頼人)
 	int count = 0;
@@ -181,6 +197,8 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				count++;
 				in_world->AddClientActor(client);
 
+				// ロード処理
+				GAME_INSTANCE.GetLoadScreen()->AddGauge();
 			}
 
 		}
@@ -216,11 +234,15 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 			{
 				PointLight* pLight = new PointLight();
 				pLight->SetPosition(Vector3(ix* blockSize, offsetY - iy * blockSize, 0.0f));
+
+				// ロード処理
+				GAME_INSTANCE.GetLoadScreen()->AddGauge();
 			}
 
 		}
 	}
 	pointLightData.clear();
+
 
 	m_blockMeshes.clear();
 	m_objectMeshes.clear();

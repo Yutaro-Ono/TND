@@ -74,7 +74,6 @@ void GameScene::Initialize()
 	{
 		GAME_INSTANCE.GetLoadScreen()->EnableScreen();
 		GAME_INSTANCE.GetLoadScreen()->SetIsGame();
-		RENDERER->Draw();
 	}
 
 	//---------------------------------------------------------------------------------------------+

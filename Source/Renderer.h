@@ -29,7 +29,7 @@ typedef struct DirectionalLight
 	Vector3 diffuse;
 	Vector3 specular;
 
-}DirectionalLight;
+}dirLight;
 
 
 class Renderer
@@ -81,7 +81,7 @@ public:
 
 	void SetWindowTitle(const std::string& in_title);
 	void SetWorldSpriteVertex();
-	void SetDirectionalLight(const DirectionalLight& in_dirLight);
+	void SetDirectionalLight(const dirLight& in_dirLight);
 
 	//--------------------------------------------+
 	// Getter / Setter
@@ -146,8 +146,8 @@ private:
 	// メッシュ配列
 	std::vector<class MeshComponent*> m_meshComponents;                       // メッシュコンポーネント
 	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;       // ボーン入りメッシュ配列
-	std::vector<class CarMeshComponent*> m_carMeshComponents;
-	std::vector<class MeshComponent*> m_glassMeshComponents;                   // ガラス(環境に影響を受ける)メッシュ配列
+	std::vector<class CarMeshComponent*> m_carMeshComponents;                 // 車メッシュ配列
+	std::vector<class MeshComponent*> m_glassMeshComponents;                  // ガラス(環境に影響を受ける)メッシュ配列
 	std::vector<class EnvironmentMapComponent*> m_envMeshComponents;          // 環境マップオブジェクト配列
 	// スプライト配列
 	std::vector<class SpriteComponent*> m_spriteComponents;                // スプライト配列 (スクリーン空間)
@@ -185,7 +185,7 @@ private:
 	// ライティング関連
 	//--------------------------------------------+
 	Vector3 m_ambientLight;                                                // アンビエントライト
-	DirectionalLight m_directionalLight;                                   // ディレクショナルライト構造体
+	dirLight m_directionalLight;                                   // ディレクショナルライト構造体
 
 	//--------------------------------------------+
 	// シャドウ関連

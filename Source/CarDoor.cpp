@@ -1,5 +1,6 @@
 #include "CarDoor.h"
 #include "EnvironmentMapComponent.h"
+#include "CarMeshComponent.h"
 
 const std::string CarDoor::CAR_DOOR_LEFT_FRAME_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/DoorLeft/DoorFrameLeft_Internal.OBJ";
 const std::string CarDoor::CAR_DOOR_LEFT_GLASS_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Door/DoorLeft/DoorGlassLeftTransparency_Internal.OBJ";
@@ -18,7 +19,7 @@ CarDoor::CarDoor(PlayerCar* in_owner, DOOR_POS in_pos)
 		m_adjustPos = Vector3(80.0f, -100.0f, 92.8f);
 		// ¶‘¤
 		Mesh* frame = RENDERER->GetMesh(CAR_DOOR_LEFT_FRAME_MESH_PATH);
-		MeshComponent* frameMeshComp = new MeshComponent(this);
+		CarMeshComponent* frameMeshComp = new CarMeshComponent(this);
 		frameMeshComp->SetMesh(frame);
 		Mesh* glass = RENDERER->GetMesh(CAR_DOOR_LEFT_GLASS_MESH_PATH);
 		//MeshComponent* glassMeshComp = new MeshComponent(this);
@@ -30,7 +31,7 @@ CarDoor::CarDoor(PlayerCar* in_owner, DOOR_POS in_pos)
 		m_adjustPos = Vector3(80.0f, 100.0f, 96.8f);
 		// ‰E‘¤
 		Mesh* frame = RENDERER->GetMesh(CAR_DOOR_RIGHT_FRAME_MESH_PATH);
-		MeshComponent* frameMeshComp = new MeshComponent(this);
+		CarMeshComponent* frameMeshComp = new CarMeshComponent(this);
 		frameMeshComp->SetMesh(frame);
 		Mesh* glass = RENDERER->GetMesh(CAR_DOOR_RIGHT_GLASS_MESH_PATH);
 		//MeshComponent* glassMeshComp = new MeshComponent(this);

@@ -274,6 +274,8 @@
     <None Include="Data\Shaders\GBuffer\DirectionalLight_Bloom.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_Basic.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_Basic.vert" />
+    <None Include="Data\Shaders\GBuffer\gBuffer_CarShader.frag" />
+    <None Include="Data\Shaders\GBuffer\gBuffer_CarShader.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_EnvironmentMap.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_EnvironmentMap.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_NormShadow.frag" />

@@ -14,7 +14,9 @@ public:
 	~ShadowMap();
 
 	// 光の視点からシーンをレンダリングしデプスバッファを得る
-	void RenderDepthMapFromLightView(const std::vector<class MeshComponent*>& in_mesh, const std::vector<class SkeletalMeshComponent*> in_skelMesh);          // 通常メッシュ・スキンメッシュ
+	void RenderDepthMapFromLightView(const std::vector<class MeshComponent*>& in_mesh, 
+		                             const std::vector<class SkeletalMeshComponent*> in_skelMesh,
+		                             const std::vector<class CarMeshComponent*> in_carMesh);          // 通常メッシュ・スキンメッシュ・車メッシュ
 
 
 

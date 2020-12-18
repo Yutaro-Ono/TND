@@ -56,7 +56,6 @@ void TitleScene::Initialize()
 	// ロード画面処理
 	{
 		GAME_INSTANCE.GetLoadScreen()->EnableScreen();
-		RENDERER->Draw();
 	}
 
 	// プレイヤー
@@ -65,9 +64,13 @@ void TitleScene::Initialize()
 	m_car->SetScale(0.4f);
 	m_car->SetState(Actor::STATE_PAUSED);
 
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
+
 	m_client = new ClientActor(Vector3::Zero, 5);
 	m_client->SetPosition(Vector3(0.0f, -55.0f, 0.0f));
 	m_client->SetScale(0.4f);
+
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
 	//m_pointLight = new PointLight();
 	//m_pointLight->SetPosition(Vector3(0.0f, 0.0f, 40.0f));
@@ -79,9 +82,16 @@ void TitleScene::Initialize()
 	// SE
 	AUDIO->GetSound(m_sound["Enter"]);                                       // 決定音
 
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
+
 	// BGM
 	//AUDIO->GetMusic(m_sound["BGM"]);
 	//AUDIO->PlayMusic(m_sound["BGM"]);
+
+	for (int i = 0; i < 61; i++)
+	{
+		GAME_INSTANCE.GetLoadScreen()->AddGauge();
+	}
 
 	// ロード画面の無効化
 	GAME_INSTANCE.GetLoadScreen()->DisableScreen();

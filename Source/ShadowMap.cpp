@@ -6,9 +6,10 @@
 #include "CameraComponent.h"
 #include "MeshComponent.h"
 #include "SkeletalMeshComponent.h"
+#include "CarMeshComponent.h"
 
-const int ShadowMap::SHADOW_WIDTH = 16384;
-const int ShadowMap::SHADOW_HEIGHT = 16384;
+const int ShadowMap::SHADOW_WIDTH = 8192;
+const int ShadowMap::SHADOW_HEIGHT = 8192;
 
 // コンストラクタ
 ShadowMap::ShadowMap()
@@ -75,7 +76,7 @@ ShadowMap::~ShadowMap()
 /// </summary>
 /// <param name="in_mesh"></param>     シャドウを適用するメッシュ配列
 /// <param name="in_skelMesh"></param> シャドウを適用するスキンメッシュ配列
-void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponent*>& in_mesh, const std::vector<class SkeletalMeshComponent*> in_skelMesh)
+void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponent*>& in_mesh, const std::vector<class SkeletalMeshComponent*> in_skelMesh, const std::vector<class CarMeshComponent*> in_carMesh)
 {
 	// 深度テスト有効化
 	glEnable(GL_DEPTH_TEST);
@@ -105,6 +106,10 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 	{
 		mesh->DrawShadow(m_depthShader);
 	}
+	for (auto mesh : in_carMesh)
+	{
+		mesh->DrawShadow(m_depthShader);
+	}
 
 	m_depthSkinShader->SetActive();
 	m_depthSkinShader->SetMatrixUniform("u_lightSpaceMatrix", m_lightSpace);
@@ -118,13 +123,12 @@ void ShadowMap::RenderDepthMapFromLightView(const std::vector<class MeshComponen
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	// ビューポートを画面サイズに戻す
+	//// ビューポートを画面サイズに戻す
 	glViewport(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight());
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 }
-
 
 
 // シャドウとメッシュの描画 (スキンメッシュは対象外)
@@ -205,3 +209,4 @@ void ShadowMap::DrawShadowMesh(const std::vector<class MeshComponent*>& in_mesh,
 	}
 
 }
+

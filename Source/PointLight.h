@@ -13,6 +13,7 @@ public:
 	enum LIGHT_VOLUME
 	{
 		VL_SMALL = 0,
+		VL_VERY_SMALL,
 		VL_MEDIUM,
 		VL_BIG
 	};

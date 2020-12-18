@@ -471,6 +471,9 @@
     <Filter Include="ソース ファイル\Renderer\Mesh\Component\Mesh\CarMesh">
       <UniqueIdentifier>{3a3a3304-6634-4837-b00b-6a64373d98ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh\Car">
+      <UniqueIdentifier>{5126e162-faf3-458c-b399-4d0ec571a0dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -1379,6 +1382,12 @@
     </None>
     <None Include="Data\Shaders\GBuffer\WorldSpaceSprite_Bloom.frag">
       <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\Sprite\WorldSpace</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_CarShader.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\Car</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_CarShader.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\Car</Filter>
     </None>
   </ItemGroup>
 </Project>

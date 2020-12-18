@@ -1,10 +1,10 @@
 #include "LoadScreen.h"
-#include "GameMain.h"
-#include "Renderer.h"
 #include "Texture.h"
 #include "Font.h"
-
+#include <Windows.h>
 #include <sstream>
+
+const int LoadScreen::GAUGE_NUM = 64;
 
 // コンストラクタ
 LoadScreen::LoadScreen()
@@ -18,13 +18,13 @@ LoadScreen::LoadScreen()
 
 
 	// ロード用ゲージ
-	for (int i = 0; i < 11; i++)
+	for (int i = 0; i < GAUGE_NUM; i++)
 	{
 		std::stringstream ssGauge;
 		// ファイルパス
-		ssGauge << "Data/Interface/System/Load/Loading_UI_" << i << ".png";
+		ssGauge << "Data/Interface/TND/Load/load_" << i << ".png";
 
-		//m_loadGauge[i] = RENDERER->GetTexture(ssGauge.str());
+		m_loadGauges.push_back(RENDERER->GetTexture(ssGauge.str()));
 
 	}
 
@@ -48,7 +48,7 @@ LoadScreen::~LoadScreen()
 // 初期化処理
 void LoadScreen::Initialize()
 {
-	m_gaugeNum = 0;
+	m_gaugeNum = 1;
 	m_state = ENABLE;
 }
 
@@ -79,13 +79,10 @@ void LoadScreen::Draw(Shader * in_shader)
 		}
 
 		// ロードゲージの描画
-		//for (int i = 0; i < m_gaugeNum; i++)
-		//{
-		//	if (m_loadGauge[i])
-		//	{
-		//		//DrawTexture(in_shader, m_loadGauge[i], m_loadGaugePos, 0.25f);
-		//	}
-		//}
+		for (int i = 0; i < m_gaugeNum; i++)
+		{
+			DrawTexture(in_shader, m_loadGauges[i], m_loadGaugePos, 1.0f);
+		}
 	}
 
 
@@ -93,8 +90,10 @@ void LoadScreen::Draw(Shader * in_shader)
 
 void LoadScreen::AddGauge()
 {
-	if (m_gaugeNum < 11)
+	if (m_gaugeNum < GAUGE_NUM)
 	{
 		m_gaugeNum++;
 	}
+	RENDERER->Draw();
+	Sleep(100);
 }

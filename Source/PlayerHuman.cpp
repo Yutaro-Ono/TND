@@ -39,9 +39,10 @@ PlayerHuman::PlayerHuman(class PlayerManager* in_manager)
 	m_skelMeshComp->SetSkeleton(RENDERER->GetSkeleton("Data/Meshes/TND/Actors/Player/rp_nathan_rigged_003_ue4.gpskel"));
 
 	// フェイスライト
-	m_faceLight = new PointLight();
-	m_faceLight->SetPosition(m_position);
-
+	m_faceLight = new PointLight(PointLight::VL_VERY_SMALL);
+	m_faceLight->SetPosition(m_position + Vector3(0.0f, 0.0f, 50.0f));
+	m_faceLight->SetLightColor(Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f));
+	m_faceLight->SetLuminance(0.8f);
 	// アニメーション取得
 	m_animTypes.resize(PLAYER_ANIM::ANIM_ALL_NUM);
 	// 対応するアニメーション配列にセット
@@ -137,7 +138,7 @@ void PlayerHuman::UpdateActor(float in_deltaTime)
 	}
 
 	// ライトの追従
-	m_faceLight->SetPosition(m_position);
+	m_faceLight->SetPosition(m_position + Vector3(0.0f, 0.0f, 45.0f));
 
 	printf("Player x : %f, y : %f, z : %f\n", m_position.x, m_position.y, m_position.z);
 }

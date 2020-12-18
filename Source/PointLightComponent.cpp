@@ -63,6 +63,12 @@ void PointLightComponent::SetLightParam(PointLight::LIGHT_VOLUME in_vol)
 		m_linear = 0.014;
 		m_quadratic = 0.0007;
 	}
+	else if (in_vol == PointLight::LIGHT_VOLUME::VL_VERY_SMALL)
+	{
+		m_radius = 50.0f;
+		m_linear = 0.09;
+		m_quadratic = 0.032;
+	}
 	// íÜÉTÉCÉY
 	else if (in_vol == PointLight::LIGHT_VOLUME::VL_MEDIUM)
 	{

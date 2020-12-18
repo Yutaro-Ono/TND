@@ -79,7 +79,7 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 void main()
 {
 
-	// 範囲[0, 19の法線マップベクトルを取得
+	// 範囲[0, 1]の法線マップベクトルを取得
 	vec3 normal = texture(u_mat.normalMap, fs_in.fragTexCoords).rgb;
 	// 法線ベクトルの範囲を[-1, +1]の範囲に復元する(タンジェントスペースに変換)
 	normal = normalize(normal * 2.0 - 1.0);

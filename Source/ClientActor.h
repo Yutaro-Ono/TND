@@ -80,4 +80,6 @@ private:
 
 	class Texture* m_distanceTex;
 	class WorldSpaceUI* m_distanceWorld;              // 距離を示すテクスチャ
+
+	class PointLight* m_light;                   // 位置をわかりやすくする光源
 };

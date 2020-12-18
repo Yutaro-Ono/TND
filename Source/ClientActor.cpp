@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "MissionBase.h"
 #include "Font.h"
+#include "PointLight.h"
 #include <string>
 #include <sstream>
 #include <random>
@@ -32,6 +33,7 @@ ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 	,m_distanceWorld(nullptr)
 	,m_animState(CLIENT_ANIM::ANIM_IDLE_LOOKAROUND)
 	,m_hitBox(nullptr)
+	,m_light(nullptr)
 {
 	// 座標設定
 	m_position = in_pos;
@@ -69,6 +71,8 @@ ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 	// アイドル時のアニメーションをセット
 	m_skelComp->PlayAnimation(m_anim[ANIM_IDLE_LOOKAROUND], AnimationSpeed);
 
+	// ポイントライト
+	m_light = new PointLight();
 
 }
 

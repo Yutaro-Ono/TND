@@ -36,7 +36,7 @@ private:
 	class Shader* m_gBufferSkinShader;    // GBuffer対応スキンシェーダ
 	class Shader* m_gBufferSkyBoxShader;  // GBuffer対応スカイボックスシェーダ
 	class Shader* m_gBufferEnvShader;     // GBuffer対応環境マップシェーダ
-
+	class Shader* m_gBufferCarShader;     // GBuffer対応車用シェーダ
 
 	// ライトシェーダ
 	class Shader* m_pointLightShader;

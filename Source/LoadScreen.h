@@ -1,6 +1,7 @@
 #pragma once
 #include "UIScreen.h"
-
+#include "GameMain.h"
+#include "Renderer.h"
 
 class LoadScreen : public UIScreen
 {
@@ -26,11 +27,11 @@ public:
 
 
 	// ロード画面の表示、非表示
-	void EnableScreen() { m_state = LOAD_STATE::ENABLE; }
-	void DisableScreen() { m_state = LOAD_STATE::DISABLE; }
+	void EnableScreen() { m_state = LOAD_STATE::ENABLE; RENDERER->Draw(); }
+	void DisableScreen() { Sleep(150); m_state = LOAD_STATE::DISABLE; }
 
 	// ロード画面上で操作説明をする場合にフラグをオンにする
-	void SetIsGame() { m_isGame = true; }
+	void SetIsGame() { m_isGame = true; RENDERER->Draw();}
 
 	void AddGauge();
 
@@ -41,7 +42,7 @@ private:
 
 	class Texture* m_loading;
 
-	class Texture* m_loadGauge[11];
+	std::vector<class Texture*> m_loadGauges;
 
 	int m_gaugeNum;
 
@@ -57,4 +58,5 @@ private:
 
 	Vector2 m_loadGaugePos;
 
+	static const int GAUGE_NUM;
 };

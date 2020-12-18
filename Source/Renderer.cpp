@@ -322,7 +322,7 @@ void Renderer::Draw()
 	//------------------------------------------------+
 	// 共通処理
 	// シャドウ描画用の深度マップにライト視点から見た空間で書き込む
-	m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents);
+	m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents, m_carMeshComponents);
 	// ここから分岐
 	if (m_renderMode == RENDER_MODE::FORWARD)
 	{
@@ -510,7 +510,7 @@ void Renderer::SetWorldSpriteVertex()
 }
 
 // ディレクショナルライトのセット
-void Renderer::SetDirectionalLight(const DirectionalLight & in_dirLight)
+void Renderer::SetDirectionalLight(const dirLight& in_dirLight)
 {
 	m_directionalLight = in_dirLight;
 }

@@ -72,7 +72,8 @@ void Shader::SetActive()
 // Bool型Uniformセッター
 void Shader::SetBool(const std::string& in_variableName, bool in_value) const
 {
-	glUniform1i(glGetUniformLocation(m_shaderProgram, in_variableName.c_str()), (int)in_value);
+	GLuint loc = glGetUniformLocation(m_shaderProgram, in_variableName.c_str());
+	glUniform1i(loc, (int)in_value);
 }
 
 // Int型Uniformセッター
@@ -85,7 +86,8 @@ void Shader::SetInt(const std::string& in_variableName, int in_value) const
 // Float型Uniformセッター
 void Shader::SetFloat(const std::string& in_variableName, float in_value) const
 {
-	glUniform1f(glGetUniformLocation(m_shaderProgram, in_variableName.c_str()), in_value);
+	GLuint loc = glGetUniformLocation(m_shaderProgram, in_variableName.c_str());
+	glUniform1f(loc, in_value);
 }
 
 // 行列のシェーダー変数 nameに値をセットする

@@ -110,7 +110,7 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 	{
 		// ライティング
 		RENDERER->SetAmbientLight(Vector3(0.8f, 0.8f, 0.9f));
-		DirectionalLight& dir = RENDERER->GetDirectionalLight();
+		dirLight& dir = RENDERER->GetDirectionalLight();
 		//dir.position = Vector3(30000.0f, 15400.0f, 15000.0f);
 		dir.position = playerPos + ADJUST_POS;
 		dir.target = playerPos;
@@ -128,7 +128,7 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 	{
 		// ライティング
 		RENDERER->SetAmbientLight(Vector3(0.1f, 0.1f, 0.15f));
-		DirectionalLight& dir = RENDERER->GetDirectionalLight();
+		dirLight& dir = RENDERER->GetDirectionalLight();
 		dir.position = playerPos + ADJUST_POS;
 		dir.target = playerPos;
 		dir.direction = dir.target - dir.position;
@@ -145,7 +145,7 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 	{
 		// ライティング
 		RENDERER->SetAmbientLight(Vector3(0.1f, 0.1f, 0.15f));
-		DirectionalLight& dir = RENDERER->GetDirectionalLight();
+		dirLight& dir = RENDERER->GetDirectionalLight();
 		dir.position = playerPos + ADJUST_POS;
 		dir.target = playerPos;
 		dir.direction = dir.target - dir.position;
@@ -163,7 +163,7 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 	{
 		// ライティング
 		RENDERER->SetAmbientLight(Vector3(0.15f, 0.15f, 0.2f));
-		DirectionalLight& dir = RENDERER->GetDirectionalLight();
+		dirLight& dir = RENDERER->GetDirectionalLight();
 		dir.position = playerPos + ADJUST_POS;
 		dir.target = playerPos;
 		dir.direction = dir.target - dir.position;

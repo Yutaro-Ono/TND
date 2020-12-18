@@ -48,7 +48,6 @@ void ResultScene::Initialize()
 	// ロード画面処理
 	{
 		GAME_INSTANCE.GetLoadScreen()->EnableScreen();
-		RENDERER->Draw();
 	}
 
 	// 音楽
@@ -58,6 +57,12 @@ void ResultScene::Initialize()
 	AUDIO->GetSound(m_sound["Enter"]);
 
 	m_environment = new Environment(Environment::MORNING);
+
+	// ロード処理
+	for (int i = 0; i < 64; i++)
+	{
+		GAME_INSTANCE.GetLoadScreen()->AddGauge();
+	}
 
 	// ロード画面の無効化
 	GAME_INSTANCE.GetLoadScreen()->DisableScreen();

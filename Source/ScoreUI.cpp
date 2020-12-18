@@ -28,6 +28,7 @@ ScoreUI::ScoreUI(Canvas* in_canvas)
 	,m_startSub(false)
 {
 
+	m_score = 500;
 	// スコア格納用
 	std::stringstream ssScore;
 	std::stringstream ssSub;
@@ -48,7 +49,6 @@ ScoreUI::ScoreUI(Canvas* in_canvas)
 	// 時間を秒単位で取得
 	m_time = SDL_GetTicks() / 1000;
 
-	m_score = 100;
 }
 
 

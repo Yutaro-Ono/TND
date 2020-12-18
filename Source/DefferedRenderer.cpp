@@ -20,6 +20,7 @@
 #include "RenderBloom.h"
 #include "FrameBuffer.h"
 #include "ParticleManager.h"
+#include "CarMeshComponent.h"
 #include <stdlib.h>
 #include <iostream>
 #include <glad/glad.h>
@@ -43,6 +44,7 @@ DefferedRenderer::~DefferedRenderer()
 	delete m_gBufferShader;
 	delete m_gBufferSkinShader;
 	delete m_gBufferEnvShader;
+	delete m_gBufferCarShader;
 	delete m_gBufferSkyBoxShader;
 	delete m_screenShader;
 	delete m_pointLightShader;
@@ -95,6 +97,28 @@ void DefferedRenderer::DrawGBuffer()
 	}
 
 	//------------------------------------------------------------+
+	// 車
+	//------------------------------------------------------------+
+	m_gBufferCarShader->SetActive();
+	m_gBufferCarShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
+	m_gBufferCarShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
+	m_gBufferCarShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
+	m_gBufferCarShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
+	m_gBufferCarShader->SetMatrixUniform("u_view", view);
+	m_gBufferCarShader->SetMatrixUniform("u_projection", projection);
+	m_gBufferCarShader->SetVectorUniform("u_viewPos", view.GetTranslation());
+	m_gBufferCarShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
+	m_gBufferCarShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
+	m_gBufferCarShader->SetInt("u_mat.diffuseMap", 0);
+	m_gBufferCarShader->SetInt("u_mat.specularMap", 1);
+	m_gBufferCarShader->SetInt("u_mat.depthMap", 2);
+	// 車メッシュ描画
+	for (auto car : m_renderer->m_carMeshComponents)
+	{
+		car->Draw(m_gBufferCarShader);
+	}
+
+	//------------------------------------------------------------+
 	// スキンメッシュ
 	//------------------------------------------------------------+
 	// シェーダにuniformセット
@@ -117,6 +141,7 @@ void DefferedRenderer::DrawGBuffer()
 	{
 		skel->Draw(m_gBufferSkinShader);
 	}
+
 
 	//------------------------------------------------------------+
 	// EnvironmentMap
@@ -466,6 +491,12 @@ bool DefferedRenderer::Initialize()
 	// GBuffer用環境マップシェーダ
 	m_gBufferEnvShader = new Shader();
 	if (!m_gBufferEnvShader->Load("Data/Shaders/GBuffer/gBuffer_EnvironmentMap.vert", "Data/Shaders/GBuffer/gBuffer_EnvironmentMap.frag"))
+	{
+		return false;
+	}
+	// GBuffer車用シェーダ
+	m_gBufferCarShader = new Shader();
+	if (!m_gBufferCarShader->Load("Data/Shaders/GBuffer/gBuffer_CarShader.vert", "Data/Shaders/GBuffer/gBuffer_CarShader.frag"))
 	{
 		return false;
 	}
