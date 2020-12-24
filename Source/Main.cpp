@@ -16,6 +16,29 @@
 #include <string>
 
 
+
+
+// ランチャー(Launcher.exe)呼び出し関数 
+// pathにはLauncher.exeへの相対パスへの文字列を入れる
+void runLauncher(const char* path)
+{
+	#ifndef _DEBUG
+	char fullPathexe[512];
+#pragma warning (disable:4996)
+	sprintf(fullPathexe, "%s%s", path, "Launcher.exe");
+
+	// プロセス起動準備
+	PROCESS_INFORMATION pi = { 0 };
+	STARTUPINFO si = { 0 };
+	si.cb = sizeof(STARTUPINFO);
+
+	CreateProcess((LPCSTR)fullPathexe, (LPSTR)"", NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, NULL, (LPCSTR)path, &si, &pi);
+
+	#endif
+}
+
+
+
 // メインループ
 int main(int argc, char** argv)
 {
@@ -32,6 +55,9 @@ int main(int argc, char** argv)
 	GAME_INSTANCE.RunLoop();
 	// ゲームの終了処理
 	GAME_INSTANCE.CloseGame();
+
+	// 終了時ランチャー呼び出し
+	runLauncher("../../");
 
 	return 0;
 

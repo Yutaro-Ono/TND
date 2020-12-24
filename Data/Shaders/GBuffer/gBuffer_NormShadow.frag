@@ -11,7 +11,7 @@ layout (location = 2) out vec4 out_gAlbedoSpec;
 // 頂点シェーダーからの入力受け取り
 in VS_OUT
 {
-	vec2 fragTexCoords;              // テクスチャ座標
+	vec2 fragTexCoords;             // テクスチャ座標
 	vec3 fragNormal;                // 法線（ワールド空間）
 	vec3 fragWorldPos;              // 頂点位置（ワールド空間）
 	vec3 fragViewPos;               // カメラ座標

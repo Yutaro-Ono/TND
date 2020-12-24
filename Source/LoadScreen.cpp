@@ -16,16 +16,13 @@ LoadScreen::LoadScreen()
 	// "Loading"生成
 	m_loading = m_font->RenderText("Loading", Vector3(1.0f, 1.0f, 1.0f), 64);
 
-
 	// ロード用ゲージ
 	for (int i = 0; i < GAUGE_NUM; i++)
 	{
 		std::stringstream ssGauge;
 		// ファイルパス
 		ssGauge << "Data/Interface/TND/Load/load_" << i << ".png";
-
 		m_loadGauges.push_back(RENDERER->GetTexture(ssGauge.str()));
-
 	}
 
 	// 背景
@@ -64,7 +61,9 @@ void LoadScreen::Draw(Shader * in_shader)
 		// 背景
 		if (m_bgTexture)
 		{
+			glDisable(GL_BLEND);
 			DrawTexture(in_shader, m_bgTexture, Vector2(0.0f, 0.0f), 1.0f);
+			glEnable(GL_BLEND);
 		}
 
 		// 操作説明
@@ -84,7 +83,6 @@ void LoadScreen::Draw(Shader * in_shader)
 			DrawTexture(in_shader, m_loadGauges[i], m_loadGaugePos, 1.0f);
 		}
 	}
-
 
 }
 

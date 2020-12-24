@@ -6,10 +6,12 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "ShadowMap.h"
+#include "SkyBox.h"
 
 CarMeshComponent::CarMeshComponent(Actor* in_owner)
 	:Component(in_owner)
 	, m_mesh(nullptr)
+	, m_reflect(true)
 	, m_textureIndex(0)
 	, m_visible(true)
 {
@@ -46,6 +48,14 @@ void CarMeshComponent::Draw(Shader* in_shader)
 		{
 			glActiveTexture(GL_TEXTURE2);
 			glBindTexture(GL_TEXTURE_2D, RENDERER->GetShadowMap()->GetDepthMap());
+		}
+
+		// 反射有効時、環境マップ使用
+		if (m_reflect)
+		{
+			in_shader->SetInt("u_skybox", 3);
+			glActiveTexture(GL_TEXTURE3);
+			glBindTexture(GL_TEXTURE_CUBE_MAP, RENDERER->GetSkyBox()->GetSkyBoxTexture()->GetTextureID());;
 		}
 
 		// 頂点配列をアクティブに

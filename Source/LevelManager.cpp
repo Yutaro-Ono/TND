@@ -191,7 +191,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 		for (int ix = 0; ix < sizeX; ix++)
 		{
 
-			if (clientData[iy][ix] >= 33)
+			if (clientData[iy][ix] == 33)
 			{
 				ClientActor* client = new ClientActor(Vector3(ix * blockSize, offsetY - iy * blockSize, -10.0f), count);
 				count++;

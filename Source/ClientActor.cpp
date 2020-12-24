@@ -72,7 +72,7 @@ ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 	m_skelComp->PlayAnimation(m_anim[ANIM_IDLE_LOOKAROUND], AnimationSpeed);
 
 	// ポイントライト
-	m_light = new PointLight();
+	m_light = new PointLight(PointLight::VL_SMALL);
 
 }
 
@@ -126,6 +126,8 @@ void ClientActor::UpdateActor(float in_deltaTime)
 		m_landMark->SetVisible(false);
 		m_distanceWorld->SetVisible(false);
 	}
+
+	m_light->SetPosition(m_position);
 
 	m_recomputeWorldTransform = true;
 }

@@ -51,13 +51,13 @@ CarBody::CarBody(PlayerCar* in_owner)
 	// フロントライト・バックライトのセット
 	for (int i = 0; i < 2; i++)
 	{
-		m_frontLight[i] = new PointLight(PointLight::VL_SMALL);
-		m_frontLight[i]->SetPosition(m_owner->GetPosition());
-		m_frontLight[i]->SetLightColor(Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f));
+		//m_frontLight[i] = new PointLight(PointLight::VL_SMALL);
+		//m_frontLight[i]->SetPosition(m_owner->GetPosition());
+		//m_frontLight[i]->SetLightColor(Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f));
 
-		m_backLight[i] = new PointLight(PointLight::VL_SMALL);
-		m_backLight[i]->SetLightColor(Vector3(1.0f, 0.1f, 0.1f), Vector3(1.0f, 1.0f, 1.0f));
-		m_backLight[i]->SetPosition(Vector3(m_position.x - 50.0f, m_position.y + (30.0f * (i + 1)), m_position.z));
+		//m_backLight[i] = new PointLight(PointLight::VL_SMALL);
+		//m_backLight[i]->SetLightColor(Vector3(1.0f, 0.1f, 0.1f), Vector3(1.0f, 1.0f, 1.0f));
+		//m_backLight[i]->SetPosition(Vector3(m_position.x - 50.0f, m_position.y + (30.0f * (i + 1)), m_position.z));
 	}
 }
 
@@ -79,10 +79,10 @@ void CarBody::UpdateActor(float in_deltaTime)
 	// フロントライト・バックライトの座標調整
 	for (int i = 0; i < 2; i++)
 	{
-		m_frontLight[i]->SetPosition(m_position);
-		m_frontLight[i]->SetRotation(m_rotation);
-		m_frontLight[i]->ComputeWorldTransform();
-		m_frontLight[i]->SetWorldTransform(Matrix4::CreateTranslation(Vector3(180.0f, i * 10.0f, 10.0f)) * m_frontLight[i]->GetWorldTransform());
+		//m_frontLight[i]->SetPosition(m_position);
+		//m_frontLight[i]->SetRotation(m_rotation);
+		//m_frontLight[i]->ComputeWorldTransform();
+		//m_frontLight[i]->SetWorldTransform(Matrix4::CreateTranslation(Vector3(180.0f, i * 10.0f, 10.0f)) * m_frontLight[i]->GetWorldTransform());
 		//m_frontLight[i]->SetWorldTransform(Matrix4::CreateScale(m_frontLight[i]->GetScale()) * Matrix4::CreateFromQuaternion(m_owner->GetRotation()) * Matrix4::CreateTranslation(m_owner->GetPosition()) * Matrix4::CreateTranslation(Vector3(80.0f, i * 10.0f, 10.0f)));
 		//m_backLight[i]->SetWorldTransform(Matrix4::CreateTranslation(m_owner->GetPosition() + Vector3(-50.0f, i * 10.0f, 0.0f)));
 	}

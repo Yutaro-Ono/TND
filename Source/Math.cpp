@@ -256,7 +256,7 @@ Matrix4 Matrix4::CreateFromQuaternion(const class Quaternion& q)
 }
 
 
-Matrix4 getBillboardMatrix(const Vector3& eye, const Vector3& lookAt, const Vector3 Up)
+Matrix4 GetBillboardMatrix(const Vector3& eye, const Vector3& lookAt, const Vector3 Up)
 {
 	Matrix4 ret;
 	Matrix4 rot;

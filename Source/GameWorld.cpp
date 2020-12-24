@@ -127,7 +127,7 @@ void GameWorld::ShufflePatrolPoint()
 // 依頼人アクタ配列のシャッフル
 void GameWorld::ShuffleClientActor()
 {
-	std::random_shuffle(m_clients.begin(), m_clients.end());
+	std::random_shuffle(m_clients.begin(), m_clients.end() - 1);
 }
 
 void GameWorld::ImGuiDebugWorld()

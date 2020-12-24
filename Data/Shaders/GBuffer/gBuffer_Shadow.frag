@@ -16,9 +16,6 @@ in VS_OUT
 	vec3 fragWorldPos;              // 頂点位置（ワールド空間）
 	vec3 fragViewPos;               // カメラ座標
 	vec4 fragPosLightSpace;         // 頂点位置 (ライト空間)
-	vec3 TangentLightPos;
-	vec3 TangentViewPos;
-	vec3 TangentFragPos;
 
 }fs_in;
 
@@ -79,33 +76,43 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 void main()
 {
 
-	// 法線計算
-	vec3 normal = normalize(fs_in.fragNormal);
+	// ポリゴン表面の法線（フラグメントシェーダー上で補間されている）
+	vec3 N = normalize(fs_in.fragNormal);
+	// ポリゴン表面からライト方向へのベクトル
+	vec3 L = normalize(-u_dirLight.direction);
+	// ポリゴン表面からカメラ方向
+	vec3 V = normalize(u_viewPos - fs_in.fragWorldPos);
 
-	// ディフューズカラーをサンプリング
-	vec3 color = texture(u_mat.diffuseMap, fs_in.fragTexCoords).rgb;
+	// -L ベクトルを 法線 N に対して反射したベクトルRを求める
+	vec3 R = normalize(reflect(-L, N));
+	// フォン反射計算
+	vec3 Phong = u_dirLight.ambient;
+	float NdotL = dot(N, L);
 
 	// アンビエント計算
-	vec3 ambient = u_dirLight.ambient * color;
-
+	vec3 ambient = u_dirLight.ambient * vec3(texture(u_mat.diffuseMap, fs_in.fragTexCoords));
 	// ディフューズ計算
-	vec3 lightDir = normalize(fs_in.TangentLightPos - fs_in.TangentFragPos);
-	float diff = max(dot(lightDir, normal), 0.0);
-	vec3 diffuse = u_dirLight.diffuse * diff * texture(u_mat.diffuseMap, fs_in.fragTexCoords).rgb;
+	vec3 norm = normalize(fs_in.fragNormal);
+	float diff = max(dot(norm, -u_dirLight.direction), 0.0);
+	//float diff = max(NdotL, 0.0);
+	vec3 diffuse = u_dirLight.diffuse * diff * vec3(texture(u_mat.diffuseMap, fs_in.fragTexCoords));
 
 	// スペキュラ計算
-	vec3 viewDir = normalize(fs_in.TangentViewPos - fs_in.TangentFragPos);
-	vec3 reflectDir = reflect(-lightDir, normal);
-	vec3 halfwayDir = normalize(lightDir + viewDir);
-	float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
-	vec3 specular = u_dirLight.specular * spec * texture(u_mat.specularMap, fs_in.fragTexCoords).rgb;
+	vec3 viewDir = normalize(u_viewPos - fs_in.fragWorldPos);
+	vec3 reflectDir = reflect(u_dirLight.direction, norm);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+	//float spec = pow(max(0.0, dot(R, V)), uSpecPower);
+	vec3 specular = u_dirLight.specular * spec * vec3(texture(u_mat.specularMap, fs_in.fragTexCoords));
 
 	// 影成分の算出
 	float shadow = ShadowCalculation(fs_in.fragPosLightSpace);
+	// シャドウの逆数を取り、0 = 影の時にディフューズとスペキュラの値がキャンセルされる(影となる)
+	vec3 result = ambient + (1.0 - shadow) * (diffuse + specular);
+
 
 	// GBuffer出力
 	out_gPosition = fs_in.fragWorldPos;
-	out_gNormal = normal;
+	out_gNormal = N;
 	// シャドウの逆数を取り、0 = 影の時にディフューズとスペキュラの値がキャンセルされる(影となる)
 	out_gAlbedoSpec.rgb = ambient + (1.0 - shadow) * diffuse;
 	out_gAlbedoSpec.a = (1.0 - shadow) * specular.r;

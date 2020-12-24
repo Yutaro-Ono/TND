@@ -142,6 +142,17 @@ void DefferedRenderer::DrawGBuffer()
 		skel->Draw(m_gBufferSkinShader);
 	}
 
+	//------------------------------------------------------------+
+    // SkyBox
+    //------------------------------------------------------------+
+	m_gBufferSkyBoxShader->SetActive();
+	// Uniformに行列をセット
+	Matrix4 InvView = view;
+	InvView.Invert();
+	m_gBufferSkyBoxShader->SetMatrixUniform("u_view", InvView);
+	m_gBufferSkyBoxShader->SetMatrixUniform("u_projection", projection);
+	m_gBufferSkyBoxShader->SetInt("u_skybox", 0);
+	m_renderer->GetSkyBox()->Draw(m_gBufferSkyBoxShader);
 
 	//------------------------------------------------------------+
 	// EnvironmentMap
@@ -156,17 +167,6 @@ void DefferedRenderer::DrawGBuffer()
 		env->DrawEnvironmentMap(m_gBufferEnvShader);
 	}
 
-	//------------------------------------------------------------+
-    // SkyBox
-    //------------------------------------------------------------+
-	m_gBufferSkyBoxShader->SetActive();
-	// Uniformに行列をセット
-	Matrix4 InvView = view;
-	InvView.Invert();
-	m_gBufferSkyBoxShader->SetMatrixUniform("u_view", InvView);
-	m_gBufferSkyBoxShader->SetMatrixUniform("u_projection", projection);
-	m_gBufferSkyBoxShader->SetInt("u_skybox", 0);
-	m_renderer->GetSkyBox()->Draw(m_gBufferSkyBoxShader);
 
 	// GBufferのバインド解除
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -496,7 +496,7 @@ bool DefferedRenderer::Initialize()
 	}
 	// GBuffer車用シェーダ
 	m_gBufferCarShader = new Shader();
-	if (!m_gBufferCarShader->Load("Data/Shaders/GBuffer/gBuffer_CarShader.vert", "Data/Shaders/GBuffer/gBuffer_CarShader.frag"))
+	if (!m_gBufferCarShader->Load("Data/Shaders/GBuffer/gBuffer_CarShaderReflect.vert", "Data/Shaders/GBuffer/gBuffer_CarShaderReflect.frag"))
 	{
 		return false;
 	}

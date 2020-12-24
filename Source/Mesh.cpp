@@ -56,7 +56,8 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 	pngPath = pngPath.substr(0, extNum);            // 拡張子以外のメッシュファイル名を取得
 
 	// ディフューズ読み込み
-	Texture* t = in_renderer->GetTexture(pngPath + "_DiffuseMap.png");
+	std::string fileName = pngPath + "_DiffuseMap.png";
+	Texture* t = in_renderer->GetTexture(fileName);
 
 	if (t != nullptr)
 	{
@@ -70,7 +71,8 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 
 	// スペキュラ読み込み
 	t = nullptr;
-	t = in_renderer->GetTexture(pngPath + "_SpecularMap.png");
+	fileName = pngPath + "_SpecularMap.png";
+	t = in_renderer->GetTexture(fileName);
 
 	if (t != nullptr)
 	{
@@ -84,7 +86,8 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 
 	// 法線マップ読み込み
 	t = nullptr;
-	t = in_renderer->GetTexture(pngPath + "_NormalMap.png");
+	fileName = pngPath + "_NormalMap.png";
+	t = in_renderer->GetTexture(fileName);
 
 	if (t != nullptr)
 	{

@@ -12,7 +12,6 @@
 #include <glad/glad.h>
 #include <SDL.h>
 #include <SDL_image.h>
-#include <stb_image.h>
 
 // コンストラクタ
 Texture::Texture()
@@ -26,15 +25,14 @@ Texture::Texture()
 // デストラクタ
 Texture::~Texture()
 {
-	//RENDERER->RemoveTexture(this);
+	RENDERER->RemoveTexture(this);
 }
 
 // テクスチャのロード
 bool Texture::Load(const std::string & in_fileName)
 {
 
-	// SDLサーフェス(面)をテクスチャから作成
-	SDL_Texture* texture = nullptr;
+	// SDLサーフェス(面)を作成
 	SDL_Surface* surface = IMG_Load(in_fileName.c_str());          // ロード
 	// ロードに失敗したら
 	if (!surface)
@@ -43,14 +41,6 @@ bool Texture::Load(const std::string & in_fileName)
 		return false;
 	}
 
-	// サーフェスからテクスチャを生成
-	texture = SDL_CreateTextureFromSurface(GAME_INSTANCE.GetSDLRenderer(), surface);
-	// 生成に失敗したら
-	if (!texture)
-	{
-		SDL_Log("Create Texture From Surface Failed : %s", in_fileName.c_str());
-		return false;
-	}
 
 	// テクスチャ画像の幅、高さを取得
 	m_width = surface->w;

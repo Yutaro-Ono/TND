@@ -67,7 +67,7 @@ bool MeshGpmesh::Load(const std::string& in_filePath, Renderer* in_renderer)
 	if (!textures.IsArray() || textures.Size() < 1)
 	{
 		printf("Mesh %s has no textures, there should be at least one", in_filePath.c_str());
-		return false;
+		//return false;
 	}
 
 	// スペキュラ強度
