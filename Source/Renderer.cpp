@@ -280,6 +280,11 @@ void Renderer::Delete()
 	{
 		delete light;
 	}
+	// スポットライト配列の解放
+	for (auto spLight : m_spotLights)
+	{
+		delete spLight;
+	}
 
 	// シェーダーの解放
 	delete m_spriteShader;
@@ -469,15 +474,43 @@ void Renderer::RemoveEnvironmentComponent(EnvironmentMapComponent* in_envMesh)
 	m_envMeshComponents.erase(iter);
 }
 
+/// <summary>
+/// ポイントライトコンポーネント追加
+/// 追加されると描画に適用される
+/// </summary>
+/// <param name="in_pointL">追加するポイントライトクラス</param>
 void Renderer::AddPointLightComponent(PointLightComponent* in_pointL)
 {
 	m_pointLights.push_back(in_pointL);
 }
 
+/// <summary>
+/// ポイントライトコンポーネント削除
+/// </summary>
+/// <param name="in_pointL">削除するポイントライトクラス</param>
 void Renderer::RemovePointLightComponent(PointLightComponent* in_pointL)
 {
 	auto iter = std::find(m_pointLights.begin(), m_pointLights.end(), in_pointL);
 	m_pointLights.erase(iter);
+}
+
+/// <summary>
+/// スポットライトコンポーネント追加
+/// </summary>
+/// <param name="in_spotL">追加するスポットライトコンポーネント</param>
+void Renderer::AddSpotLightComponent(SpotLightComponent* in_spotL)
+{
+	m_spotLights.push_back(in_spotL);
+}
+
+/// <summary>
+/// スポットライトコンポーネント削除
+/// </summary>
+/// <param name="in_spotL">削除するスポットライトコンポーネント</param>
+void Renderer::RemoveSpotLightComponent(SpotLightComponent* in_spotL)
+{
+	auto iter = std::find(m_spotLights.begin(), m_spotLights.end(), in_spotL);
+	m_spotLights.erase(iter);
 }
 
 // 指定したテクスチャの削除

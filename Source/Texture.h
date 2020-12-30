@@ -18,12 +18,13 @@ public:
 	~Texture();                                                   // デストラクタ
 
 	bool Load(const std::string& in_fileName);                    // テクスチャのロード
-	bool LoadSkyBox(const std::string& in_filePath);              // キューブマップのロード(スカイボックス用)
+	bool LoadCubeMap(const std::string& in_filePath);              // キューブマップのロード
 	void Delete();                                                // テクスチャの解放処理
 	void CreateSurface(struct SDL_Surface* surface);              // SDLサーフェスからテクスチャを作成する
 
 	void SetActive();                                             // テクスチャをアクティブ(ポリゴン描画で使用)にする
 
+	void SetMipMap();                                             // ミップマップ有効化
 
 	void SetWidth(int in_width) { m_width = in_width; }           // 横幅のセッター
 

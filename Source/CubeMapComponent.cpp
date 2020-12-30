@@ -25,7 +25,7 @@ CubeMapComponent::~CubeMapComponent()
 void CubeMapComponent::CreateTexture(const std::string& in_filePath)
 {
 	m_texture = new Texture();
-	m_texture->LoadSkyBox(in_filePath);
+	m_texture->LoadCubeMap(in_filePath);
 }
 
 // キューブマップの描画処理

@@ -90,7 +90,7 @@ void main()
 	float NdotL = dot(L, N);
 
 	// 環境マップサンプリング
-	float ratio = 1.00 / 1.52;                                         // 反射率
+	float ratio = 1.00 / 1.309;                                         // 反射率
 	vec3 I = normalize(fs_in.fragWorldPos - fs_in.fragViewPos);        // カメラの向きベクトル
 	vec3 eR = refract(I, N, ratio);                                    // カメラの向きベクトルと法線から反射ベクトルを生成
 	vec3 envMap = texture(u_skybox, eR).rgb;
@@ -106,8 +106,8 @@ void main()
 	float shadow = ShadowCalculation(fs_in.fragPosLightSpace);
 
 	// GBuffer出力
-	out_gPosition = fs_in.fragWorldPos;
-	out_gNormal = N;
+	out_gPosition = vec3(fs_in.fragWorldPos.z, fs_in.fragWorldPos.x, -fs_in.fragWorldPos.y);
+	out_gNormal = vec3(fs_in.fragNormal.z, fs_in.fragNormal.x, -fs_in.fragNormal.y);
 	// シャドウの逆数を取り、0 = 影の時にディフューズとスペキュラの値がキャンセルされる(影となる)
 	out_gAlbedoSpec.rgb = ambient + (1.8 - shadow) * Diffuse * envMap;
 	out_gAlbedoSpec.a = (1.8 - shadow) * Specular.r;

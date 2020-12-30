@@ -477,6 +477,9 @@
     <Filter Include="ソース ファイル\Shader\Source\GBuffer\Mesh\Car\reflect">
       <UniqueIdentifier>{594d3997-c515-4424-84b6-a56c32324640}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Actor\Light\LightComponent\SpotLight">
+      <UniqueIdentifier>{f090c2f1-5a45-474d-9dba-2a5ac347ee2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -817,6 +820,12 @@
     </ClCompile>
     <ClCompile Include="Source\CarMeshComponent.cpp">
       <Filter>ソース ファイル\Renderer\Mesh\Component\Mesh\CarMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpotLight.cpp">
+      <Filter>ソース ファイル\Actor\Light\SpotLight</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpotLightComponent.cpp">
+      <Filter>ソース ファイル\Actor\Light\LightComponent\SpotLight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1174,6 +1183,12 @@
     <ClInclude Include="Source\CarMeshComponent.h">
       <Filter>ソース ファイル\Renderer\Mesh\Component\Mesh\CarMesh</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SpotLight.h">
+      <Filter>ソース ファイル\Actor\Light\SpotLight</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpotLightComponent.h">
+      <Filter>ソース ファイル\Actor\Light\LightComponent\SpotLight</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\DirectLine.vert">
@@ -1397,6 +1412,12 @@
     </None>
     <None Include="Data\Shaders\GBuffer\gBuffer_CarShaderReflect.vert">
       <Filter>ソース ファイル\Shader\Source\GBuffer\Mesh\Car\reflect</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\SpotLight_Bloom.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\SpotLight</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\SpotLight_Bloom.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\SpotLight</Filter>
     </None>
   </ItemGroup>
 </Project>

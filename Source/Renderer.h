@@ -65,9 +65,14 @@ public:
 	// EnvironmentMapComponent
 	void AddEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
 	void RemoveEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
+
 	// PointLightComponent
 	void AddPointLightComponent(class PointLightComponent* in_pointL);
 	void RemovePointLightComponent(class PointLightComponent* in_pointL);
+	// SpotLightComponent
+	void AddSpotLightComponent(class SpotLightComponent* in_spotL);
+	void RemoveSpotLightComponent(class SpotLightComponent* in_spotL);
+
 	// TextureComponent
 	void RemoveTexture(class Texture* in_texture);
 
@@ -157,7 +162,7 @@ private:
 
 	// ライト関連配列
 	std::vector<class PointLightComponent*> m_pointLights;                           // ポイントライト配列
-
+	std::vector<class SpotLightComponent*> m_spotLights;                             // スポットライト配列
 
 
 	//--------------------------------------------+

@@ -121,6 +121,8 @@
     <ClCompile Include="Source\SkyBox.cpp" />
     <ClCompile Include="Source\Sound.cpp" />
     <ClCompile Include="Source\SpeedMeterUI.cpp" />
+    <ClCompile Include="Source\SpotLight.cpp" />
+    <ClCompile Include="Source\SpotLightComponent.cpp" />
     <ClCompile Include="Source\SpriteComponent.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\ThirdPersonCamera.cpp" />
@@ -241,6 +243,8 @@
     <ClInclude Include="Source\SkyBox.h" />
     <ClInclude Include="Source\Sound.h" />
     <ClInclude Include="Source\SpeedMeterUI.h" />
+    <ClInclude Include="Source\SpotLight.h" />
+    <ClInclude Include="Source\SpotLightComponent.h" />
     <ClInclude Include="Source\SpriteComponent.h" />
     <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\ThirdPersonCamera.h" />
@@ -292,6 +296,8 @@
     <None Include="Data\Shaders\GBuffer\PointLight.vert" />
     <None Include="Data\Shaders\GBuffer\PointLight_Bloom.frag" />
     <None Include="Data\Shaders\GBuffer\PointLight_Bloom.vert" />
+    <None Include="Data\Shaders\GBuffer\SpotLight_Bloom.frag" />
+    <None Include="Data\Shaders\GBuffer\SpotLight_Bloom.vert" />
     <None Include="Data\Shaders\GBuffer\SpriteShader_Bloom.frag" />
     <None Include="Data\Shaders\GBuffer\SpriteShader_Bloom.vert" />
     <None Include="Data\Shaders\GBuffer\WorldSpaceSprite_Bloom.frag" />

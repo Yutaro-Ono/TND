@@ -14,6 +14,7 @@
 #include "CubeMapComponent.h"
 #include "VertexArray.h"
 #include "PointLightComponent.h"
+#include "SpotLightComponent.h"
 #include "SpriteComponent.h"
 #include "WorldSpaceUI.h"
 #include "UIScreen.h"
@@ -183,6 +184,15 @@ void DefferedRenderer::DrawLightPass()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// 深度テストをオフ
 	glDisable(GL_DEPTH_TEST);
+
+	// gBufferの各テクスチャをバインド
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_gPos);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_gNormal);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
+
 	//-----------------------------------------------+
 	// ディレクショナルライトパス
 	//-----------------------------------------------+
@@ -199,13 +209,6 @@ void DefferedRenderer::DrawLightPass()
 	m_directionalLightShader->SetInt("u_gBuffer.pos", 0);
 	m_directionalLightShader->SetInt("u_gBuffer.normal", 1);
 	m_directionalLightShader->SetInt("u_gBuffer.albedoSpec", 2);
-	// gBufferの各テクスチャをバインド
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_gPos);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_gNormal);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
 	// スクリーン全体に描画
 	m_renderer->GetScreenVAO()->SetActive();
 	glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -214,6 +217,7 @@ void DefferedRenderer::DrawLightPass()
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CW);
+
 	//------------------------------------------------------+
 	// ポイントライト
 	//------------------------------------------------------+
@@ -225,20 +229,30 @@ void DefferedRenderer::DrawLightPass()
 	m_pointLightShader->SetInt("u_gBuffer.pos",     0);
 	m_pointLightShader->SetInt("u_gBuffer.normal",       1);
 	m_pointLightShader->SetInt("u_gBuffer.albedoSpec",   2);
-
-	// gBufferの各テクスチャをバインド
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_gPos);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, m_gNormal);
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
-
 	// ポイントライトの描画
 	for (auto pl : m_renderer->m_pointLights)
 	{
 		pl->Draw(m_pointLightShader);
 	}
+
+
+	//------------------------------------------------------+
+	// スポットライト
+	//------------------------------------------------------+
+	// スポットライトシェーダへのセット
+	m_spotLightShader->SetActive();
+	m_spotLightShader->SetMatrixUniform("u_view", m_renderer->GetViewMatrix());
+	m_spotLightShader->SetMatrixUniform("u_projection", m_renderer->GetProjectionMatrix());
+	m_spotLightShader->SetVectorUniform("u_viewPos", m_renderer->GetViewMatrix().GetTranslation());
+	m_spotLightShader->SetInt("u_gBuffer.pos", 0);
+	m_spotLightShader->SetInt("u_gBuffer.normal", 1);
+	m_spotLightShader->SetInt("u_gBuffer.albedoSpec", 2);
+	// スポットライトの描画
+	for (auto spotL : m_renderer->m_spotLights)
+	{
+		spotL->Draw(m_spotLightShader);
+	}
+
 	// カリングのオフ
 	glDisable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
@@ -520,7 +534,7 @@ bool DefferedRenderer::Initialize()
 	}
 	// スポットライトシェーダ
 	m_spotLightShader = new Shader();
-	if (!m_spotLightShader->Load("Data/Shaders/FB/FrameBufferScreen.vert", "Data/Shaders/FB/FrameBufferScreen.frag"))
+	if (!m_spotLightShader->Load("Data/Shaders/GBuffer/SpotLight_Bloom.vert", "Data/Shaders/GBuffer/SpotLight_Bloom.frag"))
 	{
 		return false;
 	}

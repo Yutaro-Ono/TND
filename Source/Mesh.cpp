@@ -103,7 +103,6 @@ void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_rendere
 	m_depthMap = new Texture();
 	m_depthMap->SetTextureID(in_renderer->GetShadowMap()->GetDepthMap());
 
-
 }
 
 //----------------------------------------------------------------------------------------+

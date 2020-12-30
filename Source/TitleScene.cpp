@@ -22,6 +22,7 @@
 #include "WorldSpaceUI.h"
 #include "ClientActor.h"
 #include "PointLight.h"
+#include "SpotLight.h"
 const int TitleScene::STAGE_ALL_NUM = 1;
 
 // コンストラクタ
@@ -47,11 +48,11 @@ void TitleScene::Initialize()
 {
 	// 環境生成
 	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
-	DirectionalLight& light = RENDERER->GetDirectionalLight();
-	light.target = Vector3::Zero;
-	light.position = light.target + Vector3(2000.0f, 0.0f, 3000.0f);
-	light.direction = light.target - light.position;
-	light.direction.Normalize();
+	//DirectionalLight& light = RENDERER->GetDirectionalLight();
+	//light.target = Vector3::Zero;
+	//light.position = light.target + Vector3(2000.0f, 0.0f, 3000.0f);
+	//light.direction = light.target - light.position;
+	//light.direction.Normalize();
 	//m_environment = new Environment(Environment::GAME_TIME::MORNING);
 	// ロード画面処理
 	{
@@ -74,6 +75,8 @@ void TitleScene::Initialize()
 
 	//m_pointLight = new PointLight();
 	//m_pointLight->SetPosition(Vector3(0.0f, 0.0f, 40.0f));
+
+	m_spotLight = new SpotLight(Vector3::Zero, SpotLight::VL_BIG);
 
 	// 音楽
 	//m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";

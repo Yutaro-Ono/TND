@@ -109,7 +109,7 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 	if (m_gameTime == GAME_TIME::MORNING)
 	{
 		// ライティング
-		RENDERER->SetAmbientLight(Vector3(0.8f, 0.8f, 0.9f));
+		RENDERER->SetAmbientLight(Vector3(0.5f, 0.5f, 0.52f));
 		dirLight& dir = RENDERER->GetDirectionalLight();
 		//dir.position = Vector3(30000.0f, 15400.0f, 15000.0f);
 		dir.position = playerPos + ADJUST_POS;
@@ -117,8 +117,8 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		dir.direction = dir.target - dir.position;
 		dir.direction.Normalize();
 		dir.ambient = Vector3(0.4f, 0.4f, 0.4f);
-		dir.diffuse = Vector3(1.0f, 1.0f, 1.0f);
-		dir.specular = Vector3(0.8f, 0.8f, 0.8f);
+		dir.diffuse = Vector3(0.25f, 0.3f, 0.3f);
+		dir.specular = Vector3(0.3f, 0.3f, 0.3f);
 
 		m_morningBox->GetCubeMapComp()->SetIsVisible(true);
 		return;
