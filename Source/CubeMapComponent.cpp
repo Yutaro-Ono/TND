@@ -39,9 +39,9 @@ void CubeMapComponent::Draw(Shader* in_shader)
 		// テクスチャバインド
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture->GetTextureID());
-
-		// 描画
+		// キューブマップ用頂点配列のアクティブ化
 		RENDERER->GetCubeMapVerts()->SetActive();
+		// 描画
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
 		// 念のためバインド解除

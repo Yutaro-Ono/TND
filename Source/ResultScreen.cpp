@@ -40,6 +40,7 @@ ResultScreen::ResultScreen(class ResultScene* in_targetScene, int in_score, floa
 		m_resultTex[i] = m_font->RenderText("RESULT", Vector3(1.0f * i, 1.0f * i, 1.0f * i), m_fontSize);
 		m_restartButton[i] = m_font->RenderText("RESTART", Vector3(1.0f * i, 1.0f * i, 1.0f * i), m_fontSize);
 		m_quitButton[i] = m_font->RenderText("QUIT", Vector3(1.0f * i, 1.0f * i, 1.0f * i), m_fontSize);
+		m_scoreTex[i] = nullptr;
 	}
 
 	// ランキング用ウィンドウ

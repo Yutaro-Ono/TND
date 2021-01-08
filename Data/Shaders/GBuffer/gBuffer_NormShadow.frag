@@ -28,6 +28,7 @@ struct Material
 	sampler2D diffuseMap;
 	sampler2D specularMap;
 	sampler2D normalMap;
+	sampler2D emissiveMap;
 	sampler2D depthMap;
 };
 
@@ -109,6 +110,6 @@ void main()
 	out_gPosition = fs_in.fragWorldPos;
 	out_gNormal = normal;
 	// シャドウの逆数を取り、0 = 影の時にディフューズとスペキュラの値がキャンセルされる(影となる)
-	out_gAlbedoSpec.rgb = ambient + (1.0 - shadow) * diffuse;
+	out_gAlbedoSpec.rgb = ambient + (1.0 - shadow) * diffuse + (texture(u_mat.emissiveMap, fs_in.fragTexCoords).rgb * 2.0f);
 	out_gAlbedoSpec.a = (1.0 - shadow) * specular.r;
 }

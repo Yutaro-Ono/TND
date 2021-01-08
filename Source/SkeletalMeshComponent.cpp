@@ -8,6 +8,7 @@
 #include "VertexArray.h"
 #include "Animation.h"
 #include "Skeleton.h"
+#include "ShadowMap.h"
 
 SkeletalMeshComponent::SkeletalMeshComponent(Actor* in_owner)
 	:MeshComponent(in_owner, true)
@@ -29,30 +30,18 @@ void SkeletalMeshComponent::Draw(Shader* in_shader)                         // •
 		in_shader->SetFloatUniform("u_specPower", 21);
 
 		// ŠeíƒeƒNƒXƒ`ƒƒ‚ğƒVƒF[ƒ_‚ÉƒZƒbƒg‚·‚é
-		// ƒeƒNƒXƒ`ƒƒ‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚Í–³‹‚·‚é
-		if (m_mesh->GetDiffuseMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetDiffuseMap()->GetTextureID());
+		// ƒeƒNƒXƒ`ƒƒ‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚È‚¢ê‡‚Í–³Œø‚È”š "0" ‚ª•Ô‚³‚ê‚é
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_mesh->GetTextureID(TEXTURE_TYPE::DIFFUSE_MAP));
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, m_mesh->GetTextureID(TEXTURE_TYPE::SPECULAR_MAP));
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, m_mesh->GetTextureID(TEXTURE_TYPE::NORMAL_MAP));
+		glActiveTexture(GL_TEXTURE3);
+		glBindTexture(GL_TEXTURE_2D, m_mesh->GetTextureID(TEXTURE_TYPE::EMISSIVE_MAP));
+		glActiveTexture(GL_TEXTURE4);
+		glBindTexture(GL_TEXTURE_2D, RENDERER->GetShadowMap()->GetDepthMap());
 
-		}
-		if (m_mesh->GetSpecularMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetSpecularMap()->GetTextureID());
-
-		}
-		if (m_mesh->GetNormalMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetNormalMap()->GetTextureID());
-
-		}
-		if (m_mesh->GetDepthMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE3);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetDepthMap()->GetTextureID());
-		}
 
 		// ƒƒbƒVƒ…‚Ì’¸“_”z—ñ‚ğƒAƒNƒeƒBƒu‚É
 		VertexArray* va = m_mesh->GetVertexArray();
@@ -90,7 +79,7 @@ void SkeletalMeshComponent::Update(float in_deltaTime)
 		// ƒAƒjƒ[ƒVƒ‡ƒ“‚ªƒ‹[ƒvƒAƒjƒ[ƒVƒ‡ƒ“‚È‚çŠª‚«–ß‚µˆ—
 		if (m_animation->IsLoopAnimation())
 		{
-			// Wrap around anim time if past duration                         ƒAƒjƒ‚ğŠª‚«–ß‚µ‚ÄÄ¶
+			// ƒAƒjƒ‚ğŠª‚«–ß‚µ‚ÄÄ¶
 			while (m_animTime > m_animation->GetDuration())
 			{
 				m_animTime -= m_animation->GetDuration();
@@ -101,7 +90,7 @@ void SkeletalMeshComponent::Update(float in_deltaTime)
 		{
 			m_animTime = m_animation->GetDuration();
 		}
-		// Recompute matrix palette                                      s—ñƒpƒŒƒbƒg‚ÌÄŒvZ
+		// s—ñƒpƒŒƒbƒg‚ÌÄŒvZ
 		ComputeMatrixPalette();
 	}
 }
@@ -132,17 +121,17 @@ bool SkeletalMeshComponent::IsPlaying()
 	return true;
 }
 
-
-void SkeletalMeshComponent::ComputeMatrixPalette()                              // s—ñƒpƒŒƒbƒg‚ÌŒvZ
+// s—ñƒpƒŒƒbƒg‚ÌŒvZ
+void SkeletalMeshComponent::ComputeMatrixPalette()
 {
 	const std::vector<Matrix4>& globalInvBindPoses = m_skeleton->GetGlobalInvBindPoses();   // ƒOƒ[ƒoƒ‹‹tƒoƒCƒ“ƒhs—ñ”z—ñ‚Ìæ“¾
-	std::vector<Matrix4> currentPoses;                                         // Œ»İ‚Ìƒ|[ƒYs—ñ
-	m_animation->GetGlobalPoseAtTime(currentPoses, m_skeleton, m_animTime);       // ƒAƒjƒ“_‚ÌƒOƒ[ƒoƒ‹ƒ|[ƒY‚Ìæ“¾
+	std::vector<Matrix4> currentPoses;                                                      // Œ»İ‚Ìƒ|[ƒYs—ñ
+	m_animation->GetGlobalPoseAtTime(currentPoses, m_skeleton, m_animTime);                 // ƒAƒjƒ“_‚ÌƒOƒ[ƒoƒ‹ƒ|[ƒY‚Ìæ“¾
 
-	// Setup the palette for each bone                                        ‚»‚ê‚¼‚ê‚Ìƒ{[ƒ“‚Ìs—ñƒpƒŒƒbƒg‚ÌƒZƒbƒg
+	// ‚»‚ê‚¼‚ê‚Ìƒ{[ƒ“‚Ìs—ñƒpƒŒƒbƒg‚ÌƒZƒbƒg
 	for (size_t i = 0; i < m_skeleton->GetNumBones(); i++)
 	{
-		// Global inverse bind pose matrix times current pose matrix @@@@@s—ñƒpƒŒƒbƒg[i] = ƒOƒ[ƒoƒ‹‹tƒoƒCƒ“ƒhs—ñ[i]@~@Œ»İ‚Ìƒ|[ƒYs—ñ[i]  (i‚Íƒ{[ƒ“ID)         
+		// s—ñƒpƒŒƒbƒg[i] = ƒOƒ[ƒoƒ‹‹tƒoƒCƒ“ƒhs—ñ[i]@~@Œ»İ‚Ìƒ|[ƒYs—ñ[i]  (i‚Íƒ{[ƒ“ID)         
 		m_palette.mEntry[i] = globalInvBindPoses[i] * currentPoses[i];
 	}
 }

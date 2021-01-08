@@ -90,7 +90,8 @@ void DefferedRenderer::DrawGBuffer()
 	m_gBufferShader->SetInt("u_mat.diffuseMap", 0);
 	m_gBufferShader->SetInt("u_mat.specularMap", 1);
 	m_gBufferShader->SetInt("u_mat.normalMap", 2);
-	m_gBufferShader->SetInt("u_mat.depthMap", 3);
+	m_gBufferShader->SetInt("u_mat.emissiveMap", 3);
+	m_gBufferShader->SetInt("u_mat.depthMap", 4);
 	// メッシュ描画 (ここでGBufferの各要素に情報が書き込まれる)
 	for (auto mesh : m_renderer->m_meshComponents)
 	{
@@ -136,7 +137,8 @@ void DefferedRenderer::DrawGBuffer()
 	m_gBufferSkinShader->SetInt("u_mat.diffuseMap", 0);
 	m_gBufferSkinShader->SetInt("u_mat.specularMap", 1);
 	m_gBufferSkinShader->SetInt("u_mat.normalMap", 2);
-	m_gBufferSkinShader->SetInt("u_mat.depthMap", 3);
+	m_gBufferSkinShader->SetInt("u_mat.emissiveMap", 3);
+	m_gBufferSkinShader->SetInt("u_mat.depthMap", 4);
 	// メッシュ描画 (ここでGBufferの各要素に情報が書き込まれる)
 	for (auto skel : m_renderer->m_skeletalMeshComponents)
 	{
@@ -297,8 +299,6 @@ void DefferedRenderer::DrawLightPass()
 	// ブレンドをオフ
 	glDisable(GL_BLEND);
 
-
-
 	// ブレンドを停止する
 	glDisablei(GL_BLEND, 0);
 	// gBufferの深度情報をライトバッファへコピーする
@@ -333,7 +333,7 @@ void DefferedRenderer::Draw()
 
 	// Bloom処理を施した描画
 	RenderBloom* bloom = m_renderer->GetBloom();
-	bloom->SetExposureVal(8.0f);
+	bloom->SetExposureVal(5.0f);
 	bloom->DrawDownSampling(m_lightBrightBuffer);
 	bloom->DrawGaussBlur();
 	bloom->DrawBlendBloom(m_lightHDR);

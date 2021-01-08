@@ -34,21 +34,12 @@ void CarMeshComponent::Draw(Shader* in_shader)
 
 		// 各種テクスチャをシェーダにセットする
 		// テクスチャが読み込まれていない場合は無視する
-		if (m_mesh->GetDiffuseMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetDiffuseMap()->GetTextureID());
-		}
-		if (m_mesh->GetSpecularMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetSpecularMap()->GetTextureID());
-		}
-		if (m_mesh->GetDepthMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, RENDERER->GetShadowMap()->GetDepthMap());
-		}
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, m_mesh->GetTextureID(TEXTURE_TYPE::DIFFUSE_MAP));
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, m_mesh->GetTextureID(TEXTURE_TYPE::SPECULAR_MAP));
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, RENDERER->GetShadowMap()->GetDepthMap());
 
 		// 反射有効時、環境マップ使用
 		if (m_reflect)

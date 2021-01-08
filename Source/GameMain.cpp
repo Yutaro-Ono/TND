@@ -306,14 +306,7 @@ int GameMain::UpdateGame()
 	//シーンを実行
 	tmpScene = m_nowScene->Update();
 
-	// UIの更新(CLOSEなら消す)
-	for (auto ui : m_uiStack)
-	{
-		if (ui->GetState() == UIScreen::ACTIVE)
-		{
-			ui->Update(m_deltaTime);
-		}
-	}
+	// UIがCLOSEなら消す
 	auto iter = m_uiStack.begin();
 	while (iter != m_uiStack.end())
 	{
@@ -326,6 +319,15 @@ int GameMain::UpdateGame()
 		{
 			++iter;
 		}
+	}
+	// UIの更新(CLOSEなら消す)
+	for (auto ui : m_uiStack)
+	{
+		if (ui->GetState() == UIScreen::ACTIVE)
+		{
+			ui->Update(m_deltaTime);
+		}
+
 	}
 
 	// シーン更新の判定処理

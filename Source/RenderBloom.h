@@ -29,7 +29,7 @@ public:
 	// ガウスぼかし計算
 	void CalcGaussBlurParam(int in_w, int in_h, Vector2 in_dir, float in_deviation, Vector3* in_offset);
 
-	// バッファテクスチャの取得
+	// バッファの取得
 	unsigned int GetColorBuffer() { return m_defaultBuffer; }
 	unsigned int GetBrightBuffer() { return m_brightBuffer; }
 

@@ -231,9 +231,6 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 
 void Renderer::Delete()
 {
-	// パーティクルマネージャー破棄
-	delete m_particleManager;
-
 	// テクスチャの解放
 	for (auto i : m_textures)
 	{
@@ -242,6 +239,9 @@ void Renderer::Delete()
 		delete i.second;
 	}
 	m_textures.clear();
+	// パーティクルマネージャー破棄
+	delete m_particleManager;
+
 	// メッシュの解放
 	for (auto i : m_meshes)
 	{

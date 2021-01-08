@@ -198,7 +198,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 			// ¶‰E‰ñ“]
 			DirVec.y -= rightVec.y * -axisL.x * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;
 			// Z²‰ñ“]
-			m_radian -= axisL.x * (m_brakeValue / m_brakeLimit) * 0.5f * in_deltaTime;
+			m_radian -= axisL.x * (m_brakeValue / m_brakeLimit) * 1.0f * in_deltaTime;
 		}
 
 		// ‘ŠE

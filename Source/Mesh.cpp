@@ -15,10 +15,6 @@ Mesh::Mesh()
 	:m_vertexArray(nullptr)
 	,m_radius(0.0f)
 	,m_specValue(100.0f)
-	,m_diffuseMap(nullptr)
-	,m_specularMap(nullptr)
-	,m_normalMap(nullptr)
-	,m_depthMap(nullptr)
 {
 }
 
@@ -33,76 +29,64 @@ void Mesh::Delete()
 	m_vertexArray = nullptr;
 }
 
-Texture * Mesh::GetTexture(size_t in_index)
+/// <summary>
+/// 入力されたメッシュ名に対応する各種テクスチャパスを作成する
+/// タイプごとに各種テクスチャ番号を連想配列へ格納する
+/// テクスチャが見つからなかった場合、無効番号である"0"を代入する
+/// </summary>
+/// <param name="in_meshName"> メッシュファイルのパス </param>
+/// <param name="in_renderer"> レンダラークラス。メモリを圧迫しないようGetTexture関数を使用するため </param>
+void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_renderer)
 {
+	std::string filePath = in_meshName;
 
-	if (in_index < m_textures.size())
-	{
-		return m_textures[in_index];
-	}
-	else
-	{
-		return nullptr;
-	}
+	int extNum = filePath.find_last_of(".");          // ファイルパスの"."までの文字数を取得
+	filePath = filePath.substr(0, extNum);            // 拡張子を除いたファイル名を取得
+
+	// 各種テクスチャの取得
+	m_textureStages.emplace(TEXTURE_TYPE::DIFFUSE_MAP, CreateTextureStage(TEXTURE_TYPE::DIFFUSE_MAP, filePath));
+	m_textureStages.emplace(TEXTURE_TYPE::SPECULAR_MAP, CreateTextureStage(TEXTURE_TYPE::SPECULAR_MAP, filePath));
+	m_textureStages.emplace(TEXTURE_TYPE::NORMAL_MAP, CreateTextureStage(TEXTURE_TYPE::NORMAL_MAP, filePath));
+	m_textureStages.emplace(TEXTURE_TYPE::EMISSIVE_MAP, CreateTextureStage(TEXTURE_TYPE::EMISSIVE_MAP, filePath));
 
 }
 
-// 入力されたメッシュファイル名からディフューズマップ、スペキュラーマップ、法線マップをロード・追加する
-void Mesh::AddTexture(const std::string& in_meshName, class Renderer* in_renderer)
+
+/// <summary>
+/// 指定したタイプのテクスチャを作成・または取得し、テクスチャステージ番号を返す
+/// </summary>
+/// <param name="in_type"> テクスチャタイプ </param>
+/// <param name="in_filePath"> 追加したいテクスチャの親パス </param>
+/// <returns> GLに登録されたテクスチャ番号 </returns>
+int Mesh::CreateTextureStage(TEXTURE_TYPE in_type, std::string& in_filePath)
 {
-	std::string pngPath = in_meshName;
+	std::string mapPath;
+	if (in_type == TEXTURE_TYPE::DIFFUSE_MAP)
+	{
+		mapPath = in_filePath + "_DiffuseMap.png";
+	}
+	if (in_type == TEXTURE_TYPE::SPECULAR_MAP)
+	{
+		mapPath = in_filePath + "_SpecularMap.png";
+	}
+	if (in_type == TEXTURE_TYPE::NORMAL_MAP)
+	{
+		mapPath = in_filePath + "_NormalMap.png";
+	}
+	if (in_type == TEXTURE_TYPE::EMISSIVE_MAP)
+	{
+		mapPath = in_filePath + "_EmissiveMap.png";
+	}
 
-	int extNum = pngPath.find_last_of(".");
-	pngPath = pngPath.substr(0, extNum);            // 拡張子以外のメッシュファイル名を取得
-
-	// ディフューズ読み込み
-	std::string fileName = pngPath + "_DiffuseMap.png";
-	Texture* t = in_renderer->GetTexture(fileName);
+	Texture* t = RENDERER->GetTexture(mapPath);
 
 	if (t != nullptr)
 	{
-		m_diffuseMap = t;
-		m_textures.emplace_back(t);
-	}
-	else
-	{
-		std::cout << "Obj Mesh : Load [Diffuse] Texture Error\n";
+		return t->GetTextureID();
 	}
 
-	// スペキュラ読み込み
-	t = nullptr;
-	fileName = pngPath + "_SpecularMap.png";
-	t = in_renderer->GetTexture(fileName);
-
-	if (t != nullptr)
-	{
-		m_specularMap = t;
-		m_textures.emplace_back(t);
-	}
-	else
-	{
-		std::cout << "Obj Mesh : Load [Specular] Texture Error\n";
-	}
-
-	// 法線マップ読み込み
-	t = nullptr;
-	fileName = pngPath + "_NormalMap.png";
-	t = in_renderer->GetTexture(fileName);
-
-	if (t != nullptr)
-	{
-		m_normalMap = t;
-		m_textures.emplace_back(t);
-	}
-	else
-	{
-		std::cout << "Obj Mesh : Load [Normal] Texture Error\n";
-	}
-
-	// デプスマップをレンダラー経由で取得
-	m_depthMap = new Texture();
-	m_depthMap->SetTextureID(in_renderer->GetShadowMap()->GetDepthMap());
-
+	std::cout << "Load : " << mapPath << " : Not Found\n";
+	return 0;
 }
 
 //----------------------------------------------------------------------------------------+

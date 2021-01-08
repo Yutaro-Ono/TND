@@ -50,7 +50,7 @@ void SpotLightComponent::Draw(Shader* in_shader)
 	VertexArray* va = m_cornMesh->GetVertexArray();
 	va->SetActive();
 	// •`‰æ‚·‚é
-	glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, 0);
+	//glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, 0);
 }
 
 /// <summary>

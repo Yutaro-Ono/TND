@@ -25,7 +25,7 @@ Texture::Texture()
 // デストラクタ
 Texture::~Texture()
 {
-	RENDERER->RemoveTexture(this);
+	//RENDERER->RemoveTexture(this);
 }
 
 // テクスチャのロード

@@ -36,7 +36,7 @@ bool Animation::Load(const std::string& in_fileName, bool loop)
 
 	int ver = doc["version"].GetInt();
 
-	// Check the metadata　メタデータのチェック。バージョンは１か？
+	// メタデータのチェック。バージョンは１か？
 	if (ver != 1)
 	{
 		SDL_Log("Animation %s unknown format", in_fileName.c_str());
@@ -157,8 +157,8 @@ void Animation::GetGlobalPoseAtTime(std::vector<Matrix4>& out_poses, const Skele
 	// これはinTimeが [0～Anim_duration] の間にいることを前提としている。
 	size_t frame = static_cast<size_t>(in_time / m_frameDuration);
 	size_t nextFrame = frame + 1;
-	// Calculate fractional value between frame and next frame
-	// フレームと次のフレームの間の小数値を計算します。
+
+	// フレームと次のフレームの間の小数値を計算
 	float pct = in_time / m_frameDuration - frame;
 
 	// ルートのポーズをセットアップ
@@ -179,7 +179,7 @@ void Animation::GetGlobalPoseAtTime(std::vector<Matrix4>& out_poses, const Skele
 	// 残りのポーズを設定します
 	for (size_t bone = 1; bone < m_numBones; bone++)
 	{
-		Matrix4 localMat; // (Defaults to identity)　（デフォルトは単位行列）
+		Matrix4 localMat;     // デフォルトは単位行列
 		if (m_tracks[bone].size() > 0)
 		{
 			// [bone][frame]のボーン姿勢と[bone][nextframe]を 小数点以下の pctで補間した姿勢を interpに算出

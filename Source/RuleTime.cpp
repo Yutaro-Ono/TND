@@ -2,9 +2,9 @@
 #include "GameMain.h"
 #include "GameScene.h"
 
-const float RuleTime::START_TIME = 20.0f;
-const float RuleTime::LIMIT_TIME = 200.0f;
-const float RuleTime::FINISH_TIME = 2.0f;
+const float RuleTime::START_TIME = 15.0f;
+const float RuleTime::LIMIT_TIME = 180.0f;
+const float RuleTime::FINISH_TIME = 3.0f;
 
 RuleTime::RuleTime(class GameScene* in_scene)
 	:m_nowCount(START_TIME)

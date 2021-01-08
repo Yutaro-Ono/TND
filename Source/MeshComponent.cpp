@@ -44,31 +44,7 @@ void MeshComponent::Draw(Shader * in_shader)
 		// スペキュラ強度セット
 		in_shader->SetFloatUniform("u_specPower", 32);
 
-		// 各種テクスチャをシェーダにセットする
-		// テクスチャが読み込まれていない場合は無視する
-		if (m_mesh->GetDiffuseMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetDiffuseMap()->GetTextureID());
-
-		}
-		if (m_mesh->GetSpecularMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetSpecularMap()->GetTextureID());
-
-		}
-		if (m_mesh->GetNormalMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, m_mesh->GetNormalMap()->GetTextureID());
-
-		}
-		if (m_mesh->GetDepthMap() != nullptr)
-		{
-			glActiveTexture(GL_TEXTURE3);
-			glBindTexture(GL_TEXTURE_2D, RENDERER->GetShadowMap()->GetDepthMap());
-		}
+		SetTexturesToUniform(in_shader);          // Uniformに各種テクスチャをセット
 
 		// 頂点配列をアクティブに
 		VertexArray* va = m_mesh->GetVertexArray();
@@ -92,5 +68,25 @@ void MeshComponent::DrawShadow(Shader* in_shader)
 		// 描画する
 		glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
 	}
+}
+
+/// <summary>
+/// シェーダuniformに各種テクスチャをセットする関数
+/// </summary>
+/// <param name="in_shader"> シェーダクラスのポインタ </param>
+void MeshComponent::SetTexturesToUniform(Shader* in_shader)
+{
+	// ディフューズ → スペキュラ → ノーマル → エミッシブ → シャドウ の順でセット
+	// 指定タイプのテクスチャをMeshが保持していなかった場合、無効数字 "0"がセット
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_mesh->GetTextureID(TEXTURE_TYPE::DIFFUSE_MAP));
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_mesh->GetTextureID(TEXTURE_TYPE::SPECULAR_MAP));
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_mesh->GetTextureID(TEXTURE_TYPE::NORMAL_MAP));
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, m_mesh->GetTextureID(TEXTURE_TYPE::EMISSIVE_MAP));
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, RENDERER->GetShadowMap()->GetDepthMap());
 }
 

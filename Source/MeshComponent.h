@@ -20,6 +20,7 @@ public:
 
 	virtual void SetMesh(class Mesh* in_mesh) { m_mesh = in_mesh; }         // メッシュコンポーネントで使用するメッシュのセット
 
+	void SetTexturesToUniform(class Shader* in_shader);                     // シェーダuniformにテクスチャをセットする関数
 	void SetTextureIndex(size_t in_index) { m_textureIndex = in_index; }    // テクスチャのセット
 
 	void SetVisible(bool in_visible) { m_visible = in_visible; }            // 表示フラグのセッター

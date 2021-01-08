@@ -34,8 +34,8 @@ void SpotLight::UpdateActor(float in_deltaTime)
 		//SetPosition(m_target->GetPosition() + m_target->GetForward() * Vector3(50.0f, 20.0f, 0.0f));
 		//SetRotation(m_target->GetRotation());
 		//SetRotation(Quaternion(m_target->GetRotation().x, rot.y, m_target->GetRotation().z, m_target->GetRotation().w));
-		m_worldTransform = Matrix4::CreateScale(m_scale) * Matrix4::CreateFromQuaternion(m_target->GetRotation()) * Matrix4::CreateTranslation(Vector3::Transform(Vector3(45.0f, 20.0f, 0.0f), m_target->GetRotation())) * Matrix4::CreateTranslation(m_target->GetPosition() + Vector3(0.0f, 0.0f, 30.0f));
-
+		//m_worldTransform = Matrix4::CreateScale(m_scale) * Matrix4::CreateFromQuaternion(m_target->GetRotation()) * Matrix4::CreateTranslation(Vector3::Transform(Vector3(45.0f, 20.0f, 0.0f), m_target->GetRotation())) * Matrix4::CreateTranslation(m_target->GetPosition() + Vector3(0.0f, 0.0f, 30.0f));
+		SetWorldTransform(Matrix4::CreateScale(m_scale) * Matrix4::CreateFromQuaternion(m_target->GetRotation()) * Matrix4::CreateTranslation(Vector3::Transform(Vector3(45.0f, 20.0f, 0.0f), m_target->GetRotation())) * Matrix4::CreateTranslation(m_target->GetPosition() + Vector3(0.0f, 0.0f, 30.0f)));
 	}
 }
 

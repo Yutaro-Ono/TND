@@ -480,6 +480,9 @@
     <Filter Include="ソース ファイル\Actor\Light\LightComponent\SpotLight">
       <UniqueIdentifier>{f090c2f1-5a45-474d-9dba-2a5ac347ee2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\LightGlass">
+      <UniqueIdentifier>{aa66190a-4200-4e7a-8074-cbf5ca5b9d62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -532,9 +535,6 @@
     </ClCompile>
     <ClCompile Include="Source\SpriteComponent.cpp">
       <Filter>ソース ファイル\Component\Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Grid.cpp">
-      <Filter>ソース ファイル\Interface\Debug\Grid</Filter>
     </ClCompile>
     <ClCompile Include="Source\LevelBlock.cpp">
       <Filter>ソース ファイル\Actor\Level\Block</Filter>
@@ -827,6 +827,9 @@
     <ClCompile Include="Source\SpotLightComponent.cpp">
       <Filter>ソース ファイル\Actor\Light\LightComponent\SpotLight</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DebugGrid.cpp">
+      <Filter>ソース ファイル\Interface\Debug\Grid</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actor.h">
@@ -891,9 +894,6 @@
     </ClInclude>
     <ClInclude Include="Source\DebugBox.h">
       <Filter>ソース ファイル\Interface\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Grid.h">
-      <Filter>ソース ファイル\Interface\Debug\Grid</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision.h">
       <Filter>ソース ファイル\Collision</Filter>
@@ -1189,6 +1189,9 @@
     <ClInclude Include="Source\SpotLightComponent.h">
       <Filter>ソース ファイル\Actor\Light\LightComponent\SpotLight</Filter>
     </ClInclude>
+    <ClInclude Include="Source\DebugGrid.h">
+      <Filter>ソース ファイル\Interface\Debug\Grid</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\DirectLine.vert">
@@ -1418,6 +1421,9 @@
     </None>
     <None Include="Data\Shaders\GBuffer\SpotLight_Bloom.frag">
       <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\SpotLight</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\LightGlass.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\LightGlass</Filter>
     </None>
   </ItemGroup>
 </Project>

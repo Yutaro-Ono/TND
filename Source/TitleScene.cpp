@@ -67,7 +67,7 @@ void TitleScene::Initialize()
 
 	GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
-	m_client = new ClientActor(Vector3::Zero, 2);
+	m_client = new ClientActor(Vector3::Zero, 5);
 	m_client->SetPosition(Vector3(0.0f, -55.0f, 0.0f));
 	m_client->SetScale(0.4f);
 

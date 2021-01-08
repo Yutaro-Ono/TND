@@ -39,6 +39,7 @@
     <ClCompile Include="Source\CountDownUI.cpp" />
     <ClCompile Include="Source\CubeMapComponent.cpp" />
     <ClCompile Include="Source\DebugBox.cpp" />
+    <ClCompile Include="Source\DebugGrid.cpp" />
     <ClCompile Include="Source\DefferedRenderer.cpp" />
     <ClCompile Include="Source\Environment.cpp" />
     <ClCompile Include="Source\EnvironmentMapComponent.cpp" />
@@ -50,7 +51,6 @@
     <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\GameWorld.cpp" />
     <ClCompile Include="Source\glad.c" />
-    <ClCompile Include="Source\Grid.cpp" />
     <ClCompile Include="Source\HeliBody.cpp" />
     <ClCompile Include="Source\Helicopter.cpp" />
     <ClCompile Include="Source\HeliRotorBack.cpp" />
@@ -157,6 +157,7 @@
     <ClInclude Include="Source\CountDownUI.h" />
     <ClInclude Include="Source\CubeMapComponent.h" />
     <ClInclude Include="Source\DebugBox.h" />
+    <ClInclude Include="Source\DebugGrid.h" />
     <ClInclude Include="Source\DefferedRenderer.h" />
     <ClInclude Include="Source\Environment.h" />
     <ClInclude Include="Source\EnvironmentMapComponent.h" />
@@ -167,7 +168,6 @@
     <ClInclude Include="Source\GameMain.h" />
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GameWorld.h" />
-    <ClInclude Include="Source\Grid.h" />
     <ClInclude Include="Source\HeliBody.h" />
     <ClInclude Include="Source\Helicopter.h" />
     <ClInclude Include="Source\HeliRotorBack.h" />
@@ -290,6 +290,7 @@
     <None Include="Data\Shaders\GBuffer\gBuffer_SkinNormShadow.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_SkyBox.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_SkyBox.vert" />
+    <None Include="Data\Shaders\GBuffer\LightGlass.vert" />
     <None Include="Data\Shaders\GBuffer\Particle_Bloom.frag" />
     <None Include="Data\Shaders\GBuffer\Particle_Bloom.vert" />
     <None Include="Data\Shaders\GBuffer\PointLight.frag" />

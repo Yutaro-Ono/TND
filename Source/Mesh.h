@@ -5,11 +5,12 @@
 // copyright (C) 2019 Yutaro Ono. all rights reserved.
 //-----------------------------------------------------------------------+
 #pragma once
-#include <vector>
-#include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <string>
+#include <vector>
+#include <unordered_map>
 #include <rapidjson/document.h>
 #include "VertexArray.h"
 #include "tiny_obj_loader.h"
@@ -25,6 +26,15 @@ namespace
 	};
 }
 
+// テクスチャタイプ
+enum class TEXTURE_TYPE
+{
+	DIFFUSE_MAP,     // ディフューズ (ベースカラ―)
+	SPECULAR_MAP,    // スペキュラ (反射光)
+	NORMAL_MAP,      // ノーマル (法線)
+	EMISSIVE_MAP     // エミッシブ (放射光)
+};
+
 class Mesh
 {
 public:
@@ -39,21 +49,23 @@ public:
 	void AddTexture(const std::string& in_meshName, class Renderer* in_renderer);
 
 	class VertexArray* GetVertexArray() { return m_vertexArray; }                 // メッシュの頂点配列の取得
-	class Texture* GetTexture(size_t in_index);                                      // 指定されたインデックスからテクスチャ取得
+	class Texture* GetTexture(TEXTURE_TYPE in_type);
 
 	const std::string& GetShaderName() const { return m_shaderName; }             // シェーダー名を取得
 	const AABB& GetCollisionBox() const { return m_box; }                         // 当たり判定ボックスを取得
 
 	float GetRadius() const { return m_radius; }                                  // バウンディングスフィアの半径を取得
 
-	// 各種テクスチャの取得
-	class Texture* GetDiffuseMap() { return m_diffuseMap; }
-	class Texture* GetSpecularMap() { return m_specularMap; }
-	class Texture* GetNormalMap() { return m_normalMap; }
-	class Texture* GetDepthMap() { return m_depthMap; }
 
 	// テクスチャ配列のサイズ取得
-	int GetTextureArraySize() { return m_textures.size(); }
+	int GetTextureArraySize() { return m_textureStages.size(); }
+
+	// 指定したタイプのテクスチャ番号を取得 (描画時に使用)
+	int GetTextureID(TEXTURE_TYPE in_type) { return m_textureStages[in_type]; }
+
+
+	// 指定したタイプのテクスチャを取得し、テクスチャ番号を返す
+	int CreateTextureStage(TEXTURE_TYPE in_type, std::string& in_filePath);
 
 	// タンジェントスペース計算用関数
 	void calcTangent(Vector3& destTangent, const Vector3& pos1, const Vector3& pos2, const Vector3& pos3, const Vector2& uv1, const Vector2& uv2, const Vector2& uv3);
@@ -66,13 +78,9 @@ protected:
 
 	AABB m_box;
 
-	std::vector<class Texture*> m_textures;
-	class Texture* m_diffuseMap;                                // ディフューズマップ
-	class Texture* m_specularMap;                               // スペキュラマップ
-	class Texture* m_normalMap;                                 // ノーマルマップ
-	class Texture* m_depthMap;                                 // シャドウ描画用深度マップ
+	std::unordered_map<TEXTURE_TYPE, int> m_textureStages;      // key:テクスチャタイプ  val:テクスチャステージ(GL上で割り振られた番号)
 
-	class VertexArray* m_vertexArray;                                       // メッシュの頂点配列
+	class VertexArray* m_vertexArray;                           // メッシュの頂点配列
 
 	std::string m_shaderName;
 	float m_radius;

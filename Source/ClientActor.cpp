@@ -186,8 +186,8 @@ void ClientActor::LoadMeshEachChara(int in_chara)
 	// MANUEL(”’l’j«)
 	if (chara == 3)
 	{
-		meshPath = MESH_PATH_ERIC + ".gpmesh";
-		skelPath = MESH_PATH_ERIC + ".gpskel";
+		meshPath = MESH_PATH_MANUEL + ".gpmesh";
+		skelPath = MESH_PATH_MANUEL + ".gpskel";
 	}
 	// SOPHIA(”’l—«)
 	if (chara == 4)
