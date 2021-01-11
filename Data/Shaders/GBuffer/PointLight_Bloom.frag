@@ -74,7 +74,8 @@ void main()
 	vec3 result = ambient + diffuse + specular;
 
 	// 高輝度バッファへの出力値を抽出
-	float brightness = dot(result, vec3(0.1326, 0.3352, 0.442));
+	//float brightness = dot(result, vec3(0.1326, 0.1352, 0.142));
+	float brightness = dot(result, vec3(0.1326, 0.1352, 0.642));
 
 	if(brightness > 0.1)                                              // 輝度が0.4を超えたなら
 	{

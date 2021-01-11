@@ -1,0 +1,31 @@
+#include "LampObject.h"
+#include "GameMain.h"
+#include "Renderer.h"
+#include "Mesh.h"
+#include "MeshComponent.h"
+#include "PointLight.h"
+
+LampObject::LampObject(const Vector3& in_pos)
+	:m_headLight(nullptr)
+	,m_groundLight(nullptr)
+{
+	SetPosition(in_pos);
+
+	// メッシュを取得し、コンポーネントにセット
+	m_meshComp = new MeshComponent(this);
+	m_meshComp->SetMesh(RENDERER->GetMesh("Data/Meshes/TND/Objects/Lamp/SM_Lamp.OBJ"));
+
+	// 電球の光源
+	m_headLight = new PointLight(PointLight::LIGHT_VOLUME::VL_MEDIUM);
+	m_headLight->SetPosition(m_position + Vector3(0.0f, 0.0f, -50.0f));
+	m_headLight->SetLightColor(Vector3(0.8f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f));
+
+	// 地面の光源
+	m_groundLight = new PointLight(PointLight::LIGHT_VOLUME::VL_MEDIUM);
+	m_groundLight->SetPosition(m_position + Vector3(0.0f, 0.0f, 90.0f));
+	m_groundLight->SetLuminance(10.0f);
+}
+
+LampObject::~LampObject()
+{
+}

@@ -93,5 +93,5 @@ void LoadScreen::AddGauge()
 		m_gaugeNum++;
 	}
 	RENDERER->Draw();
-	Sleep(100);
+	Sleep(50);
 }

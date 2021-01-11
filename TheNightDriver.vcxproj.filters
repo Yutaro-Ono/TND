@@ -483,6 +483,9 @@
     <Filter Include="ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\LightGlass">
       <UniqueIdentifier>{aa66190a-4200-4e7a-8074-cbf5ca5b9d62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Actor\Level\Lamp">
+      <UniqueIdentifier>{aa774798-4366-4c28-88f4-b75c4fb2a891}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -829,6 +832,9 @@
     </ClCompile>
     <ClCompile Include="Source\DebugGrid.cpp">
       <Filter>ソース ファイル\Interface\Debug\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LampObject.cpp">
+      <Filter>ソース ファイル\Actor\Level\Lamp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1191,6 +1197,9 @@
     </ClInclude>
     <ClInclude Include="Source\DebugGrid.h">
       <Filter>ソース ファイル\Interface\Debug\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LampObject.h">
+      <Filter>ソース ファイル\Actor\Level\Lamp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

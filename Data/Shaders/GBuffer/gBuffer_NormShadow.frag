@@ -110,6 +110,6 @@ void main()
 	out_gPosition = fs_in.fragWorldPos;
 	out_gNormal = normal;
 	// シャドウの逆数を取り、0 = 影の時にディフューズとスペキュラの値がキャンセルされる(影となる)
-	out_gAlbedoSpec.rgb = ambient + (1.0 - shadow) * diffuse + (texture(u_mat.emissiveMap, fs_in.fragTexCoords).rgb * 2.0f);
-	out_gAlbedoSpec.a = (1.0 - shadow) * specular.r;
+	out_gAlbedoSpec.rgb = ambient + texture(u_mat.emissiveMap, fs_in.fragTexCoords).rgb + (1.0 - shadow) * diffuse ;
+	out_gAlbedoSpec.a =  texture(u_mat.emissiveMap, fs_in.fragTexCoords).a + (1.0 - shadow) * specular.r;
 }

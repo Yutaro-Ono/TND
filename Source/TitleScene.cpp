@@ -76,7 +76,7 @@ void TitleScene::Initialize()
 	//m_pointLight = new PointLight();
 	//m_pointLight->SetPosition(Vector3(0.0f, 0.0f, 40.0f));
 
-	m_spotLight = new SpotLight(Vector3::Zero, SpotLight::VL_BIG);
+	//m_spotLight = new SpotLight(Vector3::Zero, SpotLight::VL_BIG);
 
 	// ‰¹Šy
 	//m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";

@@ -15,6 +15,7 @@
 #include "RapidJsonHelper.h"
 #include "GameWorld.h"
 #include "PointLight.h"
+#include "LampObject.h"
 #include "LoadScreen.h"
 #include <vector>
 #include <string>
@@ -232,8 +233,10 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 
 			if (pointLightData[iy][ix] == 32)
 			{
-				PointLight* pLight = new PointLight();
-				pLight->SetPosition(Vector3(ix* blockSize, offsetY - iy * blockSize, 0.0f));
+				//PointLight* pLight = new PointLight();
+				//pLight->SetPosition(Vector3(ix* blockSize, offsetY - iy * blockSize, 0.0f));
+
+				LampObject* lamp = new LampObject(Vector3(ix * blockSize, offsetY - iy * blockSize, -10.0f));
 
 				// ƒ[ƒhˆ—
 				GAME_INSTANCE.GetLoadScreen()->AddGauge();

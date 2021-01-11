@@ -72,8 +72,8 @@ ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 	m_skelComp->PlayAnimation(m_anim[ANIM_IDLE_LOOKAROUND], AnimationSpeed);
 
 	// ポイントライト
-	m_light = new PointLight(PointLight::VL_SMALL);
-
+	m_light = new PointLight(PointLight::VL_MEDIUM);
+	m_light->SetLuminance(2.0f);
 }
 
 // デストラクタ

@@ -199,7 +199,7 @@ void DefferedRenderer::DrawLightPass()
 	// ディレクショナルライトパス
 	//-----------------------------------------------+
 	// 輝度定義
-	float intensity = 1.0f;
+	float intensity = 0.4f;
 	// シェーダのセット
 	m_directionalLightShader->SetActive();
 	m_directionalLightShader->SetVectorUniform("u_viewPos",               m_renderer->GetViewMatrix().GetTranslation());
@@ -333,7 +333,7 @@ void DefferedRenderer::Draw()
 
 	// Bloom処理を施した描画
 	RenderBloom* bloom = m_renderer->GetBloom();
-	bloom->SetExposureVal(5.0f);
+	bloom->SetExposureVal(10.0f);
 	bloom->DrawDownSampling(m_lightBrightBuffer);
 	bloom->DrawGaussBlur();
 	bloom->DrawBlendBloom(m_lightHDR);
