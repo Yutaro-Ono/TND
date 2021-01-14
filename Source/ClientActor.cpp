@@ -73,7 +73,7 @@ ClientActor::ClientActor(const Vector3& in_pos, int in_chara)
 
 	// ポイントライト
 	m_light = new PointLight(PointLight::VL_MEDIUM);
-	m_light->SetLuminance(2.0f);
+	m_light->SetLuminance(10.0f);
 }
 
 // デストラクタ
@@ -186,8 +186,8 @@ void ClientActor::LoadMeshEachChara(int in_chara)
 	// MANUEL(白人男性)
 	if (chara == 3)
 	{
-		meshPath = MESH_PATH_MANUEL + ".gpmesh";
-		skelPath = MESH_PATH_MANUEL + ".gpskel";
+		meshPath = MESH_PATH_ERIC + ".gpmesh";
+		skelPath = MESH_PATH_ERIC + ".gpskel";
 	}
 	// SOPHIA(白人女性)
 	if (chara == 4)

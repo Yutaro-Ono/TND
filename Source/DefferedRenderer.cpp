@@ -22,6 +22,7 @@
 #include "FrameBuffer.h"
 #include "ParticleManager.h"
 #include "CarMeshComponent.h"
+#include "CameraComponent.h"
 #include <stdlib.h>
 #include <iostream>
 #include <glad/glad.h>
@@ -35,6 +36,12 @@ DefferedRenderer::DefferedRenderer(Renderer* in_renderer)
 	,m_pointLightShader(nullptr)
 	,m_directionalLightShader(nullptr)
 	,m_spotLightShader(nullptr)
+	,m_gBuffer(0)
+	,m_gPos(0)
+	,m_gNormal(0)
+	,m_gAlbedoSpec(0)
+	,m_gEmissive(0)
+	,m_lightHDR(0)
 {
 	std::cout << "CREATE::DefferedRenderer::Instance" << std::endl;
 }
@@ -180,6 +187,7 @@ void DefferedRenderer::DrawLightPass()
 {
 	// ライトバッファをバインド
 	glBindFramebuffer(GL_FRAMEBUFFER, m_lightFBO);
+
 	// ブレンド指定
 	glEnablei(GL_BLEND, 0);                                          // 加算合成を行うためブレンドを有効化
 	glBlendFuncSeparatei(0, GL_ONE, GL_ONE, GL_ONE, GL_ONE);         // 加算合成のブレンドを指定
@@ -194,31 +202,13 @@ void DefferedRenderer::DrawLightPass()
 	glBindTexture(GL_TEXTURE_2D, m_gNormal);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
-
-	//-----------------------------------------------+
-	// ディレクショナルライトパス
-	//-----------------------------------------------+
-	// 輝度定義
-	float intensity = 0.4f;
-	// シェーダのセット
-	m_directionalLightShader->SetActive();
-	m_directionalLightShader->SetVectorUniform("u_viewPos",               m_renderer->GetViewMatrix().GetTranslation());
-	m_directionalLightShader->SetVectorUniform("u_dirLight.direction",    m_renderer->m_directionalLight.direction);
-	m_directionalLightShader->SetVectorUniform("u_dirLight.ambientColor", m_renderer->m_directionalLight.ambient);
-	m_directionalLightShader->SetVectorUniform("u_dirLight.color",        m_renderer->m_directionalLight.diffuse);
-	m_directionalLightShader->SetVectorUniform("u_dirLight.specular",     m_renderer->m_directionalLight.specular);
-	m_directionalLightShader->SetFloat("u_dirLight.intensity", intensity);
-	m_directionalLightShader->SetInt("u_gBuffer.pos", 0);
-	m_directionalLightShader->SetInt("u_gBuffer.normal", 1);
-	m_directionalLightShader->SetInt("u_gBuffer.albedoSpec", 2);
-	// スクリーン全体に描画
-	m_renderer->GetScreenVAO()->SetActive();
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, m_gEmissive);
 
 	// カリング設定：ライトはメッシュの裏側のみ描画する
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CW);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CCW);
 
 	//------------------------------------------------------+
 	// ポイントライト
@@ -227,10 +217,11 @@ void DefferedRenderer::DrawLightPass()
 	m_pointLightShader->SetActive();
 	m_pointLightShader->SetMatrixUniform("u_view",       m_renderer->GetViewMatrix());
 	m_pointLightShader->SetMatrixUniform("u_projection", m_renderer->GetProjectionMatrix());
-	m_pointLightShader->SetVectorUniform("u_viewPos",    m_renderer->GetViewMatrix().GetTranslation());
+	m_pointLightShader->SetVectorUniform("u_viewPos",    GAME_INSTANCE.GetViewVector());
 	m_pointLightShader->SetInt("u_gBuffer.pos",     0);
 	m_pointLightShader->SetInt("u_gBuffer.normal",       1);
 	m_pointLightShader->SetInt("u_gBuffer.albedoSpec",   2);
+	m_pointLightShader->SetInt("u_gBuffer.emissive", 3);
 	// ポイントライトの描画
 	for (auto pl : m_renderer->m_pointLights)
 	{
@@ -249,6 +240,7 @@ void DefferedRenderer::DrawLightPass()
 	m_spotLightShader->SetInt("u_gBuffer.pos", 0);
 	m_spotLightShader->SetInt("u_gBuffer.normal", 1);
 	m_spotLightShader->SetInt("u_gBuffer.albedoSpec", 2);
+	m_spotLightShader->SetInt("u_gBuffer.emissive", 3);
 	// スポットライトの描画
 	for (auto spotL : m_renderer->m_spotLights)
 	{
@@ -257,8 +249,30 @@ void DefferedRenderer::DrawLightPass()
 
 	// カリングのオフ
 	glDisable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-	glFrontFace(GL_CCW);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CW);
+
+
+	//-----------------------------------------------+
+	// ディレクショナルライトパス
+	//-----------------------------------------------+
+	// 輝度定義
+	float intensity = 1.35f;
+	// シェーダのセット
+	m_directionalLightShader->SetActive();
+	m_directionalLightShader->SetVectorUniform("u_viewPos", GAME_INSTANCE.GetViewVector());
+	m_directionalLightShader->SetVectorUniform("u_dirLight.direction",    m_renderer->m_directionalLight.direction);
+	m_directionalLightShader->SetVectorUniform("u_dirLight.ambientColor", m_renderer->m_directionalLight.ambient);
+	m_directionalLightShader->SetVectorUniform("u_dirLight.color",        m_renderer->m_directionalLight.diffuse);
+	m_directionalLightShader->SetVectorUniform("u_dirLight.specular",     m_renderer->m_directionalLight.specular);
+	m_directionalLightShader->SetFloat("u_dirLight.intensity", intensity);
+	m_directionalLightShader->SetInt("u_gBuffer.pos", 0);
+	m_directionalLightShader->SetInt("u_gBuffer.normal", 1);
+	m_directionalLightShader->SetInt("u_gBuffer.albedoSpec", 2);
+	m_directionalLightShader->SetInt("u_gBuffer.emissive", 3);
+	// スクリーン全体に描画
+	m_renderer->GetScreenVAO()->SetActive();
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	// Spriteの描画
 	// ブレンドのアクティブ化
@@ -301,12 +315,14 @@ void DefferedRenderer::DrawLightPass()
 
 	// ブレンドを停止する
 	glDisablei(GL_BLEND, 0);
+
 	// gBufferの深度情報をライトバッファへコピーする
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_gBuffer);              // gBufferを読み取りフレームバッファとして指定
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_lightFBO);             // 書き込みバッファをライトバッファに指定
 	glBlitFramebuffer(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	// ライトバッファ描画へ戻す
 	glBindFramebuffer(GL_FRAMEBUFFER, m_lightFBO);
+
 	// 深度テストをオン
 	glEnable(GL_DEPTH_TEST);
 	
@@ -333,8 +349,8 @@ void DefferedRenderer::Draw()
 
 	// Bloom処理を施した描画
 	RenderBloom* bloom = m_renderer->GetBloom();
-	bloom->SetExposureVal(10.0f);
-	bloom->DrawDownSampling(m_lightBrightBuffer);
+	bloom->SetExposureVal(2.5f);
+	bloom->DrawDownSampling(m_lightHighBright);
 	bloom->DrawGaussBlur();
 	bloom->DrawBlendBloom(m_lightHDR);
 
@@ -387,19 +403,30 @@ bool DefferedRenderer::CreateGBuffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_gNormal, 0);
-	// アルベド(RGB)＆スペキュラ(A)用カラーバッファ (A成分含む8bitバッファ/カラー2番目として登録)
+	// アルベド(RGB)＆スペキュラ(A)用カラーバッファ (A成分含む8bitカラーバッファ/2番目として登録)
 	glGenTextures(1, &m_gAlbedoSpec);
 	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_gAlbedoSpec, 0);
-	
+	// 高輝度バッファの作成 (エミッシブ出力用輝度バッファ/3番目として登録)
+	glGenTextures(1, &m_gEmissive);
+	glBindTexture(GL_TEXTURE_2D, m_gEmissive);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_gEmissive, 0);
+
+
 	// 各テクスチャをGBufferの描画先としてGL側に明示する
-	m_attachments[0] = { GL_COLOR_ATTACHMENT0 };
-	m_attachments[1] = { GL_COLOR_ATTACHMENT1 };
-	m_attachments[2] = { GL_COLOR_ATTACHMENT2 };
-	glDrawBuffers(3, m_attachments);
+	m_gAttachments[0] = { GL_COLOR_ATTACHMENT0 };
+	m_gAttachments[1] = { GL_COLOR_ATTACHMENT1 };
+	m_gAttachments[2] = { GL_COLOR_ATTACHMENT2 };
+	m_gAttachments[3] = { GL_COLOR_ATTACHMENT3 };
+	glDrawBuffers(4, m_gAttachments);
 
 	// レンダーバッファの作成 (ステンシルバッファとして定義)
 	glGenRenderbuffers(1, &m_gRBO);
@@ -434,14 +461,14 @@ bool DefferedRenderer::CreateLightBuffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_lightHDR, 0);
 	// 高輝度バッファの作成
-	glGenTextures(1, &m_lightBrightBuffer);
-	glBindTexture(GL_TEXTURE_2D, m_lightBrightBuffer);
+	glGenTextures(1, &m_lightHighBright);
+	glBindTexture(GL_TEXTURE_2D, m_lightHighBright);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_lightBrightBuffer, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_lightHighBright, 0);
 	// アタッチメント設定
 	m_lightAttachments[0] = { GL_COLOR_ATTACHMENT0 };
 	m_lightAttachments[1] = { GL_COLOR_ATTACHMENT1 };

@@ -38,6 +38,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/GroundBase/Ground.OBJ"));
 	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Street/Street.OBJ"));
 	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Building/0/Build11.OBJ"));
+	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Lamp/SM_Lamp.OBJ"));
 	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Actors/Police/Helicopter/Helicopter_Body_Internal.OBJ"));
 	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Sphere/Sphere.OBJ"));
 
@@ -174,16 +175,13 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				block->SetMesh(m_blockMeshes[2]);
 				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
 				block->SetScale(5.0f);
-
+				block->GetMeshComponent()->SetIntensityVal(0.6f);
 
 			}
 
 		}
 	}
 	buildingData.clear();
-
-	// ロード処理
-	GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
 	// マップに登録(依頼人)
 	int count = 0;
@@ -219,11 +217,15 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 
 				in_world->AddPatrolPoint(patrol);
 
+				// ロード処理
+				GAME_INSTANCE.GetLoadScreen()->AddGauge();
+
 			}
 
 		}
 	}
 	patrolPointData.clear();
+
 
 	// マップに登録 (ポイントライト)
 	for (int iy = 0; iy < sizeY; iy++)
@@ -236,15 +238,20 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				//PointLight* pLight = new PointLight();
 				//pLight->SetPosition(Vector3(ix* blockSize, offsetY - iy * blockSize, 0.0f));
 
-				LampObject* lamp = new LampObject(Vector3(ix * blockSize, offsetY - iy * blockSize, -10.0f));
+				LampObject* lamp = new LampObject(Vector3(ix * blockSize, offsetY - iy * blockSize, -10.0f), m_blockMeshes[3]);
 
 				// ロード処理
 				GAME_INSTANCE.GetLoadScreen()->AddGauge();
 			}
 
 		}
+
+
 	}
 	pointLightData.clear();
+
+
+
 
 
 	m_blockMeshes.clear();

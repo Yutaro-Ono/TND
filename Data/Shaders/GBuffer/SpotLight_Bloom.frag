@@ -34,6 +34,7 @@ struct GBuffer
 	sampler2D pos;
 	sampler2D normal;
 	sampler2D albedoSpec;
+	sampler2D emissive;
 };
 
 // uniform
@@ -78,9 +79,9 @@ void main()
 		diffuse  *= attenuation;
 		specular *= attenuation;
 
-		vec3 result = ambient + diffuse + specular;
+		vec3 result = ambient + diffuse + specular + texture(u_gBuffer.emissive, TexCoords).rgb;
 
-			// 高輝度バッファへの出力値を抽出
+		// 高輝度バッファへの出力値を抽出
 		float brightness = dot(result, vec3(0.1326, 0.3352, 0.442));
 
 		if(brightness > 0.2)                                              // 輝度が0.4を超えたなら

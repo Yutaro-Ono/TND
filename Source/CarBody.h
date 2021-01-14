@@ -28,5 +28,7 @@ private:
 
 	static const std::string CAR_BODY_MESH_PATH;
 	static const std::string CAR_GLASS_MESH_PATH;
+	static const std::string CAR_FRONTLIGHT_MESH_PATH;
+	static const std::string CAR_BACKLIGHT_MESH_PATH;
 	static const std::string CAR_INTERIOR_MESH_PATH;
 };

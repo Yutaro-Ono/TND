@@ -288,6 +288,8 @@
     <None Include="Data\Shaders\GBuffer\gBuffer_EnvironmentMap.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_NormShadow.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_NormShadow.vert" />
+    <None Include="Data\Shaders\GBuffer\gBuffer_OutScreen.frag" />
+    <None Include="Data\Shaders\GBuffer\gBuffer_OutScreen.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_Shadow.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_SkinNormShadow.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_SkyBox.frag" />

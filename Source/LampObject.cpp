@@ -14,16 +14,41 @@ LampObject::LampObject(const Vector3& in_pos)
 	// メッシュを取得し、コンポーネントにセット
 	m_meshComp = new MeshComponent(this);
 	m_meshComp->SetMesh(RENDERER->GetMesh("Data/Meshes/TND/Objects/Lamp/SM_Lamp.OBJ"));
+	m_meshComp->SetIntensityVal(5.5f);
 
 	// 電球の光源
-	m_headLight = new PointLight(PointLight::LIGHT_VOLUME::VL_MEDIUM);
+	m_headLight = new PointLight(PointLight::LIGHT_VOLUME::VL_BIG);
 	m_headLight->SetPosition(m_position + Vector3(0.0f, 0.0f, -50.0f));
 	m_headLight->SetLightColor(Vector3(0.8f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f));
 
 	// 地面の光源
-	m_groundLight = new PointLight(PointLight::LIGHT_VOLUME::VL_MEDIUM);
+	m_groundLight = new PointLight(PointLight::LIGHT_VOLUME::VL_BIG);
 	m_groundLight->SetPosition(m_position + Vector3(0.0f, 0.0f, 90.0f));
-	m_groundLight->SetLuminance(10.0f);
+	m_groundLight->SetLightColor(Vector3(0.31f, 0.55f, 0.5f), Vector3(0.31f, 0.55f, 0.5f));
+	m_groundLight->SetLuminance(3.0f);
+}
+
+LampObject::LampObject(const Vector3& in_pos, class Mesh* in_mesh)
+	:m_headLight(nullptr)
+	,m_groundLight(nullptr)
+{
+	SetPosition(in_pos);
+
+	// メッシュを取得し、コンポーネントにセット
+	m_meshComp = new MeshComponent(this);
+	m_meshComp->SetMesh(in_mesh);
+	m_meshComp->SetIntensityVal(5.5f);
+
+	// 電球の光源
+	m_headLight = new PointLight(PointLight::LIGHT_VOLUME::VL_BIG);
+	m_headLight->SetPosition(m_position + Vector3(0.0f, 0.0f, -50.0f));
+	m_headLight->SetLightColor(Vector3(0.8f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f));
+
+	// 地面の光源
+	m_groundLight = new PointLight(PointLight::LIGHT_VOLUME::VL_BIG);
+	m_groundLight->SetPosition(m_position + Vector3(0.0f, 0.0f, 90.0f));
+	m_groundLight->SetLightColor(Vector3(0.31f, 0.55f, 0.5f), Vector3(0.31f, 0.55f, 0.5f));
+	m_groundLight->SetLuminance(3.0f);
 }
 
 LampObject::~LampObject()

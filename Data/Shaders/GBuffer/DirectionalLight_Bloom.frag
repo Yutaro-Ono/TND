@@ -24,6 +24,7 @@ struct GBuffer
 	sampler2D position;
 	sampler2D normal;
 	sampler2D albedoSpec;
+	sampler2D emissive;
 };
 
 
@@ -53,19 +54,18 @@ void main()
 	vec3 diffuse = u_dirLight.color * u_dirLight.intensity * Albedo * diff;
 
 	// スペキュラ
-	vec3 reflectDir = reflect(LightDir, Normal);
 	vec3 viewDir = normalize(u_viewPos - Position);
 	vec3 halfVec = normalize(LightDir + viewDir);
 	float spec = pow(max(dot(Normal, halfVec), 0.0), 32);
 	vec3 specular = u_dirLight.specular * u_dirLight.intensity * spec * Spec_p;
 
-	vec3 result = ambient + diffuse + specular;
+	vec3 result = ambient + diffuse + specular + texture(u_gBuffer.emissive, TexCoords).rgb;
 
-		// 高輝度バッファへの出力値を抽出
+	// 高輝度バッファへの出力値を抽出
 	//float brightness = dot(result, vec3(0.1126, 0.4152, 0.522));     // 輝度をカラー結果の内積から求める
 	float brightness = dot(result, vec3(0.1326, 0.1352, 0.642));
 
-	if(brightness > 0.8f)                                              // 輝度が0.1を超えたなら
+	if(brightness > 0.8f)                                              // 輝度が0.8を超えたなら
 	{
 		out_brightColor = vec4(result, 0.0f);
 	}

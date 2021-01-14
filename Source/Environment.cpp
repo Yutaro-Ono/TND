@@ -7,7 +7,7 @@
 
 static Vector3 playerPos = Vector3::Zero;
 //static const Vector3 ADJUST_POS = Vector3(2000.0f, 0.0f, 3000.0f);
-static const Vector3 ADJUST_POS = Vector3(600.0f, 0.0f, 700.0f);
+static const Vector3 ADJUST_POS = Vector3(-600.0f, 50.0f, 700.0f);
 
 Environment::Environment(GAME_TIME in_gameTime)
 	:m_gameTime(in_gameTime)
@@ -169,11 +169,11 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		dir.direction = dir.target - dir.position;
 		dir.direction.Normalize();
 		//dir.ambient = Vector3(0.2f, 0.2f, 0.2f);
-		dir.ambient = Vector3(0.31f, 0.41f, 0.4f);
-		//dir.diffuse = Vector3(0.1f, 0.485f, 0.66f);
-		dir.diffuse = Vector3(0.1f, 0.25f, 0.37f);
+		dir.ambient = Vector3(0.31f, 0.415f, 0.46f);
+		dir.diffuse = Vector3(0.1f, 0.485f, 0.46f);
+		//dir.diffuse = Vector3(0.1f, 0.25f, 0.37f);
 
-		dir.specular = Vector3(0.01f, 0.15f, 0.4f);
+		dir.specular = Vector3(0.1f, 0.35f, 0.4f);
 
 		m_nightBox->GetCubeMapComp()->SetIsVisible(true);
 		return;

@@ -9,7 +9,9 @@
 #include "CarMeshComponent.h"
 // メッシュパス
 const std::string CarBody::CAR_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/OnlyFrame/BodyOnlyFrameLessMirror_Internal.OBJ";
-const std::string CarBody::CAR_GLASS_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/IncludeInterior/BodyGlassIncludeInterior_Internal.OBJ";
+const std::string CarBody::CAR_GLASS_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/Glass/BodyGlass.OBJ";
+const std::string CarBody::CAR_FRONTLIGHT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/FrontLight/FrontLight_Internal.OBJ";
+const std::string CarBody::CAR_BACKLIGHT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/BackLight/BackLight_Internal.OBJ";
 const std::string CarBody::CAR_INTERIOR_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Interior/InteriorGlassLess_Internal.OBJ";
 
 // コンストラクタ
@@ -27,16 +29,17 @@ CarBody::CarBody(PlayerCar* in_owner)
 	//MeshComponent* bodyFrame = new MeshComponent(this);
 	bodyFrame->SetMesh(bodyFrameMesh);
 	// 窓ガラス (環境マッピング)
-	Mesh* glassMesh = RENDERER->GetMesh("Data/Meshes/TND/Actors/Car/Player/Body/Glass/Glass/BodyGlass.OBJ");
+	Mesh* glassMesh = RENDERER->GetMesh(CAR_GLASS_MESH_PATH);
 	//MeshComponent* glass = new MeshComponent(this);
 	EnvironmentMapComponent* glass = new EnvironmentMapComponent(this);
 	glass->SetMesh(glassMesh);
 
-	glassMesh = RENDERER->GetMesh("Data/Meshes/TND/Actors/Car/Player/Body/Glass/FrontLight/FrontLight_Internal.OBJ");
+	// フロントライト
+	glassMesh = RENDERER->GetMesh(CAR_FRONTLIGHT_MESH_PATH);
 	glass = new EnvironmentMapComponent(this);
 	glass->SetMesh(glassMesh);
-
-	glassMesh = RENDERER->GetMesh("Data/Meshes/TND/Actors/Car/Player/Body/Glass/BackLight/BackLight_Internal.OBJ");
+	// バックライト
+	glassMesh = RENDERER->GetMesh(CAR_BACKLIGHT_MESH_PATH);
 	glass = new EnvironmentMapComponent(this);
 	glass->SetMesh(glassMesh);
 

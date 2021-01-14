@@ -486,6 +486,9 @@
     <Filter Include="ソース ファイル\Actor\Level\Lamp">
       <UniqueIdentifier>{aa774798-4366-4c28-88f4-b75c4fb2a891}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Screen">
+      <UniqueIdentifier>{cc89fa3b-d28e-4033-a5d8-4f870ab01f2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -1433,6 +1436,12 @@
     </None>
     <None Include="Data\Shaders\GBuffer\LightGlass.vert">
       <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\LightGlass</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_OutScreen.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Screen</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_OutScreen.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Screen</Filter>
     </None>
   </ItemGroup>
 </Project>

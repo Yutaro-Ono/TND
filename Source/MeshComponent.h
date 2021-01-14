@@ -28,6 +28,8 @@ public:
 
 	bool GetIsSkeletal() const { return m_isSkeletal; }                     // スケルタルかどうかのゲッター
 
+	void SetIntensityVal(float in_val) { m_intensity = in_val; }            // 輝度強度のセッター
+
 
 protected:
 
@@ -36,5 +38,7 @@ protected:
 
 	bool m_visible;                                                         // 表示フラグ
 	bool m_isSkeletal;                                                      // スケルタルモデルかどうか
+
+	float m_intensity;                                                      // 輝度の強度情報 (エミッシブマップを適用しているメッシュのみ)
 
 };
