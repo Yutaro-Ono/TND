@@ -3,10 +3,11 @@
 // Bloom・法線マップ・シャドウに対応
 //-------------------------------------------------------------------------+
 #version 330 core
-// 各バッファへの出力 (マルチレンダーターゲット)
+// 各バッファへの出力 (レンダーターゲット)
 layout (location = 0) out vec3 out_gPosition;
 layout (location = 1) out vec3 out_gNormal;
 layout (location = 2) out vec4 out_gAlbedoSpec;
+layout (location = 3) out vec4 out_gBrightColor;
 
 // 頂点シェーダーからの入力受け取り
 in VS_OUT
@@ -45,6 +46,7 @@ struct DirectionalLight
 uniform Material u_mat;
 uniform DirectionalLight u_dirLight;
 uniform vec3 u_viewPos;                   // カメラ座標
+uniform float u_intensity;                // エミッシブの強度
 
 // シャドウの計算
 float ShadowCalculation(vec4 fragPosLightSpace)
@@ -110,6 +112,13 @@ void main()
 	out_gPosition = fs_in.fragWorldPos;
 	out_gNormal = normal;
 	// シャドウの逆数を取り、0 = 影の時にディフューズとスペキュラの値がキャンセルされる(影となる)
-	out_gAlbedoSpec.rgb = ambient + texture(u_mat.emissiveMap, fs_in.fragTexCoords).rgb + (1.0 - shadow) * diffuse ;
-	out_gAlbedoSpec.a =  texture(u_mat.emissiveMap, fs_in.fragTexCoords).a + (1.0 - shadow) * specular.r;
+	vec3 resultColor = ambient + (1.0 - shadow) * diffuse;
+	out_gAlbedoSpec.rgb = resultColor;
+	float resultAlpha = texture(u_mat.emissiveMap, fs_in.fragTexCoords).a + (1.0 - shadow) * specular.r;
+	out_gAlbedoSpec.a =  resultAlpha;
+
+	// エミッシブカラーのサンプリング/出力
+	vec4 resultEmissive = texture(u_mat.emissiveMap, fs_in.fragTexCoords);
+	out_gBrightColor = resultEmissive * u_intensity;
+
 }

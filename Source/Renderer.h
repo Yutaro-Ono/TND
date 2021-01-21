@@ -66,7 +66,9 @@ public:
 	// EnvironmentMapComponent
 	void AddEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
 	void RemoveEnvironmentComponent(class EnvironmentMapComponent* in_envMesh);
-
+	// LightGlassComponent
+	void AddLightGlassComponent(class LightGlassComponent* in_glassMesh);
+	void RemoveLightGlassComponent(class LightGlassComponent* in_glassMesh);
 	// PointLightComponent
 	void AddPointLightComponent(class PointLightComponent* in_pointL);
 	void RemovePointLightComponent(class PointLightComponent* in_pointL);
@@ -88,6 +90,7 @@ public:
 	void SetWindowTitle(const std::string& in_title);
 	void SetWorldSpriteVertex();
 	void SetDirectionalLight(const dirLight& in_dirLight);
+	void SetActiveSpriteVAO();                                            // スプライト頂点配列のアクティブ化
 
 	//--------------------------------------------+
 	// Getter / Setter
@@ -127,6 +130,10 @@ public:
 	// スクリーン用頂点配列クラスのゲッター
 	class VertexArray* GetScreenVAO() { return m_screenVerts; }
 
+	// ミニマップのセッター・ゲッター
+	void SetMapHUD(class MiniMapHUD* in_mapHUD);
+	class MiniMapHUD* GetMapHUD() { return m_mapHUD; }
+
 	class RenderBloom* GetBloom() { return m_bloom; }
 
 private:
@@ -153,18 +160,21 @@ private:
 	std::vector<class MeshComponent*> m_meshComponents;                       // メッシュコンポーネント
 	std::vector<class SkeletalMeshComponent*> m_skeletalMeshComponents;       // ボーン入りメッシュ配列
 	std::vector<class CarMeshComponent*> m_carMeshComponents;                 // 車メッシュ配列
-	std::vector<class MeshComponent*> m_glassMeshComponents;                  // ガラス(環境に影響を受ける)メッシュ配列
 	std::vector<class EnvironmentMapComponent*> m_envMeshComponents;          // 環境マップオブジェクト配列
+	std::vector<class LightGlassComponent*> m_lightGlassComponents;           // ライトグラスコンポーネント配列
 	// スプライト配列
-	std::vector<class SpriteComponent*> m_spriteComponents;                // スプライト配列 (スクリーン空間)
-	std::vector<class WorldSpaceUI*> m_worldSprites;                       // スプライト配列 (ワールド空間)
+	std::vector<class SpriteComponent*> m_spriteComponents;                   // スプライト配列 (スクリーン空間)
+	std::vector<class WorldSpaceUI*> m_worldSprites;                          // スプライト配列 (ワールド空間)
 	
-	class CubeMapComponent* m_activeSkyBox;                                // 有効な(描画する)スカイボックス
 
 	// ライト関連配列
 	std::vector<class PointLightComponent*> m_pointLights;                           // ポイントライト配列
 	std::vector<class SpotLightComponent*> m_spotLights;                             // スポットライト配列
 
+	// キューブマップ
+	class CubeMapComponent* m_activeSkyBox;                                   // 有効な(描画する)スカイボックス
+	// マップHUD
+	class MiniMapHUD* m_mapHUD;
 
 	//--------------------------------------------+
 	// シェーダオブジェクト

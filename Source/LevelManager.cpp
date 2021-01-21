@@ -10,6 +10,7 @@
 #include "Mesh.h"
 #include "LevelBlock.h"
 #include "LevelTerrain.h"
+#include "BridgeObject.h"
 #include "ClientActor.h"
 #include "PatrolPoint.h"
 #include "RapidJsonHelper.h"
@@ -38,6 +39,8 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/GroundBase/Ground.OBJ"));
 	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Street/Street.OBJ"));
 	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Building/0/Build11.OBJ"));
+	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Bridge/Bridge_Lamps/Bridge_Lamps.OBJ"));
+	m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Lamp/SM_Lamp.OBJ"));
 	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Actors/Police/Helicopter/Helicopter_Body_Internal.OBJ"));
 	//m_blockMeshes.push_back(GAME_INSTANCE.GetRenderer()->GetMesh("Data/Meshes/TND/Objects/Sphere/Sphere.OBJ"));
 
@@ -132,7 +135,6 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				terrain = new LevelTerrain(m_blockMeshes[1], LevelTerrain::TERRAIN_TYPE::TYPE_STREET);
 				terrain->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset));
 			}
-
 		}
 	}
 	groundData.clear();
@@ -154,7 +156,6 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				block->SetScale(1.1f);
 				block->SetMeshVisible();
 			}
-
 		}
 	}
 	wallData.clear();
@@ -167,23 +168,20 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	{
 		for (int ix = 0; ix < sizeX; ix++)
 		{
-			
 			if (buildingData[iy][ix] == 19)
 			{
+				// ビルとしてインスタンスを生成
 				block = new LevelBlock();
 				block->SetMesh(m_blockMeshes[2]);
 				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
 				block->SetScale(5.0f);
 
+				block->GetMeshComponent()->SetIntensityVal(0.6f);
 
 			}
-
 		}
 	}
 	buildingData.clear();
-
-	// ロード処理
-	GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
 	// マップに登録(依頼人)
 	int count = 0;
@@ -201,7 +199,6 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				// ロード処理
 				GAME_INSTANCE.GetLoadScreen()->AddGauge();
 			}
-
 		}
 	}
 	clientData.clear();
@@ -212,31 +209,32 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	{
 		for (int ix = 0; ix < sizeX; ix++)
 		{
-
 			if (patrolPointData[iy][ix] >= 34)
 			{
 				PatrolPoint* patrol = new PatrolPoint(Vector3(ix * blockSize, offsetY - iy * blockSize, 1200.0f));
 
 				in_world->AddPatrolPoint(patrol);
 
-			}
+				// ロード処理
+				GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
+			}
 		}
 	}
 	patrolPointData.clear();
+
 
 	// マップに登録 (ポイントライト)
 	for (int iy = 0; iy < sizeY; iy++)
 	{
 		for (int ix = 0; ix < sizeX; ix++)
 		{
-
 			if (pointLightData[iy][ix] == 32)
 			{
 				//PointLight* pLight = new PointLight();
 				//pLight->SetPosition(Vector3(ix* blockSize, offsetY - iy * blockSize, 0.0f));
 
-				LampObject* lamp = new LampObject(Vector3(ix * blockSize, offsetY - iy * blockSize, -10.0f));
+				LampObject* lamp = new LampObject(Vector3(ix * blockSize, offsetY - iy * blockSize, -10.0f), m_blockMeshes[3]);
 
 				// ロード処理
 				GAME_INSTANCE.GetLoadScreen()->AddGauge();
@@ -246,6 +244,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 	}
 	pointLightData.clear();
 
+	//BridgeObject* bridge = new BridgeObject(1, Vector3::Zero);
 
 	m_blockMeshes.clear();
 	m_objectMeshes.clear();

@@ -6,6 +6,7 @@
 layout (location = 0) out vec3 out_gPos;
 layout (location = 1) out vec3 out_gNormal;
 layout (location = 2) out vec4 out_gAlbedoSpec;
+layout (location = 3) out vec4 out_gBrightColor;
 
 // 頂点からの入力
 in VS_OUT
@@ -17,8 +18,12 @@ in VS_OUT
 
 uniform samplerCube skybox;
 
+uniform float u_skyLuminance = 0.45f;     // スカイボックスの輝度
+
 void main()
 {
     // アルベド出力
 	out_gAlbedoSpec = texture(skybox, fs_in.fragTexCoords);
+	// 高輝度出力
+	out_gBrightColor = texture(skybox, fs_in.fragTexCoords) * u_skyLuminance;
 }

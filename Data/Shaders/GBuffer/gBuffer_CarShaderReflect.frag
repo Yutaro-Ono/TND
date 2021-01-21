@@ -7,6 +7,7 @@
 layout (location = 0) out vec3 out_gPosition;
 layout (location = 1) out vec3 out_gNormal;
 layout (location = 2) out vec4 out_gAlbedoSpec;
+layout (location = 3) out vec4 out_gBrightColor;
 
 // 頂点シェーダからの入力
 in VS_OUT
@@ -24,6 +25,7 @@ struct Material
 	sampler2D diffuseMap;
 	sampler2D specularMap;
 	sampler2D depthMap;
+	sampler2D emissiveMap;
 };
 
 // ディレクショナルライト用構造体
@@ -106,9 +108,11 @@ void main()
 	float shadow = ShadowCalculation(fs_in.fragPosLightSpace);
 
 	// GBuffer出力
-	out_gPosition = vec3(fs_in.fragWorldPos.z, fs_in.fragWorldPos.x, -fs_in.fragWorldPos.y);
+	//out_gPosition = vec3(fs_in.fragWorldPos.z, fs_in.fragWorldPos.x, -fs_in.fragWorldPos.y);
+	out_gPosition = fs_in.fragWorldPos;
 	out_gNormal = vec3(fs_in.fragNormal.z, fs_in.fragNormal.x, -fs_in.fragNormal.y);
 	// シャドウの逆数を取り、0 = 影の時にディフューズとスペキュラの値がキャンセルされる(影となる)
 	out_gAlbedoSpec.rgb = ambient + (1.8 - shadow) * Diffuse * envMap;
 	out_gAlbedoSpec.a = (1.8 - shadow) * Specular.r;
+	out_gBrightColor = texture(u_mat.emissiveMap, fs_in.fragTexCoords) * 0.03f;
 }

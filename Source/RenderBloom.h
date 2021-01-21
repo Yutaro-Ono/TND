@@ -20,9 +20,10 @@ public:
 	void WriteBuffer(class ParticleManager* in_particle);
 
 	void DrawDownSampling(unsigned int in_brightBuffer);      // 高輝度バッファをダウンサンプリング計算して描画する
-	void DrawGaussBlur();         // ガウスぼかし効果を適用する
+	void DrawGaussBlur();                                     // ガウスぼかし効果を適用する
 
-	void DrawBlendBloom(unsigned int in_colorBuffer);        // Bloomを適用した最終結果を描画する
+	void DrawBlendBloom(unsigned int in_colorBuffer);         // Bloomを適用した最終結果を描画する
+
 
 	// ガウス計算関数
 	float GaussianDistribution(const Vector2& in_pos, float in_rho);    // ガウスぼかしの重みを算出する (in_rho = 偏差)

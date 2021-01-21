@@ -12,6 +12,7 @@
 CubeMapComponent::CubeMapComponent(Actor* in_owner)
 	:Component(in_owner)
 	,m_texture(nullptr)
+	,m_luminance(1.0f)
 	,m_isVisible(false)
 {
 }
@@ -36,6 +37,8 @@ void CubeMapComponent::Draw(Shader* in_shader)
 	{
 		// 深度設定
 		glDepthFunc(GL_LEQUAL);
+		// 輝度情報をシェーダに渡す
+		in_shader->SetFloat("u_skyLuminance", m_luminance);
 		// テクスチャバインド
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_texture->GetTextureID());

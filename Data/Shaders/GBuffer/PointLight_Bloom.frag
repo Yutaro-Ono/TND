@@ -29,6 +29,7 @@ struct GBuffer
 	sampler2D pos;
 	sampler2D normal;
 	sampler2D albedoSpec;
+	sampler2D emissive;
 };
 
 // uniform
@@ -55,8 +56,8 @@ void main()
 	// ディフューズ
 	vec3 norm = normalize(Normal);
 	vec3 lightDir = normalize(u_pl.position - Position);
-	float diff = max(dot(norm, lightDir), 0.0);
-	vec3 diffuse = u_pl.diffuse * diff * Albedo * u_pl.luminance;
+	float diff = max(dot(norm, lightDir), 0);
+	vec3 diffuse = u_pl.diffuse * diff * Albedo;
 
 	// スペキュラ
 	vec3 viewDir = normalize(u_viewPos - Position);
@@ -65,7 +66,7 @@ void main()
 	vec3 specular = u_pl.specular * spec * Spec_p * u_pl.luminance;
 
 	// アンビエント
-	vec3 ambient = u_pl.ambient * Albedo;
+	vec3 ambient = u_pl.ambient * Albedo * u_pl.luminance;
 
 	ambient  *= attenuation;
 	diffuse  *= attenuation;
@@ -75,7 +76,7 @@ void main()
 
 	// 高輝度バッファへの出力値を抽出
 	//float brightness = dot(result, vec3(0.1326, 0.1352, 0.142));
-	float brightness = dot(result, vec3(0.1326, 0.1352, 0.642));
+	float brightness = dot(result, vec3(0.1326, 0.1352, 0.342));
 
 	if(brightness > 0.1)                                              // 輝度が0.4を超えたなら
 	{

@@ -4,6 +4,9 @@
 //
 //-------------------------------------------------------------------------------------------+
 #include "DefferedRenderer.h"
+#include <stdlib.h>
+#include <iostream>
+#include <glad/glad.h>
 #include "Shader.h"
 #include "Renderer.h"
 #include "GameMain.h"
@@ -22,19 +25,29 @@
 #include "FrameBuffer.h"
 #include "ParticleManager.h"
 #include "CarMeshComponent.h"
-#include <stdlib.h>
-#include <iostream>
-#include <glad/glad.h>
+#include "CameraComponent.h"
+#include "LightGlassComponent.h"
+#include "MiniMapHUD.h"
 
 // コンストラクタ
 DefferedRenderer::DefferedRenderer(Renderer* in_renderer)
 	:m_renderer(in_renderer)
-	,m_gBufferShader(nullptr)
-	,m_gBufferSkinShader(nullptr)
+	,m_meshShader(nullptr)
+	,m_skinShader(nullptr)
+	,m_skyBoxShader(nullptr)
+    ,m_envShader(nullptr)
+    ,m_carShader(nullptr)
+    ,m_lightGlassShader(nullptr)
 	,m_screenShader(nullptr)
 	,m_pointLightShader(nullptr)
 	,m_directionalLightShader(nullptr)
 	,m_spotLightShader(nullptr)
+	,m_gBuffer(0)
+	,m_gPos(0)
+	,m_gNormal(0)
+	,m_gAlbedoSpec(0)
+	,m_gEmissive(0)
+	,m_lightHDR(0)
 {
 	std::cout << "CREATE::DefferedRenderer::Instance" << std::endl;
 }
@@ -42,11 +55,11 @@ DefferedRenderer::DefferedRenderer(Renderer* in_renderer)
 // デストラクタ
 DefferedRenderer::~DefferedRenderer()
 {
-	delete m_gBufferShader;
-	delete m_gBufferSkinShader;
-	delete m_gBufferEnvShader;
-	delete m_gBufferCarShader;
-	delete m_gBufferSkyBoxShader;
+	delete m_meshShader;
+	delete m_skinShader;
+	delete m_envShader;
+	delete m_carShader;
+	delete m_skyBoxShader;
 	delete m_screenShader;
 	delete m_pointLightShader;
 	delete m_directionalLightShader;
@@ -73,103 +86,119 @@ void DefferedRenderer::DrawGBuffer()
 	Matrix4 view = m_renderer->GetViewMatrix();
 	Matrix4 projection = m_renderer->GetProjectionMatrix();
 
+	Matrix4 viewProj = view * projection;
+
 	//-----------------------------------------------------------+
 	// 通常メッシュ
 	//-----------------------------------------------------------+
 	// シェーダにuniformセット
-	m_gBufferShader->SetActive();
-	m_gBufferShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
-	m_gBufferShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
-	m_gBufferShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
-	m_gBufferShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
-	m_gBufferShader->SetMatrixUniform("u_view", view);
-	m_gBufferShader->SetMatrixUniform("u_projection", projection);
-	m_gBufferShader->SetVectorUniform("u_viewPos", view.GetTranslation());
-	m_gBufferShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
-	m_gBufferShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
-	m_gBufferShader->SetInt("u_mat.diffuseMap", 0);
-	m_gBufferShader->SetInt("u_mat.specularMap", 1);
-	m_gBufferShader->SetInt("u_mat.normalMap", 2);
-	m_gBufferShader->SetInt("u_mat.emissiveMap", 3);
-	m_gBufferShader->SetInt("u_mat.depthMap", 4);
+	m_meshShader->SetActive();
+	m_meshShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
+	m_meshShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
+	m_meshShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
+	m_meshShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
+	m_meshShader->SetMatrixUniform("u_view", view);
+	m_meshShader->SetMatrixUniform("u_projection", projection);
+	m_meshShader->SetVectorUniform("u_viewPos", view.GetTranslation());
+	m_meshShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
+	m_meshShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
+	m_meshShader->SetInt("u_mat.diffuseMap", 0);
+	m_meshShader->SetInt("u_mat.specularMap", 1);
+	m_meshShader->SetInt("u_mat.normalMap", 2);
+	m_meshShader->SetInt("u_mat.emissiveMap", 3);
+	m_meshShader->SetInt("u_mat.depthMap", 4);
 	// メッシュ描画 (ここでGBufferの各要素に情報が書き込まれる)
 	for (auto mesh : m_renderer->m_meshComponents)
 	{
-		mesh->Draw(m_gBufferShader);
+		mesh->Draw(m_meshShader);
 	}
 
-	//------------------------------------------------------------+
-	// 車
-	//------------------------------------------------------------+
-	m_gBufferCarShader->SetActive();
-	m_gBufferCarShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
-	m_gBufferCarShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
-	m_gBufferCarShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
-	m_gBufferCarShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
-	m_gBufferCarShader->SetMatrixUniform("u_view", view);
-	m_gBufferCarShader->SetMatrixUniform("u_projection", projection);
-	m_gBufferCarShader->SetVectorUniform("u_viewPos", view.GetTranslation());
-	m_gBufferCarShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
-	m_gBufferCarShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
-	m_gBufferCarShader->SetInt("u_mat.diffuseMap", 0);
-	m_gBufferCarShader->SetInt("u_mat.specularMap", 1);
-	m_gBufferCarShader->SetInt("u_mat.depthMap", 2);
-	// 車メッシュ描画
-	for (auto car : m_renderer->m_carMeshComponents)
-	{
-		car->Draw(m_gBufferCarShader);
-	}
 
 	//------------------------------------------------------------+
 	// スキンメッシュ
 	//------------------------------------------------------------+
 	// シェーダにuniformセット
-	m_gBufferSkinShader->SetActive();
-	m_gBufferSkinShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
-	m_gBufferSkinShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
-	m_gBufferSkinShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
-	m_gBufferSkinShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
-	m_gBufferSkinShader->SetMatrixUniform("u_view", view);
-	m_gBufferSkinShader->SetMatrixUniform("u_projection", projection);
-	m_gBufferSkinShader->SetVectorUniform("u_viewPos", view.GetTranslation());
-	m_gBufferSkinShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
-	m_gBufferSkinShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
-	m_gBufferSkinShader->SetInt("u_mat.diffuseMap", 0);
-	m_gBufferSkinShader->SetInt("u_mat.specularMap", 1);
-	m_gBufferSkinShader->SetInt("u_mat.normalMap", 2);
-	m_gBufferSkinShader->SetInt("u_mat.emissiveMap", 3);
-	m_gBufferSkinShader->SetInt("u_mat.depthMap", 4);
+	m_skinShader->SetActive();
+	m_skinShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
+	m_skinShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
+	m_skinShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
+	m_skinShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
+	m_skinShader->SetMatrixUniform("u_view", view);
+	m_skinShader->SetMatrixUniform("u_projection", projection);
+	m_skinShader->SetVectorUniform("u_viewPos", view.GetTranslation());
+	m_skinShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
+	m_skinShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
+	m_skinShader->SetInt("u_mat.diffuseMap", 0);
+	m_skinShader->SetInt("u_mat.specularMap", 1);
+	m_skinShader->SetInt("u_mat.normalMap", 2);
+	m_skinShader->SetInt("u_mat.emissiveMap", 3);
+	m_skinShader->SetInt("u_mat.depthMap", 4);
 	// メッシュ描画 (ここでGBufferの各要素に情報が書き込まれる)
 	for (auto skel : m_renderer->m_skeletalMeshComponents)
 	{
-		skel->Draw(m_gBufferSkinShader);
+		skel->Draw(m_skinShader);
 	}
+
+	//------------------------------------------------------------+
+	// 車
+	//------------------------------------------------------------+
+	m_carShader->SetActive();
+	m_carShader->SetVectorUniform("u_dirLight.direction", RENDERER->GetDirectionalLight().direction);
+	m_carShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
+	m_carShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
+	m_carShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
+	m_carShader->SetMatrixUniform("u_view", view);
+	m_carShader->SetMatrixUniform("u_projection", projection);
+	m_carShader->SetVectorUniform("u_viewPos", view.GetTranslation());
+	m_carShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
+	m_carShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
+	m_carShader->SetInt("u_mat.diffuseMap", 0);
+	m_carShader->SetInt("u_mat.specularMap", 1);
+	m_carShader->SetInt("u_mat.depthMap", 2);
+	// 車メッシュ描画
+	for (auto car : m_renderer->m_carMeshComponents)
+	{
+		car->Draw(m_carShader);
+	}
+
+
+
 
 	//------------------------------------------------------------+
     // SkyBox
     //------------------------------------------------------------+
-	m_gBufferSkyBoxShader->SetActive();
+	m_skyBoxShader->SetActive();
 	// Uniformに行列をセット
 	Matrix4 InvView = view;
 	InvView.Invert();
-	m_gBufferSkyBoxShader->SetMatrixUniform("u_view", InvView);
-	m_gBufferSkyBoxShader->SetMatrixUniform("u_projection", projection);
-	m_gBufferSkyBoxShader->SetInt("u_skybox", 0);
-	m_renderer->GetSkyBox()->Draw(m_gBufferSkyBoxShader);
+	m_skyBoxShader->SetMatrixUniform("u_view", InvView);
+	m_skyBoxShader->SetMatrixUniform("u_projection", projection);
+	m_skyBoxShader->SetInt("u_skybox", 0);
+	m_renderer->GetSkyBox()->Draw(m_skyBoxShader);
 
 	//------------------------------------------------------------+
 	// EnvironmentMap
 	//------------------------------------------------------------+
-	m_gBufferEnvShader->SetActive();
-	m_gBufferEnvShader->SetMatrixUniform("u_view", view);
-	m_gBufferEnvShader->SetMatrixUniform("u_projection", projection);
-	m_gBufferEnvShader->SetVectorUniform("u_viewPos", view.GetTranslation());
-	m_gBufferEnvShader->SetInt("u_skybox", 0);
+	m_envShader->SetActive();
+	m_envShader->SetMatrixUniform("u_viewProj", viewProj);
+	m_envShader->SetVectorUniform("u_viewPos", view.GetTranslation());
+	m_envShader->SetInt("u_skybox", 0);
 	for (auto env : m_renderer->m_envMeshComponents)
 	{
-		env->DrawEnvironmentMap(m_gBufferEnvShader);
+		env->DrawEnvironmentMap(m_envShader);
 	}
 
+	//------------------------------------------------------------+
+    // ライトグラス
+    //------------------------------------------------------------+
+	m_lightGlassShader->SetActive();
+	m_lightGlassShader->SetMatrixUniform("u_viewProj", viewProj);
+	m_lightGlassShader->SetVectorUniform("u_viewPos", view.GetTranslation());
+	m_lightGlassShader->SetInt("u_skybox", 0);
+	for (auto light : m_renderer->m_lightGlassComponents)
+	{
+		light->Draw(m_lightGlassShader);
+	}
 
 	// GBufferのバインド解除
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -180,6 +209,7 @@ void DefferedRenderer::DrawLightPass()
 {
 	// ライトバッファをバインド
 	glBindFramebuffer(GL_FRAMEBUFFER, m_lightFBO);
+
 	// ブレンド指定
 	glEnablei(GL_BLEND, 0);                                          // 加算合成を行うためブレンドを有効化
 	glBlendFuncSeparatei(0, GL_ONE, GL_ONE, GL_ONE, GL_ONE);         // 加算合成のブレンドを指定
@@ -194,31 +224,13 @@ void DefferedRenderer::DrawLightPass()
 	glBindTexture(GL_TEXTURE_2D, m_gNormal);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
-
-	//-----------------------------------------------+
-	// ディレクショナルライトパス
-	//-----------------------------------------------+
-	// 輝度定義
-	float intensity = 0.4f;
-	// シェーダのセット
-	m_directionalLightShader->SetActive();
-	m_directionalLightShader->SetVectorUniform("u_viewPos",               m_renderer->GetViewMatrix().GetTranslation());
-	m_directionalLightShader->SetVectorUniform("u_dirLight.direction",    m_renderer->m_directionalLight.direction);
-	m_directionalLightShader->SetVectorUniform("u_dirLight.ambientColor", m_renderer->m_directionalLight.ambient);
-	m_directionalLightShader->SetVectorUniform("u_dirLight.color",        m_renderer->m_directionalLight.diffuse);
-	m_directionalLightShader->SetVectorUniform("u_dirLight.specular",     m_renderer->m_directionalLight.specular);
-	m_directionalLightShader->SetFloat("u_dirLight.intensity", intensity);
-	m_directionalLightShader->SetInt("u_gBuffer.pos", 0);
-	m_directionalLightShader->SetInt("u_gBuffer.normal", 1);
-	m_directionalLightShader->SetInt("u_gBuffer.albedoSpec", 2);
-	// スクリーン全体に描画
-	m_renderer->GetScreenVAO()->SetActive();
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, m_gEmissive);
 
 	// カリング設定：ライトはメッシュの裏側のみ描画する
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
-	glFrontFace(GL_CW);
+	glCullFace(GL_FRONT);
+	glFrontFace(GL_CCW);
 
 	//------------------------------------------------------+
 	// ポイントライト
@@ -227,10 +239,11 @@ void DefferedRenderer::DrawLightPass()
 	m_pointLightShader->SetActive();
 	m_pointLightShader->SetMatrixUniform("u_view",       m_renderer->GetViewMatrix());
 	m_pointLightShader->SetMatrixUniform("u_projection", m_renderer->GetProjectionMatrix());
-	m_pointLightShader->SetVectorUniform("u_viewPos",    m_renderer->GetViewMatrix().GetTranslation());
+	m_pointLightShader->SetVectorUniform("u_viewPos",    GAME_INSTANCE.GetViewVector());
 	m_pointLightShader->SetInt("u_gBuffer.pos",     0);
 	m_pointLightShader->SetInt("u_gBuffer.normal",       1);
 	m_pointLightShader->SetInt("u_gBuffer.albedoSpec",   2);
+	m_pointLightShader->SetInt("u_gBuffer.emissive", 3);
 	// ポイントライトの描画
 	for (auto pl : m_renderer->m_pointLights)
 	{
@@ -249,6 +262,7 @@ void DefferedRenderer::DrawLightPass()
 	m_spotLightShader->SetInt("u_gBuffer.pos", 0);
 	m_spotLightShader->SetInt("u_gBuffer.normal", 1);
 	m_spotLightShader->SetInt("u_gBuffer.albedoSpec", 2);
+	m_spotLightShader->SetInt("u_gBuffer.emissive", 3);
 	// スポットライトの描画
 	for (auto spotL : m_renderer->m_spotLights)
 	{
@@ -257,8 +271,30 @@ void DefferedRenderer::DrawLightPass()
 
 	// カリングのオフ
 	glDisable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-	glFrontFace(GL_CCW);
+	//glCullFace(GL_BACK);
+	//glFrontFace(GL_CW);
+
+
+	//-----------------------------------------------+
+	// ディレクショナルライトパス
+	//-----------------------------------------------+
+	// 輝度定義
+	float intensity = 1.35f;
+	// シェーダのセット
+	m_directionalLightShader->SetActive();
+	m_directionalLightShader->SetVectorUniform("u_viewPos", GAME_INSTANCE.GetViewVector());
+	m_directionalLightShader->SetVectorUniform("u_dirLight.direction",    m_renderer->m_directionalLight.direction);
+	m_directionalLightShader->SetVectorUniform("u_dirLight.ambientColor", m_renderer->m_directionalLight.ambient);
+	m_directionalLightShader->SetVectorUniform("u_dirLight.color",        m_renderer->m_directionalLight.diffuse);
+	m_directionalLightShader->SetVectorUniform("u_dirLight.specular",     m_renderer->m_directionalLight.specular);
+	m_directionalLightShader->SetFloat("u_dirLight.intensity", intensity);
+	m_directionalLightShader->SetInt("u_gBuffer.pos", 0);
+	m_directionalLightShader->SetInt("u_gBuffer.normal", 1);
+	m_directionalLightShader->SetInt("u_gBuffer.albedoSpec", 2);
+	m_directionalLightShader->SetInt("u_gBuffer.emissive", 3);
+	// スクリーン全体に描画
+	m_renderer->GetScreenVAO()->SetActive();
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	// Spriteの描画
 	// ブレンドのアクティブ化
@@ -283,7 +319,7 @@ void DefferedRenderer::DrawLightPass()
 
 	// spriteシェーダーのアクティブ化
 	m_bloomSpriteShader->SetActive();
-	m_renderer->m_spriteVerts->SetActive();
+	RENDERER->SetActiveSpriteVAO();
 	for (auto sprite : m_renderer->m_spriteComponents)
 	{
 		if (sprite->GetVisible())
@@ -296,17 +332,27 @@ void DefferedRenderer::DrawLightPass()
 	{
 		ui->Draw(m_bloomSpriteShader);
 	}
+	// マップHUD
+	if (m_renderer->GetMapHUD() != nullptr)
+	{
+		m_renderer->GetMapHUD()->WriteBuffer(m_renderer->m_meshShader, m_renderer->m_meshComponents);
+		m_renderer->GetMapHUD()->Draw(m_bloomSpriteShader);
+	}
+
+
 	// ブレンドをオフ
 	glDisable(GL_BLEND);
 
 	// ブレンドを停止する
 	glDisablei(GL_BLEND, 0);
+
 	// gBufferの深度情報をライトバッファへコピーする
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, m_gBuffer);              // gBufferを読み取りフレームバッファとして指定
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_lightFBO);             // 書き込みバッファをライトバッファに指定
 	glBlitFramebuffer(0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, 0, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	// ライトバッファ描画へ戻す
 	glBindFramebuffer(GL_FRAMEBUFFER, m_lightFBO);
+
 	// 深度テストをオン
 	glEnable(GL_DEPTH_TEST);
 	
@@ -333,8 +379,8 @@ void DefferedRenderer::Draw()
 
 	// Bloom処理を施した描画
 	RenderBloom* bloom = m_renderer->GetBloom();
-	bloom->SetExposureVal(10.0f);
-	bloom->DrawDownSampling(m_lightBrightBuffer);
+	bloom->SetExposureVal(4.5f);
+	bloom->DrawDownSampling(m_lightHighBright);
 	bloom->DrawGaussBlur();
 	bloom->DrawBlendBloom(m_lightHDR);
 
@@ -387,19 +433,30 @@ bool DefferedRenderer::CreateGBuffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_gNormal, 0);
-	// アルベド(RGB)＆スペキュラ(A)用カラーバッファ (A成分含む8bitバッファ/カラー2番目として登録)
+	// アルベド(RGB)＆スペキュラ(A)用カラーバッファ (A成分含む8bitカラーバッファ/2番目として登録)
 	glGenTextures(1, &m_gAlbedoSpec);
 	glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_gAlbedoSpec, 0);
-	
+	// 高輝度バッファの作成 (エミッシブ出力用輝度バッファ/3番目として登録)
+	glGenTextures(1, &m_gEmissive);
+	glBindTexture(GL_TEXTURE_2D, m_gEmissive);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, m_gEmissive, 0);
+
+
 	// 各テクスチャをGBufferの描画先としてGL側に明示する
-	m_attachments[0] = { GL_COLOR_ATTACHMENT0 };
-	m_attachments[1] = { GL_COLOR_ATTACHMENT1 };
-	m_attachments[2] = { GL_COLOR_ATTACHMENT2 };
-	glDrawBuffers(3, m_attachments);
+	m_gAttachments[0] = { GL_COLOR_ATTACHMENT0 };
+	m_gAttachments[1] = { GL_COLOR_ATTACHMENT1 };
+	m_gAttachments[2] = { GL_COLOR_ATTACHMENT2 };
+	m_gAttachments[3] = { GL_COLOR_ATTACHMENT3 };
+	glDrawBuffers(4, m_gAttachments);
 
 	// レンダーバッファの作成 (ステンシルバッファとして定義)
 	glGenRenderbuffers(1, &m_gRBO);
@@ -434,14 +491,14 @@ bool DefferedRenderer::CreateLightBuffer()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_lightHDR, 0);
 	// 高輝度バッファの作成
-	glGenTextures(1, &m_lightBrightBuffer);
-	glBindTexture(GL_TEXTURE_2D, m_lightBrightBuffer);
+	glGenTextures(1, &m_lightHighBright);
+	glBindTexture(GL_TEXTURE_2D, m_lightHighBright);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, GAME_CONFIG->GetScreenWidth(), GAME_CONFIG->GetScreenHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_lightBrightBuffer, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_lightHighBright, 0);
 	// アタッチメント設定
 	m_lightAttachments[0] = { GL_COLOR_ATTACHMENT0 };
 	m_lightAttachments[1] = { GL_COLOR_ATTACHMENT1 };
@@ -481,36 +538,39 @@ bool DefferedRenderer::Initialize()
 	// GBuffer出力用シェーダ
 	//--------------------------------------------------------------------------------------------------------------------+
 	// GBuffer用メッシュシェーダの作成
-	m_gBufferShader = new Shader();
-	//if (!m_gBufferShader->Load("Data/Shaders/GBuffer/gBuffer_Basic.vert", "Data/Shaders/GBuffer/gBuffer_Basic.frag"))
-	//{
-	//	return false;
-	//}
-	if (!m_gBufferShader->Load("Data/Shaders/GBuffer/gBuffer_NormShadow.vert", "Data/Shaders/GBuffer/gBuffer_NormShadow.frag"))
+	m_meshShader = new Shader();
+	if (!m_meshShader->Load("Data/Shaders/GBuffer/gBuffer_NormShadow.vert", "Data/Shaders/GBuffer/gBuffer_NormShadow.frag"))
 	{
 		return false;
 	}
 	// GBuffer用スキンシェーダの作成
-	m_gBufferSkinShader = new Shader();
-	if (!m_gBufferSkinShader->Load("Data/Shaders/GBuffer/gBuffer_SkinNormShadow.vert", "Data/Shaders/GBuffer/gBuffer_Shadow.frag"))
+	m_skinShader = new Shader();
+	if (!m_skinShader->Load("Data/Shaders/GBuffer/gBuffer_SkinNormShadow.vert", "Data/Shaders/GBuffer/gBuffer_Shadow.frag"))
 	{
 		return false;
 	}
 	// GBuffer用スカイボックスシェーダ
-	m_gBufferSkyBoxShader = new Shader();
-	if (!m_gBufferSkyBoxShader->Load("Data/Shaders/GBuffer/gBuffer_SkyBox.vert", "Data/Shaders/GBuffer/gBuffer_SkyBox.frag"))
+	m_skyBoxShader = new Shader();
+	if (!m_skyBoxShader->Load("Data/Shaders/GBuffer/gBuffer_SkyBox.vert", "Data/Shaders/GBuffer/gBuffer_SkyBox.frag"))
 	{
 		return false;
 	}
 	// GBuffer用環境マップシェーダ
-	m_gBufferEnvShader = new Shader();
-	if (!m_gBufferEnvShader->Load("Data/Shaders/GBuffer/gBuffer_EnvironmentMap.vert", "Data/Shaders/GBuffer/gBuffer_EnvironmentMap.frag"))
+	m_envShader = new Shader();
+	if (!m_envShader->Load("Data/Shaders/GBuffer/gBuffer_EnvironmentMap.vert", "Data/Shaders/GBuffer/gBuffer_EnvironmentMap.frag"))
 	{
 		return false;
 	}
 	// GBuffer車用シェーダ
-	m_gBufferCarShader = new Shader();
-	if (!m_gBufferCarShader->Load("Data/Shaders/GBuffer/gBuffer_CarShaderReflect.vert", "Data/Shaders/GBuffer/gBuffer_CarShaderReflect.frag"))
+	m_carShader = new Shader();
+	if (!m_carShader->Load("Data/Shaders/GBuffer/gBuffer_CarShaderReflect.vert", "Data/Shaders/GBuffer/gBuffer_CarShaderReflect.frag"))
+	{
+		return false;
+	}
+
+	// GBufferライトグラスシェーダ
+	m_lightGlassShader = new Shader();
+	if (!m_lightGlassShader->Load("Data/Shaders/GBuffer/GBuffer_LightGlass.vert", "Data/Shaders/GBuffer/GBuffer_LightGlass.frag"))
 	{
 		return false;
 	}

@@ -10,7 +10,7 @@
 
 EnvironmentMapComponent::EnvironmentMapComponent(Actor* in_owner)
 	:Component(in_owner)
-	,m_isVisible(true)
+	,m_isVisible(false)
 {
 	RENDERER->AddEnvironmentComponent(this);
 }
@@ -24,7 +24,7 @@ EnvironmentMapComponent::~EnvironmentMapComponent()
 void EnvironmentMapComponent::DrawEnvironmentMap(Shader* in_envShader)
 {
 
-	if (m_isVisible)
+	if (!m_isVisible)
 	{
 		// GLのアルファブレンド・αテストをON
 		glEnable(GL_BLEND);
@@ -32,14 +32,16 @@ void EnvironmentMapComponent::DrawEnvironmentMap(Shader* in_envShader)
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		in_envShader->SetMatrixUniform("u_worldTransform", m_owner->GetWorldTransform());
-		in_envShader->SetFloat("u_luminance", 1.0f);
+		in_envShader->SetFloat("u_luminance", 0.5f);
 		// 頂点配列オブジェクトを取得し、バインド
 		VertexArray* vao = m_mesh->GetVertexArray();
 		vao->SetActive();
 		// アクティブなキューブマップをテクスチャとしてバインド
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, RENDERER->GetSkyBox()->GetSkyBoxTexture()->GetTextureID());
+		// 描画
 		glDrawElements(GL_TRIANGLES, vao->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
+		// アルファテストのオフ
 		glDisable(GL_BLEND);
 		glDisable(GL_ALPHA_TEST);
 

@@ -3,10 +3,11 @@
 // シャドウに対応
 //-------------------------------------------------------------------------+
 #version 330 core
-// 各バッファへの出力 (マルチレンダーターゲット)
+// 各バッファへの出力 (レンダーターゲット)
 layout (location = 0) out vec3 out_gPosition;
 layout (location = 1) out vec3 out_gNormal;
 layout (location = 2) out vec4 out_gAlbedoSpec;
+layout (location = 3) out vec4 out_gBrightColor;
 
 // 頂点シェーダーからの入力受け取り
 in VS_OUT
@@ -25,6 +26,7 @@ struct Material
 	sampler2D diffuseMap;
 	sampler2D specularMap;
 	sampler2D normalMap;
+	sampler2D emissiveMap;
 	sampler2D depthMap;
 };
 
@@ -116,4 +118,8 @@ void main()
 	// シャドウの逆数を取り、0 = 影の時にディフューズとスペキュラの値がキャンセルされる(影となる)
 	out_gAlbedoSpec.rgb = ambient + (1.0 - shadow) * diffuse;
 	out_gAlbedoSpec.a = (1.0 - shadow) * specular.r;
+
+	// エミッシブカラーのサンプリング/出力
+	vec3 resultEmissive = texture(u_mat.emissiveMap, fs_in.fragTexCoords).rgb;
+	out_gBrightColor = vec4(resultEmissive, 1.0);
 }

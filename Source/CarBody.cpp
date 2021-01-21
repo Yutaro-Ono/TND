@@ -7,9 +7,12 @@
 #include "PointLight.h"
 #include "SpotLight.h"
 #include "CarMeshComponent.h"
+#include "LightGlassComponent.h"
 // メッシュパス
 const std::string CarBody::CAR_BODY_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/OnlyFrame/BodyOnlyFrameLessMirror_Internal.OBJ";
-const std::string CarBody::CAR_GLASS_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/IncludeInterior/BodyGlassIncludeInterior_Internal.OBJ";
+const std::string CarBody::CAR_GLASS_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/Glass/BodyGlass.OBJ";
+const std::string CarBody::CAR_FRONTLIGHT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/FrontLight/FrontLight_Internal.OBJ";
+const std::string CarBody::CAR_BACKLIGHT_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Glass/BackLight/BackLight_Internal.OBJ";
 const std::string CarBody::CAR_INTERIOR_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Body/Interior/InteriorGlassLess_Internal.OBJ";
 
 // コンストラクタ
@@ -27,18 +30,23 @@ CarBody::CarBody(PlayerCar* in_owner)
 	//MeshComponent* bodyFrame = new MeshComponent(this);
 	bodyFrame->SetMesh(bodyFrameMesh);
 	// 窓ガラス (環境マッピング)
-	Mesh* glassMesh = RENDERER->GetMesh("Data/Meshes/TND/Actors/Car/Player/Body/Glass/Glass/BodyGlass.OBJ");
+	Mesh* glassMesh = RENDERER->GetMesh(CAR_GLASS_MESH_PATH);
 	//MeshComponent* glass = new MeshComponent(this);
 	EnvironmentMapComponent* glass = new EnvironmentMapComponent(this);
 	glass->SetMesh(glassMesh);
 
-	glassMesh = RENDERER->GetMesh("Data/Meshes/TND/Actors/Car/Player/Body/Glass/FrontLight/FrontLight_Internal.OBJ");
-	glass = new EnvironmentMapComponent(this);
-	glass->SetMesh(glassMesh);
-
-	glassMesh = RENDERER->GetMesh("Data/Meshes/TND/Actors/Car/Player/Body/Glass/BackLight/BackLight_Internal.OBJ");
-	glass = new EnvironmentMapComponent(this);
-	glass->SetMesh(glassMesh);
+	// フロントライト
+	glassMesh = RENDERER->GetMesh(CAR_FRONTLIGHT_MESH_PATH);
+	LightGlassComponent* lightGlass = new LightGlassComponent(this);
+	lightGlass->SetMesh(glassMesh);
+	lightGlass->SetLightColor(Vector3(1.0f, 0.6f, 0.4f));
+	lightGlass->SetLightLuminance(1.63f);
+	// バックライト
+	glassMesh = RENDERER->GetMesh(CAR_BACKLIGHT_MESH_PATH);
+	lightGlass = new LightGlassComponent(this);
+	lightGlass->SetMesh(glassMesh);
+	lightGlass->SetLightColor(Vector3(1.0f, 0.0f, 0.4f));
+	lightGlass->SetLightLuminance(1.9f);
 
 	// 内装メッシュ
 	Mesh* interiorMesh = RENDERER->GetMesh(CAR_INTERIOR_MESH_PATH);
@@ -63,14 +71,14 @@ CarBody::CarBody(PlayerCar* in_owner)
 	// フロントライト・バックライトのセット
 	for (int i = 0; i < 2; i++)
 	{
-		m_frontLight[i] = new PointLight(PointLight::VL_SMALL);
+		m_frontLight[i] = new PointLight(PointLight::VL_MEDIUM);
 		m_frontLight[i]->SetPosition(Vector3(m_owner->GetPosition().x - 30.0f, m_owner->GetPosition().y + (10.0f * (i + 1)), m_owner->GetPosition().z));
-		m_frontLight[i]->SetLightColor(Vector3(0.3f, 0.9f, 1.0f), Vector3(1.0f, 1.0f, 1.0f));
-		m_frontLight[i]->SetLuminance(5.5f);
+		m_frontLight[i]->SetLightColor(Vector3(1.0f, 0.6f, 0.4f), Vector3(1.0f, 0.6f, 0.4f));
+		m_frontLight[i]->SetLuminance(2.5f);
 
 		m_backLight[i] = new PointLight(PointLight::VL_MEDIUM);
-		m_backLight[i]->SetLightColor(Vector3(1.0f, 0.1f, 0.1f), Vector3(1.0f, 1.0f, 1.0f));
-		m_backLight[i]->SetLuminance(1.0f);
+		m_backLight[i]->SetLightColor(Vector3(1.0f, 0.0f, 0.4f), Vector3(1.0f, 0.0f, 0.4f));
+		m_backLight[i]->SetLuminance(3.0f);
 	}
 
 	m_frontLight[0]->SetPosition(Vector3(m_owner->GetPosition().x + 100.0f, m_owner->GetPosition().y + 25.0f, m_owner->GetPosition().z + 50.0f));
@@ -101,7 +109,7 @@ void CarBody::UpdateActor(float in_deltaTime)
 
 	// フロントライト・バックライトの座標調整
 	m_frontLight[0]->SetWorldTransform(Matrix4::CreateScale(m_frontLight[0]->GetScale()) * Matrix4::CreateFromQuaternion(GetRotation()) * Matrix4::CreateTranslation(Vector3::Transform(Vector3(m_owner->GetPosition().x + 100.0f, m_owner->GetPosition().y + 25.0f, m_owner->GetPosition().z + 50.0f), GetRotation())) * Matrix4::CreateTranslation(GetPosition() + Vector3(0.0f, 0.0f, 30.0f)));
-	m_frontLight[0]->SetWorldTransform(Matrix4::CreateScale(m_frontLight[1]->GetScale()) * Matrix4::CreateFromQuaternion(GetRotation()) * Matrix4::CreateTranslation(Vector3::Transform(Vector3(m_owner->GetPosition().x + 100.0f, m_owner->GetPosition().y - 25.0f, m_owner->GetPosition().z + 50.0f), GetRotation())) * Matrix4::CreateTranslation(GetPosition() + Vector3(0.0f, 0.0f, 30.0f)));
+	m_frontLight[1]->SetWorldTransform(Matrix4::CreateScale(m_frontLight[1]->GetScale()) * Matrix4::CreateFromQuaternion(GetRotation()) * Matrix4::CreateTranslation(Vector3::Transform(Vector3(m_owner->GetPosition().x + 100.0f, m_owner->GetPosition().y - 25.0f, m_owner->GetPosition().z + 50.0f), GetRotation())) * Matrix4::CreateTranslation(GetPosition() + Vector3(0.0f, 0.0f, 30.0f)));
 
 	m_backLight[0]->SetWorldTransform(Matrix4::CreateScale(m_backLight[0]->GetScale()) * Matrix4::CreateFromQuaternion(GetRotation()) * Matrix4::CreateTranslation(Vector3::Transform(Vector3(m_owner->GetPosition().x - 100.0f, m_owner->GetPosition().y + 45.0f, m_owner->GetPosition().z + 50.0f), GetRotation())) * Matrix4::CreateTranslation(GetPosition() + Vector3(0.0f, 0.0f, 30.0f)));
 	m_backLight[1]->SetWorldTransform(Matrix4::CreateScale(m_backLight[1]->GetScale()) * Matrix4::CreateFromQuaternion(GetRotation()) * Matrix4::CreateTranslation(Vector3::Transform(Vector3(m_owner->GetPosition().x - 100.0f, m_owner->GetPosition().y - 45.0f, m_owner->GetPosition().z + 50.0f), GetRotation())) * Matrix4::CreateTranslation(GetPosition() + Vector3(0.0f, 0.0f, 30.0f)));

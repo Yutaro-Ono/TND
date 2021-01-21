@@ -18,6 +18,7 @@ PointLightComponent::PointLightComponent(PointLight* in_light)
 
 	// メッシュのロード
 	m_mesh = RENDERER->GetMesh("Data/Meshes/TND/Light/PointLight/PointLight_Sphere.OBJ");
+	
 }
 
 PointLightComponent::~PointLightComponent()

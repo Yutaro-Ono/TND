@@ -238,7 +238,7 @@ void RenderBloom::DrawGaussBlur()
 
 	int reduceX = GAME_CONFIG->GetScreenWidth();
 	int reduceY = GAME_CONFIG->GetScreenHeight();;
-	float deviation = 5.0f;
+	float deviation = 2.0f;
 	unsigned int renderSource = m_blurBufferTex[1];
 
 	// ガウスレベル数分
@@ -264,9 +264,6 @@ void RenderBloom::DrawGaussBlur()
 				}
 				CalcGaussBlurParam(reduceX, reduceY, dir, deviation, offset);
 
-				// 回数ごとに偏差を上げる
-				deviation *= deviation;
-
 				// カラーバッファのクリア
 				glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 				glClear(GL_COLOR_BUFFER_BIT);
@@ -289,6 +286,8 @@ void RenderBloom::DrawGaussBlur()
 				renderSource = m_blurBufferTex[i * 2 + horizontal];
 			}
 		}
+		// 回数ごとに偏差を上げる
+		deviation *= 2.0f;
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -307,6 +306,7 @@ void RenderBloom::DrawBlendBloom(unsigned int in_colorBuffer)
 	m_hdrBloomShader->SetActive();
 	m_hdrBloomShader->SetFloat("u_exposure", m_exposure);
 	m_hdrBloomShader->SetInt("u_scene", 0);
+	
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, in_colorBuffer);
 
@@ -323,6 +323,7 @@ void RenderBloom::DrawBlendBloom(unsigned int in_colorBuffer)
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 }
+
 
 // ガウスぼかしの重みを算出する (in_rho = 偏差)
 float RenderBloom::GaussianDistribution(const Vector2& in_pos, float in_rho)

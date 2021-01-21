@@ -32,11 +32,12 @@ private:
 	class Renderer* m_renderer;           // レンダラークラスへのポインタ
 
 	// メッシュシェーダ
-	class Shader* m_gBufferShader;        // GBuffer対応シェーダ
-	class Shader* m_gBufferSkinShader;    // GBuffer対応スキンシェーダ
-	class Shader* m_gBufferSkyBoxShader;  // GBuffer対応スカイボックスシェーダ
-	class Shader* m_gBufferEnvShader;     // GBuffer対応環境マップシェーダ
-	class Shader* m_gBufferCarShader;     // GBuffer対応車用シェーダ
+	class Shader* m_meshShader;             // GBuffer対応シェーダ
+	class Shader* m_skinShader;             // GBuffer対応スキンシェーダ
+	class Shader* m_skyBoxShader;           // GBuffer対応スカイボックスシェーダ
+	class Shader* m_envShader;              // GBuffer対応環境マップシェーダ
+	class Shader* m_carShader;              // GBuffer対応車用シェーダ
+	class Shader* m_lightGlassShader;       // 光るガラス(車のフロントライトなど)シェーダ
 
 	// ライトシェーダ
 	class Shader* m_pointLightShader;
@@ -52,17 +53,18 @@ private:
 	// GBuffer
 	unsigned int m_gBuffer;               // G-Buffer (3要素を持つフレームバッファ)
     // G-Bufferに関連付ける各種出力
-	unsigned int m_gPos;                  // 3D空間座標
-	unsigned int m_gNormal;               // 法線ベクトル
-	unsigned int m_gAlbedoSpec;           // アルベド(RGB)＆スペキュラ(A)
-	unsigned int m_gRBO;                  // G-Bufferに紐付ける描画バッファ
-	unsigned int m_attachments[3];
+	unsigned int m_gPos;                  // GBuffer用3D空間座標
+	unsigned int m_gNormal;               // GBuffer用法線ベクトル
+	unsigned int m_gAlbedoSpec;           // GBuffer用アルベド(RGB)＆スペキュラ(A)
+	unsigned int m_gEmissive;             // GBuffer用輝度(※エミッシブ)バッファ
+	unsigned int m_gAttachments[4];       // GBufferアタッチメント (バッファ数分確保)
+	unsigned int m_gRBO;                  // G-Buffer用の描画バッファオブジェクト
 
 	// ライトバッファ (光源処理用)
 	unsigned int m_lightFBO;              // ライトバッファ
 	// ライトバッファに関連付ける出力
 	unsigned int m_lightHDR;              // 光源処理用のHDR対応バッファ (浮動小数点)
-	unsigned int m_lightBrightBuffer;     // ライト用高輝度バッファ
+	unsigned int m_lightHighBright;         // ライト用高輝度バッファ
 	unsigned int m_lightRBO;              // ライト用レンダーバッファ
 	unsigned int m_lightAttachments[2];
 

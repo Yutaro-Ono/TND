@@ -75,6 +75,7 @@
     <ClCompile Include="Source\LevelManager.cpp" />
     <ClCompile Include="Source\LevelObject.cpp" />
     <ClCompile Include="Source\LevelTerrain.cpp" />
+    <ClCompile Include="Source\LightGlassComponent.cpp" />
     <ClCompile Include="Source\LoadScreen.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Math.cpp" />
@@ -91,6 +92,7 @@
     <ClCompile Include="Source\MoveComponentCar.cpp" />
     <ClCompile Include="Source\MoveComponentHuman.cpp" />
     <ClCompile Include="Source\Music.cpp" />
+    <ClCompile Include="Source\BridgeObject.cpp" />
     <ClCompile Include="Source\OrbitCamera.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
     <ClCompile Include="Source\ParticleManager.cpp" />
@@ -169,6 +171,7 @@
     <ClInclude Include="Source\GameMain.h" />
     <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\GameWorld.h" />
+    <ClInclude Include="Source\LightGlassComponent.h" />
     <ClInclude Include="Source\HeliBody.h" />
     <ClInclude Include="Source\Helicopter.h" />
     <ClInclude Include="Source\HeliRotorBack.h" />
@@ -213,6 +216,7 @@
     <ClInclude Include="Source\MoveComponentCar.h" />
     <ClInclude Include="Source\MoveComponentHuman.h" />
     <ClInclude Include="Source\Music.h" />
+    <ClInclude Include="Source\BridgeObject.h" />
     <ClInclude Include="Source\OrbitCamera.h" />
     <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\ParticleManager.h" />
@@ -286,13 +290,16 @@
     <None Include="Data\Shaders\GBuffer\gBuffer_CarShaderReflect.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_EnvironmentMap.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_EnvironmentMap.vert" />
+    <None Include="Data\Shaders\GBuffer\GBuffer_LightGlass.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_NormShadow.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_NormShadow.vert" />
+    <None Include="Data\Shaders\GBuffer\gBuffer_OutScreen.frag" />
+    <None Include="Data\Shaders\GBuffer\gBuffer_OutScreen.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_Shadow.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_SkinNormShadow.vert" />
     <None Include="Data\Shaders\GBuffer\gBuffer_SkyBox.frag" />
     <None Include="Data\Shaders\GBuffer\gBuffer_SkyBox.vert" />
-    <None Include="Data\Shaders\GBuffer\LightGlass.vert" />
+    <None Include="Data\Shaders\GBuffer\GBuffer_LightGlass.vert" />
     <None Include="Data\Shaders\GBuffer\Particle_Bloom.frag" />
     <None Include="Data\Shaders\GBuffer\Particle_Bloom.vert" />
     <None Include="Data\Shaders\GBuffer\PointLight.frag" />

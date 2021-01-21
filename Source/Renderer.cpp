@@ -47,6 +47,7 @@ Renderer::Renderer()
 	,m_cameraPos(Vector3::Zero)
 	,m_fRenderer(nullptr)
 	,m_dRenderer(nullptr)
+	,m_mapHUD(nullptr)
 	,m_renderMode(RENDER_MODE::DEFFERED)
 {
 }
@@ -263,6 +264,25 @@ void Renderer::Delete()
 	}
 	m_animations.clear();
 
+	// 車メッシュ配列の解放
+	for (auto car : m_carMeshComponents)
+	{
+		delete car;
+	}
+	m_carMeshComponents.clear();
+	// ライトグラス配列の解放
+	for (auto light : m_lightGlassComponents)
+	{
+		delete light;
+	}
+	m_lightGlassComponents.clear();
+	// 環境マップオブジェクト配列の解放
+	for (auto env : m_envMeshComponents)
+	{
+		delete env;
+	}
+	m_envMeshComponents.clear();
+
 	// スプライトの解放
 	for (auto sprite : m_worldSprites)
 	{
@@ -474,6 +494,17 @@ void Renderer::RemoveEnvironmentComponent(EnvironmentMapComponent* in_envMesh)
 	m_envMeshComponents.erase(iter);
 }
 
+void Renderer::AddLightGlassComponent(LightGlassComponent* in_glassMesh)
+{
+	m_lightGlassComponents.push_back(in_glassMesh);
+}
+
+void Renderer::RemoveLightGlassComponent(LightGlassComponent* in_glassMesh)
+{
+	auto iter = std::find(m_lightGlassComponents.begin(), m_lightGlassComponents.end(), in_glassMesh);
+	m_lightGlassComponents.erase(iter);
+}
+
 /// <summary>
 /// ポイントライトコンポーネント追加
 /// 追加されると描画に適用される
@@ -546,6 +577,12 @@ void Renderer::SetWorldSpriteVertex()
 void Renderer::SetDirectionalLight(const dirLight& in_dirLight)
 {
 	m_directionalLight = in_dirLight;
+}
+
+// スプライト頂点配列のアクティブ化
+void Renderer::SetActiveSpriteVAO()
+{
+	m_spriteVerts->SetActive();
 }
 
 // テクスチャの取得
@@ -698,6 +735,17 @@ const Animation* Renderer::GetAnimation(const char* in_fileName, bool in_loop)
 ParticleManager * Renderer::GetParticleManager() const
 {
 	return m_particleManager;
+}
+
+// マップHUDのセッター
+void Renderer::SetMapHUD(MiniMapHUD* in_mapHUD)
+{
+	// マップHUDが空でなかったら削除
+	if (m_mapHUD != nullptr)
+	{
+		delete m_mapHUD;
+	}
+	m_mapHUD = in_mapHUD;
 }
 
 // スカイボックス用頂点配列定義

@@ -15,6 +15,7 @@
 #include "PlayerControlUI.h"
 #include "PointLight.h"
 #include "LandMarkIndicator.h"
+#include "MiniMapHUD.h"
 #include <Windows.h>
 #include <iostream>
 #include <algorithm>
@@ -52,6 +53,8 @@ GameWorld::GameWorld()
 	// UI生成
 	m_canvas = new Canvas(this);
 
+	MiniMapHUD* map = new MiniMapHUD(m_player);
+
 	LandMarkIndicator* ind = new LandMarkIndicator(m_player->GetPlayerCar());
 }
 
@@ -88,7 +91,6 @@ void GameWorld::Update(float in_deltaTime)
 	// ヘリがプレイヤーを発見したかどうかを走査し、一つでもヒットしたら抜ける
 	for (auto heli : m_helicopters)
 	{
-
 		if (heli->GetFoundPlayer())
 		{
 			m_canvas->GetPlayerControlUI()->SetFindPlayer(true);
@@ -101,9 +103,6 @@ void GameWorld::Update(float in_deltaTime)
 			m_foundPlayer = false;
 		}
 	}
-
-
-
 }
 
 // 依頼人アクタの登録

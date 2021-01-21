@@ -486,6 +486,15 @@
     <Filter Include="ソース ファイル\Actor\Level\Lamp">
       <UniqueIdentifier>{aa774798-4366-4c28-88f4-b75c4fb2a891}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\GBuffer\Screen">
+      <UniqueIdentifier>{cc89fa3b-d28e-4033-a5d8-4f870ab01f2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Actor\Level\Bridge">
+      <UniqueIdentifier>{f385693c-1e53-4303-9b9d-5de8becbe8e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Renderer\Mesh\Component\GlassMesh">
+      <UniqueIdentifier>{cb75a22b-463e-4006-9abb-abfe590868bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -835,6 +844,12 @@
     </ClCompile>
     <ClCompile Include="Source\LampObject.cpp">
       <Filter>ソース ファイル\Actor\Level\Lamp</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BridgeObject.cpp">
+      <Filter>ソース ファイル\Actor\Level\Bridge</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LightGlassComponent.cpp">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\GlassMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1201,6 +1216,12 @@
     <ClInclude Include="Source\LampObject.h">
       <Filter>ソース ファイル\Actor\Level\Lamp</Filter>
     </ClInclude>
+    <ClInclude Include="Source\BridgeObject.h">
+      <Filter>ソース ファイル\Actor\Level\Bridge</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LightGlassComponent.h">
+      <Filter>ソース ファイル\Renderer\Mesh\Component\GlassMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\Shaders\DirectLine.vert">
@@ -1431,7 +1452,16 @@
     <None Include="Data\Shaders\GBuffer\SpotLight_Bloom.frag">
       <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Bloom\SpotLight</Filter>
     </None>
-    <None Include="Data\Shaders\GBuffer\LightGlass.vert">
+    <None Include="Data\Shaders\GBuffer\gBuffer_OutScreen.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Screen</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\gBuffer_OutScreen.vert">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Screen</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\GBuffer_LightGlass.frag">
+      <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\LightGlass</Filter>
+    </None>
+    <None Include="Data\Shaders\GBuffer\GBuffer_LightGlass.vert">
       <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\LightGlass</Filter>
     </None>
   </ItemGroup>

@@ -64,5 +64,7 @@ void main()
 
 	vs_out.fragPosLightSpace = vec4(vs_out.fragWorldPos, 1.0) * u_lightSpaceMatrix;
 
+
+
 }
 

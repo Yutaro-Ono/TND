@@ -22,6 +22,7 @@ MeshComponent::MeshComponent(Actor * in_owner, bool in_isSkeletal)
 	,m_textureIndex(0)
 	,m_visible(true)
 	,m_isSkeletal(in_isSkeletal)
+	,m_intensity(1.0f)
 {
 	RENDERER->AddMeshComponent(this);
 	//printf("new MeshComponent : [%5d] owner->( 0x%p )\n", GetID(), in_owner);
@@ -43,6 +44,8 @@ void MeshComponent::Draw(Shader * in_shader)
 		in_shader->SetMatrixUniform("u_worldTransform", m_owner->GetWorldTransform());
 		// スペキュラ強度セット
 		in_shader->SetFloatUniform("u_specPower", 32);
+		// 輝度強度セット
+		in_shader->SetFloatUniform("u_intensity", m_intensity);
 
 		SetTexturesToUniform(in_shader);          // Uniformに各種テクスチャをセット
 

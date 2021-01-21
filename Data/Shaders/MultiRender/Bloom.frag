@@ -23,11 +23,11 @@ uniform float u_exposure;        // 露出値 (0で画面が真っ暗になる)
 void main()
 {
 	vec3 hdrColor    = texture(u_scene, TexCoords).rgb;
-    vec3 bloomColor1 = texture(u_bloom1, TexCoords).rgb;
-    vec3 bloomColor2 = texture(u_bloom2, TexCoords).rgb;
-    vec3 bloomColor3 = texture(u_bloom3, TexCoords).rgb;
-    vec3 bloomColor4 = texture(u_bloom4, TexCoords).rgb;
-    vec3 bloomColor5 = texture(u_bloom4, TexCoords).rgb;
+    vec3 bloomColor1 = texture(u_bloom1, TexCoords).rgb * 1.0f;
+    vec3 bloomColor2 = texture(u_bloom2, TexCoords).rgb * 2.0f;
+    vec3 bloomColor3 = texture(u_bloom3, TexCoords).rgb * 4.0f;
+    vec3 bloomColor4 = texture(u_bloom4, TexCoords).rgb * 8.0f;
+    vec3 bloomColor5 = texture(u_bloom4, TexCoords).rgb * 16.0f;
     hdrColor += bloomColor1 + bloomColor2 + bloomColor3 + bloomColor4 + bloomColor5; 
   
     // 露出トーンマッピング
@@ -35,7 +35,7 @@ void main()
     
     // ガンマコレクション
     //const float gamma = 2.2;
-    const float gamma = 0.125;
+    const float gamma = 0.085;
 
     mapped = pow(mapped, vec3(1.0 / gamma));  
     out_fragColor = vec4(mapped, 1.0);
