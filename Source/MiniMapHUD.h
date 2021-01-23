@@ -34,6 +34,7 @@ private:
 
 	Vector2 m_screenPos;                   // スクリーン上の座標
 
+	Matrix4 m_projection;
 	//Matrix4 m_lowerViewProj;             // 下向きのビュー&プロジェクション合成行列
 
 };

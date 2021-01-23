@@ -345,12 +345,6 @@
     <Filter Include="ソース ファイル\Shader\Source\MultiRender\Mesh">
       <UniqueIdentifier>{4c48fea9-e334-4f7f-91b5-c305a462a076}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\BasicMesh">
-      <UniqueIdentifier>{1881c055-8ab5-4f70-a7e2-d4581d8912b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\BasicMesh\Skinned">
-      <UniqueIdentifier>{982e61b7-289c-4dda-bfeb-2d47fe3e7d31}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap\Skinned">
       <UniqueIdentifier>{3dedc1c0-cb11-402d-b831-4bd29790a124}</UniqueIdentifier>
     </Filter>
@@ -494,6 +488,12 @@
     </Filter>
     <Filter Include="ソース ファイル\Renderer\Mesh\Component\GlassMesh">
       <UniqueIdentifier>{cb75a22b-463e-4006-9abb-abfe590868bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\Mesh">
+      <UniqueIdentifier>{1881c055-8ab5-4f70-a7e2-d4581d8912b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\Mesh\Skinned">
+      <UniqueIdentifier>{982e61b7-289c-4dda-bfeb-2d47fe3e7d31}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1276,7 +1276,7 @@
       <Filter>ソース ファイル\Shader\Source\Sprite\WorldSpace</Filter>
     </None>
     <None Include="Data\Shaders\SkinnedShadow.vert">
-      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\BasicMesh\Skinned</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\Mesh\Skinned</Filter>
     </None>
     <None Include="Data\Shaders\DepthMap.frag">
       <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\DepthMap\Basic</Filter>
@@ -1339,10 +1339,10 @@
       <Filter>ソース ファイル\Shader\Source\MultiRender\Mesh</Filter>
     </None>
     <None Include="Data\Shaders\PhongShadow.vert">
-      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\BasicMesh</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\Mesh</Filter>
     </None>
     <None Include="Data\Shaders\PhongShadow.frag">
-      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\BasicMesh</Filter>
+      <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\Mesh</Filter>
     </None>
     <None Include="Data\Shaders\ShadowSkinnedNormal.vert">
       <Filter>ソース ファイル\Shader\Source\SingleRender\Shadow\NormalMap\Skinned</Filter>

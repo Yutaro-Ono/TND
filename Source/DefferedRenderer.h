@@ -32,6 +32,7 @@ private:
 	class Renderer* m_renderer;           // レンダラークラスへのポインタ
 
 	// メッシュシェーダ
+	class Shader* m_simpleMeshShader;       // マップ描画用シンプルシェーダ
 	class Shader* m_meshShader;             // GBuffer対応シェーダ
 	class Shader* m_skinShader;             // GBuffer対応スキンシェーダ
 	class Shader* m_skyBoxShader;           // GBuffer対応スカイボックスシェーダ

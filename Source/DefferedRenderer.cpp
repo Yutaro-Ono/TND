@@ -32,6 +32,7 @@
 // コンストラクタ
 DefferedRenderer::DefferedRenderer(Renderer* in_renderer)
 	:m_renderer(in_renderer)
+	,m_simpleMeshShader(nullptr)
 	,m_meshShader(nullptr)
 	,m_skinShader(nullptr)
 	,m_skyBoxShader(nullptr)
@@ -55,6 +56,7 @@ DefferedRenderer::DefferedRenderer(Renderer* in_renderer)
 // デストラクタ
 DefferedRenderer::~DefferedRenderer()
 {
+	delete m_simpleMeshShader;
 	delete m_meshShader;
 	delete m_skinShader;
 	delete m_envShader;
@@ -69,6 +71,11 @@ DefferedRenderer::~DefferedRenderer()
 // GBufferへの書き込み処理
 void DefferedRenderer::DrawGBuffer()
 {
+	// マップHUD書き込み処理
+	if (m_renderer->GetMapHUD() != nullptr)
+	{
+		m_renderer->GetMapHUD()->WriteBuffer(m_simpleMeshShader, m_renderer->m_meshComponents);
+	}
 	// 描画先をGBufferとしてバインドする
 	glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);
 	// ビューポートをスクリーンサイズにセット
@@ -202,6 +209,9 @@ void DefferedRenderer::DrawGBuffer()
 
 	// GBufferのバインド解除
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+
 }
 
 // GBufferを元にライティング計算を行う
@@ -319,6 +329,7 @@ void DefferedRenderer::DrawLightPass()
 
 	// spriteシェーダーのアクティブ化
 	m_bloomSpriteShader->SetActive();
+	m_bloomSpriteShader->SetFloat("u_intensity", 1.0f);
 	RENDERER->SetActiveSpriteVAO();
 	for (auto sprite : m_renderer->m_spriteComponents)
 	{
@@ -331,12 +342,6 @@ void DefferedRenderer::DrawLightPass()
 	for (auto ui : GAME_INSTANCE.GetUIStack())
 	{
 		ui->Draw(m_bloomSpriteShader);
-	}
-	// マップHUD
-	if (m_renderer->GetMapHUD() != nullptr)
-	{
-		m_renderer->GetMapHUD()->WriteBuffer(m_renderer->m_meshShader, m_renderer->m_meshComponents);
-		m_renderer->GetMapHUD()->Draw(m_bloomSpriteShader);
 	}
 
 
@@ -353,10 +358,15 @@ void DefferedRenderer::DrawLightPass()
 	// ライトバッファ描画へ戻す
 	glBindFramebuffer(GL_FRAMEBUFFER, m_lightFBO);
 
+	// マップHUD
+	if (m_renderer->GetMapHUD() != nullptr)
+	{
+		m_renderer->GetMapHUD()->Draw(m_bloomSpriteShader);
+	}
+
 	// 深度テストをオン
 	glEnable(GL_DEPTH_TEST);
 	
-
 	//----------------------------------------------------------------+
     // パーティクル描画
     //----------------------------------------------------------------+
@@ -537,6 +547,12 @@ bool DefferedRenderer::Initialize()
 	//--------------------------------------------------------------------------------------------------------------------+
 	// GBuffer出力用シェーダ
 	//--------------------------------------------------------------------------------------------------------------------+
+	// シンプルなメッシュ用シェーダ
+	m_simpleMeshShader = new Shader();
+	if (!m_simpleMeshShader->Load("Data/Shaders/BasicMesh.vert", "Data/Shaders/BasicMesh.frag"))
+	{
+		return false;
+	}
 	// GBuffer用メッシュシェーダの作成
 	m_meshShader = new Shader();
 	if (!m_meshShader->Load("Data/Shaders/GBuffer/gBuffer_NormShadow.vert", "Data/Shaders/GBuffer/gBuffer_NormShadow.frag"))

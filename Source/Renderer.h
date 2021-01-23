@@ -92,6 +92,7 @@ public:
 	void SetDirectionalLight(const dirLight& in_dirLight);
 	void SetActiveSpriteVAO();                                            // スプライト頂点配列のアクティブ化
 
+
 	//--------------------------------------------+
 	// Getter / Setter
 	//--------------------------------------------+

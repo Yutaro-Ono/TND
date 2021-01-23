@@ -92,7 +92,7 @@ void UIScreen::DrawTexture(Shader * in_shader, Texture * in_texture, const Vecto
 	
 	// シェーダにワールド変換行列を送信
 	in_shader->SetMatrixUniform("u_worldTransform", world);
-	in_shader->SetInt("u_Texture", 0);
+	in_shader->SetInt("u_texture", 0);
 	//in_texture->SetActive();
 
 	// テクスチャをアクティブ化

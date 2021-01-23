@@ -23,6 +23,7 @@
 #include "ClientActor.h"
 #include "PointLight.h"
 #include "SpotLight.h"
+#include "MiniMapHUD.h"
 const int TitleScene::STAGE_ALL_NUM = 1;
 
 // コンストラクタ
@@ -100,6 +101,8 @@ void TitleScene::Initialize()
 	GAME_INSTANCE.GetLoadScreen()->DisableScreen();
 	// タイトル用UI
 	TitleScreen* hud = new TitleScreen(this);
+
+	MiniMapHUD* map = new MiniMapHUD(m_car);
 }
 
 // 更新処理

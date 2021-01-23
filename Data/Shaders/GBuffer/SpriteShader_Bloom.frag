@@ -11,19 +11,20 @@ in vec2 FragTexCoords;           // テクスチャ座標
 
 
 // uniform
-uniform sampler2D u_Texture;     // テクスチャサンプリング
+uniform sampler2D u_texture;     // テクスチャサンプリング
+uniform float u_intensity = 1.0f;  // 輝度調節
 
 void main()
 {
 
 	// テクスチャからカラーをサンプリング
-	out_color = texture(u_Texture, FragTexCoords);
+	out_color = texture(u_texture, FragTexCoords);
 
 	vec3 result = out_color.rgb;
 
 	// 高輝度バッファへの出力値を抽出
 	//float brightness = dot(result, vec3(0.0231, 0.11, 0.65));
-	float brightness = dot(result, vec3(0.0, 0.0, 1.0));
+	float brightness = dot(result, vec3(0.0, 0.0, 1.0)) * u_intensity;
 
 	if(brightness > 0.5)                                              // 輝度が0.71を超えたなら
 	{
