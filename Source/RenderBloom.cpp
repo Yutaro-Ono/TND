@@ -256,11 +256,11 @@ void RenderBloom::DrawGaussBlur()
 				Vector2 dir;
 				if (horizontal)
 				{
-					dir = Vector2(0, 1);
+					dir = Vector2(0.0f, 1.0f);
 				}
 				else
 				{
-					dir = Vector2(1, 0);
+					dir = Vector2(1.0f, 0.0f);
 				}
 				CalcGaussBlurParam(reduceX, reduceY, dir, deviation, offset);
 

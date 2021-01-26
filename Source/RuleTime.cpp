@@ -3,7 +3,7 @@
 #include "GameScene.h"
 
 const float RuleTime::START_TIME = 15.0f;
-const float RuleTime::LIMIT_TIME = 180.0f;
+const float RuleTime::LIMIT_TIME = 600.0f;
 const float RuleTime::FINISH_TIME = 3.0f;
 
 RuleTime::RuleTime(class GameScene* in_scene)

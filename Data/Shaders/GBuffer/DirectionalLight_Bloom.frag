@@ -57,9 +57,10 @@ void main()
 	vec3 viewDir = normalize(u_viewPos - Position);
 	vec3 halfVec = normalize(LightDir + viewDir);
 	float spec = pow(max(dot(Normal, halfVec), 0.0), 32);
-	vec3 specular = u_dirLight.specular * u_dirLight.intensity * spec * Spec_p;
+	vec3 specular = u_dirLight.specular * spec * Spec_p;
 
 	vec3 result = ambient + diffuse + specular + texture(u_gBuffer.emissive, TexCoords).rgb;
+	vec3 brightColor = ambient + diffuse + texture(u_gBuffer.emissive, TexCoords).rgb;
 
 	// 高輝度バッファへの出力値を抽出
 	//float brightness = dot(result, vec3(0.1126, 0.4152, 0.522));     // 輝度をカラー結果の内積から求める
@@ -67,7 +68,7 @@ void main()
 
 	if(brightness > 0.8f)                                              // 輝度が0.8を超えたなら
 	{
-		out_brightColor = vec4(result, 0.0f);
+		out_brightColor = vec4(brightColor, 0.0f);
 	}
 	else
 	{

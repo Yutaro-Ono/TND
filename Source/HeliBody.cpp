@@ -19,7 +19,7 @@ HeliBody::HeliBody(Helicopter* in_heli, const std::string& in_filePath)
 	// メッシュコンポーネントにロードしたメッシュをセット
 	m_meshComp = new MeshComponent(this);
 	m_meshComp->SetMesh(mesh);
-
+	m_meshComp->SetMapColor(Vector3(0.8f, 0.45f, 0.75f));
 }
 
 HeliBody::~HeliBody()

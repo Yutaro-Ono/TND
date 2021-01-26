@@ -15,6 +15,8 @@ HeliSpotLight::HeliSpotLight(Helicopter* in_heli, const std::string& in_filePath
 	// メッシュコンポーネントにロードしたメッシュをセット
 	m_meshComp = new MeshComponent(this);
 	m_meshComp->SetMesh(mesh);
+	m_meshComp->SetMapColor(Vector3(0.8f, 0.45f, 0.75f));
+	m_meshComp->SetIntensityVal(185.0f);
 
 	// オーナーに座標・スケール・回転・ワールド行列を合わせる
 	SetScale(m_owner->GetScale());

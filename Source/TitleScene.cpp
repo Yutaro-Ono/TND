@@ -102,7 +102,6 @@ void TitleScene::Initialize()
 	// タイトル用UI
 	TitleScreen* hud = new TitleScreen(this);
 
-	MiniMapHUD* map = new MiniMapHUD(m_car);
 }
 
 // 更新処理

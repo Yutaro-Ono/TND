@@ -14,7 +14,7 @@ LampObject::LampObject(const Vector3& in_pos)
 	// メッシュを取得し、コンポーネントにセット
 	m_meshComp = new MeshComponent(this);
 	m_meshComp->SetMesh(RENDERER->GetMesh("Data/Meshes/TND/Objects/Lamp/SM_Lamp.OBJ"));
-	m_meshComp->SetIntensityVal(5.5f);
+	m_meshComp->SetIntensityVal(4.5f);
 
 	// 電球の光源
 	m_headLight = new PointLight(PointLight::LIGHT_VOLUME::VL_BIG);

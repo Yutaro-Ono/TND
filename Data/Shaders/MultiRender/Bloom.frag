@@ -34,7 +34,7 @@ void main()
     vec3 mapped = vec3(1.0) - exp(-hdrColor * u_exposure);
     
     // ガンマコレクション
-    //const float gamma = 2.2;
+    //const float gamma = 0.035;
     const float gamma = 0.085;
 
     mapped = pow(mapped, vec3(1.0 / gamma));  

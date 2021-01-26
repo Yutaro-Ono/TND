@@ -176,7 +176,7 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				block->SetPosition(Vector3(ix * blockSize, offsetY - iy * blockSize, floorZoffset + 5.0f));
 				block->SetScale(5.0f);
 
-				block->GetMeshComponent()->SetIntensityVal(0.6f);
+				block->GetMeshComponent()->SetIntensityVal(5.0f);
 
 			}
 		}
@@ -237,7 +237,11 @@ LevelManager::LevelManager(GameWorld* in_world, int in_stageNum)
 				LampObject* lamp = new LampObject(Vector3(ix * blockSize, offsetY - iy * blockSize, -10.0f), m_blockMeshes[3]);
 
 				// ƒ[ƒhˆ—
-				GAME_INSTANCE.GetLoadScreen()->AddGauge();
+				if (ix % 4 == 0)
+				{
+					GAME_INSTANCE.GetLoadScreen()->AddGauge();
+				}
+
 			}
 
 		}

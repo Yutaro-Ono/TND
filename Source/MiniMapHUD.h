@@ -24,7 +24,7 @@ private:
 	unsigned int m_rbo;
 
 	class Actor* m_target;                 // ターゲット
-
+	class Texture* m_mapTex;               // マップテクスチャ (円形)
 
 	int m_width;
 	int m_height;

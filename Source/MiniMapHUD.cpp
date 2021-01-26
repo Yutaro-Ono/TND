@@ -4,16 +4,18 @@
 #include "Shader.h"
 #include "GameWorld.h"
 #include "PlayerManager.h"
+#include "Texture.h"
 
 MiniMapHUD::MiniMapHUD(Actor* in_target)
 	:m_target(in_target)
 	,m_miniMapFBO(0)
 	,m_mapBuffer(0)
 	,m_rbo(0)
-	,m_width(680)
-	,m_height(340)
-	,m_scale(1.0f)
-	,m_screenPos(Vector2(-GAME_CONFIG->GetScreenWidth() / 2 + 10.0f, -GAME_CONFIG->GetScreenHeight() / 2 + m_height / 2 + 10.0f))
+	,m_width(1024)
+	,m_height(512)
+	,m_scale(0.8f)
+	,m_screenPos(Vector2(-GAME_CONFIG->GetScreenWidth() / 2 + 35.0f, -GAME_CONFIG->GetScreenHeight() / 2 + m_height / 2 + 15.0f))
+	,m_mapTex(nullptr)
 {
 	// ターゲットアクタの座標を取得し、マップ描画のために高所へ設定
 	m_viewPos = m_target->GetPosition() + Vector3(0.0f, 0.0f, 4500.0f);
@@ -26,10 +28,15 @@ MiniMapHUD::MiniMapHUD(Actor* in_target)
 
 	CreateFBO(m_miniMapFBO);
 	RENDERER->SetMapHUD(this);
+
+	// マップテクスチャを生成
+	m_mapTex = new Texture();
+	m_mapTex->Load("Data/Interface/HUD/Map/MapHUD.png");
 }
 
 MiniMapHUD::~MiniMapHUD()
 {
+	
 }
 
 // モデルをマップバッファに書き込む
@@ -46,22 +53,20 @@ void MiniMapHUD::WriteBuffer(Shader* in_shader, std::vector<class MeshComponent*
 	glEnable(GL_DEPTH_TEST);
 
 	// ターゲットアクタの座標を取得し、マップ描画のために高所へ設定
-	m_viewPos = m_target->GetPosition() + Vector3(0.0f, -3000.0f, 4500.0f);
-	Matrix4 view = Matrix4::CreateLookAt(m_viewPos, m_target->GetPosition() + Vector3(0.0f, -3000.0f, 0.0f), Vector3::UnitX);
+	m_viewPos = m_target->GetPosition() + Vector3(0.0f, -3900.0f, 4500.0f);
+	Matrix4 view = Matrix4::CreateLookAt(m_viewPos, m_target->GetPosition() + Vector3(0.0f, -3900.0f, 0.0f), Vector3::UnitX);
 	// ビュー・プロジェクション合成行列を作成
 	Matrix4 viewProj = view * m_projection;
 	
 	in_shader->SetActive();
-	in_shader->SetInt("u_texture", 0);
 	in_shader->SetMatrixUniform("u_viewProj", viewProj);
 	glClearColor(1.0f, 0.6f, 0.0f, 1.0f);
 
 	// バッファに書き込む
 	for (auto mesh : in_mesh)
 	{
-		mesh->Draw(in_shader);
+		mesh->DrawMap(in_shader);
 	}
-
 
 	// フレームバッファのバインド解除
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -91,10 +96,14 @@ void MiniMapHUD::Draw(Shader* in_shader)
 	in_shader->SetMatrixUniform("u_worldTransform", world);
 	//in_shader->SetMatrixUniform("u_viewProj", viewProj);
 	in_shader->SetInt("u_texture", 0);
+	in_shader->SetInt("u_mapTex", 1);
 	in_shader->SetFloat("u_intensity", 0.1f);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_mapBuffer);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, m_mapTex->GetTextureID());
+
 
 	RENDERER->SetActiveSpriteVAO();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);

@@ -27,6 +27,8 @@ void LevelBlock::SetMesh(Mesh * in_mesh)
 	Mesh* mesh = in_mesh;
 	m_meshComp = new MeshComponent(this);
 	m_meshComp->SetMesh(mesh);
+	m_meshComp->SetMapColor(Vector3(0.3f, 0.35f, 0.4f));
+
 
 	 // “–‚½‚è”»’èİ’è
 	 m_box = new BoxCollider(this, PhysicsWorld::TYPE_BACK_GROUND);

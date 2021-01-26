@@ -311,6 +311,10 @@
     <None Include="Data\Shaders\GBuffer\SpriteShader_Bloom.frag" />
     <None Include="Data\Shaders\GBuffer\SpriteShader_Bloom.vert" />
     <None Include="Data\Shaders\GBuffer\WorldSpaceSprite_Bloom.frag" />
+    <None Include="Data\Shaders\HUD\HUD_MapOutput.frag" />
+    <None Include="Data\Shaders\HUD\HUD_MapOutput.vert" />
+    <None Include="Data\Shaders\HUD\HUD_MapShader.frag" />
+    <None Include="Data\Shaders\HUD\HUD_MapShader.vert" />
     <None Include="Data\Shaders\Line.frag" />
     <None Include="Data\Shaders\Line.vert" />
     <None Include="Data\Shaders\MultiRender\Bloom.frag" />

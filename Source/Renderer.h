@@ -189,6 +189,8 @@ private:
 	class Shader* m_worldSpaceSpriteShader;                                // ワールド空間上のスプライトシェーダ
 	class Shader* m_particleShader;
 	class Shader* m_skyboxShader;                                          // スカイボックス用シェーダ
+	class Shader* m_mapInputShader;                                        // マップHUD入力用シェーダ
+	class Shader* m_mapOutputShader;                                       // マップHUD出力用シェーダ
 
 	//--------------------------------------------+
 	// 頂点配列

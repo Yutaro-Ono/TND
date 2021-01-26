@@ -74,7 +74,7 @@ void DefferedRenderer::DrawGBuffer()
 	// マップHUD書き込み処理
 	if (m_renderer->GetMapHUD() != nullptr)
 	{
-		m_renderer->GetMapHUD()->WriteBuffer(m_simpleMeshShader, m_renderer->m_meshComponents);
+		m_renderer->GetMapHUD()->WriteBuffer(m_renderer->m_mapInputShader, m_renderer->m_meshComponents);
 	}
 	// 描画先をGBufferとしてバインドする
 	glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);
@@ -167,9 +167,6 @@ void DefferedRenderer::DrawGBuffer()
 	{
 		car->Draw(m_carShader);
 	}
-
-
-
 
 	//------------------------------------------------------------+
     // SkyBox
@@ -344,6 +341,11 @@ void DefferedRenderer::DrawLightPass()
 		ui->Draw(m_bloomSpriteShader);
 	}
 
+	// マップHUD
+	if (m_renderer->GetMapHUD() != nullptr)
+	{
+		m_renderer->GetMapHUD()->Draw(m_renderer->m_mapOutputShader);
+	}
 
 	// ブレンドをオフ
 	glDisable(GL_BLEND);
@@ -358,11 +360,6 @@ void DefferedRenderer::DrawLightPass()
 	// ライトバッファ描画へ戻す
 	glBindFramebuffer(GL_FRAMEBUFFER, m_lightFBO);
 
-	// マップHUD
-	if (m_renderer->GetMapHUD() != nullptr)
-	{
-		m_renderer->GetMapHUD()->Draw(m_bloomSpriteShader);
-	}
 
 	// 深度テストをオン
 	glEnable(GL_DEPTH_TEST);

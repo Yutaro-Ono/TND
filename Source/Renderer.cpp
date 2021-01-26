@@ -41,6 +41,8 @@ Renderer::Renderer()
 	,m_meshNormalShader(nullptr)
 	,m_skinnedShader(nullptr)
 	,m_skyboxShader(nullptr)
+	,m_mapInputShader(nullptr)
+	,m_mapOutputShader(nullptr)
 	,m_frameBuffer(nullptr)
 	,m_bloom(nullptr)
 	,m_switchShader(0)
@@ -311,6 +313,8 @@ void Renderer::Delete()
 	delete m_meshShader;
 	delete m_worldSpaceSpriteShader;
 	delete m_skyboxShader;
+	delete m_mapInputShader;
+	delete m_mapOutputShader;
 
 	delete m_spriteVerts;
 	delete m_cubeVerts;
@@ -886,6 +890,22 @@ bool Renderer::LoadShaders()
 		return false;
 	}
 
+	// マップHUD入力用シェーダー
+	m_mapInputShader = new Shader();
+	if (!m_mapInputShader->Load("Data/Shaders/HUD/HUD_MapShader.vert", "Data/Shaders/HUD/HUD_MapShader.frag"))
+	{
+		return false;
+	}
+
+	// マップHUD出力用シェーダー
+	m_mapOutputShader = new Shader();
+	if (!m_mapOutputShader->Load("Data/Shaders/HUD/HUD_MapOutput.vert", "Data/Shaders/HUD/HUD_MapOutput.frag"))
+	{
+		return false;
+	}
+	m_mapOutputShader->SetActive();
+	// スクリーン用の行列を作成 (UIやスプライトは以降この行列を基準に描画)
+	m_mapOutputShader->SetMatrixUniform("u_viewProj", viewProj);
 
 	return true;
 }

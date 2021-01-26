@@ -99,7 +99,7 @@ void main()
 	{
 		out_colorBuffer = vec4(u_spotL.ambient * Albedo, Spec_p);
 
-					// 高輝度バッファへの出力値を抽出
+		// 高輝度バッファへの出力値を抽出
 		float brightness = dot(u_spotL.ambient * Albedo, vec3(0.1326, 0.3352, 0.442));
 
 		if(brightness > 0.2)                                              // 輝度が0.4を超えたなら

@@ -23,6 +23,7 @@ MeshComponent::MeshComponent(Actor * in_owner, bool in_isSkeletal)
 	,m_visible(true)
 	,m_isSkeletal(in_isSkeletal)
 	,m_intensity(1.0f)
+	,m_mapColor(Vector3(0.5f, 0.5f, 0.5f))
 {
 	RENDERER->AddMeshComponent(this);
 	//printf("new MeshComponent : [%5d] owner->( 0x%p )\n", GetID(), in_owner);
@@ -35,7 +36,7 @@ MeshComponent::~MeshComponent()
 	RENDERER->RemoveMeshComponent(this);
 }
 
-// 描画処理
+// 通常描画処理
 void MeshComponent::Draw(Shader * in_shader)
 {
 	if (m_mesh != nullptr && m_visible)
@@ -64,6 +65,23 @@ void MeshComponent::DrawShadow(Shader* in_shader)
 	{
 		// ワールド変換をセット
 		in_shader->SetMatrixUniform("u_worldTransform", m_owner->GetWorldTransform());
+
+		// 頂点配列をアクティブに
+		VertexArray* va = m_mesh->GetVertexArray();
+		va->SetActive();
+		// 描画する
+		glDrawElements(GL_TRIANGLES, va->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
+	}
+}
+
+void MeshComponent::DrawMap(Shader* in_shader)
+{
+	if (m_mesh != nullptr && m_visible)
+	{
+		// ワールド変換をセット
+		in_shader->SetMatrixUniform("u_worldTransform", m_owner->GetWorldTransform());
+		// スペキュラ強度セット
+		in_shader->SetVectorUniform("u_mapColor", m_mapColor);
 
 		// 頂点配列をアクティブに
 		VertexArray* va = m_mesh->GetVertexArray();

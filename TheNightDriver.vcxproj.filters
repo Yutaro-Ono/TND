@@ -495,6 +495,9 @@
     <Filter Include="ソース ファイル\Shader\Source\SingleRender\Shadow\Mesh\Skinned">
       <UniqueIdentifier>{982e61b7-289c-4dda-bfeb-2d47fe3e7d31}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Shader\HUD">
+      <UniqueIdentifier>{c91ba537-03ff-46a7-9cfc-f65a8478d723}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -1463,6 +1466,18 @@
     </None>
     <None Include="Data\Shaders\GBuffer\GBuffer_LightGlass.vert">
       <Filter>ソース ファイル\Shader\Source\GBuffer\Lighting\Basic\LightGlass</Filter>
+    </None>
+    <None Include="Data\Shaders\HUD\HUD_MapShader.frag">
+      <Filter>ソース ファイル\Shader\HUD</Filter>
+    </None>
+    <None Include="Data\Shaders\HUD\HUD_MapShader.vert">
+      <Filter>ソース ファイル\Shader\HUD</Filter>
+    </None>
+    <None Include="Data\Shaders\HUD\HUD_MapOutput.frag">
+      <Filter>ソース ファイル\Shader\HUD</Filter>
+    </None>
+    <None Include="Data\Shaders\HUD\HUD_MapOutput.vert">
+      <Filter>ソース ファイル\Shader\HUD</Filter>
     </None>
   </ItemGroup>
 </Project>

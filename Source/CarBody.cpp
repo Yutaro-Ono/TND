@@ -46,12 +46,13 @@ CarBody::CarBody(PlayerCar* in_owner)
 	lightGlass = new LightGlassComponent(this);
 	lightGlass->SetMesh(glassMesh);
 	lightGlass->SetLightColor(Vector3(1.0f, 0.0f, 0.4f));
-	lightGlass->SetLightLuminance(2.1f);
+	lightGlass->SetLightLuminance(2.05f);
 
 	// 内装メッシュ
 	Mesh* interiorMesh = RENDERER->GetMesh(CAR_INTERIOR_MESH_PATH);
 	MeshComponent* interior = new MeshComponent(this);
 	interior->SetMesh(interiorMesh);
+	interior->SetMapColor(Vector3(0.45f, 0.8f, 0.75f));
 
 	// ボディのメッシュを基準としてオーナーの当たり判定ボックスをセット
 	// 当たり判定ボックスのセット

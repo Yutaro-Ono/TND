@@ -15,6 +15,7 @@ LevelObject::LevelObject(Mesh * in_mesh)
 	Mesh* mesh = in_mesh;
 	m_meshComp = new MeshComponent(this);
 	m_meshComp->SetMesh(mesh);
+	m_meshComp->SetMapColor(Vector3(0.25f, 0.25f, 0.3f));
 }
 
 LevelObject::~LevelObject()

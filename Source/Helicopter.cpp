@@ -43,11 +43,14 @@ Helicopter::Helicopter(GameWorld* in_world, const Vector3& in_pos, int in_num)
 	// 巡回コンポーネントを生成・追加
 	m_patrolComp = new PatrolComponent(this, m_world);
 
+
+	// ライトカラー (赤)
+	Vector3 color = Vector3(1.0f, 0.0f, 0.0f);
 	// ポイントライト
-	m_pLight[0] = new PointLight();
+	m_pLight[0] = new PointLight(PointLight::VL_MEDIUM);
+	m_pLight[0]->SetLightColor(color, color);
 	m_pLight[0]->SetPosition(Vector3(m_position.x, m_position.y, 0.0f));
-	Vector3 color = Vector3(1.0f, 1.0f, 1.0f);
-	m_pLight[1] = new PointLight();
+	m_pLight[1] = new PointLight(PointLight::VL_SMALL);
 	m_pLight[1]->SetLightColor(color, color);
 	m_pLight[1]->SetPosition(Vector3(m_position.x, m_position.y, m_position.z - 10.0f));
 	m_pLight[1]->SetFlash(true);
@@ -72,13 +75,11 @@ void Helicopter::UpdateActor(float in_deltaTime)
 
 		// スポットライト位置
 		m_pLight[0]->SetPosition(lightPos * Vector3(1.0f, 1.0f, 0.0f));
-		m_pLight[0]->SetLightColor(Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f));
 	}
 	else if (m_state == HELI_STATE::CHASE)
 	{
 		// スポットライト位置がプレイヤーを追跡
 		m_pLight[0]->SetPosition(m_world->GetPlayer()->GetPosition() * Vector3(1.0f, 1.0f, 0.0f));
-		m_pLight[0]->SetLightColor(Vector3(1.0f, 0.3f, 0.3f), Vector3(1.0f, 1.0f, 1.0f));
 	}
 
 	// ポイントライトの追従処理
