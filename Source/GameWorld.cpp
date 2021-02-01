@@ -53,13 +53,16 @@ GameWorld::GameWorld()
 	// UI¶¬
 	m_canvas = new Canvas(this);
 
-	MiniMapHUD* map = new MiniMapHUD(m_player);
+	// ƒ}ƒbƒvHUD¶¬
+	m_mapHUD = new MiniMapHUD(m_player);
 
 	LandMarkIndicator* ind = new LandMarkIndicator(m_player->GetPlayerCar());
 }
 
 GameWorld::~GameWorld()
 {
+	RENDERER->RemoveMapHUD();
+
 	for (auto heli : m_helicopters)
 	{
 		heli->SetState(Actor::STATE_DEAD);

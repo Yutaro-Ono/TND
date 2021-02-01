@@ -18,7 +18,7 @@ in VS_OUT
 
 uniform samplerCube skybox;
 
-uniform float u_skyLuminance = 0.45f;     // スカイボックスの輝度
+uniform float u_skyLuminance = 1.5f;     // スカイボックスの輝度
 
 void main()
 {

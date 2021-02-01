@@ -1,6 +1,8 @@
 #include "LoadScreen.h"
 #include "Texture.h"
 #include "Font.h"
+#include "GameMain.h"
+#include "AudioManager.h"
 #include <Windows.h>
 #include <sstream>
 
@@ -30,6 +32,11 @@ LoadScreen::LoadScreen()
 
 	// チュートリアルメッセージ
 	// m_tutorialMsg = RENDERER->GetTexture("Data/Interface/System/Load/LoadScreen_tuto_1.png");
+
+	// ロード時の効果音をロード
+	m_sound["Load"] = "Data/Music/SE/TND/System/Load/decision-6 (mp3cut.net).wav";
+	AUDIO->GetSound(m_sound["Load"]);
+	AUDIO->SetSoundVolume(m_sound["Load"], 2);
 
 	// 座標
 	m_loadingPos = Vector2(0.0f, -RENDERER->GetScreenHeight() / 2 + m_loading->GetHeight() + 180.0f);
@@ -86,12 +93,19 @@ void LoadScreen::Draw(Shader * in_shader)
 
 }
 
+
 void LoadScreen::AddGauge()
 {
 	if (m_gaugeNum < GAUGE_NUM)
 	{
+		// 効果音再生
+		AUDIO->PlaySoundTND(m_sound["Load"]);
+
+		// ゲージ数を増やす
 		m_gaugeNum++;
 	}
+	// 描画
 	RENDERER->Draw();
-	Sleep(50);
+	// ウェイト
+	Sleep(80);
 }

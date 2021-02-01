@@ -61,6 +61,8 @@ private:
 
 	class Canvas* m_canvas;                     // UIキャンバス
 
+	class MiniMapHUD* m_mapHUD;                 // マップHUD
+
 	class Environment* m_environment;
 	Environment::GAME_TIME m_gameTime;
 

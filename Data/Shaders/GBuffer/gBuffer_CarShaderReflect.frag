@@ -92,10 +92,10 @@ void main()
 	float NdotL = dot(L, N);
 
 	// 環境マップサンプリング
-	float ratio = 1.00 / 1.309;                                         // 反射率
+	float ratio = 1.00 / 1.309;                                        // 反射率
 	vec3 I = normalize(fs_in.fragWorldPos - fs_in.fragViewPos);        // カメラの向きベクトル
 	vec3 eR = refract(I, N, ratio);                                    // カメラの向きベクトルと法線から反射ベクトルを生成
-	vec3 envMap = texture(u_skybox, eR).rgb;
+	vec3 envMap = texture(u_skybox, eR).rgb * 0.5f;
 
 	// ディフューズ計算
 	vec3 Diffuse = u_dirLight.diffuse * texture(u_mat.diffuseMap, fs_in.fragTexCoords).rgb;

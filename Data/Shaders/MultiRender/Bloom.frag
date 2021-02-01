@@ -24,10 +24,10 @@ void main()
 {
 	vec3 hdrColor    = texture(u_scene, TexCoords).rgb;
     vec3 bloomColor1 = texture(u_bloom1, TexCoords).rgb * 1.0f;
-    vec3 bloomColor2 = texture(u_bloom2, TexCoords).rgb * 2.0f;
-    vec3 bloomColor3 = texture(u_bloom3, TexCoords).rgb * 4.0f;
-    vec3 bloomColor4 = texture(u_bloom4, TexCoords).rgb * 8.0f;
-    vec3 bloomColor5 = texture(u_bloom4, TexCoords).rgb * 16.0f;
+    vec3 bloomColor2 = texture(u_bloom2, TexCoords).rgb * 1.5f;
+    vec3 bloomColor3 = texture(u_bloom3, TexCoords).rgb * 2.0f;
+    vec3 bloomColor4 = texture(u_bloom4, TexCoords).rgb * 3.0f;
+    vec3 bloomColor5 = texture(u_bloom4, TexCoords).rgb * 9.0f;
     hdrColor += bloomColor1 + bloomColor2 + bloomColor3 + bloomColor4 + bloomColor5; 
   
     // 露出トーンマッピング

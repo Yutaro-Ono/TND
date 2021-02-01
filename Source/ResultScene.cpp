@@ -52,7 +52,7 @@ void ResultScene::Initialize()
 
 	// ‰¹Šy
 	//m_sound["BGM"] = "Data/Music/BGM/FC/ResultScene/townofdeath.wav";
-	m_sound["Enter"] = "Data/Music/SE/FC/System/Enter/switch01.wav";
+	m_sound["Enter"] = "Data/Music/SE/TND/System/Enter/decide13.wav";
 	//AUDIO->GetMusic(m_sound["BGM"]);
 	AUDIO->GetSound(m_sound["Enter"]);
 

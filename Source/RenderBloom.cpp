@@ -287,7 +287,7 @@ void RenderBloom::DrawGaussBlur()
 			}
 		}
 		// ‰ñ”‚²‚Æ‚É•Î·‚ğã‚°‚é
-		deviation *= 2.0f;
+		deviation += 1.5f;
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

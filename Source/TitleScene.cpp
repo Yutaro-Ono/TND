@@ -80,17 +80,18 @@ void TitleScene::Initialize()
 	//m_spotLight = new SpotLight(Vector3::Zero, SpotLight::VL_BIG);
 
 	// 音楽
-	//m_sound["BGM"] = "Data/Music/BGM/FC/TitleScene/neighofwar.wav";
-	m_sound["Enter"] = "Data/Music/SE/FC/System/Enter/switch01.wav";
+	m_sound["BGM"] = "Data/Music/BGM/TND/Title/cyrf_crashed_dimension (mp3cut.net).wav";
+	m_sound["Enter"] = "Data/Music/SE/TND/System/Enter/decide13.wav";
+	m_sound["Select"] = "Data/Music/SE/TND/System/Select/decide14.wav";
 
 	// SE
 	AUDIO->GetSound(m_sound["Enter"]);                                       // 決定音
+	AUDIO->GetSound(m_sound["Select"]);                                      // 選択音
 
 	GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
 	// BGM
-	//AUDIO->GetMusic(m_sound["BGM"]);
-	//AUDIO->PlayMusic(m_sound["BGM"]);
+	AUDIO->GetMusic(m_sound["BGM"]);
 
 	for (int i = 0; i < 61; i++)
 	{
@@ -102,6 +103,8 @@ void TitleScene::Initialize()
 	// タイトル用UI
 	TitleScreen* hud = new TitleScreen(this);
 
+	// BGM再生開始
+	AUDIO->PlayMusic(m_sound["BGM"]);
 }
 
 // 更新処理
@@ -125,7 +128,7 @@ SceneBase * TitleScene::Update()
 			|| CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_START))
 		{
 			// 決定音
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Select"]);
 			m_state = GAME_START;
 		}
 
@@ -140,7 +143,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_TAB) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_B))
 		{
 			// 決定音
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Select"]);
 
 			m_state = PRESS_ANY_KEY;
 			break;
@@ -149,8 +152,8 @@ SceneBase * TitleScene::Update()
 		// 下キーかDPAD下で選択
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_DOWN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
 		{
-			// 決定音
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
+			// 選択音
+			AUDIO->PlaySoundTND(m_sound["Select"]);
 
 			m_state = GAME_QUIT;
 		}
@@ -211,7 +214,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_TAB) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_B))
 		{
 			// 決定音
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Select"]);
 
 			// "GAME_START"へ
 			m_state = GAME_START;
@@ -227,8 +230,8 @@ SceneBase * TitleScene::Update()
 		// ↑キーかDPAD↑で選択
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_UP) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_UP))
 		{
-			// 決定音
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
+			// 選択音
+			AUDIO->PlaySoundTND(m_sound["Select"]);
 
 			// ステージ1でなければ選択中のステージをカウントダウン
 			if (m_selectedStage != 0)
@@ -242,8 +245,8 @@ SceneBase * TitleScene::Update()
 		// ↓キーかDPAD↓で選択
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_DOWN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
 		{
-			// 決定音
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
+			// 選択音
+			AUDIO->PlaySoundTND(m_sound["Select"]);
 
 			// ステージ数の上限でなければ選択中のステージ番号をカウントアップ
 			if (m_selectedStage < STAGE_ALL_NUM - 1)
@@ -308,7 +311,7 @@ SceneBase * TitleScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_TAB) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_B))
 		{
 			// 決定音
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Select"]);
 
 			m_state = PRESS_ANY_KEY;
 			break;
@@ -318,8 +321,8 @@ SceneBase * TitleScene::Update()
 		// 上キーかDPAD上で選択
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_UP) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_UP))
 		{
-			// 決定音
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
+			// 選択音
+			AUDIO->PlaySoundTND(m_sound["Select"]);
 
 			m_state = GAME_START;
 		}

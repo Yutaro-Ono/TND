@@ -13,8 +13,8 @@ MiniMapHUD::MiniMapHUD(Actor* in_target)
 	,m_rbo(0)
 	,m_width(1024)
 	,m_height(512)
-	,m_scale(0.8f)
-	,m_screenPos(Vector2(-GAME_CONFIG->GetScreenWidth() / 2 + 35.0f, -GAME_CONFIG->GetScreenHeight() / 2 + m_height / 2 + 15.0f))
+	,m_scale(0.7f)
+	,m_screenPos(Vector2(-GAME_CONFIG->GetScreenWidth() / 2 + 35.0f, -GAME_CONFIG->GetScreenHeight() / 2 + m_height / 2 + 5.0f))
 	,m_mapTex(nullptr)
 {
 	// ターゲットアクタの座標を取得し、マップ描画のために高所へ設定

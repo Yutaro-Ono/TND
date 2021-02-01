@@ -286,7 +286,7 @@ void DefferedRenderer::DrawLightPass()
 	// ディレクショナルライトパス
 	//-----------------------------------------------+
 	// 輝度定義
-	float intensity = 1.35f;
+	float intensity = 1.65f;
 	// シェーダのセット
 	m_directionalLightShader->SetActive();
 	m_directionalLightShader->SetVectorUniform("u_viewPos", GAME_INSTANCE.GetViewVector());
@@ -406,7 +406,7 @@ void DefferedRenderer::Draw()
 	//glActiveTexture(GL_TEXTURE0);
 	////glBindTexture(GL_TEXTURE_2D, m_lightHDR);
 	////glBindTexture(GL_TEXTURE_2D, m_gAlbedoSpec);
-	//glBindTexture(GL_TEXTURE_2D, m_gPos);
+	//glBindTexture(GL_TEXTURE_2D, m_gEmissive);
 	////glBindTexture(GL_TEXTURE_2D, m_gBrightBuffer);
 
 	//// スクリーンに描画

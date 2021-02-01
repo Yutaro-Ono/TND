@@ -58,7 +58,6 @@ GameScene::~GameScene()
 	{
 		iter->Close();
 	}
-
 	// パーティクルを全て削除
 	RENDERER->GetParticleManager()->AllDeadParticle();
 	// 音楽を停止
@@ -85,8 +84,7 @@ void GameScene::Initialize()
 	//---------------------------------------------------------------------------------------------+
     // 音楽
     //---------------------------------------------------------------------------------------------+
-	m_sound["BGM"] = "Data/Music/BGM/FC/GameScene/disent.wav";
-
+	m_sound["BGM"] = "Data/Music/BGM/TND/Game/cyrf_cloudbase (mp3cut.net).wav";
 	AUDIO->GetMusic(m_sound["BGM"]);
 
 	// ロード画面の無効化
@@ -100,6 +98,8 @@ void GameScene::Initialize()
 
 	CountDownUI* countUI = new CountDownUI(ruleTime);
 
+	// BGM再生開始
+	AUDIO->PlayMusic(m_sound["BGM"]);
 }
 
 // 更新処理
@@ -204,6 +204,7 @@ SceneBase * GameScene::Update()
 		{
 			//m_player->AllStopSound();
 
+			// マップHUDのオフ
 
 
 			// 次のシーンを返す

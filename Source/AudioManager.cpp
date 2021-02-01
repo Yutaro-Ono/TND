@@ -1,6 +1,7 @@
 #include "AudioManager.h"
 #include "Sound.h"
 
+
 AudioManager::AudioManager()
 {
 }
@@ -55,7 +56,9 @@ void AudioManager::RemoveSound(const std::string & in_fileName)
 
 void AudioManager::PlaySoundTND(const std::string& in_fileName)
 {
+
 	m_sounds[in_fileName]->Play();
+
 }
 
 
@@ -67,6 +70,16 @@ void AudioManager::StopSound(const std::string& in_fileName)
 bool AudioManager::IsPlayingSound(const std::string & in_fileName)
 {
 	return m_sounds[in_fileName]->IsPlaying();
+}
+
+/// <summary>
+/// 指定のサウンドチャンクの音量をセット
+/// </summary>
+/// <param name="in_filename"> 音量を変更したい登録サウンド名 </param>
+/// <param name="in_vol"> 音量 </param>
+void AudioManager::SetSoundVolume(const std::string& in_filename, int in_vol)
+{
+	m_sounds[in_filename]->SetChunkVolume(in_vol);
 }
 
 Music * AudioManager::GetMusic(const std::string & in_fileName)
@@ -95,6 +108,16 @@ Music * AudioManager::GetMusic(const std::string & in_fileName)
 	}
 
 	return music;
+}
+
+/// <summary>
+/// 指定のミュージックの音量をセット
+/// </summary>
+/// <param name="in_filename"> 音量変更したいミュージック名 </param>
+/// <param name="in_vol"> 音量 </param>
+void AudioManager::SetMusicVolume(const std::string& in_filename, int in_vol)
+{
+	m_musics[in_filename]->SetMusicVolume(in_vol);
 }
 
 void AudioManager::RemoveMusic(const std::string & in_fileName)

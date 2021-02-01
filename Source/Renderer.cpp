@@ -548,6 +548,12 @@ void Renderer::RemoveSpotLightComponent(SpotLightComponent* in_spotL)
 	m_spotLights.erase(iter);
 }
 
+void Renderer::RemoveMapHUD()
+{
+	delete m_mapHUD;
+	m_mapHUD = nullptr;
+}
+
 // 指定したテクスチャの削除
 void Renderer::RemoveTexture(Texture* in_texture)
 {

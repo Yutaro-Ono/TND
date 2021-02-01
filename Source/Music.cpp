@@ -2,7 +2,9 @@
 
 Music::Music()
 	:m_music(nullptr)
+	,m_volume(6)
 {
+	Mix_VolumeMusic(m_volume);
 }
 
 Music::~Music()
@@ -31,6 +33,16 @@ bool Music::LoadMusic(const std::string & in_fileName)
 	m_music = Mix_LoadMUS(in_fileName.c_str());
 
 	return m_music != nullptr;
+}
+
+/// <summary>
+/// Й╣КyВ╠Й╣Ч╩Т▓Ро (1 Б` 128)
+/// </summary>
+/// <param name="in_vol">ФCИ╙В╠Й╣Ч╩(1 Б` 128)</param>
+void Music::SetMusicVolume(int in_vol)
+{
+	m_volume = in_vol;
+	Mix_VolumeMusic(m_volume);
 }
 
 void Music::Stop()

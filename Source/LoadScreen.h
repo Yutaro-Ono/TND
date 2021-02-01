@@ -54,6 +54,8 @@ private:
 
 	bool m_isGame;                   // 今ゲームシーンかどうか(ゲームシーンなら操作説明を表示)
 
+	std::unordered_map<std::string, std::string> m_sound;               // 効果音
+
 	Vector2 m_loadingPos;
 
 	Vector2 m_loadGaugePos;

@@ -17,11 +17,14 @@ public:
 
 	Sound* GetSound(const std::string& in_fileName);
 	void   RemoveSound(const std::string& in_fileName);                    // サウンドを削除
-	void   PlaySoundTND(const std::string& in_fileName);                      // サウンド再生
+	void   PlaySoundTND(const std::string& in_fileName);                   // サウンド再生
 	void   StopSound(const std::string& in_fileName);                      // サウンド停止
 	bool   IsPlayingSound(const std::string& in_fileName);                 // サウンドが再生中か
+	void   SetSoundVolume(const std::string& in_filename, int in_vol);     // 指定のサウンドチャンクの音量をセット
+
 
 	Music* GetMusic(const std::string& in_fileName);
+	void   SetMusicVolume(const std::string& in_filename, int in_vol);     // 指定のミュージックの音量をセット
 	void   RemoveMusic(const std::string& in_fileName);
 	void   PlayFadeInMusic(const std::string& in_fileName, int in_fadeTime);
 	void   PlayMusic(const std::string& in_fileName);

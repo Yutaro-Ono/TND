@@ -10,6 +10,7 @@ LampObject::LampObject(const Vector3& in_pos)
 	,m_groundLight(nullptr)
 {
 	SetPosition(in_pos);
+	SetScale(0.8f);
 
 	// メッシュを取得し、コンポーネントにセット
 	m_meshComp = new MeshComponent(this);

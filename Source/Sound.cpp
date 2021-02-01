@@ -6,7 +6,9 @@
 Sound::Sound()
 	:m_chunk(nullptr)
 	,m_channel(-1)
+	,m_volume(10)
 {
+
 }
 
 Sound::~Sound()
@@ -34,9 +36,23 @@ void Sound::Stop()
 	m_channel = -1;
 }
 
+/// <summary>
+/// サウンドチャンクの音量をセット
+/// </summary>
+/// <param name="in_vol"> 音量 (1 ～ 128) </param>
+void Sound::SetChunkVolume(int in_vol)
+{
+	m_volume = in_vol;
+	Mix_VolumeChunk(m_chunk, m_volume);
+}
+
 bool Sound::LoadSound(const std::string & in_fileName)
 {
+	// チャンクにロード
 	m_chunk = Mix_LoadWAV(in_fileName.c_str());
+	// 音量をセット
+	Mix_VolumeChunk(m_chunk, m_volume);
+
 	return m_chunk != nullptr;
 }
 

@@ -75,6 +75,8 @@ public:
 	// SpotLightComponent
 	void AddSpotLightComponent(class SpotLightComponent* in_spotL);
 	void RemoveSpotLightComponent(class SpotLightComponent* in_spotL);
+	// MapHUD
+	void RemoveMapHUD();
 
 	// TextureComponent
 	void RemoveTexture(class Texture* in_texture);
