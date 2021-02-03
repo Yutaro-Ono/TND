@@ -10,6 +10,7 @@ public:
 	CameraComponent(class Actor* in_target, int updateOrder = 200);
 	~CameraComponent();
 
+	void ChangeProjectionMat(float in_fov, float in_near, float in_far);
 
 	void SetActive() { GAME_INSTANCE.SetCamera(this); }
 

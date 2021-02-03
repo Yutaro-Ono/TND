@@ -1,12 +1,18 @@
-#version 330 core
+#version 420
 layout(location = 0) in vec3 a_pos;
 layout(location = 1) in vec3 a_normal;
 layout(location = 2) in vec2 a_texCoords;
 
+// uniformバッファブロック
+// 0.行列
+layout(std140, binding = 0) uniform Matrices
+{
+	mat4 u_view;
+	mat4 u_projection;
+};
+
 
 uniform mat4 u_worldTransform;
-uniform mat4 u_view;
-uniform mat4 u_projection;
 
 // フラグメントへの出力
 out VS_OUT

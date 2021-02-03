@@ -1,14 +1,21 @@
 //-----------------------------------------------------------------+
 // 光るメッシュ(車のフロントライト等)用 シェーダ
 //-----------------------------------------------------------------+
-#version 330 core
+#version 420
 layout (location = 0) in vec3 a_pos;
 layout (location = 1) in vec3 a_normal;
 layout (location = 2) in vec2 a_texCoords;
 
+// uniformバッファブロック (行列)
+layout(std140, binding = 0) uniform Matrices
+{
+	mat4 u_view;
+	mat4 u_projection;
+};
+
 // uniform
 uniform mat4 u_worldTransform;
-uniform mat4 u_viewProj;
+
 // フラグメントへの出力
 out VS_OUT
 {
@@ -24,5 +31,5 @@ void main()
 	vs_out.fragNormal = vec3(vs_out.fragNormal.y, -vs_out.fragNormal.z, vs_out.fragNormal.x);
 	vs_out.fragWorldPos = vec3(pos.y, -pos.z, pos.x);                                                 // ワールド上の位置ベクトルを出力
 
-	gl_Position = pos * u_viewProj;
+	gl_Position = pos * u_view * u_projection;
 }

@@ -2,7 +2,7 @@
 // Gバッファへ出力するシェーダ
 // シャドウに対応
 //-------------------------------------------------------------------------+
-#version 330 core
+#version 420
 // 各バッファへの出力 (レンダーターゲット)
 layout (location = 0) out vec3 out_gPosition;
 layout (location = 1) out vec3 out_gNormal;
@@ -42,7 +42,6 @@ struct DirectionalLight
 // uniform
 uniform Material u_mat;
 uniform DirectionalLight u_dirLight;
-uniform vec3 u_viewPos;                   // カメラ座標
 
 // シャドウの計算
 float ShadowCalculation(vec4 fragPosLightSpace)
@@ -83,7 +82,7 @@ void main()
 	// ポリゴン表面からライト方向へのベクトル
 	vec3 L = normalize(-u_dirLight.direction);
 	// ポリゴン表面からカメラ方向
-	vec3 V = normalize(u_viewPos - fs_in.fragWorldPos);
+	vec3 V = normalize(fs_in.fragViewPos - fs_in.fragWorldPos);
 
 	// -L ベクトルを 法線 N に対して反射したベクトルRを求める
 	vec3 R = normalize(reflect(-L, N));
@@ -100,7 +99,7 @@ void main()
 	vec3 diffuse = u_dirLight.diffuse * diff * vec3(texture(u_mat.diffuseMap, fs_in.fragTexCoords));
 
 	// スペキュラ計算
-	vec3 viewDir = normalize(u_viewPos - fs_in.fragWorldPos);
+	vec3 viewDir = normalize(fs_in.fragViewPos - fs_in.fragWorldPos);
 	vec3 reflectDir = reflect(u_dirLight.direction, norm);
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
 	//float spec = pow(max(0.0, dot(R, V)), uSpecPower);

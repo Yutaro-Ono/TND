@@ -46,7 +46,10 @@ public:
 private:
 
 
-	class PlayerCar* m_car;                                             // ŽÔ
+	//class PlayerCar* m_car;                                             // ŽÔ
+	class TitleCar* m_car;
+
+	class BridgeObject* m_bridge[8];
 
 	class ClientActor* m_client;
 

@@ -17,7 +17,7 @@ Shader::Shader()
 	,m_vertexShader(0)
 	,m_fragShader(0)
 {
-
+	
 }
 
 // デストラクタ
@@ -43,6 +43,15 @@ bool Shader::Load(const std::string & in_vertName, const std::string & in_fragNa
 	glAttachShader(m_shaderProgram, m_fragShader);
 	glLinkProgram(m_shaderProgram);
 
+	// uniformバッファブロックへのリンク
+// 行列
+	m_uniformBlockIndex = glGetUniformBlockIndex(m_shaderProgram, "Matrices");
+	glUniformBlockBinding(m_shaderProgram, m_uniformBlockIndex, 0);
+	// カメラ
+	m_uniformBlockIndex = glGetUniformBlockIndex(m_shaderProgram, "CameraVariable");
+	glUniformBlockBinding(m_shaderProgram, m_uniformBlockIndex, 1);
+
+
 	// リンクが失敗
 	if (!IsValidProgram())
 	{
@@ -50,7 +59,13 @@ bool Shader::Load(const std::string & in_vertName, const std::string & in_fragNa
 		return false;
 	}
 
+
 	return true;
+}
+
+void Shader::LinkUniformBuffer()
+{
+
 }
 
 // シェーダー破棄

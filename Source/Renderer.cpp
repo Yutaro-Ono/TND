@@ -36,6 +36,7 @@ Renderer::Renderer()
 	:m_window(nullptr)
 	,m_SDLRenderer(nullptr)
 	,m_context(0)
+	,m_uboMatrices(0)
 	,m_spriteShader(nullptr)
 	,m_meshShader(nullptr)
 	,m_meshNormalShader(nullptr)
@@ -52,6 +53,7 @@ Renderer::Renderer()
 	,m_mapHUD(nullptr)
 	,m_renderMode(RENDER_MODE::DEFFERED)
 {
+
 }
 
 // デストラクタ
@@ -167,10 +169,12 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 	ImGui::StyleColorsDark();
 	// 使用しているプラットフォームにバインド
 	ImGui_ImplSDL2_InitForOpenGL(m_window, m_context);
-	ImGui_ImplOpenGL3_Init("#version 330");
+	ImGui_ImplOpenGL3_Init("#version 420");
 
 	// GLEWは無害なエラーコードを出すのでクリアしておく
 	glGetError();
+
+
 
 	// シェーダープログラムの初期化
 	if (!LoadShaders())
@@ -223,6 +227,20 @@ bool Renderer::Initialize(int in_screenW, int in_screenH, bool in_full)
 		return false;
 	}
 	CreateScreenVerts();
+	// uniformバッファ生成
+	glGenBuffers(1, &m_uboMatrices);
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uboMatrices);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(Matrix4::mat), NULL, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, m_uboMatrices, 0, 2 * sizeof(Matrix4::mat));
+	glGenBuffers(1, &m_uboCamera);
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uboCamera);
+	glBufferData(GL_UNIFORM_BUFFER, sizeof(Vector3::x) + sizeof(Vector3::y) + sizeof(Vector3::z), NULL, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	glBindBufferRange(GL_UNIFORM_BUFFER, 1, m_uboCamera, 0, sizeof(Vector3::x) + sizeof(Vector3::y) + sizeof(Vector3::z));
+
+
+	m_dRenderer->LinkUniformBuffers();
 
 	//// カリング
 	//glFrontFace(GL_CCW);
@@ -347,9 +365,26 @@ void Renderer::Draw()
 //#endif
 
 	//------------------------------------------------+
-	// レンダリング (Forward か Deffered)
+	// レンダリング (Forward or Deffered)
 	//------------------------------------------------+
 	// 共通処理
+	// uniformバッファへ共通情報を格納する
+	// 行列UBO
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uboMatrices);
+	// 行列を転送するときは転置する
+	Matrix4 transView = m_view;
+	transView.Transpose();
+	Matrix4 transProj = m_projection;
+	transProj.Transpose();
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Matrix4::mat), transView.GetAsFloatPtr());
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(Matrix4::mat), sizeof(Matrix4::mat), transProj.GetAsFloatPtr());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	// カメラUBO
+	glBindBuffer(GL_UNIFORM_BUFFER, m_uboCamera);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Vector3::x) + sizeof(Vector3::y) + sizeof(Vector3::z), m_view.GetTranslation().GetAsFloatPtr());
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+
 	// シャドウ描画用の深度マップにライト視点から見た空間で書き込む
 	m_shadowMap->RenderDepthMapFromLightView(m_meshComponents, m_skeletalMeshComponents, m_carMeshComponents);
 	// ここから分岐

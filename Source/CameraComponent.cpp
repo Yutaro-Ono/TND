@@ -34,6 +34,17 @@ CameraComponent::~CameraComponent()
 	GAME_INSTANCE.InActiveCamera(this);
 }
 
+// プロジェクション行列の変更と登録し直し
+void CameraComponent::ChangeProjectionMat(float in_fov, float in_near, float in_far)
+{
+	// プロジェクション行列セット
+	Matrix4 projection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(in_fov),
+		static_cast<float>(GAME_CONFIG->GetScreenWidth()),
+		static_cast<float>(GAME_CONFIG->GetScreenHeight()),
+		in_near, in_far);
+	RENDERER->SetProjectionMatrix(projection);
+}
+
 void CameraComponent::SetViewMatrix(const Matrix4 & in_view)
 {
 	RENDERER->SetViewMatrix(in_view);

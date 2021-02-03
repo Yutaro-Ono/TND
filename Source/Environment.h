@@ -23,6 +23,8 @@ public:
 	void SetSkyBox(GAME_TIME in_gameTime);
 	void SetDirectionalLight(GAME_TIME in_gameTime);             // 時間帯ごとに平行ライトを設定する
 
+	void SetDirectionalLightPos(const Vector3& in_pos);
+
 	// ゲームタイムのゲッター・セッター
 	GAME_TIME GetGameTime() { return m_gameTime; }
 	void SetGameTime(GAME_TIME in_gameTime) { m_gameTime = in_gameTime; }

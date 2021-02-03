@@ -1,7 +1,7 @@
 //----------------------------------------------------+
 // スキン入りメッシュ用頂点シェーダ
 //----------------------------------------------------+
-#version 330 core
+#version 420
 // Attribute
 layout(location = 0) in vec3 a_pos;
 layout(location = 1) in vec3 a_normal;
@@ -10,17 +10,27 @@ layout(location = 3) in vec4 a_skinWeights;
 layout(location = 4) in vec2 a_texCoords;
 layout(location = 5) in vec3 a_tangent;
 
+// uniformバッファブロック
+// 0.行列
+layout(std140, binding = 0) uniform Matrices
+{
+	mat4 u_view;
+	mat4 u_projection;
+};
+// 1.カメラ座標
+layout(std140, binding = 1) uniform CameraVariable
+{
+	vec3 u_viewPos;
+};
+//
 // 変換行列 (ワールド、ビュー、プロジェクション)
 uniform mat4 u_worldTransform;
-uniform mat4 u_view;
-uniform mat4 u_projection;
 // 行列パレット
 uniform mat4 u_matrixPalette[196];
 // ライト空間行列
 uniform mat4 u_lightSpaceMatrix;
 // 光源座標・カメラ座標
 uniform vec3 u_lightPos;
-uniform vec3 u_viewPos;
 
 
 // フラグメントへの出力
@@ -29,7 +39,7 @@ out VS_OUT
 	vec2 fragTexCoords;          // テクスチャ座標
 	vec3 fragNormal;            // ワールドスペース上の法線
 	vec3 fragWorldPos;          // ワールドスペース上の座標
-	vec3 fragViewPos;
+	vec3 fragViewPos;           // ビュー座標
 	vec4 fragPosLightSpace;     // ライトスペース上の座標
 
 }vs_out;

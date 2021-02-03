@@ -49,6 +49,7 @@ DefferedRenderer::DefferedRenderer(Renderer* in_renderer)
 	,m_gAlbedoSpec(0)
 	,m_gEmissive(0)
 	,m_lightHDR(0)
+	,m_uboGBuffer(0)
 {
 	std::cout << "CREATE::DefferedRenderer::Instance" << std::endl;
 }
@@ -90,10 +91,6 @@ void DefferedRenderer::DrawGBuffer()
 	lightProj = Matrix4::CreateOrtho(7000.0f, 7000.0f, 1.0f, 5000.0f);
 	lightView = Matrix4::CreateLookAt(RENDERER->GetDirectionalLight().position, RENDERER->GetDirectionalLight().target, Vector3::UnitZ);
 	lightSpace = lightView * lightProj;
-	Matrix4 view = m_renderer->GetViewMatrix();
-	Matrix4 projection = m_renderer->GetProjectionMatrix();
-
-	Matrix4 viewProj = view * projection;
 
 	//-----------------------------------------------------------+
 	// 通常メッシュ
@@ -104,9 +101,6 @@ void DefferedRenderer::DrawGBuffer()
 	m_meshShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
 	m_meshShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_meshShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
-	m_meshShader->SetMatrixUniform("u_view", view);
-	m_meshShader->SetMatrixUniform("u_projection", projection);
-	m_meshShader->SetVectorUniform("u_viewPos", view.GetTranslation());
 	m_meshShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
 	m_meshShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
 	m_meshShader->SetInt("u_mat.diffuseMap", 0);
@@ -120,7 +114,7 @@ void DefferedRenderer::DrawGBuffer()
 		mesh->Draw(m_meshShader);
 	}
 
-
+	
 	//------------------------------------------------------------+
 	// スキンメッシュ
 	//------------------------------------------------------------+
@@ -130,9 +124,7 @@ void DefferedRenderer::DrawGBuffer()
 	m_skinShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
 	m_skinShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_skinShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
-	m_skinShader->SetMatrixUniform("u_view", view);
-	m_skinShader->SetMatrixUniform("u_projection", projection);
-	m_skinShader->SetVectorUniform("u_viewPos", view.GetTranslation());
+	m_skinShader->SetVectorUniform("u_viewPos", m_renderer->m_view.GetTranslation());
 	m_skinShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
 	m_skinShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
 	m_skinShader->SetInt("u_mat.diffuseMap", 0);
@@ -154,9 +146,6 @@ void DefferedRenderer::DrawGBuffer()
 	m_carShader->SetVectorUniform("u_dirLight.ambient", RENDERER->GetDirectionalLight().ambient);
 	m_carShader->SetVectorUniform("u_dirLight.diffuse", RENDERER->GetDirectionalLight().diffuse);
 	m_carShader->SetVectorUniform("u_dirLight.specular", RENDERER->GetDirectionalLight().specular);
-	m_carShader->SetMatrixUniform("u_view", view);
-	m_carShader->SetMatrixUniform("u_projection", projection);
-	m_carShader->SetVectorUniform("u_viewPos", view.GetTranslation());
 	m_carShader->SetMatrixUniform("u_lightSpaceMatrix", lightSpace);
 	m_carShader->SetVectorUniform("u_lightPos", RENDERER->GetDirectionalLight().position);
 	m_carShader->SetInt("u_mat.diffuseMap", 0);
@@ -172,11 +161,11 @@ void DefferedRenderer::DrawGBuffer()
     // SkyBox
     //------------------------------------------------------------+
 	m_skyBoxShader->SetActive();
-	// Uniformに行列をセット
-	Matrix4 InvView = view;
+	// Uniformに逆行列をセット
+	Matrix4 InvView = m_renderer->m_view;
 	InvView.Invert();
-	m_skyBoxShader->SetMatrixUniform("u_view", InvView);
-	m_skyBoxShader->SetMatrixUniform("u_projection", projection);
+	m_skyBoxShader->SetMatrixUniform("u_invView", InvView);
+	m_skyBoxShader->SetMatrixUniform("u_projection", m_renderer->m_projection);
 	m_skyBoxShader->SetInt("u_skybox", 0);
 	m_renderer->GetSkyBox()->Draw(m_skyBoxShader);
 
@@ -184,8 +173,7 @@ void DefferedRenderer::DrawGBuffer()
 	// EnvironmentMap
 	//------------------------------------------------------------+
 	m_envShader->SetActive();
-	m_envShader->SetMatrixUniform("u_viewProj", viewProj);
-	m_envShader->SetVectorUniform("u_viewPos", view.GetTranslation());
+	m_envShader->SetVectorUniform("u_viewPos", m_renderer->m_view.GetTranslation());
 	m_envShader->SetInt("u_skybox", 0);
 	for (auto env : m_renderer->m_envMeshComponents)
 	{
@@ -196,8 +184,7 @@ void DefferedRenderer::DrawGBuffer()
     // ライトグラス
     //------------------------------------------------------------+
 	m_lightGlassShader->SetActive();
-	m_lightGlassShader->SetMatrixUniform("u_viewProj", viewProj);
-	m_lightGlassShader->SetVectorUniform("u_viewPos", view.GetTranslation());
+	m_lightGlassShader->SetVectorUniform("u_viewPos", m_renderer->m_view.GetTranslation());
 	m_lightGlassShader->SetInt("u_skybox", 0);
 	for (auto light : m_renderer->m_lightGlassComponents)
 	{
@@ -244,8 +231,6 @@ void DefferedRenderer::DrawLightPass()
 	//------------------------------------------------------+
 	// ポイントライトシェーダへのセット
 	m_pointLightShader->SetActive();
-	m_pointLightShader->SetMatrixUniform("u_view",       m_renderer->GetViewMatrix());
-	m_pointLightShader->SetMatrixUniform("u_projection", m_renderer->GetProjectionMatrix());
 	m_pointLightShader->SetVectorUniform("u_viewPos",    GAME_INSTANCE.GetViewVector());
 	m_pointLightShader->SetInt("u_gBuffer.pos",     0);
 	m_pointLightShader->SetInt("u_gBuffer.normal",       1);
@@ -415,6 +400,13 @@ void DefferedRenderer::Draw()
 
 }
 
+void DefferedRenderer::LinkUniformBuffers()
+{
+	m_meshShader->LinkUniformBuffer();
+	m_skinShader->LinkUniformBuffer();
+	m_carShader->LinkUniformBuffer();
+}
+
 // GBufferを作成する
 // 座標用バッファ・法線用バッファ・アルベド＆スペキュラバッファ・レンダーバッファ
 bool DefferedRenderer::CreateGBuffer()
@@ -556,12 +548,14 @@ bool DefferedRenderer::Initialize()
 	{
 		return false;
 	}
+
 	// GBuffer用スキンシェーダの作成
 	m_skinShader = new Shader();
 	if (!m_skinShader->Load("Data/Shaders/GBuffer/gBuffer_SkinNormShadow.vert", "Data/Shaders/GBuffer/gBuffer_Shadow.frag"))
 	{
 		return false;
 	}
+
 	// GBuffer用スカイボックスシェーダ
 	m_skyBoxShader = new Shader();
 	if (!m_skyBoxShader->Load("Data/Shaders/GBuffer/gBuffer_SkyBox.vert", "Data/Shaders/GBuffer/gBuffer_SkyBox.frag"))

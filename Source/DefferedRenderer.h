@@ -19,6 +19,8 @@ public:
 	void DrawLightPass();             // GBufferからライティング計算を行う
 	void Draw();                      // GBufferに書き込まれた情報の描画
 
+	void LinkUniformBuffers();
+
 private:
 
 	bool CreateGBuffer();             // GBufferの作成
@@ -68,5 +70,8 @@ private:
 	unsigned int m_lightHighBright;         // ライト用高輝度バッファ
 	unsigned int m_lightRBO;              // ライト用レンダーバッファ
 	unsigned int m_lightAttachments[2];
+
+	// uniformバッファ (GBuffer用)
+	unsigned int m_uboGBuffer;
 
 };

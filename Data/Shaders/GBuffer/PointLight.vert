@@ -1,13 +1,19 @@
 //-----------------------------------------+
 // ポイントライトシェーダ
 //-----------------------------------------+
-#version 330 core
+#version 420
 // attribute (頂点座標のみで良い)
 layout (location = 0) in vec3 a_pos;
+
+// uniformバッファブロック (行列)
+layout(std140, binding = 0) uniform Matrices
+{
+	mat4 u_view;
+	mat4 u_projection;
+};
+
 // uniform
 uniform mat4 u_worldTransform;
-uniform mat4 u_view;
-uniform mat4 u_projection;
 
 // フラグメントへの出力
 out vec2 TexCoords;

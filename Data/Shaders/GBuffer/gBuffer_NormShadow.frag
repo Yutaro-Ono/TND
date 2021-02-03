@@ -2,12 +2,13 @@
 // マルチレンダリング用 描画時に色値・高輝度バッファへ出力するシェーダ
 // Bloom・法線マップ・シャドウに対応
 //-------------------------------------------------------------------------+
-#version 330 core
+#version 420
 // 各バッファへの出力 (レンダーターゲット)
 layout (location = 0) out vec3 out_gPosition;
 layout (location = 1) out vec3 out_gNormal;
 layout (location = 2) out vec4 out_gAlbedoSpec;
 layout (location = 3) out vec4 out_gBrightColor;
+
 
 // 頂点シェーダーからの入力受け取り
 in VS_OUT
@@ -32,6 +33,7 @@ struct Material
 	sampler2D emissiveMap;
 	sampler2D depthMap;
 };
+
 
 // ディレクショナルライト用構造体
 struct DirectionalLight

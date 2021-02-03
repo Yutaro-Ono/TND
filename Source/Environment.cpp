@@ -180,3 +180,18 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 	}
 
 }
+
+// ディレクショナルライトの光源と向きを再計算
+void Environment::SetDirectionalLightPos(const Vector3& in_pos)
+{
+	// プレイヤーの位置に応じて平行ライトの座標・向きを最適化
+	RENDERER->GetDirectionalLight().position = in_pos;
+	RENDERER->GetDirectionalLight().position.x += (int)ADJUST_POS.x;
+	RENDERER->GetDirectionalLight().position.y += (int)ADJUST_POS.y;
+	RENDERER->GetDirectionalLight().position.z += (int)ADJUST_POS.z;
+
+	RENDERER->GetDirectionalLight().target = in_pos;
+
+	RENDERER->GetDirectionalLight().direction = RENDERER->GetDirectionalLight().target - RENDERER->GetDirectionalLight().position;
+	RENDERER->GetDirectionalLight().direction.Normalize();
+}

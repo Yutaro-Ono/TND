@@ -104,6 +104,7 @@
     <ClCompile Include="Source\PlayerControlUI.cpp" />
     <ClCompile Include="Source\PlayerHuman.cpp" />
     <ClCompile Include="Source\PlayerManager.cpp" />
+    <ClCompile Include="Source\PointCameraComponent.cpp" />
     <ClCompile Include="Source\PointLight.cpp" />
     <ClCompile Include="Source\PointLightComponent.cpp" />
     <ClCompile Include="Source\RapidJsonHelper.cpp" />
@@ -131,6 +132,11 @@
     <ClCompile Include="Source\ThirdPersonCamera.cpp" />
     <ClCompile Include="Source\ThirdPersonCarCamera.cpp" />
     <ClCompile Include="Source\tiny_obj_loader.cc" />
+    <ClCompile Include="Source\TitleCar.cpp" />
+    <ClCompile Include="Source\TitleCarBody.cpp" />
+    <ClCompile Include="Source\TitleCarDoor.cpp" />
+    <ClCompile Include="Source\TitleCarHandle.cpp" />
+    <ClCompile Include="Source\TitleCarWheel.cpp" />
     <ClCompile Include="Source\TitleScene.cpp" />
     <ClCompile Include="Source\TitleScreen.cpp" />
     <ClCompile Include="Source\TutorialUI.cpp" />
@@ -228,6 +234,7 @@
     <ClInclude Include="Source\PlayerControlUI.h" />
     <ClInclude Include="Source\PlayerHuman.h" />
     <ClInclude Include="Source\PlayerManager.h" />
+    <ClInclude Include="Source\PointCameraComponent.h" />
     <ClInclude Include="Source\PointLight.h" />
     <ClInclude Include="Source\PointLightComponent.h" />
     <ClInclude Include="Source\RapidJsonHelper.h" />
@@ -256,6 +263,11 @@
     <ClInclude Include="Source\ThirdPersonCamera.h" />
     <ClInclude Include="Source\ThirdPersonCarCamera.h" />
     <ClInclude Include="Source\tiny_obj_loader.h" />
+    <ClInclude Include="Source\TitleCar.h" />
+    <ClInclude Include="Source\TitleCarBody.h" />
+    <ClInclude Include="Source\TitleCarDoor.h" />
+    <ClInclude Include="Source\TitleCarHandle.h" />
+    <ClInclude Include="Source\TitleCarWheel.h" />
     <ClInclude Include="Source\TitleScene.h" />
     <ClInclude Include="Source\TitleScreen.h" />
     <ClInclude Include="Source\TutorialUI.h" />

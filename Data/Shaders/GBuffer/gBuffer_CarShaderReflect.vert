@@ -2,20 +2,32 @@
 // GBuffer・車のモデル用 頂点シェーダ
 // 環境マップ・反射計算
 //-------------------------------------------------------------------------+
-#version 330 core
+#version 420
 // attribute
 layout(location = 0) in vec3 a_pos;
 layout(location = 1) in vec3 a_normal;
 layout(location = 2) in vec2 a_texCoords;
 
+// uniformバッファブロック
+// 0.行列
+layout(std140, binding = 0) uniform Matrices
+{
+	mat4 u_view;
+	mat4 u_projection;
+};
+// 1.カメラ座標
+layout(std140, binding = 1) uniform CameraVariable
+{
+	vec3 u_viewPos;
+};
+
 // ワールド変換行列・ビュープロジェクション行列・ライトスペース
 uniform mat4 u_worldTransform;
-uniform mat4 u_view;
-uniform mat4 u_projection;
+//uniform mat4 u_view;
+//uniform mat4 u_projection;
 uniform mat4 u_lightSpaceMatrix;   
 // 光源座標・カメラ座標
 uniform vec3 u_lightPos;
-uniform vec3 u_viewPos;
 
 // フラグメントへの出力
 out VS_OUT

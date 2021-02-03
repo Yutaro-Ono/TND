@@ -32,7 +32,7 @@ PlayerCar::PlayerCar()
 	m_cameraComp->SetChaseOwnerForward(false);
 	m_cameraComp->SetDistance(200.0f);
 
-	// 各パーツごとのクラスを作成
+	// 各パーツごとのインスタンスを作成
 	m_body = new CarBody(this);
 	m_door[0] = new CarDoor(this, CarDoor::DOOR_POS::LEFT);
 	m_door[1] = new CarDoor(this, CarDoor::DOOR_POS::RIGHT);

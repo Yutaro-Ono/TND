@@ -25,19 +25,19 @@ BridgeObject::BridgeObject(int in_num, const Vector3& in_startPos)
 	for (int i = 0; i < m_bridgeNum; i++)
 	{
 		m_bridges[i].push_back(new LevelObject(road));
-		m_bridges[i][0]->SetPosition(Vector3(0.0f, 2000.0f, 0.0f));
+		m_bridges[i][0]->SetPosition(in_startPos + Vector3(0.0f, 2000.0f, 0.0f));
 		m_bridges[i].push_back(new LevelObject(frame));
-		m_bridges[i][1]->SetPosition(Vector3(0.0f, 2000.0f, -3950.0f));
+		m_bridges[i][1]->SetPosition(in_startPos + Vector3(0.0f, 2000.0f, -3950.0f));
 		m_bridges[i].push_back(new LevelObject(handrail1));
-		m_bridges[i][2]->SetPosition(Vector3(0.0f, 2000.0f, -15.0f));
+		m_bridges[i][2]->SetPosition(in_startPos + Vector3(0.0f, 2000.0f, -15.0f));
 		m_bridges[i].push_back(new LevelObject(handrail2));
-		m_bridges[i][3]->SetPosition(Vector3(0.0f, 2000.0f, -15.0f));
+		m_bridges[i][3]->SetPosition(in_startPos + Vector3(0.0f, 2000.0f, -15.0f));
 		m_bridges[i].push_back(new LevelObject(curb1));
-		m_bridges[i][4]->SetPosition(Vector3(0.0f, 2000.0f, -15.0f));
+		m_bridges[i][4]->SetPosition(in_startPos + Vector3(0.0f, 2000.0f, -15.0f));
 		m_bridges[i].push_back(new LevelObject(curb2));
-		m_bridges[i][5]->SetPosition(Vector3(0.0f, 2000.0f, -15.0f));
+		m_bridges[i][5]->SetPosition(in_startPos + Vector3(0.0f, 2000.0f, -15.0f));
 		m_bridges[i].push_back(new LevelObject(lamp));
-		m_bridges[i][6]->SetPosition(Vector3(0.0f, 2000.0f, -15.0f));
+		m_bridges[i][6]->SetPosition(in_startPos + Vector3(0.0f, 2000.0f, -15.0f));
 		m_bridges[i][6]->GetMeshComponent()->SetIntensityVal(3.5f);
 	}
 

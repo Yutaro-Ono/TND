@@ -23,7 +23,8 @@
 #include "ClientActor.h"
 #include "PointLight.h"
 #include "SpotLight.h"
-#include "MiniMapHUD.h"
+#include "TitleCar.h"
+#include "BridgeObject.h"
 const int TitleScene::STAGE_ALL_NUM = 1;
 
 // コンストラクタ
@@ -61,18 +62,27 @@ void TitleScene::Initialize()
 	}
 
 	// プレイヤー
-	m_car = new PlayerCar();
-	m_car->SetPosition(Vector3::Zero);
+	//m_car = new PlayerCar();
+	m_car = new TitleCar();
+	m_car->SetPosition(Vector3(0.0f, -65.0f, 0.0f));
 	m_car->SetScale(0.4f);
-	m_car->SetState(Actor::STATE_PAUSED);
+	//m_car->SetState(Actor::STATE_PAUSED);
 
 	GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
-	m_client = new ClientActor(Vector3::Zero, 5);
-	m_client->SetPosition(Vector3(0.0f, -55.0f, 0.0f));
-	m_client->SetScale(0.4f);
+	for (int i = 0; i < 8; i++)
+	{
+		m_bridge[i] = new BridgeObject(1, Vector3(i * 6500.0f, -2000.0f, 0.0f));
 
-	GAME_INSTANCE.GetLoadScreen()->AddGauge();
+		GAME_INSTANCE.GetLoadScreen()->AddGauge();
+	}
+
+	
+	//m_client = new ClientActor(Vector3::Zero, 5);
+	//m_client->SetPosition(Vector3(0.0f, -55.0f, 0.0f));
+	//m_client->SetScale(0.4f);
+
+
 
 	//m_pointLight = new PointLight();
 	//m_pointLight->SetPosition(Vector3(0.0f, 0.0f, 40.0f));
@@ -110,6 +120,10 @@ void TitleScene::Initialize()
 // 更新処理
 SceneBase * TitleScene::Update()
 {
+
+	// 環境光更新
+	m_environment->SetDirectionalLightPos(m_car->GetPosition());
+
 
 	// タイトルメニュー
 	switch (m_state)

@@ -1,10 +1,17 @@
 //---------------------------------------------+
 // 環境マッピング (マルチレンダー対応)
 //---------------------------------------------+
-#version 330 core
+#version 420
 // attribute
 layout (location = 0) in vec3 a_pos;
 layout (location = 1) in vec3 a_normal;
+
+// uniformバッファブロック (行列)
+layout(std140, binding = 0) uniform Matrices
+{
+	mat4 u_view;
+	mat4 u_projection;
+};
 
 // 出力
 // フラグメントへの出力
@@ -16,7 +23,6 @@ out VS_OUT
 
 // 入力
 uniform mat4 u_worldTransform;
-uniform mat4 u_viewProj;
 
 void main()
 {
@@ -27,5 +33,5 @@ void main()
 
 	vs_out.fragWorldPos = vec3(pos.y, -pos.z, pos.x);                                                 // ワールド上の位置ベクトルを出力
 
-	gl_Position = pos * u_viewProj;
+	gl_Position = pos * u_view * u_projection;
 }
