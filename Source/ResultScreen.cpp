@@ -138,7 +138,7 @@ void ResultScreen::Draw(Shader * in_shader)
 			}
 
 			// スコアの表示が終わったら描画
-			if (m_targetScene->GetResultState() != m_targetScene->STATE_SCORE_DISPLAY)
+			if (m_targetScene->GetResultState() == m_targetScene->STATE_ONE_MORE || m_targetScene->GetResultState() == m_targetScene->STATE_GAME_QUIT)
 			{
 
 				if (m_restartButton)
@@ -186,7 +186,7 @@ void ResultScreen::Draw(Shader * in_shader)
 			}
 
 
-			if (m_targetScene->GetResultState() != m_targetScene->STATE_SCORE_DISPLAY)
+			if (m_targetScene->GetResultState() == m_targetScene->STATE_ONE_MORE || m_targetScene->GetResultState() == m_targetScene->STATE_GAME_QUIT)
 			{
 
 
@@ -225,7 +225,7 @@ void ResultScreen::Draw(Shader * in_shader)
 
 	// ランキングの描画
 		// ウィンドウ
-	if (m_targetScene->GetResultState() != m_targetScene->STATE_SCORE_DISPLAY)
+	if (m_targetScene->GetResultState() == m_targetScene->STATE_ONE_MORE || m_targetScene->GetResultState() == m_targetScene->STATE_GAME_QUIT)
 	{
 		DrawTexture(in_shader, m_rankingWindow, Vector2(0.0f, 35.0f), 0.8f);
 	}
@@ -239,7 +239,7 @@ void ResultScreen::Draw(Shader * in_shader)
 
 	for (int i = 0; i < 10; i++)
 	{
-		if (m_targetScene->GetResultState() != m_targetScene->STATE_SCORE_DISPLAY)
+		if (m_targetScene->GetResultState() == m_targetScene->STATE_ONE_MORE || m_targetScene->GetResultState() == m_targetScene->STATE_GAME_QUIT)
 		{
 			if (i != (m_rank - 1))
 			{
@@ -270,7 +270,7 @@ void ResultScreen::Draw(Shader * in_shader)
 
 	}
 	// ランキング表示中にのみ描画
-	if (m_targetScene->GetResultState() != m_targetScene->STATE_SCORE_DISPLAY)
+	if (m_targetScene->GetResultState() == m_targetScene->STATE_ONE_MORE || m_targetScene->GetResultState() == m_targetScene->STATE_GAME_QUIT)
 	{
 		if (CONTROLLER_INSTANCE.IsAvailable() == true)
 		{

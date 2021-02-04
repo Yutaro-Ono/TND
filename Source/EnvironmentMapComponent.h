@@ -18,11 +18,14 @@ public:
 	// 環境マップオブジェクトの描画処理
 	void DrawEnvironmentMap(class Shader* in_envShader);
 
+	void SetLuminance(float in_lum) { m_luminance = in_lum; }
 
 
 private:
 
 	bool m_isVisible;
+
+	float m_luminance;       // 輝度
 
 	class Mesh* m_mesh;
 

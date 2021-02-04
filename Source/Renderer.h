@@ -136,8 +136,9 @@ public:
 	// ミニマップのセッター・ゲッター
 	void SetMapHUD(class MiniMapHUD* in_mapHUD);
 	class MiniMapHUD* GetMapHUD() { return m_mapHUD; }
-
+	// ブルームクラスゲッター
 	class RenderBloom* GetBloom() { return m_bloom; }
+
 
 private:
 

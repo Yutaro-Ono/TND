@@ -32,7 +32,8 @@ struct GBuffer
 uniform DirectionalLight u_dirLight;
 uniform GBuffer u_gBuffer;
 
-uniform vec3 u_viewPos;      // カメラ位置
+uniform vec3 u_viewPos;                  // カメラ位置
+uniform float u_brightLine = 1.2f;       // 高輝度判定となる基準
 
 void main()
 {
@@ -66,7 +67,7 @@ void main()
 	//float brightness = dot(result, vec3(0.1126, 0.4152, 0.522));     // 輝度をカラー結果の内積から求める
 	float brightness = dot(result, vec3(0.1326, 0.1352, 0.642));
 
-	if(brightness > 0.8f)                                              // 輝度が0.8を超えたなら
+	if(brightness > u_brightLine)                                              // 輝度が0.8を超えたなら
 	{
 		out_brightColor = vec4(brightColor, 0.0f);
 	}

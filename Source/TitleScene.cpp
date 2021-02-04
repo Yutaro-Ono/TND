@@ -25,16 +25,16 @@
 #include "SpotLight.h"
 #include "TitleCar.h"
 #include "BridgeObject.h"
+#include "RenderBloom.h"
 const int TitleScene::STAGE_ALL_NUM = 1;
 
 // コンストラクタ
 TitleScene::TitleScene()
-	:m_state(PRESS_ANY_KEY)
+	:m_state(FADE_IN)
 	,m_selectedStage(0)
 	,m_car(nullptr)
 	,m_client(nullptr)
 	,m_environment(nullptr)
-	,m_pointLight(nullptr)
 {
 }
 
@@ -72,7 +72,7 @@ void TitleScene::Initialize()
 
 	for (int i = 0; i < 8; i++)
 	{
-		m_bridge[i] = new BridgeObject(1, Vector3(i * 6500.0f, -2000.0f, 0.0f));
+		m_bridge[i] = new BridgeObject(1, Vector3(i * 6515.0f, -2000.0f, 0.0f));
 
 		GAME_INSTANCE.GetLoadScreen()->AddGauge();
 	}
@@ -130,6 +130,48 @@ SceneBase * TitleScene::Update()
 	{
 
 	//----------------------------------------------------------------------+
+    // "FADE IN"
+    //----------------------------------------------------------------------+
+	case FADE_IN:
+
+
+		if (RENDERER->GetBloom()->FadeIn(0.5f, GAME_INSTANCE.GetDeltaTime()))
+		{
+			m_state = PRESS_ANY_KEY;
+		}
+
+		break;
+
+
+	//----------------------------------------------------------------------+
+    // "FADE OUT"
+    //----------------------------------------------------------------------+
+	case FADE_OUT:
+
+		if (RENDERER->GetBloom()->FadeOut(0.7f, GAME_INSTANCE.GetDeltaTime()))
+		{
+
+
+            // 全てのUIをCloseに設定
+			for (auto iter : GAME_INSTANCE.GetUIStack())
+			{
+				iter->Close();
+			}
+
+			// 全てのアクターを削除
+			for (auto actor : GAME_INSTANCE.GetActorStack())
+			{
+				actor->SetState(Actor::STATE_DEAD);
+			}
+
+			// 次のシーンを返す
+			return new GameScene(m_selectedStage);
+		}
+		
+		break;
+
+
+	//----------------------------------------------------------------------+
 	// "PRESS ANY KEY"
 	//----------------------------------------------------------------------+
 	case PRESS_ANY_KEY:
@@ -181,26 +223,12 @@ SceneBase * TitleScene::Update()
 			// 決定音
 			AUDIO->PlaySoundTND(m_sound["Enter"]);
 			// 音楽をフェードアウト
-			AUDIO->FadeOutMusic(1.0f);
+			AUDIO->FadeOutMusic(3000.0f);
+			
+			
 
-			// プレイヤーのサウンドを停止
-			//m_player->AllStopSound();
-
-
-			// 全てのUIをCloseに設定
-			for (auto iter : GAME_INSTANCE.GetUIStack())
-			{
-				iter->Close();
-			}
-
-			// 全てのアクターを削除
-			for (auto actor : GAME_INSTANCE.GetActorStack())
-			{
-				actor->SetState(Actor::STATE_DEAD);
-			}
-
-			// 次のシーンを返す
-			return new GameScene(m_selectedStage);
+			// フェードアウト処理に移行
+			m_state = FADE_OUT;
 		}
 
 		//// ステージセレクトへ( KEYBOARD : SPACE or ENTER | XINPUT : A )
@@ -299,8 +327,8 @@ SceneBase * TitleScene::Update()
 				actor->SetState(Actor::STATE_DEAD);
 			}
 
-			// 次のシーンを返す
-			return new GameScene(m_selectedStage);
+			// フェードアウト処理に移行
+			m_state = FADE_OUT;
 		}
 
 		break;

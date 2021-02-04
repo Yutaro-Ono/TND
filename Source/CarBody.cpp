@@ -40,13 +40,13 @@ CarBody::CarBody(PlayerCar* in_owner)
 	LightGlassComponent* lightGlass = new LightGlassComponent(this);
 	lightGlass->SetMesh(glassMesh);
 	lightGlass->SetLightColor(Vector3(1.0f, 0.6f, 0.4f));
-	lightGlass->SetLightLuminance(1.63f);
+	lightGlass->SetLightLuminance(2.47f);
 	// バックライト
 	glassMesh = RENDERER->GetMesh(CAR_BACKLIGHT_MESH_PATH);
 	lightGlass = new LightGlassComponent(this);
 	lightGlass->SetMesh(glassMesh);
 	lightGlass->SetLightColor(Vector3(1.0f, 0.01f, 0.35f));
-	lightGlass->SetLightLuminance(2.85f);
+	lightGlass->SetLightLuminance(3.21f);
 
 	// 内装メッシュ
 	Mesh* interiorMesh = RENDERER->GetMesh(CAR_INTERIOR_MESH_PATH);

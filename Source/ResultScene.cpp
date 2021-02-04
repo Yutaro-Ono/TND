@@ -18,11 +18,13 @@
 #include "LoadScreen.h"
 #include "RecordScore.h"
 #include "Environment.h"
-
+#include "ResultCar.h"
+#include "BridgeObject.h"
+#include "RenderBloom.h"
 
 // コンストラクタ
 ResultScene::ResultScene(int in_score, float in_bestSpeed)
-	:m_state(STATE_SCORE_DISPLAY)
+	:m_state(STATE_WHITE_IN)
 	,m_score(in_score)
 	,m_environment(nullptr)
 	,m_bestSpeed(in_bestSpeed)
@@ -45,18 +47,34 @@ ResultScene::~ResultScene()
 // 初期化処理
 void ResultScene::Initialize()
 {
+	// 環境生成
+	m_environment = new Environment(Environment::GAME_TIME::MORNING);
+
 	// ロード画面処理
 	{
 		GAME_INSTANCE.GetLoadScreen()->EnableScreen();
 	}
 
-	// 音楽
-	//m_sound["BGM"] = "Data/Music/BGM/FC/ResultScene/townofdeath.wav";
-	m_sound["Enter"] = "Data/Music/SE/TND/System/Enter/decide13.wav";
-	//AUDIO->GetMusic(m_sound["BGM"]);
-	AUDIO->GetSound(m_sound["Enter"]);
+	// プレイヤー
+	m_car = new ResultCar();
+	m_car->SetPosition(Vector3(0.0f, -65.0f, 0.0f));
+	m_car->SetScale(0.4f);
 
-	m_environment = new Environment(Environment::MORNING);
+
+	for (int i = 0; i < 8; i++)
+	{
+		m_bridge[i] = new BridgeObject(1, Vector3(i * 6500.0f, -2000.0f, 0.0f));
+
+		GAME_INSTANCE.GetLoadScreen()->AddGauge();
+	}
+
+	// 音楽
+	m_sound["BGM"] = "Data/Music/BGM/TND/Result/cyrf_lu_metropolis.wav";
+	m_sound["Enter"] = "Data/Music/SE/TND/System/Enter/decide13.wav";
+	m_sound["Select"] = "Data/Music/SE/TND/System/Select/decide14.wav";
+	AUDIO->GetMusic(m_sound["BGM"]);
+	AUDIO->GetSound(m_sound["Enter"]);
+	AUDIO->GetSound(m_sound["Select"]);
 
 	// ロード処理
 	for (int i = 0; i < 64; i++)
@@ -85,41 +103,34 @@ void ResultScene::Initialize()
 SceneBase * ResultScene::Update()
 {
 
+	m_environment->SetDirectionalLightPos(m_car->GetPosition());
+
 	switch (m_state)
 	{
 
-	case STATE_SCORE_DISPLAY:
 
-		if (m_resultUI->GetDispScore() == m_score)
+	//----------------------------------------------------------------------+
+    // "WHITE IN"
+    //----------------------------------------------------------------------+
+	case STATE_WHITE_IN:
+
+
+		if (RENDERER->GetBloom()->WhiteIn(70.3f, GAME_INSTANCE.GetDeltaTime()))
 		{
-			m_state = STATE_ONE_MORE;
+			m_state = STATE_SCORE_DISPLAY;
 		}
-
 
 		break;
 
-	case STATE_ONE_MORE:
 
-		// BGM再生
-		//if (AUDIO->IsPlayingMusic() == false)
-		//{
-		//	AUDIO->PlayMusic(m_sound["BGM"]);
-		//}
+	//----------------------------------------------------------------------+
+	// "WHITE OUT"
+	//----------------------------------------------------------------------+
+	case STATE_WHITE_OUT:
 
-		// 矢印キー右かコントローラーのDPAD右で次の項目へ
-		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RIGHT) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_RIGHT))
+		if (RENDERER->GetBloom()->WhiteOut(70.3f, GAME_INSTANCE.GetDeltaTime()))
 		{
-			// 決定音再生
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
-			m_state = STATE_GAME_QUIT;
-		}
-
-		// SPACEかENTER、Aボタンを押したらリプレイ (次のシーンを返す)
-		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_SPACE) || INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RETURN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_A))
-		{
-			// 決定音再生
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
 
 			// 全てのUIをCloseに設定
 			for (auto iter : GAME_INSTANCE.GetUIStack())
@@ -136,8 +147,51 @@ SceneBase * ResultScene::Update()
 			// レコードを削除
 			delete m_record;
 
-			// タイトルシーンのポインタを返す
+			// 次のシーンを返す
 			return new TitleScene;
+		}
+
+		break;
+
+
+	case STATE_SCORE_DISPLAY:
+
+		// BGM再生
+		if (AUDIO->IsPlayingMusic() == false)
+		{
+			AUDIO->PlayMusic(m_sound["BGM"]);
+		}
+
+		if (m_resultUI->GetDispScore() == m_score)
+		{
+			m_state = STATE_ONE_MORE;
+		}
+
+
+		break;
+
+	case STATE_ONE_MORE:
+
+
+
+		// 矢印キー右かコントローラーのDPAD右で次の項目へ
+		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RIGHT) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_RIGHT))
+		{
+			// 決定音再生
+			AUDIO->PlaySoundTND(m_sound["Select"]);
+
+			m_state = STATE_GAME_QUIT;
+		}
+
+		// SPACEかENTER、Aボタンを押したらリプレイ (次のシーンを返す)
+		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_SPACE) || INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_RETURN) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_A))
+		{
+			// 決定音再生
+			AUDIO->PlaySoundTND(m_sound["Enter"]);
+
+			AUDIO->FadeOutMusic(3000.0f);
+
+			m_state = STATE_WHITE_OUT;
 
 			break;
 		}
@@ -150,7 +204,7 @@ SceneBase * ResultScene::Update()
 		if (INPUT_INSTANCE.IsKeyPullUp(SDL_SCANCODE_LEFT) || CONTROLLER_INSTANCE.IsReleased(SDL_CONTROLLER_BUTTON_DPAD_LEFT))
 		{
 			// 決定音再生
-			AUDIO->PlaySoundTND(m_sound["Enter"]);
+			AUDIO->PlaySoundTND(m_sound["Select"]);
 
 			m_state = STATE_ONE_MORE;
 		}

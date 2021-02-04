@@ -28,8 +28,12 @@ RenderBloom::RenderBloom()
 	,m_hdrBloomShader(nullptr)
 	,m_downSamplingShader(nullptr)
 	,m_gaussShader(nullptr)
-	,m_exposure(5.0f)
+	,m_exposure(1.0f)
+	,m_gamma(0.085f)
 {
+
+	m_saveExposure = m_exposure;
+
 	// Bloom用FBOとテクスチャを生成
 	if (!CreateHDRFBO())
 	{
@@ -305,6 +309,7 @@ void RenderBloom::DrawBlendBloom(unsigned int in_colorBuffer)
 
 	m_hdrBloomShader->SetActive();
 	m_hdrBloomShader->SetFloat("u_exposure", m_exposure);
+	m_hdrBloomShader->SetFloat("u_gamma", m_gamma);
 	m_hdrBloomShader->SetInt("u_scene", 0);
 	
 	glActiveTexture(GL_TEXTURE0);
@@ -357,6 +362,89 @@ void RenderBloom::CalcGaussBlurParam(int in_w, int in_h, Vector2 in_dir, float i
 		in_offset[i].y = -in_offset[i - 7].y;
 		in_offset[i].z = in_offset[i - 7].z;
 	}
+}
+
+/// <summary>
+/// フェードアウト (画面暗転処理)
+/// </summary>
+/// <param name="in_val"> フレーム毎の減衰量 </param>
+/// <param name="in_deltaTime"> デルタタイム </param>
+/// <returns> 完全に暗転したらtrueを返す </returns>
+bool RenderBloom::FadeOut(float in_val, float in_deltaTime)
+{
+	m_exposure -= in_val * in_deltaTime;
+
+	bool end = false;
+
+	if (m_exposure <= 0.0f)
+	{
+		end = true;
+		m_exposure = m_saveExposure;
+	}
+
+	return end;
+}
+
+/// <summary>
+/// フェードイン
+/// </summary>
+/// <param name="in_val"> フレーム毎の上昇量 </param>
+/// <param name="in_deltaTime"> デルタタイム </param>
+/// <returns>完全に白転したらtrueを返す</returns>
+bool RenderBloom::FadeIn(float in_val, float in_deltaTime)
+{
+
+	if (m_exposure == m_saveExposure)
+	{
+		m_exposure = 0.0f;
+	}
+
+	m_exposure += in_val * in_deltaTime;
+
+	bool end = false;
+
+	if (m_exposure >= m_saveExposure)
+	{
+		end = true;
+		m_exposure = m_saveExposure;
+	}
+
+	return end;
+}
+
+bool RenderBloom::WhiteOut(float in_val, float in_deltaTime)
+{
+	m_exposure += in_val * in_deltaTime;
+
+	bool end = false;
+
+	if (m_exposure >= 500.0f)
+	{
+		end = true;
+		m_exposure = m_saveExposure;
+	}
+
+	return end;
+}
+
+bool RenderBloom::WhiteIn(float in_val, float in_deltaTime)
+{
+	if (m_exposure == m_saveExposure)
+	{
+		m_exposure = 500.0f;
+	}
+
+	m_exposure -= in_val * in_deltaTime;
+
+	bool end = false;
+
+	if (m_exposure <= m_saveExposure)
+	{
+		end = true;
+		m_exposure = m_saveExposure;
+	}
+
+	return end;
 }
 
 // バッファの生成

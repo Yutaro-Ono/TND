@@ -39,13 +39,13 @@ TitleCarBody::TitleCarBody(Actor* in_owner)
 	LightGlassComponent* lightGlass = new LightGlassComponent(this);
 	lightGlass->SetMesh(glassMesh);
 	lightGlass->SetLightColor(Vector3(1.0f, 0.6f, 0.4f));
-	lightGlass->SetLightLuminance(1.58f);
+	lightGlass->SetLightLuminance(2.47f);
 	// バックライト
 	glassMesh = RENDERER->GetMesh(CAR_BACKLIGHT_MESH_PATH);
 	lightGlass = new LightGlassComponent(this);
 	lightGlass->SetMesh(glassMesh);
 	lightGlass->SetLightColor(Vector3(1.0f, 0.01f, 0.35f));
-	lightGlass->SetLightLuminance(2.85f);
+	lightGlass->SetLightLuminance(3.1f);
 
 	// 内装メッシュ
 	Mesh* interiorMesh = RENDERER->GetMesh(CAR_INTERIOR_MESH_PATH);
@@ -60,17 +60,22 @@ TitleCarBody::TitleCarBody(Actor* in_owner)
 		m_frontLight[i] = new PointLight(PointLight::VL_BIG);
 		m_frontLight[i]->SetPosition(Vector3(m_owner->GetPosition().x - 30.0f, m_owner->GetPosition().y + (10.0f * (i + 1)), m_owner->GetPosition().z));
 		m_frontLight[i]->SetLightColor(Vector3(1.0f, 1.0f, 1.0f), Vector3(1.0f, 1.0f, 1.0f));
-		m_frontLight[i]->SetLuminance(3.0f);
+		m_frontLight[i]->SetLuminance(5.0f);
 
 		m_backLight[i] = new PointLight(PointLight::VL_BIG);
 		m_backLight[i]->SetLightColor(Vector3(1.0f, 0.1f, 0.4f), Vector3(1.0f, 0.1f, 0.4f));
-		m_backLight[i]->SetLuminance(2.5f);
+		m_backLight[i]->SetLuminance(5.5f);
 	}
 
-	m_frontLight[0]->SetPosition(m_position + Vector3(60.0f, 20.0f, 1.0f));
-	m_frontLight[1]->SetPosition(m_position + Vector3(60.0f, -20.0f, 1.0f));
-	m_backLight[0]->SetPosition(m_position + Vector3(-60.0f, 20.0f, 1.0f));
-	m_backLight[1]->SetPosition(m_position + Vector3(-60.0f, -20.0f, 1.0f));
+	//m_frontLight[0]->SetPosition(m_position + Vector3(60.0f, 20.0f, 1.0f));
+	//m_frontLight[1]->SetPosition(m_position + Vector3(60.0f, -20.0f, 1.0f));
+	//m_backLight[0]->SetPosition(m_position + Vector3(-60.0f, 20.0f, 1.0f));
+	//m_backLight[1]->SetPosition(m_position + Vector3(-60.0f, -20.0f, 1.0f));
+	m_frontLight[0]->SetPosition(m_position + Vector3(50.0f, 35.0f, 10.0f));
+	m_frontLight[1]->SetPosition(m_position + Vector3(50.0f, -35.0f, 10.0f));
+	m_backLight[0]->SetPosition(m_position + Vector3(-80.0f, 35.0f, 10.0f));
+	m_backLight[1]->SetPosition(m_position + Vector3(-80.0f, -35.0f, 10.0f));
+
 	//m_spotLight = new SpotLight(m_position, SpotLight::VL_VERY_SMALL);
 	//m_spotLight->SetTargetActor(this);
 }

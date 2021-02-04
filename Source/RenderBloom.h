@@ -34,9 +34,16 @@ public:
 	unsigned int GetColorBuffer() { return m_defaultBuffer; }
 	unsigned int GetBrightBuffer() { return m_brightBuffer; }
 
-	// 露出度セッター
-	void SetExposureVal(float in_exp) { m_exposure = in_exp; }
+	// フェードイン・フェードアウト
+	bool FadeOut(float in_val, float in_deltaTime);
+	bool FadeIn(float in_val, float in_deltaTime);
+	// ホワイトイン・ホワイトアウト
+	bool WhiteOut(float in_val, float in_deltaTime);
+	bool WhiteIn(float in_val, float in_deltaTime);
 
+
+	void SetExposureVal(float in_exp) { m_exposure = in_exp; m_saveExposure = m_exposure; }     // 露出
+	void SetGamma(float in_gamma) { m_gamma = in_gamma; }          // ガンマコレクション
 
 private:
 
@@ -71,5 +78,8 @@ private:
 	class Shader* m_downSamplingShader;                // 縮小バッファ用シェーダ
 	class Shader* m_gaussShader;                       // ガウスぼかし計算用シェーダ
 
-	float m_exposure;
+	float m_exposure;                                  // 露出量
+	float m_saveExposure;                              // フェードアウト処理時の露出保存用
+
+	float m_gamma;                                     // ガンマコレクション
 };

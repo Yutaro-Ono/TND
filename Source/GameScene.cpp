@@ -28,6 +28,7 @@
 #include "GameWorld.h"
 #include "TitleScene.h"
 #include "Canvas.h"
+#include "RenderBloom.h"
 #include <Windows.h>
 #include <iostream>
 
@@ -35,7 +36,7 @@
 GameScene::GameScene(int in_stageNum)
 	:m_time(nullptr)
 	,m_stageNum(in_stageNum)
-	,m_state(STATE_FREE)
+	,m_state(STATE_FADE_IN)
 	,m_score(nullptr)
 	,m_prevScore(0)
 	,m_nowScore(0)
@@ -111,6 +112,35 @@ SceneBase * GameScene::Update()
 	// シーンの状態により処理を分岐
 	switch (m_state)
 	{
+
+		//----------------------------------------------------------------------+
+// "FADE IN"
+//----------------------------------------------------------------------+
+	case STATE_FADE_IN:
+
+
+		if (RENDERER->GetBloom()->FadeIn(0.8f, GAME_INSTANCE.GetDeltaTime()))
+		{
+			m_state = STATE_FREE;
+		}
+
+		break;
+
+
+		//----------------------------------------------------------------------+
+		// "FADE OUT"
+		//----------------------------------------------------------------------+
+	case STATE_FADE_OUT:
+
+		if (RENDERER->GetBloom()->WhiteOut(70.3f, GAME_INSTANCE.GetDeltaTime()))
+		{
+			// 次のシーンを返す
+			//return new TitleScene();
+			return new ResultScene(m_world->GetCanvas()->GetScoreUI()->GetScore(), m_bestSpeed);
+		}
+
+		break;
+
 
 	case STATE_FREE:   // フリーモード
 
@@ -207,9 +237,7 @@ SceneBase * GameScene::Update()
 			// マップHUDのオフ
 
 
-			// 次のシーンを返す
-			//return new TitleScene();
-			return new ResultScene(m_world->GetCanvas()->GetScoreUI()->GetScore(), m_bestSpeed);
+			m_state = STATE_FADE_OUT;
 		}
 
 		break;

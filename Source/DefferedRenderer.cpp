@@ -371,7 +371,7 @@ void DefferedRenderer::Draw()
 
 	// Bloomˆ—‚ðŽ{‚µ‚½•`‰æ
 	RenderBloom* bloom = m_renderer->GetBloom();
-	bloom->SetExposureVal(4.5f);
+	//bloom->SetExposureVal(4.5f);
 	bloom->DrawDownSampling(m_lightHighBright);
 	bloom->DrawGaussBlur();
 	bloom->DrawBlendBloom(m_lightHDR);

@@ -114,5 +114,5 @@ void main()
 	// シャドウの逆数を取り、0 = 影の時にディフューズとスペキュラの値がキャンセルされる(影となる)
 	out_gAlbedoSpec.rgb = ambient + (1.8 - shadow) * Diffuse * envMap;
 	out_gAlbedoSpec.a = (1.8 - shadow) * Specular.r;
-	out_gBrightColor = texture(u_mat.emissiveMap, fs_in.fragTexCoords) * 0.03f;
+	out_gBrightColor = texture(u_mat.emissiveMap, fs_in.fragTexCoords) * 0.095f;     // 0.03f
 }

@@ -38,6 +38,7 @@ uniform GBuffer u_gBuffer;
 
 
 uniform vec3 u_viewPos;            // ƒJƒƒ‰À•W
+uniform float u_brightLine = 0.1f;       // ‚‹P“x”»’è‚Æ‚È‚éŠî€
 
 void main()
 {
@@ -78,7 +79,7 @@ void main()
 	//float brightness = dot(result, vec3(0.1326, 0.1352, 0.142));
 	float brightness = dot(result, vec3(0.1326, 0.1352, 0.342));
 
-	if(brightness > 0.1)                                              // ‹P“x‚ª0.4‚ð’´‚¦‚½‚È‚ç
+	if(brightness > u_brightLine)                                              // ‹P“x‚ª0.4‚ð’´‚¦‚½‚È‚ç
 	{
 		out_brightColor = vec4(result, 0.0f);
 	}

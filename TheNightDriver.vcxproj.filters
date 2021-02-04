@@ -507,6 +507,9 @@
     <Filter Include="ソース ファイル\Camera\Camera">
       <UniqueIdentifier>{4297c843-10f1-492e-a8dc-fac00228bb26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Actor\Player\Car\Result">
+      <UniqueIdentifier>{8e253052-82d7-47b5-ae5d-d5cb5b30a3ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -880,6 +883,21 @@
     </ClCompile>
     <ClCompile Include="Source\PointCameraComponent.cpp">
       <Filter>ソース ファイル\Camera\PointCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResultCar.cpp">
+      <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResultCarBody.cpp">
+      <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResultCarDoor.cpp">
+      <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResultCarHandle.cpp">
+      <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResultCarWheel.cpp">
+      <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1269,6 +1287,21 @@
     </ClInclude>
     <ClInclude Include="Source\PointCameraComponent.h">
       <Filter>ソース ファイル\Camera\PointCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResultCar.h">
+      <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResultCarBody.h">
+      <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResultCarDoor.h">
+      <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResultCarHandle.h">
+      <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResultCarWheel.h">
+      <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -145,7 +145,7 @@ void AudioManager::PlayMusic(const std::string & in_fileName)
 
 void AudioManager::FadeOutMusic(int in_fadeTime)
 {
-	Music::IsPlaying();
+	Music::FadeOutMusic(in_fadeTime);
 }
 
 void AudioManager::StopMusic()

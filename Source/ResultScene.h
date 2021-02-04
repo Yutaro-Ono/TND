@@ -19,6 +19,8 @@ public:
 	
 	enum ResultState
 	{
+		STATE_WHITE_OUT,
+		STATE_WHITE_IN,
 		STATE_SCORE_DISPLAY,
 		STATE_ONE_MORE,
 		STATE_GAME_QUIT
@@ -45,6 +47,9 @@ private:
 	ResultState m_state;                                      // リザルト画面のステート
 
 	class Environment* m_environment;                         // 環境クラス
+
+	class ResultCar* m_car;
+	class BridgeObject* m_bridge[8];
 
 	class ResultScreen* m_resultUI;                           // リザルトシーンUI
 

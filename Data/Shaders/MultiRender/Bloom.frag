@@ -19,6 +19,7 @@ uniform sampler2D u_bloom4;
 uniform sampler2D u_bloom5;
 
 uniform float u_exposure;        // 露出値 (0で画面が真っ暗になる)
+uniform float u_gamma;           // ガンマコレクション
 
 void main()
 {
@@ -37,6 +38,6 @@ void main()
     //const float gamma = 0.035;
     const float gamma = 0.085;
 
-    mapped = pow(mapped, vec3(1.0 / gamma));  
+    mapped = pow(mapped, vec3(1.0 / u_gamma));  
     out_fragColor = vec4(mapped, 1.0);
 }

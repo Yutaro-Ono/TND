@@ -10,6 +10,7 @@
 #include "SceneBase.h"
 #include "TitleScene.h"
 #include "GameScene.h"
+#include "ResultScene.h"
 #include <SDL.h>
 #include <glad/glad.h>
 #include <iostream>
@@ -50,8 +51,8 @@ int main(int argc, char** argv)
 	if (success)
 	{
 		// 最初のシーンのセット
-        //GAME_INSTANCE.SetFirstScene(new GameScene(0));
 		GAME_INSTANCE.SetFirstScene(new TitleScene());
+		//GAME_INSTANCE.SetFirstScene(new ResultScene(100, 100));
 
 		// ゲームループ
 		GAME_INSTANCE.RunLoop();

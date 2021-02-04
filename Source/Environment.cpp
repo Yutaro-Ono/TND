@@ -4,6 +4,7 @@
 #include "CubeMapComponent.h"
 #include "GameWorld.h"
 #include "PlayerManager.h"
+#include "RenderBloom.h"
 
 static Vector3 playerPos = Vector3::Zero;
 //static const Vector3 ADJUST_POS = Vector3(2000.0f, 0.0f, 3000.0f);
@@ -116,9 +117,12 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		dir.target = playerPos;
 		dir.direction = dir.target - dir.position;
 		dir.direction.Normalize();
-		dir.ambient = Vector3(0.4f, 0.4f, 0.4f);
-		dir.diffuse = Vector3(0.25f, 0.3f, 0.3f);
+		dir.ambient = Vector3(0.5f, 0.5f, 0.51f);
+		dir.diffuse = Vector3(0.4f, 0.5f, 0.5f);
 		dir.specular = Vector3(0.3f, 0.3f, 0.3f);
+
+		RENDERER->GetBloom()->SetGamma(0.3f);
+		RENDERER->GetBloom()->SetExposureVal(4.5f);
 
 		m_morningBox->GetCubeMapComp()->SetIsVisible(true);
 		return;
@@ -133,9 +137,12 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		dir.target = playerPos;
 		dir.direction = dir.target - dir.position;
 		dir.direction.Normalize();
-		dir.ambient = Vector3(0.5f, 0.5f, 0.5f);
-		dir.diffuse = Vector3(0.07f, 0.05f, 0.3f);
+		dir.ambient = Vector3(0.7f, 0.7f, 0.75f);
+		dir.diffuse = Vector3(0.4f, 0.4f, 0.45f);
 		dir.specular = Vector3(0.5f, 0.5f, 0.6f);
+
+		RENDERER->GetBloom()->SetGamma(1.0f);
+		RENDERER->GetBloom()->SetExposureVal(4.5f);
 
 		m_morningBox->GetCubeMapComp()->SetIsVisible(true);
 		return;
@@ -153,6 +160,9 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		dir.ambient = Vector3(0.4f, 0.4f, 0.4f);
 		dir.diffuse = Vector3(0.07f, 0.05f, 0.3f);
 		dir.specular = Vector3(0.01f, 0.0f, 0.1f);
+
+		RENDERER->GetBloom()->SetGamma(1.0f);
+		RENDERER->GetBloom()->SetExposureVal(4.5f);
 
 		m_eveningBox->GetCubeMapComp()->SetIsVisible(true);
 		return;
@@ -174,6 +184,9 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		//dir.diffuse = Vector3(0.1f, 0.25f, 0.37f);
 
 		dir.specular = Vector3(0.1f, 0.35f, 0.4f);
+
+		RENDERER->GetBloom()->SetGamma(0.085f);
+		RENDERER->GetBloom()->SetExposureVal(4.5f);
 
 		m_nightBox->GetCubeMapComp()->SetIsVisible(true);
 		return;

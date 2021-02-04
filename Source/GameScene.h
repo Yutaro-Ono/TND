@@ -19,6 +19,8 @@ public:
 
 	enum SceneState
 	{
+		STATE_FADE_IN,
+		STATE_FADE_OUT,
 		STATE_FREE,
 		STATE_START,
 		STATE_IN_GAME,

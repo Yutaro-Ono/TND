@@ -111,6 +111,11 @@
     <ClCompile Include="Source\RecordScore.cpp" />
     <ClCompile Include="Source\RenderBloom.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
+    <ClCompile Include="Source\ResultCar.cpp" />
+    <ClCompile Include="Source\ResultCarBody.cpp" />
+    <ClCompile Include="Source\ResultCarDoor.cpp" />
+    <ClCompile Include="Source\ResultCarHandle.cpp" />
+    <ClCompile Include="Source\ResultCarWheel.cpp" />
     <ClCompile Include="Source\ResultScene.cpp" />
     <ClCompile Include="Source\ResultScreen.cpp" />
     <ClCompile Include="Source\RuleScore.cpp" />
@@ -241,6 +246,11 @@
     <ClInclude Include="Source\RecordScore.h" />
     <ClInclude Include="Source\RenderBloom.h" />
     <ClInclude Include="Source\Renderer.h" />
+    <ClInclude Include="Source\ResultCar.h" />
+    <ClInclude Include="Source\ResultCarBody.h" />
+    <ClInclude Include="Source\ResultCarDoor.h" />
+    <ClInclude Include="Source\ResultCarHandle.h" />
+    <ClInclude Include="Source\ResultCarWheel.h" />
     <ClInclude Include="Source\ResultScene.h" />
     <ClInclude Include="Source\ResultScreen.h" />
     <ClInclude Include="Source\RuleScore.h" />

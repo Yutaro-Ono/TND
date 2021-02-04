@@ -55,6 +55,8 @@ void main()
 	vec3 lightDir = normalize(u_spotL.position - Position);
 	float theta = dot(lightDir, normalize(-u_spotL.direction));
 
+
+
 	if(theta > u_spotL.cutOff)
 	{
 		// アンビエント
