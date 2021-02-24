@@ -1,24 +1,24 @@
 #include "LandMarkIndicator.h"
+#include "PlayerManager.h"
+#include "PlayerHuman.h"
 #include "PlayerCar.h"
 #include "GameMain.h"
 #include "Renderer.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "WorldSpaceUI.h"
+#include "CameraComponent.h"
 
-LandMarkIndicator::LandMarkIndicator(PlayerCar* in_car)
-	:m_car(in_car)
-	,m_ui(nullptr)
+LandMarkIndicator::LandMarkIndicator(PlayerManager* in_player)
+	:m_player(in_player)
 {
-	//Mesh* mesh = RENDERER->GetMesh("Data/Meshes/TND/Interface/Arrow/UI_Arrow_Internal.OBJ");
-	//m_meshComp = new MeshComponent(this);
-	//m_meshComp->SetMesh(mesh);
-
-	//m_ui = new WorldSpaceUI(m_car->GetPosition(), "Data/Meshes/TND/Interface/Arrow/UI_Arrow.png", 50.0f);
-	//m_ui->SetVisible(true);
-
-	//SetRotation(Quaternion::Quaternion(Vector3::UnitZ, Math::ToRadians(90.0f)));
-	//SetScale(50.0f);
+	SetScale(750.0f);
+	// マップ矢印のモデル読み込み
+	Mesh* mesh = RENDERER->GetMesh("Data/Meshes/TND/Interface/Arrow/MapHUD_Arrow.OBJ");
+	m_meshComp = new MeshComponent(this);
+	m_meshComp->SetMesh(mesh);
+	m_meshComp->SetVisible(false);
+	m_meshComp->SetMapColor(Vector3(1.0f, 0.1f, 0.6f));
 }
 
 
@@ -28,7 +28,16 @@ LandMarkIndicator::~LandMarkIndicator()
 
 void LandMarkIndicator::UpdateActor(float in_deltaTime)
 {
-	// ポジション追跡
-	//m_ui->SetPosition(m_car->GetPosition() + Vector3(0.0f, 0.0f, 50.0f));
-
+	// プレイヤー追跡
+	if (m_player->GetPlayerMode() == PlayerManager::MODE_HUMAN)
+	{
+		SetPosition(m_player->GetPlayerHuman()->GetPosition());
+		SetRotation(m_player->GetPlayerHuman()->GetRotation());
+	}
+	else
+	{
+		SetPosition(m_player->GetPlayerCar()->GetPosition());
+		SetRotation(m_player->GetPlayerCar()->GetRotation());
+	}
+	
 }

@@ -148,7 +148,7 @@ void ScoreUI::Draw(Shader * in_shader)
 		}
 	}
 	// Œ¸ŽZ•ª‚ÌƒXƒRƒA
-	else if (m_drawSubScore)
+	else if (m_addScore == 0 && m_drawSubScore)
 	{
 		for (int i = 0; i < 2; i++)
 		{

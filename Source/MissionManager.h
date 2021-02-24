@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "Math.h"
 
 class MissionManager
@@ -40,6 +41,6 @@ private:
 
 	static const int MISSION_ALL_NUM;             // 同時進行する任務の限界数
 
-	
+	std::string m_selectSE;                       // カーソル選択変更時の効果音
 
 };

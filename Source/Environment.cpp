@@ -10,7 +10,7 @@ static Vector3 playerPos = Vector3::Zero;
 //static const Vector3 ADJUST_POS = Vector3(2000.0f, 0.0f, 3000.0f);
 static const Vector3 ADJUST_POS = Vector3(-600.0f, 50.0f, 700.0f);
 
-Environment::Environment(GAME_TIME in_gameTime)
+Environment::Environment(GAME_TIME in_gameTime, const Vector3& in_pos)
 	:m_gameTime(in_gameTime)
 	, m_world(nullptr)
 {
@@ -20,7 +20,7 @@ Environment::Environment(GAME_TIME in_gameTime)
 	m_nightBox = new SkyBox(this, GAME_TIME::NIGHT);
 	// 設定された時間帯ごとにスカイボックスをセット
 	SetSkyBox(m_gameTime);
-	SetDirectionalLight(m_gameTime);
+	SetDirectionalLight(m_gameTime, in_pos);
 }
 
 
@@ -39,7 +39,7 @@ Environment::Environment(GameWorld* in_world, GAME_TIME in_gameTime)
 	SetSkyBox(m_gameTime);
 
 	// 環境光セット
-	SetDirectionalLight(in_gameTime);
+	SetDirectionalLight(in_gameTime, m_world->GetPlayer()->GetPosition());
 
 }
 
@@ -103,7 +103,7 @@ void Environment::SetSkyBox(GAME_TIME in_gameTime)
 }
 
 // 時間帯ごとに平行ライトを設定する
-void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
+void Environment::SetDirectionalLight(GAME_TIME in_gameTime, const Vector3& in_pos)
 {
 	m_gameTime = in_gameTime;
 
@@ -121,7 +121,7 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		dir.diffuse = Vector3(0.4f, 0.5f, 0.5f);
 		dir.specular = Vector3(0.3f, 0.3f, 0.3f);
 
-		RENDERER->GetBloom()->SetGamma(0.3f);
+		RENDERER->GetBloom()->SetGamma(0.085f);
 		RENDERER->GetBloom()->SetExposureVal(4.5f);
 
 		m_morningBox->GetCubeMapComp()->SetIsVisible(true);
@@ -186,7 +186,7 @@ void Environment::SetDirectionalLight(GAME_TIME in_gameTime)
 		dir.specular = Vector3(0.1f, 0.35f, 0.4f);
 
 		RENDERER->GetBloom()->SetGamma(0.085f);
-		RENDERER->GetBloom()->SetExposureVal(4.5f);
+		RENDERER->GetBloom()->SetExposureVal(5.5f);
 
 		m_nightBox->GetCubeMapComp()->SetIsVisible(true);
 		return;

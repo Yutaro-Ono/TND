@@ -7,7 +7,7 @@ class MiniMapHUD
 
 public:
 
-	MiniMapHUD(class Actor* in_target);
+	MiniMapHUD(class PlayerManager* in_target);
 	~MiniMapHUD();
 
 	void WriteBuffer(class Shader* in_shader, std::vector<class MeshComponent*> in_mesh);
@@ -25,6 +25,8 @@ private:
 
 	class Actor* m_target;                 // ターゲット
 	class Texture* m_mapTex;               // マップテクスチャ (円形)
+
+	class LandMarkIndicator* m_landMark;
 
 	int m_width;
 	int m_height;

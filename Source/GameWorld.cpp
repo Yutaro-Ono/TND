@@ -30,7 +30,7 @@ GameWorld::GameWorld()
 	// プレイヤーの生成
 	m_player = new PlayerManager();
 	m_player->SetPosition(Vector3(1800.0f, 2400.0f, 0.0f));
-	m_player->SetScale(0.3f);
+	m_player->SetScale(200.0f);
 	//PointLight* light = new PointLight();
 	//light->SetPosition(m_player->GetPosition());
 	tempPos = playerPos = m_player->GetPosition();
@@ -55,8 +55,6 @@ GameWorld::GameWorld()
 
 	// マップHUD生成
 	m_mapHUD = new MiniMapHUD(m_player);
-
-	LandMarkIndicator* ind = new LandMarkIndicator(m_player->GetPlayerCar());
 }
 
 GameWorld::~GameWorld()

@@ -8,6 +8,7 @@
 #include "InputController.h"
 #include "ScoreUI.h"
 #include "PlayerManager.h"
+#include "AudioManager.h"
 #include <stdio.h>
 #include <time.h>
 
@@ -96,6 +97,11 @@ MissionManager::MissionManager(GameWorld* in_world)
 		// 依頼人アクタ配列をシャッフル
 		m_world->ShuffleClientActor();
 	}
+
+
+	// 効果音のロード
+	m_selectSE = "Data/Music/SE/TND/System/Select/decide14.wav";
+	AUDIO->GetSound(m_selectSE);
 
 }
 
@@ -241,7 +247,13 @@ void MissionManager::ChangeSelectNum()
 	// カーソル下移動
 	if (INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_DOWN) || CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_DPAD_DOWN))
 	{
+
+		// 選択番号プラス
 		m_selectNum++;
+
+		// 効果音再生
+		AUDIO->PlaySoundTND(m_selectSE);
+
 		// ミッション数を超えたら0番目に折り返し
 		if (m_selectNum >= MISSION_ALL_NUM)
 		{
@@ -252,7 +264,13 @@ void MissionManager::ChangeSelectNum()
 	// カーソル上移動
 	if (INPUT_INSTANCE.IsKeyPushDown(SDL_SCANCODE_UP) || CONTROLLER_INSTANCE.IsTriggered(SDL_CONTROLLER_BUTTON_DPAD_UP))
 	{
+
+		// 選択番号マイナス
 		m_selectNum--;
+
+		// 効果音再生
+		AUDIO->PlaySoundTND(m_selectSE);
+
 		// 1だったら折り返し
 		if (m_selectNum < 0)
 		{

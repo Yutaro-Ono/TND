@@ -32,8 +32,6 @@ public:
 	//----------------------------------------------------+
 	// Getter/Setter
 	//----------------------------------------------------+
-	// 車クラスへのポインタゲッター
-	class PlayerCar* GetPlayerCar() { return m_playerCar; }
 	// プレイヤー(人間)の座標セッター
 	void SetPlayerHumanPos(const Vector3& in_pos) { m_playerHuman->SetPosition(in_pos); }
 	// プレイヤー(車)の座標セッター
@@ -48,6 +46,11 @@ public:
 	Sphere GetSearchSphere() { return m_searchSphere; }
 	bool GetIsDetectedCar() { return m_isDetectedCar; }           // プレイヤーのアクセス範囲内に車を検出したかのゲッター
 	bool GetIsDetectedClient() { return m_isDetectedClient; }     // プレイヤーのアクセス範囲内に依頼人を検出したかのゲッター
+
+	// プレイヤーポインタのゲッター
+	class PlayerHuman* GetPlayerHuman() { return m_playerHuman; }
+	// 車クラスへのポインタゲッター
+	class PlayerCar* GetPlayerCar() { return m_playerCar; }
 
 private:
 

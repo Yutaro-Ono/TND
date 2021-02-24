@@ -19,13 +19,14 @@ public:
 	void DrawEnvironmentMap(class Shader* in_envShader);
 
 	void SetLuminance(float in_lum) { m_luminance = in_lum; }
-
+	void SetAlpha(float in_alpha) { m_alpha = in_alpha; }
 
 private:
 
 	bool m_isVisible;
 
 	float m_luminance;       // ‹P“x
+	float m_alpha;           // “§‰ß“x
 
 	class Mesh* m_mesh;
 

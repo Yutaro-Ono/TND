@@ -21,6 +21,7 @@ MeshComponent::MeshComponent(Actor * in_owner, bool in_isSkeletal)
 	,m_mesh(nullptr)
 	,m_textureIndex(0)
 	,m_visible(true)
+	,m_isDrawMap(true)
 	,m_isSkeletal(in_isSkeletal)
 	,m_intensity(1.0f)
 	,m_mapColor(Vector3(0.5f, 0.5f, 0.5f))
@@ -76,7 +77,7 @@ void MeshComponent::DrawShadow(Shader* in_shader)
 
 void MeshComponent::DrawMap(Shader* in_shader)
 {
-	if (m_mesh != nullptr && m_visible)
+	if (m_mesh != nullptr && m_isDrawMap)
 	{
 		// ワールド変換をセット
 		in_shader->SetMatrixUniform("u_worldTransform", m_owner->GetWorldTransform());

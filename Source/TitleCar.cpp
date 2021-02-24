@@ -111,9 +111,9 @@ void TitleCar::UpdateActor(float in_deltaTime)
 		m_nowTime = SDL_GetTicks();
 	}
 
-	if (m_position.x > 35000)
+	if (m_position.x > 35000 && m_cameraPosType != FAR_FRONT && m_cameraPosType != UNDER)
 	{
-		m_position.x = 0.0f;
+		m_position.x = 6500.0f;
 	}
 
 }

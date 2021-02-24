@@ -56,7 +56,7 @@ void SkyBox::SetSkyBox(Environment::GAME_TIME in_gameTime)
 	{
 		m_cubeMapComp = new CubeMapComponent(this);
 		m_cubeMapComp->CreateTexture("Data/Textures/TND/Skybox/night/");
-		m_cubeMapComp->SetLuminance(1.0f);
+		m_cubeMapComp->SetLuminance(0.5f);
 		return;
 	}
 }

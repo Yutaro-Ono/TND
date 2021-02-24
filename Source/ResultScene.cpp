@@ -48,7 +48,7 @@ ResultScene::~ResultScene()
 void ResultScene::Initialize()
 {
 	// 環境生成
-	m_environment = new Environment(Environment::GAME_TIME::MORNING);
+	m_environment = new Environment(Environment::GAME_TIME::MORNING, Vector3(0.0f, -65.0f, 0.0f));
 
 	// ロード画面処理
 	{
@@ -57,13 +57,13 @@ void ResultScene::Initialize()
 
 	// プレイヤー
 	m_car = new ResultCar();
-	m_car->SetPosition(Vector3(0.0f, -65.0f, 0.0f));
+	m_car->SetPosition(Vector3(6500.0f, -65.0f, 0.0f));
 	m_car->SetScale(0.4f);
 
 
 	for (int i = 0; i < 8; i++)
 	{
-		m_bridge[i] = new BridgeObject(1, Vector3(i * 6500.0f, -2000.0f, 0.0f));
+		m_bridge[i] = new BridgeObject(1, Vector3(i * 6500.0f, -2000.0f, 0.0f), false);
 
 		GAME_INSTANCE.GetLoadScreen()->AddGauge();
 	}

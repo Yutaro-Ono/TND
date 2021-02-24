@@ -180,7 +180,7 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	DirVec.x += forwardVec.x * (m_accelValue + -m_brakeValue) * in_deltaTime;
 
 	// 左右の回転、移動(アクセルが前後どちらかにかかっている時)
-	if (m_accelValue != 0.0f || m_brakeValue != 0.0f)
+	if (m_accelValue >= 5.0f || m_brakeValue >= 5.0f)
 	{
 		// アクセル時
 		if (m_playerCar->GetDriveState() == PlayerCar::DRIVE_STATE::DRIVE_ACCEL)
@@ -250,13 +250,10 @@ void MoveComponentCar::MovementByController(float in_deltaTime)
 	m_owner->SetRotation(rotation);
 	rotation = m_owner->GetRotation();
 
-
 	// Rotationから前進ベクトルを更新し、結果の座標を算出
 	charaForwardVec = Vector3::Transform(charaForwardVec, rotation);
 	Vector3 resultPos = m_owner->GetPosition();
 	resultPos += m_forwardSpeed * charaForwardVec;
-
-
 
 	// オーナーへ渡す
 	m_owner->SetPosition(resultPos);

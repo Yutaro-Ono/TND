@@ -12,6 +12,7 @@ EnvironmentMapComponent::EnvironmentMapComponent(Actor* in_owner)
 	:Component(in_owner)
 	,m_isVisible(false)
 	,m_luminance(0.5f)
+	,m_alpha(1.0f)
 {
 	RENDERER->AddEnvironmentComponent(this);
 }
@@ -32,8 +33,10 @@ void EnvironmentMapComponent::DrawEnvironmentMap(Shader* in_envShader)
 		glEnable(GL_ALPHA_TEST);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
 		in_envShader->SetMatrixUniform("u_worldTransform", m_owner->GetWorldTransform());
 		in_envShader->SetFloat("u_luminance", m_luminance);
+		in_envShader->SetFloat("u_alpha", m_alpha);
 		// 頂点配列オブジェクトを取得し、バインド
 		VertexArray* vao = m_mesh->GetVertexArray();
 		vao->SetActive();
@@ -45,6 +48,7 @@ void EnvironmentMapComponent::DrawEnvironmentMap(Shader* in_envShader)
 		// アルファテストのオフ
 		glDisable(GL_BLEND);
 		glDisable(GL_ALPHA_TEST);
+
 
 	}
 }

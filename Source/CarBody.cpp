@@ -35,6 +35,7 @@ CarBody::CarBody(PlayerCar* in_owner)
 	EnvironmentMapComponent* glass = new EnvironmentMapComponent(this);
 	glass->SetMesh(glassMesh);
 
+
 	// フロントライト
 	glassMesh = RENDERER->GetMesh(CAR_FRONTLIGHT_MESH_PATH);
 	LightGlassComponent* lightGlass = new LightGlassComponent(this);
@@ -52,6 +53,7 @@ CarBody::CarBody(PlayerCar* in_owner)
 	Mesh* interiorMesh = RENDERER->GetMesh(CAR_INTERIOR_MESH_PATH);
 	MeshComponent* interior = new MeshComponent(this);
 	interior->SetMesh(interiorMesh);
+	interior->SetDrawMap(false);
 	interior->SetMapColor(Vector3(0.45f, 0.8f, 0.75f));
 
 	// ボディのメッシュを基準としてオーナーの当たり判定ボックスをセット
@@ -69,24 +71,24 @@ CarBody::CarBody(PlayerCar* in_owner)
 	m_owner->GetBoxCollider()->SetArrowRotate(true);
 
 
-	// フロントライト・バックライトのセット
-	for (int i = 0; i < 2; i++)
-	{
-		m_frontLight[i] = new PointLight(PointLight::VL_MEDIUM);
-		m_frontLight[i]->SetPosition(Vector3(m_owner->GetPosition().x - 30.0f, m_owner->GetPosition().y + (10.0f * (i + 1)), m_owner->GetPosition().z));
-		m_frontLight[i]->SetLightColor(Vector3(1.0f, 0.6f, 0.4f), Vector3(1.0f, 0.6f, 0.4f));
-		m_frontLight[i]->SetLuminance(2.5f);
+	//// フロントライト・バックライトのセット
+	//for (int i = 0; i < 2; i++)
+	//{
+	//	m_frontLight[i] = new PointLight(PointLight::VL_MEDIUM);
+	//	m_frontLight[i]->SetPosition(Vector3(m_owner->GetPosition().x - 30.0f, m_owner->GetPosition().y + (10.0f * (i + 1)), m_owner->GetPosition().z));
+	//	m_frontLight[i]->SetLightColor(Vector3(1.0f, 0.6f, 0.4f), Vector3(1.0f, 0.6f, 0.4f));
+	//	m_frontLight[i]->SetLuminance(2.5f);
 
-		m_backLight[i] = new PointLight(PointLight::VL_MEDIUM);
-		m_backLight[i]->SetLightColor(Vector3(1.0f, 0.0f, 0.4f), Vector3(1.0f, 0.0f, 0.4f));
-		m_backLight[i]->SetLuminance(3.0f);
-	}
+	//	m_backLight[i] = new PointLight(PointLight::VL_MEDIUM);
+	//	m_backLight[i]->SetLightColor(Vector3(1.0f, 0.0f, 0.4f), Vector3(1.0f, 0.0f, 0.4f));
+	//	m_backLight[i]->SetLuminance(3.0f);
+	//}
 
-	m_frontLight[0]->SetPosition(Vector3(m_owner->GetPosition().x + 100.0f, m_owner->GetPosition().y + 25.0f, m_owner->GetPosition().z + 50.0f));
-	m_frontLight[1]->SetPosition(Vector3(m_owner->GetPosition().x + 100.0f, m_owner->GetPosition().y - 25.0f, m_owner->GetPosition().z + 50.0f));
+	//m_frontLight[0]->SetPosition(Vector3(m_owner->GetPosition().x + 100.0f, m_owner->GetPosition().y + 25.0f, m_owner->GetPosition().z + 50.0f));
+	//m_frontLight[1]->SetPosition(Vector3(m_owner->GetPosition().x + 100.0f, m_owner->GetPosition().y - 25.0f, m_owner->GetPosition().z + 50.0f));
 
-	m_backLight[0]->SetPosition(Vector3(m_owner->GetPosition().x - 100.0f, m_owner->GetPosition().y + 45.0f, m_owner->GetPosition().z + 50.0f));
-	m_backLight[1]->SetPosition(Vector3(m_owner->GetPosition().x - 100.0f, m_owner->GetPosition().y - 45.0f, m_owner->GetPosition().z + 50.0f));
+	//m_backLight[0]->SetPosition(Vector3(m_owner->GetPosition().x - 100.0f, m_owner->GetPosition().y + 45.0f, m_owner->GetPosition().z + 50.0f));
+	//m_backLight[1]->SetPosition(Vector3(m_owner->GetPosition().x - 100.0f, m_owner->GetPosition().y - 45.0f, m_owner->GetPosition().z + 50.0f));
 
 
 	//m_spotLight = new SpotLight(m_position, SpotLight::VL_VERY_SMALL);
@@ -108,7 +110,7 @@ void CarBody::UpdateActor(float in_deltaTime)
 	// オーナーに合わせるためワールド座標を取得し続ける
 	m_worldTransform = m_owner->GetWorldTransform();
 
-	// フロントライト・バックライトの座標調整
+	//// フロントライト・バックライトの座標調整
 	//m_frontLight[0]->SetWorldTransform(Matrix4::CreateScale(m_frontLight[0]->GetScale()) * Matrix4::CreateFromQuaternion(GetRotation()) * Matrix4::CreateTranslation(Vector3::Transform(Vector3(m_owner->GetPosition().x + 15.0f, m_owner->GetPosition().y, m_owner->GetPosition().z), GetRotation())) * Matrix4::CreateTranslation(GetPosition() + Vector3(0.0f, 0.0f, 30.0f)));
 	//m_frontLight[1]->SetWorldTransform(Matrix4::CreateScale(m_frontLight[1]->GetScale()) * Matrix4::CreateFromQuaternion(GetRotation()) * Matrix4::CreateTranslation(Vector3::Transform(Vector3(m_owner->GetPosition().x + 15.0f, m_owner->GetPosition().y, m_owner->GetPosition().z), GetRotation())) * Matrix4::CreateTranslation(GetPosition() + Vector3(0.0f, 0.0f, 30.0f)));
 

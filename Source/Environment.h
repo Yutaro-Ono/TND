@@ -14,14 +14,14 @@ public:
 		NIGHT = 3
 	};
 
-	Environment(GAME_TIME in_gameTime);     // コンストラクタ1
+	Environment(GAME_TIME in_gameTime, const Vector3& in_pos);     // コンストラクタ1
 	Environment(class GameWorld* in_world, GAME_TIME in_gameTime);     // コンストラクタ2
 	~Environment();                         // デストラクタ
 
 	void Update();
 
 	void SetSkyBox(GAME_TIME in_gameTime);
-	void SetDirectionalLight(GAME_TIME in_gameTime);             // 時間帯ごとに平行ライトを設定する
+	void SetDirectionalLight(GAME_TIME in_gameTime, const Vector3& in_pos);             // 時間帯ごとに平行ライトを設定する
 
 	void SetDirectionalLightPos(const Vector3& in_pos);
 

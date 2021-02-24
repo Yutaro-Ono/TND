@@ -62,7 +62,7 @@ void ResultCar::UpdateActor(float in_deltaTime)
 
 	if (m_position.x > 25000)
 	{
-		m_position.x = 0.0f;
+		m_position.x = 6500.0f;
 	}
 
 }

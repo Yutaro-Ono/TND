@@ -5,8 +5,10 @@
 #include "GameWorld.h"
 #include "PlayerManager.h"
 #include "Texture.h"
+#include "MeshComponent.h"
+#include "LandMarkIndicator.h"
 
-MiniMapHUD::MiniMapHUD(Actor* in_target)
+MiniMapHUD::MiniMapHUD(PlayerManager* in_target)
 	:m_target(in_target)
 	,m_miniMapFBO(0)
 	,m_mapBuffer(0)
@@ -32,6 +34,9 @@ MiniMapHUD::MiniMapHUD(Actor* in_target)
 	// マップテクスチャを生成
 	m_mapTex = new Texture();
 	m_mapTex->Load("Data/Interface/HUD/Map/MapHUD.png");
+
+	// HUD上の矢印を生成
+	m_landMark = new LandMarkIndicator(in_target);
 }
 
 MiniMapHUD::~MiniMapHUD()

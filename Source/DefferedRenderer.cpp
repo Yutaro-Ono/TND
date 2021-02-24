@@ -172,6 +172,10 @@ void DefferedRenderer::DrawGBuffer()
 	//------------------------------------------------------------+
 	// EnvironmentMap
 	//------------------------------------------------------------+
+	// メッシュ裏側のカリング
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	// uniformセット
 	m_envShader->SetActive();
 	m_envShader->SetVectorUniform("u_viewPos", m_renderer->m_view.GetTranslation());
 	m_envShader->SetInt("u_skybox", 0);
@@ -179,6 +183,8 @@ void DefferedRenderer::DrawGBuffer()
 	{
 		env->DrawEnvironmentMap(m_envShader);
 	}
+	// カリングのオフ
+	glDisable(GL_CULL_FACE);
 
 	//------------------------------------------------------------+
     // ライトグラス

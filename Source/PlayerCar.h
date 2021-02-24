@@ -110,9 +110,10 @@ private:
 	class MoveComponentCar* m_moveComp;
 
 	// CameraComponent
-	//class ThirdPersonCamera* m_cameraComp;
 	class ThirdPersonCarCamera* m_cameraComp;
 
+	// SoundComponent
+	class CarSoundComponent* m_soundComp;
 
 	// 当たり判定ボックス
 	class BoxCollider* m_hitBox;

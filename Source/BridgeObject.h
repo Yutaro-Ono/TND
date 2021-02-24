@@ -2,16 +2,17 @@
 // 橋オブジェクト
 //---------------------------------------------+
 #pragma once
+#include "Actor.h"
 #include "Math.h"
 #include <vector>
 #include <string>
 
-class BridgeObject
+class BridgeObject : public Actor
 {
 public:
 
 
-	BridgeObject(int in_num, const Vector3& in_startPos);
+	BridgeObject(int in_num, const Vector3& in_startPos, bool in_bright = true);
 	~BridgeObject();
 
 
@@ -23,6 +24,7 @@ private:
 
 	std::vector<std::vector<class LevelObject*>> m_bridges;         // 橋オブジェクト配列
 
+	std::vector<class PointLight*> m_pLights;
 
 	// 橋モデルのファイルパス群
 	static const std::string BRIDGE_ROAD;

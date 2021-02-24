@@ -510,6 +510,12 @@
     <Filter Include="ソース ファイル\Actor\Player\Car\Result">
       <UniqueIdentifier>{8e253052-82d7-47b5-ae5d-d5cb5b30a3ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene\Tutorial">
+      <UniqueIdentifier>{a9e4e135-a081-4d67-8265-0b314a08ba1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Component\Sound">
+      <UniqueIdentifier>{fc178626-1cfa-4a95-8dec-b9a6edb8c72a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -898,6 +904,12 @@
     </ClCompile>
     <ClCompile Include="Source\ResultCarWheel.cpp">
       <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TutorialScene.cpp">
+      <Filter>ソース ファイル\Scene\Tutorial</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CarSoundComponent.cpp">
+      <Filter>ソース ファイル\Component\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1302,6 +1314,12 @@
     </ClInclude>
     <ClInclude Include="Source\ResultCarWheel.h">
       <Filter>ソース ファイル\Actor\Player\Car\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TutorialScene.h">
+      <Filter>ソース ファイル\Scene\Tutorial</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CarSoundComponent.h">
+      <Filter>ソース ファイル\Component\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

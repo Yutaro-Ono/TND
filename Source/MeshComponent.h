@@ -32,6 +32,7 @@ public:
 
 	void SetIntensityVal(float in_val) { m_intensity = in_val; }            // 輝度強度のセッター
 
+	void SetDrawMap(bool in_flg) { m_isDrawMap = in_flg; }
 	void SetMapColor(const Vector3& in_color) { m_mapColor = in_color; }    // マップ描画用のカラーセッター
 
 protected:
@@ -40,6 +41,7 @@ protected:
 	size_t m_textureIndex;                                                  // テクスチャーのインデックス
 
 	bool m_visible;                                                         // 表示フラグ
+	bool m_isDrawMap;                                                       // マップ画面に表示するか
 	bool m_isSkeletal;                                                      // スケルタルモデルかどうか
 
 	float m_intensity;                                                      // 輝度の強度情報 (エミッシブマップを適用しているメッシュのみ)

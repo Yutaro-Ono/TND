@@ -25,8 +25,10 @@ CarWheel::CarWheel(PlayerCar* in_owner, WHEEL_POSITION in_enumPos)
 	MeshComponent* rubberMeshComp = new MeshComponent(this);
 	MeshComponent* steelMeshComp = new MeshComponent(this);
 	rubberMeshComp->SetMesh(rubberMesh);
+	rubberMeshComp->SetDrawMap(false);
 	rubberMeshComp->SetMapColor(Vector3(0.45f, 0.8f, 0.75f));
 	steelMeshComp->SetMesh(steelMesh);
+	steelMeshComp->SetDrawMap(false);
 
 	// タイヤ位置ごとの座標調整
 	switch (m_wheelPosition)

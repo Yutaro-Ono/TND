@@ -9,7 +9,7 @@
 #include "Component.h"
 #include "PhysicsWorld.h"
 #include "PlayerManager.h"
-
+#include "CarSoundComponent.h"
 
 const std::string PlayerCar::CAR_HANDLE_MESH_PATH = "Data/Meshes/TND/Actors/Car/Player/Handle/SM_suv_steering_wheel_lod0_Internal.OBJ";
 
@@ -31,6 +31,8 @@ PlayerCar::PlayerCar()
 	m_cameraComp = new ThirdPersonCarCamera(this);
 	m_cameraComp->SetChaseOwnerForward(false);
 	m_cameraComp->SetDistance(200.0f);
+	// サウンドコンポーネントを生成
+	m_soundComp = new CarSoundComponent(this);
 
 	// 各パーツごとのインスタンスを作成
 	m_body = new CarBody(this);
@@ -60,7 +62,11 @@ void PlayerCar::UpdateActor(float in_deltaTime)
 	}
 	else
 	{
+		// 移動・効果音再生コンポーネント停止
 		m_moveComp->SetActive(false);
+		m_soundComp->SetStop(true);
+		m_soundComp->StopEngineSound();
+		// タイヤの回転を停止
 		for (int i = 0; i < 4; i++)
 		{
 			m_wheel[i]->SetSpin(false);
@@ -75,9 +81,15 @@ void PlayerCar::UpdateActor(float in_deltaTime)
 // 人間操作から切り替わった時の各種変更処理
 void PlayerCar::OnChange()
 {
+	// カメラを車専用のものにセット
 	GAME_INSTANCE.SetCamera(m_cameraComp);
 	m_cameraComp->SetDistance(200.0f);
+	// 移動コンポーネントの有効化
 	m_moveComp->SetActive(true);
+	// 効果音再生コンポーネントの再開・開始エンジン音の再生
+	m_soundComp->SetStop(false);
+	m_soundComp->PlayEngineStart();
+	// タイヤの回転有効化
 	for (int i = 0; i < 4; i++)
 	{
 		m_wheel[i]->SetSpin(true);
@@ -113,7 +125,20 @@ void PlayerCar::CollisionFix(BoxCollider* in_hitPlayerBox, BoxCollider* in_hitBo
 		}
 
 	}
-
+	// 建物にぶつかった時
+	else if (in_hitBox->GetPhysicsType() == PhysicsWorld::TYPE_BACK_GROUND)
+	{
+		// 効果音再生 (速度に応じて効果音の大きさを調整)
+		float accel = m_moveComp->GetAccelValue();
+		if (accel > 10.0f && accel < 65.0f)
+		{
+			m_soundComp->PlayCrushMed();
+		}
+		else if (accel >= 65.0f)
+		{
+			m_soundComp->PlayCrushHard();
+		}
+	}
 
 	// めり込みを修正
 	CalcCollisionFixVec(playerBox, bgBox, fix);

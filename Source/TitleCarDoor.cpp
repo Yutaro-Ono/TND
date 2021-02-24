@@ -26,6 +26,8 @@ TitleCarDoor::TitleCarDoor(Actor* in_owner, DOOR_POS in_pos)
 		//MeshComponent* glassMeshComp = new MeshComponent(this);
 		EnvironmentMapComponent* glassMeshComp = new EnvironmentMapComponent(this);
 		glassMeshComp->SetMesh(glass);
+		glassMeshComp->SetAlpha(0.5f);
+
 	}
 	else if(in_pos == DOOR_POS::RIGHT)
 	{
@@ -38,7 +40,7 @@ TitleCarDoor::TitleCarDoor(Actor* in_owner, DOOR_POS in_pos)
 		//MeshComponent* glassMeshComp = new MeshComponent(this);
 		EnvironmentMapComponent* glassMeshComp = new EnvironmentMapComponent(this);
 		glassMeshComp->SetMesh(glass);
-		glassMeshComp->SetMesh(glass);
+		glassMeshComp->SetAlpha(0.5f);
 	}
 
 	//// 拡大率もオーナーに合わせる

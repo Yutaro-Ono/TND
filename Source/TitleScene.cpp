@@ -26,6 +26,7 @@
 #include "TitleCar.h"
 #include "BridgeObject.h"
 #include "RenderBloom.h"
+#include "TutorialScene.h"
 const int TitleScene::STAGE_ALL_NUM = 1;
 
 // コンストラクタ
@@ -49,7 +50,7 @@ TitleScene::~TitleScene()
 void TitleScene::Initialize()
 {
 	// 環境生成
-	m_environment = new Environment(Environment::GAME_TIME::NIGHT);
+	m_environment = new Environment(Environment::GAME_TIME::NIGHT, Vector3(0.0f, -65.0f, 0.0f));
 	//DirectionalLight& light = RENDERER->GetDirectionalLight();
 	//light.target = Vector3::Zero;
 	//light.position = light.target + Vector3(2000.0f, 0.0f, 3000.0f);
@@ -61,15 +62,41 @@ void TitleScene::Initialize()
 		GAME_INSTANCE.GetLoadScreen()->EnableScreen();
 	}
 
+	// ロード処理
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
+
+	// 音楽
+	m_sound["BGM"] = "Data/Music/BGM/TND/Title/cyrf_crashed_dimension (mp3cut.net).wav";
+	// ロード処理
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
+	m_sound["Enter"] = "Data/Music/SE/TND/System/Enter/decide13.wav";
+	// ロード処理
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
+	m_sound["Select"] = "Data/Music/SE/TND/System/Select/decide14.wav";
+
+	// SE
+	AUDIO->GetSound(m_sound["Enter"]);                                       // 決定音
+	AUDIO->GetSound(m_sound["Select"]);                                      // 選択音
+
+	// ロード処理
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
+
+	// BGM
+	AUDIO->GetMusic(m_sound["BGM"]);
+
+	// ロード処理
+	GAME_INSTANCE.GetLoadScreen()->AddGauge();
+
 	// プレイヤー
 	//m_car = new PlayerCar();
 	m_car = new TitleCar();
-	m_car->SetPosition(Vector3(0.0f, -65.0f, 0.0f));
+	m_car->SetPosition(Vector3(6500.0f, -65.0f, 0.0f));
 	m_car->SetScale(0.4f);
 	//m_car->SetState(Actor::STATE_PAUSED);
 
 	GAME_INSTANCE.GetLoadScreen()->AddGauge();
 
+	// 橋オブジェクトの生成
 	for (int i = 0; i < 8; i++)
 	{
 		m_bridge[i] = new BridgeObject(1, Vector3(i * 6515.0f, -2000.0f, 0.0f));
@@ -88,20 +115,6 @@ void TitleScene::Initialize()
 	//m_pointLight->SetPosition(Vector3(0.0f, 0.0f, 40.0f));
 
 	//m_spotLight = new SpotLight(Vector3::Zero, SpotLight::VL_BIG);
-
-	// 音楽
-	m_sound["BGM"] = "Data/Music/BGM/TND/Title/cyrf_crashed_dimension (mp3cut.net).wav";
-	m_sound["Enter"] = "Data/Music/SE/TND/System/Enter/decide13.wav";
-	m_sound["Select"] = "Data/Music/SE/TND/System/Select/decide14.wav";
-
-	// SE
-	AUDIO->GetSound(m_sound["Enter"]);                                       // 決定音
-	AUDIO->GetSound(m_sound["Select"]);                                      // 選択音
-
-	GAME_INSTANCE.GetLoadScreen()->AddGauge();
-
-	// BGM
-	AUDIO->GetMusic(m_sound["BGM"]);
 
 	for (int i = 0; i < 61; i++)
 	{
@@ -166,6 +179,7 @@ SceneBase * TitleScene::Update()
 
 			// 次のシーンを返す
 			return new GameScene(m_selectedStage);
+			//return new TutorialScene();
 		}
 		
 		break;

@@ -40,7 +40,6 @@ private:
 	class Texture* m_quitButton[2];
 
 	class Texture* m_rankingScore[10];          // ランキングごとのスコアテクスチャ
-	class Texture* m_rankingWindow;
 
 	// 操作表示用UI
 	class Texture* m_xpadSkipTex;                   // Xboxコントローラ

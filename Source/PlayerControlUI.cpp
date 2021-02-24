@@ -52,7 +52,7 @@ PlayerControlUI::PlayerControlUI(GameWorld* in_world)
 // デストラクタ
 PlayerControlUI::~PlayerControlUI()
 {
-	delete m_rideTexture;
+	//delete m_rideTexture;
 }
 
 // 更新処理

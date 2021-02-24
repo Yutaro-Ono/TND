@@ -13,7 +13,6 @@
 #include "Shader.h"
 #include "Input.h"
 #include "InputController.h"
-
 #include <sstream>
 
 // コンストラクタ
@@ -42,11 +41,6 @@ ResultScreen::ResultScreen(class ResultScene* in_targetScene, int in_score, floa
 		m_quitButton[i] = m_font->RenderText("QUIT", Vector3(1.0f * i, 1.0f * i, 1.0f * i), m_fontSize);
 		m_scoreTex[i] = nullptr;
 	}
-
-	// ランキング用ウィンドウ
-	m_rankingWindow = RENDERER->GetTexture("Data/Interface/System/Score_Window.png");
-	m_rankingWindow->SetWidth(1024);
-	m_rankingWindow->SetWidth(m_rankingWindow->GetWidth() / 3.0f);
 
 	// チュートリアル用テクスチャのロード
 	m_xpadSkipTex = RENDERER->GetTexture("Data/Interface/Tutorial/Result/ScoreScreenSkip_XPad.png");
@@ -224,11 +218,6 @@ void ResultScreen::Draw(Shader * in_shader)
 
 
 	// ランキングの描画
-		// ウィンドウ
-	if (m_targetScene->GetResultState() == m_targetScene->STATE_ONE_MORE || m_targetScene->GetResultState() == m_targetScene->STATE_GAME_QUIT)
-	{
-		DrawTexture(in_shader, m_rankingWindow, Vector2(0.0f, 35.0f), 0.8f);
-	}
 
 	// 点滅用カウンター処理
 	m_counter += 0.1f;
@@ -237,18 +226,23 @@ void ResultScreen::Draw(Shader * in_shader)
 		m_counter = 0.0f;
 	}
 
-	for (int i = 0; i < 10; i++)
+
+	float scoreScale = 1.0f;
+	
+	for (int i = 0; i < 5; i++)
 	{
 		if (m_targetScene->GetResultState() == m_targetScene->STATE_ONE_MORE || m_targetScene->GetResultState() == m_targetScene->STATE_GAME_QUIT)
 		{
 			if (i != (m_rank - 1))
 			{
-				DrawTexture(in_shader, m_rankingScore[i], Vector2(0.0f, (RENDERER->GetScreenHeight() / 15) * (6 - (i + 1))), 0.7f);
+				DrawTexture(in_shader, m_rankingScore[i], Vector2(RENDERER->GetScreenWidth() / 2 - m_rankingScore[i]->GetHalfWidth() * scoreScale,
+					                                              (10.0f * (5 - i)) + (-m_rankingScore[i]->GetHeight()) * i), scoreScale);
 			}
 			else if ((int)m_counter % 3 == 0)
 			{
 
-				DrawTexture(in_shader, m_rankingScore[i], Vector2(0.0f, (RENDERER->GetScreenHeight() / 15) * (6 - (i + 1))), 0.7f);
+				DrawTexture(in_shader, m_rankingScore[i], Vector2(RENDERER->GetScreenWidth() / 2 - m_rankingScore[i]->GetHalfWidth() * scoreScale,
+					                                              (10.0f * (5 - i)) + (-m_rankingScore[i]->GetHeight()) * i), scoreScale);
 			}
 		}
 	}
@@ -298,7 +292,7 @@ void ResultScreen::SetScore(const int& in_num, const int& in_score)
 	}
 	else
 	{
-		m_rankingScore[in_num] = m_font->RenderText(strScore.str(), Vector3(1.0f, 1.0f, 1.0f), 64);
+		m_rankingScore[in_num] = m_font->RenderText(strScore.str(), Vector3(1.0f, 0.8f, 0.5f), 64);
 	}
 
 }
